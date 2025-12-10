@@ -23,3 +23,4 @@ The client:
 - The MCP HTTP endpoint expects MCP clients (SSE + handshake). Use `client.py` or another MCP client; plain curl without the protocol will return a JSON error.
 - If you change the MCP path or port, update both `server.py` and `Dockerfile` (CMD) and adjust the client URL accordingly.
 
+

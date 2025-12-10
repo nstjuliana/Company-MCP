@@ -17,7 +17,11 @@ async def main() -> None:
         echo_result = await client.call_tool("echo", {"message": "hello"})
         print("echo =", echo_result.content[0].text)
 
+        search_db_map_result = await client.call_tool("search_db_map", {"query": "payment"})
+        print("search_db_map =", search_db_map_result.content[0].text)
+
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
