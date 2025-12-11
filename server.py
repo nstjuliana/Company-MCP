@@ -32,8 +32,8 @@ except ImportError:
 mcp = FastMCP("Example Server")
 
 BASE_DIR = Path(__file__).resolve().parent
-CONTEXT_MAP_PATH = BASE_DIR / "_docs" / "map" / "context_map.json"
-CONTEXT_INDEX_PATH = BASE_DIR / "_docs" / "map" / "context_index.json"
+CONTEXT_MAP_PATH = BASE_DIR / "data" / "map" / "context_map.json"
+CONTEXT_INDEX_PATH = BASE_DIR / "data" / "map" / "context_index.json"
 DB_PATH = BASE_DIR / "data" / "tribal-knowledge.db"
 
 # OpenAI embedding configuration

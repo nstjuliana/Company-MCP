@@ -44,9 +44,9 @@ except ImportError:
     pass
 
 BASE_DIR = Path(__file__).resolve().parent
-CONTEXT_MAP_PATH = BASE_DIR / "_docs" / "map" / "context_map.json"
-CONTEXT_INDEX_PATH = BASE_DIR / "_docs" / "map" / "context_index.json"
 DATA_DIR = BASE_DIR / "data"
+CONTEXT_MAP_PATH = DATA_DIR / "map" / "context_map.json"
+CONTEXT_INDEX_PATH = DATA_DIR / "map" / "context_index.json"
 DB_PATH = DATA_DIR / "tribal-knowledge.db"
 
 # OpenAI embedding model configuration
