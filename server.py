@@ -34,7 +34,7 @@ mcp = FastMCP("Example Server")
 BASE_DIR = Path(__file__).resolve().parent
 CONTEXT_MAP_PATH = BASE_DIR / "data" / "map" / "context_map.json"
 CONTEXT_INDEX_PATH = BASE_DIR / "data" / "map" / "context_index.json"
-DB_PATH = BASE_DIR / "data" / "tribal-knowledge.db"
+DB_PATH = BASE_DIR / "data" / "myles-tribal-knowledge-3.db"
 
 # OpenAI embedding configuration
 EMBEDDING_MODEL = "text-embedding-3-small"

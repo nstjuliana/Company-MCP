@@ -34,7 +34,8 @@ except ImportError:
 
 # Configuration
 BASE_DIR = Path(__file__).resolve().parent
-DB_PATH = BASE_DIR / "data" / "tribal-knowledge.db"
+# Allow overriding the database path via env var to support alternate DBs
+DB_PATH = Path(os.getenv("DB_PATH", BASE_DIR / "data" / "myles-tribal-knowledge-3.db"))
 EMBEDDING_MODEL = "text-embedding-3-small"
 EMBEDDING_DIMENSIONS = 1536
 
