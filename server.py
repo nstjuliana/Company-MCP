@@ -1,16 +1,52 @@
 from fastmcp import FastMCP
 import json
+import os
 import re
+import sqlite3
 from collections import defaultdict, deque
 from pathlib import Path
-from typing import List, Dict, Any, DefaultDict, Set
+from typing import List, Dict, Any, DefaultDict, Set, Optional
 
-# Minimal FastMCP server with a couple of example tools.
+# Try to import sqlite_vec for vector search
+try:
+    import sqlite_vec
+    HAS_SQLITE_VEC = True
+except ImportError:
+    HAS_SQLITE_VEC = False
+
+# Try to import OpenAI for embeddings
+try:
+    from openai import OpenAI
+    HAS_OPENAI = True
+except ImportError:
+    HAS_OPENAI = False
+
+# Load environment variables from .env if available
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
+# Minimal FastMCP server with database-backed search tools.
 mcp = FastMCP("Example Server")
 
 BASE_DIR = Path(__file__).resolve().parent
 CONTEXT_MAP_PATH = BASE_DIR / "_docs" / "map" / "context_map.json"
 CONTEXT_INDEX_PATH = BASE_DIR / "_docs" / "map" / "context_index.json"
+DB_PATH = BASE_DIR / "data" / "tribal-knowledge.db"
+
+# OpenAI embedding configuration
+EMBEDDING_MODEL = "text-embedding-3-small"
+EMBEDDING_DIMENSIONS = 1536
+
+# Initialize OpenAI client if available
+_openai_client: Optional["OpenAI"] = None
+if HAS_OPENAI:
+    api_key = os.getenv("OPENAI_API_KEY")
+    if api_key:
+        _openai_client = OpenAI(api_key=api_key)
+
 
 # Fallback context map so the server stays functional if JSON is missing or empty.
 DEFAULT_CONTEXT_MAP: List[Dict[str, Any]] = [
@@ -239,15 +275,70 @@ def _build_graph() -> Dict[str, List[Dict[str, Any]]]:
 GRAPH = _build_graph()
 
 
+# --- Database connection helpers ---
+
+def _get_db_connection() -> Optional[sqlite3.Connection]:
+    """Get a connection to the SQLite database."""
+    if not DB_PATH.exists():
+        return None
+    
+    db = sqlite3.connect(str(DB_PATH))
+    db.row_factory = sqlite3.Row
+    
+    # Load sqlite-vec extension if available
+    if HAS_SQLITE_VEC:
+        try:
+            db.enable_load_extension(True)
+            sqlite_vec.load(db)
+            db.enable_load_extension(False)
+        except Exception:
+            pass  # Vector search won't work but FTS will
+    
+    return db
+
+
+def _generate_query_embedding(query: str) -> Optional[List[float]]:
+    """Generate embedding for a search query using OpenAI."""
+    if not _openai_client:
+        return None
+    
+    try:
+        response = _openai_client.embeddings.create(
+            model=EMBEDDING_MODEL,
+            input=query,
+            dimensions=EMBEDDING_DIMENSIONS,
+        )
+        return response.data[0].embedding
+    except Exception:
+        return None
+
+
+# --- Basic tools ---
+
 @mcp.tool
 def add(a: float, b: float) -> float:
-    """Add two numbers to verify tool execution."""
+    """
+    Add two numbers to verify tool execution.
+
+    Args:
+        a: First number.
+        b: Second number.
+    Returns:
+        Sum of a and b.
+    """
     return a + b
 
 
 @mcp.tool
 def echo(message: str) -> str:
-    """Echo a message to confirm connectivity."""
+    """
+    Echo a message to confirm connectivity.
+
+    Args:
+        message: Text to echo back.
+    Returns:
+        The same message.
+    """
     return message
 
 
@@ -256,6 +347,12 @@ def search_db_map(query: str, top_k: int = 3) -> List[Dict[str, Any]]:
     """
     Match a natural language query to the most relevant DB map segments.
     Returns top_k segments with id, title, score, and snippet.
+
+    Args:
+        query: Free-text search string.
+        top_k: Number of results to return (minimum 1).
+    Returns:
+        List of segment dicts with id, title, score, and snippet.
     """
     q_tokens = set(_normalize(query))
     candidate_ids: Set[str] = set()
@@ -317,12 +414,351 @@ def db_map_index() -> Dict[str, Any]:
     return {"index": {token: sorted(list(ids)) for token, ids in INDEX.items()}}
 
 
+# --- New FTS5 and Vector Search Tools ---
+
+@mcp.tool
+def search_fts(
+    query: str,
+    database: str = "",
+    domain: str = "",
+    doc_type: str = "",
+    limit: int = 10
+) -> Dict[str, Any]:
+    """
+    Full-text search using FTS5 with BM25 ranking.
+    Searches document content, summary, and keywords.
+
+    Args:
+        query: Search text (supports FTS5 query syntax like AND, OR, NOT, quotes).
+        database: Optional database filter.
+        domain: Optional domain filter.
+        doc_type: Optional document type filter (table, column, relationship, domain).
+        limit: Max results (1-50).
+    Returns:
+        Dict with results list, each containing id, table_name, doc_type, summary, rank, and tokens_used.
+    """
+    limit = max(1, min(limit, 50))
+    
+    db = _get_db_connection()
+    if not db:
+        return {
+            "error": "Database not found. Run setup_db.py first.",
+            "results": [],
+            "tokens_used": 0,
+        }
+    
+    try:
+        # Build the FTS query - escape special characters for safety
+        # FTS5 supports: AND, OR, NOT, quotes, prefix*, NEAR()
+        fts_query = query
+        
+        # Build WHERE clause for filters
+        filters = []
+        params: List[Any] = [fts_query, limit]
+        
+        if database:
+            filters.append("d.database_name = ?")
+            params.insert(-1, database)
+        if domain:
+            filters.append("d.domain = ?")
+            params.insert(-1, domain)
+        if doc_type:
+            filters.append("d.doc_type = ?")
+            params.insert(-1, doc_type)
+        
+        filter_clause = ""
+        if filters:
+            filter_clause = "AND " + " AND ".join(filters)
+        
+        # Execute FTS5 search with BM25 ranking
+        sql = f"""
+            SELECT 
+                d.id,
+                d.doc_type,
+                d.database_name,
+                d.table_name,
+                d.column_name,
+                d.domain,
+                d.summary,
+                d.content,
+                bm25(documents_fts) as rank
+            FROM documents_fts fts
+            JOIN documents d ON d.id = fts.rowid
+            WHERE documents_fts MATCH ?
+            {filter_clause}
+            ORDER BY rank
+            LIMIT ?
+        """
+        
+        cursor = db.execute(sql, params)
+        rows = cursor.fetchall()
+        
+        results = []
+        for row in rows:
+            result = {
+                "id": row["id"],
+                "doc_type": row["doc_type"],
+                "database": row["database_name"],
+                "table_name": row["table_name"],
+                "column_name": row["column_name"],
+                "domain": row["domain"],
+                "summary": row["summary"],
+                "content_preview": row["content"][:200] + "..." if len(row["content"]) > 200 else row["content"],
+                "bm25_rank": round(row["rank"], 4),
+            }
+            results.append(result)
+        
+        db.close()
+        
+        return {
+            "results": results,
+            "total_matches": len(results),
+            "query": query,
+            "tokens_used": _estimate_tokens(query + str(results)),
+        }
+        
+    except sqlite3.OperationalError as e:
+        db.close()
+        error_msg = str(e)
+        if "no such table" in error_msg:
+            return {
+                "error": "FTS5 index not found. Run setup_db.py to create the database.",
+                "results": [],
+                "tokens_used": 0,
+            }
+        elif "fts5: syntax error" in error_msg.lower():
+            return {
+                "error": f"Invalid FTS5 query syntax: {error_msg}. Try simpler terms or quote exact phrases.",
+                "results": [],
+                "tokens_used": 0,
+            }
+        else:
+            return {
+                "error": f"Database error: {error_msg}",
+                "results": [],
+                "tokens_used": 0,
+            }
+
+
+@mcp.tool
+def search_vector(
+    query: str,
+    database: str = "",
+    domain: str = "",
+    doc_type: str = "",
+    limit: int = 10
+) -> Dict[str, Any]:
+    """
+    Semantic vector search using OpenAI embeddings and sqlite-vec.
+    Finds documents with similar meaning to the query.
+
+    Args:
+        query: Natural language search query.
+        database: Optional database filter.
+        domain: Optional domain filter.
+        doc_type: Optional document type filter (table, column, relationship, domain).
+        limit: Max results (1-50).
+    Returns:
+        Dict with results list, each containing id, table_name, doc_type, summary, distance, and tokens_used.
+    """
+    limit = max(1, min(limit, 50))
+    
+    # Check prerequisites
+    if not HAS_SQLITE_VEC:
+        return {
+            "error": "sqlite-vec not installed. Install with: pip install sqlite-vec",
+            "results": [],
+            "tokens_used": 0,
+        }
+    
+    if not _openai_client:
+        return {
+            "error": "OpenAI client not available. Set OPENAI_API_KEY environment variable.",
+            "results": [],
+            "tokens_used": 0,
+        }
+    
+    db = _get_db_connection()
+    if not db:
+        return {
+            "error": "Database not found. Run setup_db.py first.",
+            "results": [],
+            "tokens_used": 0,
+        }
+    
+    try:
+        # Generate embedding for query
+        query_embedding = _generate_query_embedding(query)
+        if not query_embedding:
+            db.close()
+            return {
+                "error": "Failed to generate query embedding.",
+                "results": [],
+                "tokens_used": 0,
+            }
+        
+        # Convert embedding to JSON for sqlite-vec
+        embedding_json = json.dumps(query_embedding)
+        
+        # Build WHERE clause for filters on the joined documents table
+        filters = []
+        params: List[Any] = []
+        
+        if database:
+            filters.append("d.database_name = ?")
+            params.append(database)
+        if domain:
+            filters.append("d.domain = ?")
+            params.append(domain)
+        if doc_type:
+            filters.append("d.doc_type = ?")
+            params.append(doc_type)
+        
+        # For vec0, we need k = ? in WHERE clause for KNN queries
+        # First get vector matches, then filter
+        if filters:
+            filter_clause = "WHERE " + " AND ".join(filters)
+            
+            sql = f"""
+                WITH vec_matches AS (
+                    SELECT 
+                        document_id,
+                        distance
+                    FROM documents_vec
+                    WHERE embedding MATCH ? AND k = ?
+                )
+                SELECT 
+                    d.id,
+                    d.doc_type,
+                    d.database_name,
+                    d.table_name,
+                    d.column_name,
+                    d.domain,
+                    d.summary,
+                    d.content,
+                    vm.distance
+                FROM vec_matches vm
+                JOIN documents d ON d.id = vm.document_id
+                {filter_clause}
+                ORDER BY vm.distance
+            """
+            params = [embedding_json, limit * 2] + params  # Fetch more to account for filtering
+        else:
+            sql = """
+                SELECT 
+                    d.id,
+                    d.doc_type,
+                    d.database_name,
+                    d.table_name,
+                    d.column_name,
+                    d.domain,
+                    d.summary,
+                    d.content,
+                    v.distance
+                FROM documents_vec v
+                JOIN documents d ON d.id = v.document_id
+                WHERE v.embedding MATCH ? AND k = ?
+                ORDER BY v.distance
+            """
+            params = [embedding_json, limit]
+        
+        cursor = db.execute(sql, params)
+        rows = cursor.fetchall()
+        
+        results = []
+        for row in rows[:limit]:  # Ensure we respect limit after filtering
+            result = {
+                "id": row["id"],
+                "doc_type": row["doc_type"],
+                "database": row["database_name"],
+                "table_name": row["table_name"],
+                "column_name": row["column_name"],
+                "domain": row["domain"],
+                "summary": row["summary"],
+                "content_preview": row["content"][:200] + "..." if len(row["content"]) > 200 else row["content"],
+                "distance": round(row["distance"], 4),
+            }
+            results.append(result)
+        
+        db.close()
+        
+        return {
+            "results": results,
+            "total_matches": len(results),
+            "query": query,
+            "embedding_model": EMBEDDING_MODEL,
+            "tokens_used": _estimate_tokens(query + str(results)),
+        }
+        
+    except sqlite3.OperationalError as e:
+        db.close()
+        error_msg = str(e)
+        if "no such table" in error_msg:
+            return {
+                "error": "Vector index not found. Run setup_db.py with OPENAI_API_KEY set to create embeddings.",
+                "results": [],
+                "tokens_used": 0,
+            }
+        else:
+            return {
+                "error": f"Database error: {error_msg}",
+                "results": [],
+                "tokens_used": 0,
+            }
+
+
 # --- PRD2 tools based on planning spec ---
 
 
 @mcp.tool
 def list_tables(database: str = "", domain: str = "") -> List[Dict[str, Any]]:
-    """List available tables, optionally filtered by database or domain."""
+    """
+    List available tables, optionally filtered by database or domain.
+
+    Args:
+        database: Optional database filter.
+        domain: Optional domain filter.
+    Returns:
+        List of table metadata dicts.
+    """
+    # Try database first, fall back to in-memory segments
+    db = _get_db_connection()
+    if db:
+        try:
+            filters = ["doc_type = 'table'"]
+            params: List[Any] = []
+            
+            if database:
+                filters.append("database_name = ?")
+                params.append(database)
+            if domain:
+                filters.append("domain = ?")
+                params.append(domain)
+            
+            filter_clause = " AND ".join(filters)
+            
+            cursor = db.execute(f"""
+                SELECT id, table_name, database_name, domain, summary
+                FROM documents
+                WHERE {filter_clause}
+            """, params)
+            
+            results = []
+            for row in cursor.fetchall():
+                results.append({
+                    "name": row["table_name"],
+                    "title": f"{row['table_name']} table",
+                    "database": row["database_name"],
+                    "domain": row["domain"],
+                    "summary": row["summary"],
+                })
+            
+            db.close()
+            return results
+        except Exception:
+            db.close()
+    
+    # Fallback to in-memory segments
     results = []
     for seg in DB_SEGMENTS:
         if database and seg.get("database", "") != database:
@@ -344,7 +780,47 @@ def list_tables(database: str = "", domain: str = "") -> List[Dict[str, Any]]:
 
 @mcp.tool
 def list_columns(table: str) -> Dict[str, Any]:
-    """List columns for a given table id/title."""
+    """
+    List columns for a given table id/title.
+
+    Args:
+        table: Table id or title.
+    Returns:
+        Dict with table id and column metadata or an error.
+    """
+    # Try database first
+    db = _get_db_connection()
+    if db:
+        try:
+            cursor = db.execute("""
+                SELECT column_name, summary as description, content
+                FROM documents
+                WHERE doc_type = 'column' AND table_name = ?
+            """, (table,))
+            
+            rows = cursor.fetchall()
+            if rows:
+                columns = []
+                for row in rows:
+                    # Parse type from content if available
+                    content = row["content"] or ""
+                    type_match = re.search(r"Type:\s*(\w+)", content)
+                    col_type = type_match.group(1) if type_match else "unknown"
+                    
+                    columns.append({
+                        "name": row["column_name"],
+                        "type": col_type,
+                        "description": row["description"],
+                    })
+                
+                db.close()
+                return {"table": table, "columns": columns}
+            
+            db.close()
+        except Exception:
+            db.close()
+    
+    # Fallback to in-memory segments
     seg = _find_table(table)
     if not seg:
         return {"error": f"table '{table}' not found"}
@@ -368,6 +844,14 @@ def search_tables(
     """
     Find tables relevant to a natural language query.
     Simplified implementation using token overlap on the curated map.
+
+    Args:
+        query: Search text.
+        database: Optional database filter.
+        domain: Optional domain filter.
+        limit: Max results (1-20).
+    Returns:
+        Dict with table list, tokens used, and total matches.
     """
     limit = max(1, min(limit, 20))
     q_tokens = set(_normalize(query))
@@ -407,7 +891,15 @@ def search_tables(
 
 @mcp.tool
 def get_table_schema(table: str, include_samples: bool = False) -> Dict[str, Any]:
-    """Retrieve full schema details for a specific table."""
+    """
+    Retrieve full schema details for a specific table.
+
+    Args:
+        table: Table id or title.
+        include_samples: Reserved flag to include sample values.
+    Returns:
+        Schema details including columns, keys, relationships, or an error.
+    """
     seg = _find_table(table)
     if not seg:
         return {"error": f"table '{table}' not found"}
@@ -454,6 +946,13 @@ def get_join_path(
 ) -> Dict[str, Any]:
     """
     Find the join path between two tables using relationship graph traversal.
+
+    Args:
+        source_table: Starting table id/title.
+        target_table: Destination table id/title.
+        max_hops: Maximum graph hops to explore.
+    Returns:
+        Dict indicating whether a path was found and a SQL join snippet.
     """
     src = _find_table(source_table).get("id")
     tgt = _find_table(target_table).get("id")
@@ -517,7 +1016,15 @@ def get_join_path(
 
 @mcp.tool
 def get_domain_overview(domain: str, database: str = "") -> Dict[str, Any]:
-    """Get summary of all tables in a business domain."""
+    """
+    Get summary of all tables in a business domain.
+
+    Args:
+        domain: Domain name filter.
+        database: Optional database filter.
+    Returns:
+        Domain description with tables and databases.
+    """
     tables = []
     for seg in DB_SEGMENTS:
         if domain and seg.get("domain", "") != domain:
@@ -545,7 +1052,14 @@ def get_domain_overview(domain: str, database: str = "") -> Dict[str, Any]:
 
 @mcp.tool
 def list_domains(database: str = "") -> Dict[str, Any]:
-    """List all available business domains."""
+    """
+    List all available business domains.
+
+    Args:
+        database: Optional database filter.
+    Returns:
+        Domain list with counts and databases.
+    """
     domains: DefaultDict[str, Dict[str, Any]] = defaultdict(
         lambda: {"name": "", "description": "", "table_count": 0, "databases": set()}
     )
@@ -576,7 +1090,16 @@ def list_domains(database: str = "") -> Dict[str, Any]:
 def get_common_relationships(
     database: str = "", domain: str = "", limit: int = 10
 ) -> Dict[str, Any]:
-    """Retrieve frequently used join patterns based on foreign keys."""
+    """
+    Retrieve frequently used join patterns based on foreign keys.
+
+    Args:
+        database: Optional database filter.
+        domain: Optional domain filter.
+        limit: Max relationships to return.
+    Returns:
+        List of join patterns with SQL templates.
+    """
     limit = max(1, limit)
     relationships = []
     for seg in DB_SEGMENTS:
@@ -600,7 +1123,217 @@ def get_common_relationships(
     return {"relationships": relationships[:limit], "tokens_used": _estimate_tokens(database + domain)}
 
 
+# --- Placeholder tools for planned data tooling. Implementations are stubs. ---
+
+
+@mcp.tool
+def get_table_samples(table: str, where: str = "", limit: int = 20) -> Dict[str, Any]:
+    """
+    Placeholder: return sample rows for a table with optional filter.
+
+    Args:
+        table: Table id/title.
+        where: Optional filter expression.
+        limit: Max rows to return.
+    Returns:
+        Not-implemented message.
+    """
+    return {"error": "get_table_samples not implemented", "table": table, "limit": limit, "where": where}
+
+
+@mcp.tool
+def get_table_stats(table: str, time_column: str = "", group_by: str = "") -> Dict[str, Any]:
+    """
+    Placeholder: basic profiling stats for a table.
+
+    Args:
+        table: Table id/title.
+        time_column: Optional time column for windowed stats.
+        group_by: Optional grouping column.
+    Returns:
+        Not-implemented message.
+    """
+    return {
+        "error": "get_table_stats not implemented",
+        "table": table,
+        "time_column": time_column,
+        "group_by": group_by,
+    }
+
+
+@mcp.tool
+def get_column_stats(table: str, column: str) -> Dict[str, Any]:
+    """
+    Placeholder: distribution/profile stats for a specific column.
+
+    Args:
+        table: Table id/title.
+        column: Column name to profile.
+    Returns:
+        Not-implemented message.
+    """
+    return {"error": "get_column_stats not implemented", "table": table, "column": column}
+
+
+@mcp.tool
+def run_query(query: str, limit: int = 1000, timeout_seconds: int = 30) -> Dict[str, Any]:
+    """
+    Placeholder: execute a read-only SQL query with safety guards.
+
+    Args:
+        query: SQL text.
+        limit: Max rows to return.
+        timeout_seconds: Query timeout seconds.
+    Returns:
+        Not-implemented message.
+    """
+    return {
+        "error": "run_query not implemented",
+        "limit": limit,
+        "timeout_seconds": timeout_seconds,
+        "query_preview": query[:200],
+    }
+
+
+@mcp.tool
+def explain_query(query: str) -> Dict[str, Any]:
+    """
+    Placeholder: provide an execution plan for a SQL query.
+
+    Args:
+        query: SQL text to explain.
+    Returns:
+        Not-implemented message.
+    """
+    return {"error": "explain_query not implemented", "query_preview": query[:200]}
+
+
+@mcp.tool
+def find_relationships(table: str) -> Dict[str, Any]:
+    """
+    Placeholder: auto-detect FK-like relationships for a table.
+
+    Args:
+        table: Table id/title.
+    Returns:
+        Not-implemented message.
+    """
+    return {"error": "find_relationships not implemented", "table": table}
+
+
+@mcp.tool
+def time_column_detection(table: str) -> Dict[str, Any]:
+    """
+    Placeholder: suggest timestamp/date columns and default grains.
+
+    Args:
+        table: Table id/title.
+    Returns:
+        Not-implemented message.
+    """
+    return {"error": "time_column_detection not implemented", "table": table}
+
+
+@mcp.tool
+def semantic_describe_table(table: str) -> Dict[str, Any]:
+    """
+    Placeholder: summarize table semantics using metadata and samples.
+
+    Args:
+        table: Table id/title.
+    Returns:
+        Not-implemented message.
+    """
+    return {"error": "semantic_describe_table not implemented", "table": table}
+
+
+@mcp.tool
+def semantic_describe_column(table: str, column: str) -> Dict[str, Any]:
+    """
+    Placeholder: summarize column meaning using metadata and samples.
+
+    Args:
+        table: Table id/title.
+        column: Column name.
+    Returns:
+        Not-implemented message.
+    """
+    return {"error": "semantic_describe_column not implemented", "table": table, "column": column}
+
+
+@mcp.tool
+def anomaly_scan(table: str, metric: str, time_column: str = "") -> Dict[str, Any]:
+    """
+    Placeholder: simple anomaly scan over a metric (optionally over time).
+
+    Args:
+        table: Table id/title.
+        metric: Metric column to scan.
+        time_column: Optional time column.
+    Returns:
+        Not-implemented message.
+    """
+    return {
+        "error": "anomaly_scan not implemented",
+        "table": table,
+        "metric": metric,
+        "time_column": time_column,
+    }
+
+
+@mcp.tool
+def data_freshness(table: str) -> Dict[str, Any]:
+    """
+    Placeholder: report last ingested timestamp and freshness SLA for a table.
+
+    Args:
+        table: Table id/title.
+    Returns:
+        Not-implemented message.
+    """
+    return {"error": "data_freshness not implemented", "table": table}
+
+
+@mcp.tool
+def metric_definition_lookup(name: str) -> Dict[str, Any]:
+    """
+    Placeholder: retrieve canonical metric definition by name.
+
+    Args:
+        name: Metric name to look up.
+    Returns:
+        Not-implemented message.
+    """
+    return {"error": "metric_definition_lookup not implemented", "name": name}
+
+
+@mcp.tool
+def export_results(format: str = "csv") -> Dict[str, Any]:
+    """
+    Placeholder: export last query results to a file format.
+
+    Args:
+        format: Output format (e.g., csv, parquet).
+    Returns:
+        Not-implemented message.
+    """
+    return {"error": "export_results not implemented", "format": format}
+
+
+@mcp.tool
+def paginate_samples(page: int = 1, page_size: int = 50) -> Dict[str, Any]:
+    """
+    Placeholder: paginate over sample/result sets.
+
+    Args:
+        page: Page number (1-based).
+        page_size: Number of rows per page.
+    Returns:
+        Not-implemented message.
+    """
+    return {"error": "paginate_samples not implemented", "page": page, "page_size": page_size}
+
+
 if __name__ == "__main__":
     # Bind to 0.0.0.0 for container networking; use HTTP transport for remote access.
     mcp.run(transport="http", host="0.0.0.0", port=8000)
-

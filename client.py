@@ -67,6 +67,57 @@ async def main() -> None:
         )
         print("get_common_relationships(tasks) =", _pretty(common_rels_result))
 
+        # --- FTS5 and Vector Search tests ---
+        print("\n" + "="*60)
+        print("FTS5 FULL-TEXT SEARCH TESTS")
+        print("="*60)
+
+        # Test FTS5 search for "payment"
+        fts_result1 = await client.call_tool(
+            "search_fts", {"query": "payment", "limit": 3}
+        )
+        print("\nsearch_fts('payment') =", _pretty(fts_result1))
+
+        # Test FTS5 search for "fraud"
+        fts_result2 = await client.call_tool(
+            "search_fts", {"query": "fraud", "doc_type": "table", "limit": 3}
+        )
+        print("\nsearch_fts('fraud', doc_type='table') =", _pretty(fts_result2))
+
+        # Test FTS5 search for "submission task"
+        fts_result3 = await client.call_tool(
+            "search_fts", {"query": "submission task", "limit": 5}
+        )
+        print("\nsearch_fts('submission task') =", _pretty(fts_result3))
+
+        print("\n" + "="*60)
+        print("VECTOR SIMILARITY SEARCH TESTS")
+        print("="*60)
+
+        # Test vector search - semantic query about money
+        vec_result1 = await client.call_tool(
+            "search_vector", {"query": "tables related to financial transactions", "limit": 3}
+        )
+        print("\nsearch_vector('tables related to financial transactions') =", _pretty(vec_result1))
+
+        # Test vector search - semantic query about fraud
+        vec_result2 = await client.call_tool(
+            "search_vector", {"query": "how to detect suspicious activity", "limit": 3}
+        )
+        print("\nsearch_vector('how to detect suspicious activity') =", _pretty(vec_result2))
+
+        # Test vector search - semantic query about task tracking
+        vec_result3 = await client.call_tool(
+            "search_vector", {"query": "tracking user submissions and scores", "limit": 3}
+        )
+        print("\nsearch_vector('tracking user submissions and scores') =", _pretty(vec_result3))
+
+        # Test vector search with domain filter
+        vec_result4 = await client.call_tool(
+            "search_vector", {"query": "credit card details", "domain": "payments", "limit": 3}
+        )
+        print("\nsearch_vector('credit card details', domain='payments') =", _pretty(vec_result4))
+
 
 if __name__ == "__main__":
     asyncio.run(main())
