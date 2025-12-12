@@ -1,0 +1,98 @@
+{
+  "table": "s3_multipart_uploads",
+  "schema": "storage",
+  "database": "postgres_production",
+  "description": "This table appears to track S3 multipart upload operations within a storage system, managing the metadata and state of large file uploads that are split into multiple parts for efficient transfer. Based on its location in the storage schema and naming convention, it likely serves as a temporary tracking mechanism for in-progress multipart uploads to Amazon S3 or S3-compatible storage services. The table currently has no relationships to other tables and contains no data, suggesting it may be used for transient operational data that is cleaned up upon upload completion or failure.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "id",
+      "type": "text",
+      "nullable": false,
+      "description": "Purpose unclear from available data. Appears to be a unique identifier for multipart upload operations in S3 storage.",
+      "default": null
+    },
+    {
+      "name": "in_progress_size",
+      "type": "bigint",
+      "nullable": false,
+      "description": "Tracks the cumulative size in bytes of data that has been uploaded but not yet completed for a multipart upload operation. Represents the total amount of storage space currently occupied by incomplete upload parts.",
+      "default": "0"
+    },
+    {
+      "name": "upload_signature",
+      "type": "text",
+      "nullable": false,
+      "description": "Purpose unclear from available data. Appears to store a signature or hash value used to validate or authenticate multipart upload operations to S3 storage.",
+      "default": null
+    },
+    {
+      "name": "bucket_id",
+      "type": "text",
+      "nullable": false,
+      "description": "Purpose unclear from available data. Appears to reference a storage bucket identifier within the S3 multipart upload process.",
+      "default": null
+    },
+    {
+      "name": "key",
+      "type": "text",
+      "nullable": false,
+      "description": "The unique identifier or path that specifies the location and name of the file being uploaded through the S3 multipart upload process. Purpose unclear from available data due to lack of sample values.",
+      "default": null
+    },
+    {
+      "name": "version",
+      "type": "text",
+      "nullable": false,
+      "description": "Purpose unclear from available data. Without sample values or additional context, the specific meaning of this version identifier in the context of S3 multipart uploads cannot be determined.",
+      "default": null
+    },
+    {
+      "name": "owner_id",
+      "type": "text",
+      "nullable": true,
+      "description": "Purpose unclear from available data, though the column name suggests it may store an identifier for the entity that owns or initiated the multipart upload operation.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "description": "Records the exact date and time when a multipart upload operation was initiated in the S3 storage system. This timestamp is automatically set when the upload process begins and cannot be null.",
+      "default": "now()"
+    },
+    {
+      "name": "user_metadata",
+      "type": "jsonb",
+      "nullable": true,
+      "description": "Purpose unclear from available data. Likely stores custom metadata attributes associated with multipart upload operations, but cannot determine specific content or structure without sample values.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "idx_multipart_uploads_list",
+      "index_definition": "CREATE INDEX idx_multipart_uploads_list ON storage.s3_multipart_uploads USING btree (bucket_id, key, created_at)",
+      "columns": [
+        "bucket_id",
+        "key",
+        "created_at"
+      ],
+      "is_unique": false
+    },
+    {
+      "index_name": "s3_multipart_uploads_pkey",
+      "index_definition": "CREATE UNIQUE INDEX s3_multipart_uploads_pkey ON storage.s3_multipart_uploads USING btree (id)",
+      "columns": [
+        "id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-11T22:51:27.165Z"
+}

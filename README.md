@@ -1,13 +1,151 @@
-# FastMCP Server with Tribal Knowledge Search
+# Database Context MCP Server
 
-This repo provides a FastMCP server with **FTS5 full-text search** and **vector similarity search** capabilities, containerized with Docker, plus a Python client to exercise the tools.
+A FastMCP server that provides **database schema context** through search and metadata tools. This MCP serves pre-indexed database documentation — it does **not** connect to actual databases.
 
-## Features
+## Purpose
 
-- **FTS5 Full-Text Search**: BM25-ranked keyword search with porter stemming
-- **Vector Similarity Search**: Semantic search using OpenAI embeddings (1536 dimensions)
-- **Hybrid Search**: Reciprocal Rank Fusion combining FTS5 + vector results
-- **SQLite-backed**: Persistent storage with sqlite-vec extension for vectors
+This server indexes database schemas (tables, columns, relationships) from JSON/Markdown files and provides:
+- **FTS5 Full-Text Search**: BM25-ranked keyword search
+- **Vector Similarity Search**: Semantic search using OpenAI embeddings
+- **Schema Retrieval**: Get table/column definitions from indexed JSON files
+- **Relationship Discovery**: Find join paths between tables
+
+## Data Structure
+
+### Directory Layout
+
+```
+data/
+├── index/
+│   └── index.db              # SQLite index with FTS5 + vector search
+└── map/
+    ├── postgres_production/
+    │   └── domains/
+    │       ├── authentication/
+    │       │   └── tables/
+    │       │       ├── auth.users.json
+    │       │       ├── auth.users.md
+    │       │       ├── auth.sessions.json
+    │       │       └── ...
+    │       ├── payments/
+    │       │   └── tables/
+    │       │       ├── public.payments.json
+    │       │       ├── public.merchants.json
+    │       │       └── ...
+    │       ├── realtime/
+    │       ├── security/
+    │       └── storage/
+    └── snowflake_production/
+        └── domains/
+            ├── payments/
+            │   └── tables/
+            │       └── PUBLIC.DABSTEP_PAYMENTS.json
+            └── workflow/
+                └── tables/
+                    ├── PUBLIC.DABSTEP_TASKS.json
+                    ├── PUBLIC.DABSTEP_SUBMISSIONS.json
+                    └── PUBLIC.DABSTEP_TASK_SCORES.json
+```
+
+### JSON Schema File Format
+
+Each table is documented in a JSON file with this structure:
+
+```json
+{
+  "table": "payments",
+  "schema": "public",
+  "database": "postgres_production",
+  "description": "Payment transactions processed through the system...",
+  "row_count": 138236,
+  "columns": [
+    {
+      "name": "payment_id",
+      "type": "character varying",
+      "nullable": false,
+      "description": "Unique identifier for each payment transaction..."
+    }
+  ],
+  "primary_key": ["payment_id"],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "payments_pkey",
+      "columns": ["payment_id"],
+      "is_unique": true
+    }
+  ]
+}
+```
+
+---
+
+## Index Database Schema
+
+The SQLite index database (`data/index/index.db`) contains the following tables:
+
+### `documents` — Main Document Index
+Stores all indexed content (tables and columns).
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | INTEGER | Primary key |
+| `doc_type` | TEXT | `'table'` or `'column'` |
+| `database_name` | TEXT | `'postgres_production'` or `'snowflake_production'` |
+| `schema_name` | TEXT | Schema (e.g., `'auth'`, `'public'`, `'PUBLIC'`) |
+| `table_name` | TEXT | Table name |
+| `column_name` | TEXT | Column name (for column docs) |
+| `domain` | TEXT | Business domain category |
+| `content` | TEXT | Full JSON/Markdown content |
+| `summary` | TEXT | Generated summary |
+| `keywords` | TEXT | JSON array of keywords |
+| `file_path` | TEXT | Path to source file in `data/map/` |
+| `content_hash` | TEXT | SHA256 for change detection |
+| `indexed_at` | DATETIME | When indexed |
+| `parent_doc_id` | INTEGER | FK to parent (for columns) |
+
+### `documents_fts` — FTS5 Full-Text Search
+Virtual table for BM25-ranked text search.
+
+```sql
+CREATE VIRTUAL TABLE documents_fts USING fts5(
+    content, summary, keywords,
+    content='documents', content_rowid='id'
+);
+```
+
+### `documents_vec` — Vector Embeddings
+Virtual table for semantic similarity search (requires sqlite-vec extension).
+
+```sql
+CREATE VIRTUAL TABLE documents_vec USING vec0(
+    document_id INTEGER PRIMARY KEY,
+    embedding float[1536]  -- OpenAI text-embedding-3-small
+);
+```
+
+### `keywords` — Extracted Search Terms
+Cached keywords with frequency counts.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | INTEGER | Primary key |
+| `term` | TEXT | Keyword |
+| `source_type` | TEXT | `'table'` or `'column'` |
+| `frequency` | INTEGER | Occurrence count |
+
+### `index_weights` — Search Ranking Configuration
+
+| doc_type | fts_weight | vec_weight | boost |
+|----------|------------|------------|-------|
+| table | 1.0 | 1.0 | 1.5 |
+| column | 0.8 | 0.8 | 1.0 |
+| relationship | 1.0 | 1.0 | 1.2 |
+
+### `index_metadata` — Index Configuration
+Key-value store for metadata like `embedding_model`, `embedding_dimensions`, `document_count`, `last_full_index`.
+
+---
 
 ## Quick Start
 
@@ -16,7 +154,7 @@ This repo provides a FastMCP server with **FTS5 full-text search** and **vector 
 pip install -r requirements.txt
 ```
 
-### 2. Set up environment
+### 2. Set up environment (optional, for vector search)
 Create a `.env` file with your OpenAI API key:
 ```
 OPENAI_API_KEY=sk-your-api-key-here
@@ -27,15 +165,20 @@ OPENAI_API_KEY=sk-your-api-key-here
 python setup_db.py
 ```
 
-This creates `data/tribal-knowledge.db` with:
+This creates `data/index/index.db` with:
 - FTS5 full-text search index
-- Vector embeddings for semantic search
-- Pre-computed relationships and keywords
+- Vector embeddings for semantic search (if OpenAI key provided)
+- Pre-computed keywords
 
-### 4. Build and run with Docker
+### 4. Run the server
 ```bash
-docker build -t fastmcp-server .
-docker run -p 8000:8000 --env-file .env fastmcp-server
+python server.py
+```
+
+Or with Docker:
+```bash
+docker build -t db-context-mcp .
+docker run -p 8000:8000 --env-file .env db-context-mcp
 ```
 
 The MCP endpoint is served at `http://localhost:8000/mcp`.
@@ -45,214 +188,327 @@ The MCP endpoint is served at `http://localhost:8000/mcp`.
 python client.py
 ```
 
-## Database Schema
+---
 
-The SQLite database (`data/tribal-knowledge.db`) contains:
+## Available Tools (14 total)
 
-### `documents` - Main document storage
-```sql
-CREATE TABLE documents (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    doc_type TEXT NOT NULL,           -- 'table', 'column', 'relationship', 'domain'
-    database_name TEXT NOT NULL,       -- Source database name
-    schema_name TEXT,                  -- Schema within database
-    table_name TEXT,                   -- Table name (if applicable)
-    column_name TEXT,                  -- Column name (if applicable)
-    domain TEXT,                       -- Business domain grouping
-    content TEXT NOT NULL,             -- Full document content
-    summary TEXT,                      -- Compressed summary
-    keywords TEXT,                     -- Extracted keywords (JSON array)
-    file_path TEXT,                    -- Source file path
-    content_hash TEXT,                 -- Hash for change detection
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-);
+### Discovery Tools
 
--- Indexes
-CREATE INDEX idx_documents_database ON documents(database_name);
-CREATE INDEX idx_documents_table ON documents(database_name, schema_name, table_name);
-CREATE INDEX idx_documents_domain ON documents(domain);
-CREATE INDEX idx_documents_type ON documents(doc_type);
+| Tool | Description |
+|------|-------------|
+| `list_databases` | List all indexed databases with table counts and schemas |
+| `list_domains` | List all business domains with table counts |
+| `list_tables` | List all tables, optionally filtered by database/domain |
+
+#### `list_databases`
+Discover what databases are available in the index.
+
+```python
+list_databases()
 ```
 
-### `documents_fts` - FTS5 Full-Text Search Index
-```sql
-CREATE VIRTUAL TABLE documents_fts USING fts5(
-    content,
-    summary,
-    keywords,
-    content='documents',
-    content_rowid='id',
-    tokenize='porter'
-);
+**Returns:**
+```json
+{
+  "databases": [
+    {"name": "postgres_production", "table_count": 37, "domains": [...], "schemas": [...]},
+    {"name": "snowflake_production", "table_count": 4, "domains": [...], "schemas": [...]}
+  ]
+}
 ```
 
-### `documents_vec` - Vector Similarity Search (sqlite-vec)
-```sql
-CREATE VIRTUAL TABLE documents_vec USING vec0(
-    document_id INTEGER PRIMARY KEY,
-    embedding float[1536]              -- OpenAI text-embedding-3-small
-);
+#### `list_domains`
+List all business domains with table counts.
+
+```python
+list_domains(
+    database: str = ""    # Optional: filter by database
+)
 ```
 
-### `relationships` - Pre-computed join paths
-```sql
-CREATE TABLE relationships (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    database_name TEXT NOT NULL,
-    source_table TEXT NOT NULL,
-    target_table TEXT NOT NULL,
-    join_path TEXT NOT NULL,           -- JSON array of join steps
-    hop_count INTEGER NOT NULL,
-    sql_snippet TEXT,                  -- Pre-generated SQL JOIN clause
-    confidence REAL,
-    UNIQUE(database_name, source_table, target_table)
-);
+**Returns:** `{domains: [{name, description, table_count, databases}]}`
+
+#### `list_tables`
+List available tables with metadata.
+
+```python
+list_tables(
+    database: str = "",   # Optional: filter by database
+    domain: str = ""      # Optional: filter by domain
+)
 ```
 
-### `keywords` - Extracted keywords cache
-```sql
-CREATE TABLE keywords (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    term TEXT NOT NULL UNIQUE,
-    source_type TEXT,                  -- 'column_name', 'sample_data', 'inferred'
-    frequency INTEGER DEFAULT 1
-);
-```
+**Returns:** List of `{name, title, database, schema, domain, summary, file_path}`
 
-### `index_weights` - Search weight configuration
-```sql
-CREATE TABLE index_weights (
-    doc_type TEXT PRIMARY KEY,
-    fts_weight REAL DEFAULT 1.0,
-    vec_weight REAL DEFAULT 1.0,
-    boost REAL DEFAULT 1.0
-);
-
--- Default weights
-INSERT INTO index_weights VALUES ('table', 1.0, 1.0, 1.5);
-INSERT INTO index_weights VALUES ('relationship', 1.0, 1.0, 1.2);
-INSERT INTO index_weights VALUES ('column', 0.8, 0.8, 1.0);
-INSERT INTO index_weights VALUES ('domain', 1.0, 1.0, 1.0);
-```
-
-## Available Tools
+---
 
 ### Search Tools
 
 | Tool | Description |
 |------|-------------|
-| `search_fts(query, database?, domain?, doc_type?, limit?)` | FTS5 full-text search with BM25 ranking. Supports FTS5 query syntax (AND, OR, NOT, quotes). |
-| `search_vector(query, database?, domain?, doc_type?, limit?)` | Semantic vector search using OpenAI embeddings. Finds documents with similar meaning. |
-| `search_db_map(query, top_k?)` | Quick free-text lookup over the curated context map. |
-| `search_tables(query, database?, domain?, limit?)` | Token overlap search with optional filters. |
+| `search_fts` | FTS5 full-text search with BM25 ranking |
+| `search_vector` | Semantic vector search using OpenAI embeddings |
+| `search_db_map` | Quick token-based search over indexed tables |
+| `search_tables` | Find tables matching a natural language query |
+
+#### `search_fts`
+Full-text search using SQLite FTS5 with BM25 ranking.
+
+```python
+search_fts(
+    query: str,           # Search text (supports AND, OR, NOT, "exact phrase")
+    database: str = "",   # Optional: filter by database
+    domain: str = "",     # Optional: filter by domain
+    doc_type: str = "",   # Optional: filter by type ("table" or "column")
+    limit: int = 10       # Max results (1-50)
+)
+```
+
+**Returns:** Results with `id`, `table_name`, `summary`, `file_path`, `bm25_rank`
+
+#### `search_vector`
+Semantic search using OpenAI embeddings. Finds documents with similar meaning.
+
+```python
+search_vector(
+    query: str,           # Natural language query
+    database: str = "",   # Optional: filter by database
+    domain: str = "",     # Optional: filter by domain
+    doc_type: str = "",   # Optional: filter by type
+    limit: int = 10       # Max results (1-50)
+)
+```
+
+**Returns:** Results with `id`, `table_name`, `summary`, `file_path`, `distance`
+
+**Note:** Requires `OPENAI_API_KEY` environment variable.
+
+#### `search_db_map`
+Quick token-based search over the in-memory table index.
+
+```python
+search_db_map(
+    query: str,           # Free-text search string
+    top_k: int = 3        # Number of results
+)
+```
+
+**Returns:** List of `{id, title, score, snippet}`
+
+#### `search_tables`
+Find tables relevant to a query using token overlap matching.
+
+```python
+search_tables(
+    query: str,           # Search text
+    database: str = "",   # Optional: filter by database
+    domain: str = "",     # Optional: filter by domain
+    limit: int = 5        # Max results (1-20)
+)
+```
+
+**Returns:** `{tables: [...], total_matches, tokens_used}`
+
+---
 
 ### Schema Tools
 
 | Tool | Description |
 |------|-------------|
-| `list_tables(database?, domain?)` | Enumerate tables, optionally filtered. |
-| `list_columns(table)` | Get column names/types for a table. |
-| `get_table_schema(table, include_samples?)` | Detailed schema with PK/FK/columns. |
-| `list_domains(database?)` | List domains and table counts. |
-| `get_domain_overview(domain, database?)` | Summarize all tables in a domain. |
+| `list_columns` | Get columns for a specific table |
+| `get_table_schema` | Get full schema details from JSON file |
+| `get_domain_overview` | Get all tables in a domain |
+
+#### `list_columns`
+Get column definitions for a table.
+
+```python
+list_columns(
+    table: str,           # Table name (e.g., "merchants", "DABSTEP_PAYMENTS")
+    database: str = ""    # Optional: filter by database
+)
+```
+
+**Returns:** `{table, columns: [{name, type, nullable, description}], file_path}`
+
+#### `get_table_schema`
+Retrieve full schema details from the source JSON file.
+
+```python
+get_table_schema(
+    table: str,                    # Table name
+    database: str = "",            # Optional: filter by database
+    include_samples: bool = False  # Include sample values if available
+)
+```
+
+**Returns:** Complete schema including:
+- `name`, `database`, `schema`, `description`
+- `columns` with types and descriptions
+- `primary_key`, `foreign_keys`, `indexes`
+- `related_tables`, `file_path`
+
+#### `get_domain_overview`
+Get summary of all tables in a business domain.
+
+```python
+get_domain_overview(
+    domain: str,          # Domain name (e.g., "payments", "authentication")
+    database: str = ""    # Optional: filter by database
+)
+```
+
+**Returns:** `{domain, description, databases, tables: [{name, description}]}`
+
+---
 
 ### Relationship Tools
 
 | Tool | Description |
 |------|-------------|
-| `get_join_path(source_table, target_table, max_hops?)` | Find join path via FK graph traversal. |
-| `get_common_relationships(database?, domain?, limit?)` | List FK-based join patterns. |
+| `get_join_path` | Find join path between two tables |
+| `get_common_relationships` | List FK-based join patterns |
+
+#### `get_join_path`
+Find the join path between two tables via foreign key traversal.
+
+```python
+get_join_path(
+    source_table: str,    # Starting table
+    target_table: str,    # Target table
+    database: str = "",   # Optional: filter by database
+    max_hops: int = 3     # Maximum join hops
+)
+```
+
+**Returns:** `{source, target, found, hop_count, path: [...], sql_snippet}`
+
+#### `get_common_relationships`
+List frequently used join patterns based on foreign keys.
+
+```python
+get_common_relationships(
+    database: str = "",   # Optional: filter by database
+    domain: str = "",     # Optional: filter by domain
+    limit: int = 10       # Max relationships
+)
+```
+
+**Returns:** `{relationships: [{source_table, target_table, join_sql, description}]}`
+
+---
 
 ### Utility Tools
 
 | Tool | Description |
 |------|-------------|
-| `add(a, b)` | Sanity-check connectivity; returns a+b. |
-| `echo(message)` | Sanity-check connectivity; echoes message. |
+| `add(a, b)` | Returns a + b (connectivity test) |
+| `echo(message)` | Returns the message (connectivity test) |
 
-## Example Queries
+---
 
-### FTS5 Search
+## Example Usage
+
+### Discover Available Data
 ```python
-# Find tables mentioning "payment"
-await client.call_tool("search_fts", {"query": "payment", "limit": 5})
+# List all databases
+list_databases()
+# → postgres_production (37 tables), snowflake_production (4 tables)
 
-# Search for fraud-related content in tables only
-await client.call_tool("search_fts", {"query": "fraud", "doc_type": "table"})
+# List tables in a specific database
+list_tables(database="snowflake_production")
 
-# Boolean search
-await client.call_tool("search_fts", {"query": "submission AND task"})
+# List business domains
+list_domains()
 ```
 
-### Vector Search
+### Search for Tables
 ```python
-# Semantic search - finds related concepts
-await client.call_tool("search_vector", {
-    "query": "tables related to financial transactions",
-    "limit": 3
-})
+# FTS5 search
+search_fts(query="payment fraud", limit=5)
 
-# Find fraud detection columns
-await client.call_tool("search_vector", {
-    "query": "how to detect suspicious activity"
-})
+# Semantic search
+search_vector(query="tables related to financial transactions", limit=3)
 
-# Domain-filtered semantic search
-await client.call_tool("search_vector", {
-    "query": "credit card details",
-    "domain": "payments"
-})
+# Search within a specific database
+search_fts(query="merchant", database="postgres_production")
 ```
 
-## Testing
+### Get Schema Details
+```python
+# Get schema for a table (auto-detects database)
+get_table_schema(table="payments")
 
-Run the comprehensive test suite:
-```bash
-python test_all_search.py
+# Get schema from specific database
+get_table_schema(table="payments", database="postgres_production")
+get_table_schema(table="DABSTEP_PAYMENTS", database="snowflake_production")
+
+# Get columns only
+list_columns(table="merchants", database="postgres_production")
 ```
 
-This tests:
-1. OpenAI embedding generation
-2. sqlite-vec storage
-3. FTS5 full-text search
-4. Vector similarity search
-5. Hybrid search with Reciprocal Rank Fusion
+### Explore Relationships
+```python
+# Find join path between tables
+get_join_path(
+    source_table="merchants",
+    target_table="payments",
+    database="postgres_production"
+)
+
+# Get common relationships in a domain
+get_common_relationships(domain="payments")
+```
+
+---
 
 ## Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                     MCP Client                               │
+│                     MCP Client                              │
 └─────────────────────────────────────────────────────────────┘
                             │
                             ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                   FastMCP Server                             │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐  │
-│  │ search_fts  │  │search_vector│  │  Other Tools        │  │
-│  └──────┬──────┘  └──────┬──────┘  └─────────────────────┘  │
-│         │                │                                   │
-│         ▼                ▼                                   │
-│  ┌─────────────────────────────────────────────────────┐    │
-│  │              SQLite Database                         │    │
-│  │  ┌───────────┐  ┌───────────┐  ┌────────────────┐   │    │
-│  │  │ documents │  │documents_ │  │ documents_vec  │   │    │
-│  │  │  (main)   │  │   fts     │  │  (sqlite-vec)  │   │    │
-│  │  └───────────┘  └───────────┘  └────────────────┘   │    │
-│  └─────────────────────────────────────────────────────┘    │
+│                   FastMCP Server                            │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐ │
+│  │ search_fts  │  │search_vector│  │ Schema Tools        │ │
+│  └──────┬──────┘  └──────┬──────┘  └──────────┬──────────┘ │
+│         │                │                     │            │
+│         ▼                ▼                     ▼            │
+│  ┌─────────────────────────────┐    ┌─────────────────────┐│
+│  │   data/index/index.db      │    │   data/map/*.json   ││
+│  │  ┌───────────┐ ┌─────────┐ │    │   (source schemas)  ││
+│  │  │   FTS5    │ │ Vectors │ │    └─────────────────────┘│
+│  │  └───────────┘ └─────────┘ │                            │
+│  └─────────────────────────────┘                            │
 └─────────────────────────────────────────────────────────────┘
                             │
-                            ▼
+                            ▼ (vector search only)
                    ┌────────────────┐
                    │  OpenAI API    │
                    │  (embeddings)  │
                    └────────────────┘
 ```
 
+---
+
+## Indexed Content Summary
+
+| Database | Tables | Domains | Schemas |
+|----------|--------|---------|---------|
+| postgres_production | 37 | analytics, authentication, customers, general, messaging, payments | auth, public, realtime, storage, vault |
+| snowflake_production | 4 | general, payments | PUBLIC |
+
+**Total:** 41 tables, 428 indexed documents (tables + columns)
+
+---
+
 ## Notes
 
-- The MCP HTTP endpoint expects MCP clients (SSE + handshake). Use `client.py` or another MCP client.
-- Vector search requires `OPENAI_API_KEY` to be set for generating query embeddings.
-- FTS5 search works without OpenAI but requires the database to be initialized.
-- Run `setup_db.py` after any changes to `context_map.json` to rebuild the index.
+- **No database connections**: This MCP serves pre-indexed context only — it does not connect to actual Postgres or Snowflake databases.
+- **Vector search** requires `OPENAI_API_KEY` to generate query embeddings at runtime.
+- **FTS5 search** works without OpenAI using the pre-built index.
+- **Database parameter**: Use `database="postgres_production"` or `database="snowflake_production"` to target specific databases when table names might overlap.
+- Run `setup_db.py` after adding new JSON files to `data/map/` to rebuild the index.

@@ -1,0 +1,85 @@
+{
+  "table": "DABSTEP_TASKS",
+  "schema": "PUBLIC",
+  "database": "snowflake_production",
+  "description": "This table represents a collection of analytical tasks or questions, likely used for testing or evaluation purposes, with each record containing a unique task identifier, a business question requiring calculation, the corresponding answer, and associated guidelines for completion. The table appears to store tasks of varying difficulty levels that involve financial calculations, as evidenced by the sample question about calculating fees in euros for a specific store and date. Given its standalone nature with no foreign key relationships, this table likely serves as a reference or configuration table for a task management or assessment system within the broader data model.",
+  "row_count": 450,
+  "columns": [
+    {
+      "name": "TASK_ID",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "A unique identifier that distinguishes individual tasks within the system. Based on the sample values, this appears to be a numeric identifier stored as text, ranging from four-digit numbers in the 1000-2000+ range.",
+      "default": null
+    },
+    {
+      "name": "QUESTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Contains natural language queries requesting specific business analytics and data retrieval operations, typically involving financial metrics, fee calculations, merchant analysis, and transaction data across various time periods. These appear to be user-submitted questions or tasks for a data analysis system to process and answer.",
+      "default": null
+    },
+    {
+      "name": "ANSWER",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data. All sample values are empty or null, providing no indication of what type of answer or response this field is intended to store.",
+      "default": null
+    },
+    {
+      "name": "GUIDELINES",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Instructions that specify the required format and presentation style for task responses, including requirements for numerical precision, list formatting, and result grouping.",
+      "default": null
+    },
+    {
+      "name": "LEVEL",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Indicates the difficulty rating or complexity level assigned to tasks, with \"hard\" being one of the available difficulty classifications.",
+      "default": null
+    }
+  ],
+  "primary_key": [],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "TASK_ID": "1712",
+      "QUESTION": "For the 12th of the year 2023, what is the total fees (in euros) that Belles_cookbook_store should p...",
+      "ANSWER": "",
+      "GUIDELINES": "Answer must be just a number rounded to 2 decimals. If a question does not have a relevant or applic...",
+      "LEVEL": "hard"
+    },
+    {
+      "TASK_ID": "1810",
+      "QUESTION": "What were the applicable Fee IDs for Rafa_AI in December 2023?",
+      "ANSWER": "",
+      "GUIDELINES": "Answer must be a list of values in comma separated list, eg: A, B, C. If the answer is an empty list...",
+      "LEVEL": "hard"
+    },
+    {
+      "TASK_ID": "1741",
+      "QUESTION": "What are the applicable fee IDs for Belles_cookbook_store in 2023?",
+      "ANSWER": "",
+      "GUIDELINES": "Answer must be a list of values in comma separated list, eg: A, B, C. If the answer is an empty list...",
+      "LEVEL": "hard"
+    },
+    {
+      "TASK_ID": "1480",
+      "QUESTION": "What is the fee ID or IDs that apply to account_type = H and aci = D?",
+      "ANSWER": "",
+      "GUIDELINES": "Answer must be a list of values in comma separated list, eg: A, B, C. If the answer is an empty list...",
+      "LEVEL": "hard"
+    },
+    {
+      "TASK_ID": "1234",
+      "QUESTION": "What is the average transaction value grouped by shopper_interaction for Crossfit_Hanna's TransactPl...",
+      "ANSWER": "",
+      "GUIDELINES": "Present your results broken down by grouping and sorted in ascending order. The final answer should ...",
+      "LEVEL": "hard"
+    }
+  ],
+  "generated_at": "2025-12-11T22:51:56.477Z"
+}

@@ -1,0 +1,117 @@
+{
+  "table": "oauth_clients",
+  "schema": "auth",
+  "database": "postgres_production",
+  "description": "I cannot provide a semantic description for this table as the column information is missing or not properly displayed, showing only commas without column names or data types. Without knowing the actual column structure, relationships, or having sample data, it would be inappropriate to speculate about the table's purpose or role in the data model. The table name suggests it relates to OAuth client management within an authentication schema, but a proper description requires the actual column details.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "id",
+      "type": "uuid",
+      "nullable": false,
+      "description": "Unique identifier for OAuth client applications that are registered to access the authentication system. Serves as the primary key to distinguish between different third-party applications or services authorized to authenticate users.",
+      "default": null
+    },
+    {
+      "name": "client_secret_hash",
+      "type": "text",
+      "nullable": true,
+      "description": "Stores the hashed version of the OAuth client's secret key used for secure authentication and authorization flows. This encrypted value protects the actual client secret while enabling verification during OAuth token exchanges.",
+      "default": null
+    },
+    {
+      "name": "registration_type",
+      "type": "USER-DEFINED",
+      "nullable": false,
+      "description": "Purpose unclear from available data. This appears to categorize how OAuth clients are registered within the authentication system, but without sample values or additional context, the specific registration methods cannot be determined.",
+      "default": null
+    },
+    {
+      "name": "redirect_uris",
+      "type": "text",
+      "nullable": false,
+      "description": "Purpose unclear from available data. Based on the table context and column name, this likely stores valid callback URLs where users can be redirected after OAuth authentication, but cannot be confirmed without sample values.",
+      "default": null
+    },
+    {
+      "name": "grant_types",
+      "type": "text",
+      "nullable": false,
+      "description": "Purpose unclear from available data. This column appears to store authorization flow types that OAuth clients are permitted to use, but cannot be determined without sample values.",
+      "default": null
+    },
+    {
+      "name": "client_name",
+      "type": "text",
+      "nullable": true,
+      "description": "A human-readable identifier or display name for OAuth client applications registered in the system. Used to help administrators and users identify which third-party application or service is requesting access to user data.",
+      "default": null
+    },
+    {
+      "name": "client_uri",
+      "type": "text",
+      "nullable": true,
+      "description": "Purpose unclear from available data. This appears to store URI information related to OAuth client applications, but without sample values the specific business meaning cannot be determined.",
+      "default": null
+    },
+    {
+      "name": "logo_uri",
+      "type": "text",
+      "nullable": true,
+      "description": "Stores the web address or URI pointing to the graphical logo image that represents an OAuth client application. This visual identifier is typically displayed to users during the OAuth authorization process to help them recognize the requesting application.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "description": "Records the exact date and time when an OAuth client application was registered in the system. This timestamp is automatically set during client creation and cannot be null.",
+      "default": "now()"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "description": "Records when each OAuth client configuration was last modified, automatically capturing the timestamp whenever client details are updated.",
+      "default": "now()"
+    },
+    {
+      "name": "deleted_at",
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "description": "Records when an OAuth client application was soft deleted from the system, enabling audit trails and potential restoration while maintaining referential integrity.",
+      "default": null
+    },
+    {
+      "name": "client_type",
+      "type": "USER-DEFINED",
+      "nullable": false,
+      "description": "Specifies the OAuth 2.0 client classification that determines the security requirements and authentication capabilities for the registered application. Defaults to confidential type, indicating applications that can securely store credentials.",
+      "default": "'confidential'::auth.oauth_client_type"
+    }
+  ],
+  "primary_key": [
+    "id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "oauth_clients_deleted_at_idx",
+      "index_definition": "CREATE INDEX oauth_clients_deleted_at_idx ON auth.oauth_clients USING btree (deleted_at)",
+      "columns": [
+        "deleted_at"
+      ],
+      "is_unique": false
+    },
+    {
+      "index_name": "oauth_clients_pkey",
+      "index_definition": "CREATE UNIQUE INDEX oauth_clients_pkey ON auth.oauth_clients USING btree (id)",
+      "columns": [
+        "id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-11T22:50:37.168Z"
+}

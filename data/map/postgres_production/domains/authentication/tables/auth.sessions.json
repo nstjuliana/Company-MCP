@@ -1,0 +1,163 @@
+{
+  "table": "sessions",
+  "schema": "auth",
+  "database": "postgres_production",
+  "description": "This table represents user authentication sessions in the system, storing session data associated with authenticated users as indicated by the database comment. The table serves as a core component of the authentication system, maintaining session state and user login information. Based on the auth schema namespace and the table name, it plays a central role in managing user session lifecycle and authentication state persistence.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "id",
+      "type": "uuid",
+      "nullable": false,
+      "description": "Serves as the primary unique identifier for each user authentication session within the system. Enables tracking and management of individual login instances across the application.",
+      "default": null
+    },
+    {
+      "name": "user_id",
+      "type": "uuid",
+      "nullable": false,
+      "description": "References the unique identifier of the authenticated user who owns this session. Links each session record to a specific user account in the system.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "description": "Records the date and time when a user authentication session was initially established in the system.",
+      "default": null
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "description": "Records when each user session was last modified or accessed. Purpose unclear from available data without sample values to confirm specific update triggers.",
+      "default": null
+    },
+    {
+      "name": "factor_id",
+      "type": "uuid",
+      "nullable": true,
+      "description": "Purpose unclear from available data. Appears to reference an authentication factor or method associated with the session, but without sample values or additional context, the specific business meaning cannot be determined.",
+      "default": null
+    },
+    {
+      "name": "aal",
+      "type": "USER-DEFINED",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The column appears to be related to authentication sessions but without sample values or additional context, the specific meaning cannot be determined.",
+      "default": null
+    },
+    {
+      "name": "not_after",
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "description": "Specifies the expiration timestamp after which the user session becomes invalid and should no longer be accepted for authentication. When null, the session may not have a defined expiration time or uses alternative expiration mechanisms.",
+      "default": null
+    },
+    {
+      "name": "refreshed_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Records the timestamp when a user session's authentication token was last refreshed or renewed. Purpose unclear from available data due to lack of sample values.",
+      "default": null
+    },
+    {
+      "name": "user_agent",
+      "type": "text",
+      "nullable": true,
+      "description": "Stores the browser and device information string that identifies the client application used to establish the authentication session. This information is typically used for security monitoring and session management purposes.",
+      "default": null
+    },
+    {
+      "name": "ip",
+      "type": "inet",
+      "nullable": true,
+      "description": "Stores the network address from which a user established their authentication session. Used for security tracking and access monitoring purposes.",
+      "default": null
+    },
+    {
+      "name": "tag",
+      "type": "text",
+      "nullable": true,
+      "description": "Purpose unclear from available data. Without sample values, this appears to be an optional text field that may be used for labeling or categorizing user authentication sessions.",
+      "default": null
+    },
+    {
+      "name": "oauth_client_id",
+      "type": "uuid",
+      "nullable": true,
+      "description": "Identifies the OAuth client application that was used to authenticate and establish this user session. Links the session to a specific third-party application or service that initiated the OAuth flow.",
+      "default": null
+    },
+    {
+      "name": "refresh_token_hmac_key",
+      "type": "text",
+      "nullable": true,
+      "description": "Stores the cryptographic key used to digitally sign refresh tokens associated with a user's authentication session, enabling verification of token authenticity and integrity. This key ensures that refresh tokens cannot be forged or tampered with during the token refresh process.",
+      "default": null
+    },
+    {
+      "name": "refresh_token_counter",
+      "type": "bigint",
+      "nullable": true,
+      "description": "Tracks the sequential identifier of the most recently generated refresh token for a user's authentication session. Used to invalidate previous refresh tokens and ensure only the latest token remains valid for session renewal.",
+      "default": null
+    },
+    {
+      "name": "scopes",
+      "type": "text",
+      "nullable": true,
+      "description": "Purpose unclear from available data. Likely stores permission or access level definitions for user authentication sessions, but cannot be confirmed without sample values.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "sessions_not_after_idx",
+      "index_definition": "CREATE INDEX sessions_not_after_idx ON auth.sessions USING btree (not_after DESC)",
+      "columns": [
+        "not_after DESC"
+      ],
+      "is_unique": false
+    },
+    {
+      "index_name": "sessions_oauth_client_id_idx",
+      "index_definition": "CREATE INDEX sessions_oauth_client_id_idx ON auth.sessions USING btree (oauth_client_id)",
+      "columns": [
+        "oauth_client_id"
+      ],
+      "is_unique": false
+    },
+    {
+      "index_name": "sessions_pkey",
+      "index_definition": "CREATE UNIQUE INDEX sessions_pkey ON auth.sessions USING btree (id)",
+      "columns": [
+        "id"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "sessions_user_id_idx",
+      "index_definition": "CREATE INDEX sessions_user_id_idx ON auth.sessions USING btree (user_id)",
+      "columns": [
+        "user_id"
+      ],
+      "is_unique": false
+    },
+    {
+      "index_name": "user_id_created_at_idx",
+      "index_definition": "CREATE INDEX user_id_created_at_idx ON auth.sessions USING btree (user_id, created_at)",
+      "columns": [
+        "user_id",
+        "created_at"
+      ],
+      "is_unique": false
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-11T22:50:56.884Z"
+}

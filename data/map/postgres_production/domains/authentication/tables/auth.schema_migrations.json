@@ -1,0 +1,46 @@
+{
+  "table": "schema_migrations",
+  "schema": "auth",
+  "database": "postgres_production",
+  "description": "The auth.schema_migrations table is a system table that tracks database schema version changes for the authentication system, storing migration version timestamps as strings. Based on the sample data showing version \"20171026211738\" (representing a timestamp format), this table maintains a historical record of which database migrations have been applied to keep the auth schema up to date. This table operates independently without foreign key relationships and serves as an internal tracking mechanism for database migration management within the authentication module.",
+  "row_count": 71,
+  "columns": [
+    {
+      "name": "version",
+      "type": "character varying",
+      "nullable": false,
+      "description": "Stores migration identifiers that track database schema changes over time, with most values following a timestamp format indicating when each migration was created.",
+      "default": null
+    }
+  ],
+  "primary_key": [],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "schema_migrations_pkey",
+      "index_definition": "CREATE UNIQUE INDEX schema_migrations_pkey ON auth.schema_migrations USING btree (version)",
+      "columns": [
+        "version"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "version": "20171026211738"
+    },
+    {
+      "version": "20171026211808"
+    },
+    {
+      "version": "20171026211834"
+    },
+    {
+      "version": "20180103212743"
+    },
+    {
+      "version": "20180108183307"
+    }
+  ],
+  "generated_at": "2025-12-11T22:50:47.285Z"
+}

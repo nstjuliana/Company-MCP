@@ -1,0 +1,76 @@
+{
+  "table": "sso_providers",
+  "schema": "auth",
+  "database": "postgres_production",
+  "description": "This table represents Single Sign-On (SSO) identity providers configured for authentication purposes, as indicated by its location in the auth schema and the database comment. The table serves as a registry for non-SAML SSO providers, complementing the separate saml_providers table mentioned in the comment for SAML-specific configurations. With no foreign key relationships and an empty dataset, this appears to be a standalone configuration table that likely stores provider-specific settings and credentials for external authentication services.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "id",
+      "type": "uuid",
+      "nullable": false,
+      "description": "Purpose unclear from available data. Appears to be a primary key for single sign-on provider configurations.",
+      "default": null
+    },
+    {
+      "name": "resource_id",
+      "type": "text",
+      "nullable": true,
+      "description": "A user-defined identifier that uniquely distinguishes each single sign-on provider within the system, designed to be case-insensitive and suitable for use in automated infrastructure management tools.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "description": "Records when each single sign-on provider configuration was first added to the system. Purpose unclear from available data due to lack of sample values.",
+      "default": null
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "description": "Records when each SSO provider configuration was last modified, enabling tracking of configuration changes and maintenance history.",
+      "default": null
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether the single sign-on provider configuration is deactivated and unavailable for user authentication. Purpose unclear from available data due to lack of sample values.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "sso_providers_pkey",
+      "index_definition": "CREATE UNIQUE INDEX sso_providers_pkey ON auth.sso_providers USING btree (id)",
+      "columns": [
+        "id"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "sso_providers_resource_id_idx",
+      "index_definition": "CREATE UNIQUE INDEX sso_providers_resource_id_idx ON auth.sso_providers USING btree (lower(resource_id))",
+      "columns": [
+        "lower(resource_id"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "sso_providers_resource_id_pattern_idx",
+      "index_definition": "CREATE INDEX sso_providers_resource_id_pattern_idx ON auth.sso_providers USING btree (resource_id text_pattern_ops)",
+      "columns": [
+        "resource_id text_pattern_ops"
+      ],
+      "is_unique": false
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-11T22:50:55.530Z"
+}

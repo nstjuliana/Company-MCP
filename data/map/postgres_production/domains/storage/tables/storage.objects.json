@@ -1,0 +1,170 @@
+{
+  "table": "objects",
+  "schema": "storage",
+  "database": "postgres_production",
+  "description": "Based on the available information, this appears to be an objects table within a storage schema that likely represents file or blob storage entities in a PostgreSQL production database. The table has 13 columns with an 'id' primary key, suggesting it tracks stored objects with various metadata attributes. However, without visible column details or sample data, the specific purpose and data model role cannot be determined beyond its apparent function as a storage object registry.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "id",
+      "type": "uuid",
+      "nullable": false,
+      "description": "A unique identifier automatically assigned to each stored object in the system. Serves as the primary reference for tracking and managing individual files or data objects within the storage system.",
+      "default": "gen_random_uuid()"
+    },
+    {
+      "name": "bucket_id",
+      "type": "text",
+      "nullable": true,
+      "description": "Purpose unclear from available data. Likely references a storage container or organizational unit within the storage system, but cannot be confirmed without sample values.",
+      "default": null
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "nullable": true,
+      "description": "Purpose unclear from available data. Likely contains identifiers or labels for stored objects, but cannot be determined without sample values.",
+      "default": null
+    },
+    {
+      "name": "owner",
+      "type": "uuid",
+      "nullable": true,
+      "description": "A deprecated identifier that previously tracked the entity responsible for or associated with a stored object. This field has been superseded by owner_id and should no longer be used.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "description": "Records the exact moment when a storage object was first added to the system. Automatically populated with the current timestamp when a new object record is created.",
+      "default": "now()"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "description": "Records the timestamp when the stored object was last modified or updated. Automatically captures the current date and time whenever changes are made to the object's metadata or content.",
+      "default": "now()"
+    },
+    {
+      "name": "last_accessed_at",
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "description": "Records the most recent date and time when the stored object was accessed or retrieved. Automatically updates to the current timestamp when not explicitly set.",
+      "default": "now()"
+    },
+    {
+      "name": "metadata",
+      "type": "jsonb",
+      "nullable": true,
+      "description": "Purpose unclear from available data. Likely stores additional file or object properties and attributes in a flexible key-value structure.",
+      "default": null
+    },
+    {
+      "name": "path_tokens",
+      "type": "ARRAY",
+      "nullable": true,
+      "description": "Purpose unclear from available data. Appears to store segmented components of a file or object path structure.",
+      "default": null
+    },
+    {
+      "name": "version",
+      "type": "text",
+      "nullable": true,
+      "description": "Purpose unclear from available data. Could represent a version identifier or revision number for stored objects, but cannot be determined without sample values.",
+      "default": null
+    },
+    {
+      "name": "owner_id",
+      "type": "text",
+      "nullable": true,
+      "description": "Purpose unclear from available data. Likely stores an identifier linking each storage object to its associated owner or user account.",
+      "default": null
+    },
+    {
+      "name": "user_metadata",
+      "type": "jsonb",
+      "nullable": true,
+      "description": "Purpose unclear from available data. Appears to store flexible metadata attributes defined by users for stored objects.",
+      "default": null
+    },
+    {
+      "name": "level",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The integer values may represent a hierarchical depth, priority ranking, or classification tier within the storage object system.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "bucketid_objname",
+      "index_definition": "CREATE UNIQUE INDEX bucketid_objname ON storage.objects USING btree (bucket_id, name)",
+      "columns": [
+        "bucket_id",
+        "name"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "idx_name_bucket_level_unique",
+      "index_definition": "CREATE UNIQUE INDEX idx_name_bucket_level_unique ON storage.objects USING btree (name COLLATE \"C\", bucket_id, level)",
+      "columns": [
+        "name COLLATE C",
+        "bucket_id",
+        "level"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "idx_objects_bucket_id_name",
+      "index_definition": "CREATE INDEX idx_objects_bucket_id_name ON storage.objects USING btree (bucket_id, name COLLATE \"C\")",
+      "columns": [
+        "bucket_id",
+        "name COLLATE C"
+      ],
+      "is_unique": false
+    },
+    {
+      "index_name": "idx_objects_lower_name",
+      "index_definition": "CREATE INDEX idx_objects_lower_name ON storage.objects USING btree ((path_tokens[level]), lower(name) text_pattern_ops, bucket_id, level)",
+      "columns": [
+        "(path_tokens[level]"
+      ],
+      "is_unique": false
+    },
+    {
+      "index_name": "name_prefix_search",
+      "index_definition": "CREATE INDEX name_prefix_search ON storage.objects USING btree (name text_pattern_ops)",
+      "columns": [
+        "name text_pattern_ops"
+      ],
+      "is_unique": false
+    },
+    {
+      "index_name": "objects_bucket_id_level_idx",
+      "index_definition": "CREATE UNIQUE INDEX objects_bucket_id_level_idx ON storage.objects USING btree (bucket_id, level, name COLLATE \"C\")",
+      "columns": [
+        "bucket_id",
+        "level",
+        "name COLLATE C"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "objects_pkey",
+      "index_definition": "CREATE UNIQUE INDEX objects_pkey ON storage.objects USING btree (id)",
+      "columns": [
+        "id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-11T22:51:16.853Z"
+}

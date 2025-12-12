@@ -1,0 +1,104 @@
+{
+  "table": "saml_providers",
+  "schema": "auth",
+  "database": "postgres_production",
+  "description": "This table represents SAML (Security Assertion Markup Language) identity providers configured for authentication in the system. Based on the database comment, it manages connections to external SAML Identity Providers that enable single sign-on functionality for user authentication. The table currently has no foreign key relationships and serves as a standalone configuration store for SAML provider settings within the auth schema.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "id",
+      "type": "uuid",
+      "nullable": false,
+      "description": "A unique identifier that distinguishes each SAML (Security Assertion Markup Language) identity provider configuration within the authentication system. This enables the system to manage multiple SAML providers for single sign-on integration.",
+      "default": null
+    },
+    {
+      "name": "sso_provider_id",
+      "type": "uuid",
+      "nullable": false,
+      "description": "Purpose unclear from available data. Appears to reference an external single sign-on provider entity within the SAML authentication configuration.",
+      "default": null
+    },
+    {
+      "name": "entity_id",
+      "type": "text",
+      "nullable": false,
+      "description": "Purpose unclear from available data. This appears to be a required text identifier within the SAML authentication provider configuration, but without sample values, the specific business meaning cannot be determined.",
+      "default": null
+    },
+    {
+      "name": "metadata_xml",
+      "type": "text",
+      "nullable": false,
+      "description": "Contains the SAML identity provider's metadata configuration in XML format, which defines authentication endpoints, certificates, and other provider-specific settings required for SAML single sign-on integration.",
+      "default": null
+    },
+    {
+      "name": "metadata_url",
+      "type": "text",
+      "nullable": true,
+      "description": "Stores the URL endpoint where SAML identity provider metadata can be retrieved, containing configuration details needed for authentication integration. Purpose unclear from available data due to lack of sample values.",
+      "default": null
+    },
+    {
+      "name": "attribute_mapping",
+      "type": "jsonb",
+      "nullable": true,
+      "description": "Purpose unclear from available data. Likely stores configuration that maps SAML assertion attributes to internal user profile fields, but cannot be confirmed without sample values.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "description": "Records when each SAML identity provider configuration was first added to the system for audit and tracking purposes.",
+      "default": null
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "description": "Records when a SAML authentication provider configuration was last modified or updated. Purpose unclear from available data due to lack of sample values.",
+      "default": null
+    },
+    {
+      "name": "name_id_format",
+      "type": "text",
+      "nullable": true,
+      "description": "Purpose unclear from available data. Likely stores a format specification for SAML name identifiers, but cannot determine specific usage without sample values.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "saml_providers_entity_id_key",
+      "index_definition": "CREATE UNIQUE INDEX saml_providers_entity_id_key ON auth.saml_providers USING btree (entity_id)",
+      "columns": [
+        "entity_id"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "saml_providers_pkey",
+      "index_definition": "CREATE UNIQUE INDEX saml_providers_pkey ON auth.saml_providers USING btree (id)",
+      "columns": [
+        "id"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "saml_providers_sso_provider_id_idx",
+      "index_definition": "CREATE INDEX saml_providers_sso_provider_id_idx ON auth.saml_providers USING btree (sso_provider_id)",
+      "columns": [
+        "sso_provider_id"
+      ],
+      "is_unique": false
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-11T22:50:47.983Z"
+}

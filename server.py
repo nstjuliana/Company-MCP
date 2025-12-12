@@ -28,13 +28,12 @@ try:
 except ImportError:
     pass
 
-# Minimal FastMCP server with database-backed search tools.
-mcp = FastMCP("Example Server")
+# Database Context MCP Server - provides schema context through search and metadata tools.
+mcp = FastMCP("Database Context Server")
 
 BASE_DIR = Path(__file__).resolve().parent
-CONTEXT_MAP_PATH = BASE_DIR / "data" / "map" / "context_map.json"
-CONTEXT_INDEX_PATH = BASE_DIR / "data" / "map" / "context_index.json"
-DB_PATH = BASE_DIR / "data" / "myles-tribal-knowledge-3.db"
+DATA_MAP_PATH = BASE_DIR / "data" / "map"
+DB_PATH = BASE_DIR / "data" / "index" / "index.db"
 
 # OpenAI embedding configuration
 EMBEDDING_MODEL = "text-embedding-3-small"
@@ -48,138 +47,87 @@ if HAS_OPENAI:
         _openai_client = OpenAI(api_key=api_key)
 
 
-# Fallback context map so the server stays functional if JSON is missing or empty.
-DEFAULT_CONTEXT_MAP: List[Dict[str, Any]] = [
-    {
-        "id": "dabstep_tasks",
-        "title": "dabstep_tasks table",
-        "summary": "Task definitions with difficulty level and optional question/answer/guidelines.",
-        "database": "default",
-        "domain": "tasks",
-        "columns": [
-            {"name": "TASK_ID", "type": "integer", "notes": "primary key"},
-            {"name": "QUESTION", "type": "text", "notes": "nullable"},
-            {"name": "ANSWER", "type": "text", "notes": "nullable"},
-            {"name": "GUIDELINES", "type": "text", "notes": "nullable"},
-            {"name": "LEVEL", "type": "text", "notes": "not null, e.g., easy/hard"},
-        ],
-        "keys": {
-            "primary": ["TASK_ID"],
-            "checks": ["LEVEL in ('easy','hard') (optional)"],
-        },
-        "relationships": {"referenced_by": ["dabstep_submissions.TASK_ID", "dabstep_task_scores.TASK_ID"]},
-    },
-    {
-        "id": "dabstep_submissions",
-        "title": "dabstep_submissions table",
-        "summary": "Stores agent submissions per task with metadata and validation status.",
-        "database": "default",
-        "domain": "tasks",
-        "columns": [
-            {"name": "TASK_ID", "type": "integer", "notes": "FK -> dabstep_tasks.TASK_ID"},
-            {"name": "AGENT_ANSWER", "type": "text", "notes": "nullable"},
-            {"name": "SUBMISSION_ID", "type": "text", "notes": "primary key"},
-            {"name": "AGENT_NAME", "type": "text", "notes": "not null"},
-            {"name": "MODEL_FAMILY", "type": "integer", "notes": "not null"},
-            {"name": "ORGANISATION", "type": "text", "notes": "nullable"},
-            {"name": "REPO_URL", "type": "text", "notes": "nullable"},
-            {"name": "DATE", "type": "text", "notes": "dd-mm-yyyy in sample"},
-            {"name": "VALIDATED", "type": "boolean", "notes": "not null"},
-        ],
-        "keys": {
-            "primary": ["SUBMISSION_ID"],
-            "foreign": [{"columns": ["TASK_ID"], "references": "dabstep_tasks(TASK_ID)"}],
-            "unique_optional": ["(TASK_ID, AGENT_NAME, ORGANISATION) to prevent duplicates"],
-        },
-        "relationships": {
-            "depends_on": ["dabstep_tasks"],
-            "referenced_by": ["dabstep_task_scores.SUBMISSION_ID"],
-        },
-    },
-    {
-        "id": "dabstep_task_scores",
-        "title": "dabstep_task_scores table",
-        "summary": "Scores for submissions per task, with level and optional agent answer copy.",
-        "database": "default",
-        "domain": "tasks",
-        "columns": [
-            {"name": "SUBMISSION_ID", "type": "text", "notes": "FK -> dabstep_submissions.SUBMISSION_ID"},
-            {"name": "TASK_ID", "type": "integer", "notes": "FK -> dabstep_tasks.TASK_ID"},
-            {"name": "SCORE", "type": "boolean", "notes": "not null"},
-            {"name": "LEVEL", "type": "text", "notes": "not null, aligns with tasks"},
-            {"name": "AGENT_ANSWER", "type": "text", "notes": "nullable"},
-        ],
-        "keys": {
-            "primary": ["SUBMISSION_ID", "TASK_ID"],
-            "foreign": [
-                {"columns": ["SUBMISSION_ID"], "references": "dabstep_submissions(SUBMISSION_ID)"},
-                {"columns": ["TASK_ID"], "references": "dabstep_tasks(TASK_ID)"},
-            ],
-        },
-        "relationships": {"depends_on": ["dabstep_submissions", "dabstep_tasks"]},
-    },
-    {
-        "id": "dabstep_payments",
-        "title": "dabstep_payments table",
-        "summary": "Payment events with merchant, card, timing, and fraud/refusal indicators.",
-        "database": "default",
-        "domain": "payments",
-        "columns": [
-            {"name": "PSP_REFERENCE", "type": "bigint", "notes": "primary key"},
-            {"name": "MERCHANT", "type": "text", "notes": "not null"},
-            {"name": "CARD_SCHEME", "type": "text", "notes": "not null"},
-            {"name": "YEAR", "type": "integer", "notes": "not null"},
-            {"name": "HOUR_OF_DAY", "type": "integer", "notes": "0-23"},
-            {"name": "MINUTE_OF_HOUR", "type": "integer", "notes": "0-59"},
-            {"name": "DAY_OF_YEAR", "type": "integer", "notes": "1-366"},
-            {"name": "IS_CREDIT", "type": "boolean", "notes": "not null"},
-            {"name": "EUR_AMOUNT", "type": "numeric", "notes": "currency amount"},
-            {"name": "IP_COUNTRY", "type": "text", "notes": "2-letter"},
-            {"name": "ISSUING_COUNTRY", "type": "text", "notes": "2-letter"},
-            {"name": "DEVICE_TYPE", "type": "text", "notes": ""},
-            {"name": "IP_ADDRESS", "type": "text", "notes": ""},
-            {"name": "EMAIL_ADDRESS", "type": "text", "notes": ""},
-            {"name": "CARD_NUMBER", "type": "text", "notes": ""},
-            {"name": "SHOPPER_INTERACTION", "type": "text", "notes": "e.g., Ecommerce"},
-            {"name": "CARD_BIN", "type": "integer", "notes": ""},
-            {"name": "HAS_FRAUDULENT_DISPUTE", "type": "boolean", "notes": "not null"},
-            {"name": "IS_REFUSED_BY_ADYEN", "type": "boolean", "notes": "not null"},
-            {"name": "ACI", "type": "text", "notes": "single-letter code"},
-            {"name": "ACQUIRER_COUNTRY", "type": "text", "notes": "2-letter"},
-        ],
-        "keys": {
-            "primary": ["PSP_REFERENCE"],
-            "checks": [
-                "HOUR_OF_DAY between 0 and 23",
-                "MINUTE_OF_HOUR between 0 and 59",
-                "DAY_OF_YEAR between 1 and 366",
-            ],
-            "pii_columns": ["EMAIL_ADDRESS", "CARD_NUMBER", "IP_ADDRESS"],
-        },
-        "relationships": {"depends_on": []},
-    },
-]
-
-
 def _load_json(path: Path) -> Any:
+    """Load JSON from a file path."""
     with path.open("r", encoding="utf-8") as f:
         return json.load(f)
 
 
-def _safe_load_map() -> List[Dict[str, Any]]:
+def _db_path_to_file_path(db_path: str) -> Path:
+    """
+    Translate a database file_path to an actual filesystem path.
+    DB stores: databases/postgres_production/domains/...
+    Actual:    data/map/postgres_production/domains/...
+    """
+    # Remove 'databases/' prefix and prepend actual data/map path
+    if db_path.startswith("databases/"):
+        relative = db_path[len("databases/"):]
+    else:
+        relative = db_path
+    return DATA_MAP_PATH / relative
+
+
+def _load_map_file(db_path: str) -> Optional[Dict[str, Any]]:
+    """Load a JSON file from data/map given a database file_path."""
     try:
-        data = _load_json(CONTEXT_MAP_PATH)
-        if isinstance(data, list) and data:
-            return data
-    except FileNotFoundError:
-        pass
+        file_path = _db_path_to_file_path(db_path)
+        if file_path.exists() and file_path.suffix == ".json":
+            return _load_json(file_path)
     except Exception:
         pass
-    # Fallback to embedded defaults if file missing or empty.
-    return DEFAULT_CONTEXT_MAP.copy()
+    return None
 
 
-DB_SEGMENTS: List[Dict[str, Any]] = _safe_load_map()
+def _safe_load_map() -> List[Dict[str, Any]]:
+    """Load table segments from index.db database."""
+    db = _get_db_connection()
+    if not db:
+        return []
+    
+    try:
+        cursor = db.execute("""
+            SELECT DISTINCT table_name, database_name, schema_name, domain, file_path, summary, content
+            FROM documents 
+            WHERE doc_type = 'table' AND file_path LIKE '%.json'
+        """)
+        segments = []
+        for row in cursor.fetchall():
+            try:
+                # Parse JSON content directly from DB
+                content = json.loads(row["content"]) if row["content"] else {}
+                
+                # Get clean table name (strip .json suffix if present)
+                table_name = row["table_name"]
+                if table_name.endswith(".json"):
+                    table_name = table_name[:-5]
+                
+                seg = {
+                    "id": table_name,
+                    "title": f"{table_name} table",
+                    "summary": row["summary"] or content.get("description", ""),
+                    "database": row["database_name"],
+                    "domain": row["domain"] or "default",
+                    "schema": row["schema_name"],
+                    "file_path": row["file_path"],
+                    "columns": content.get("columns", []),
+                    "keys": {
+                        "primary": content.get("primary_key", []),
+                        "foreign": content.get("foreign_keys", []),
+                    },
+                    "relationships": content.get("relationships", {}),
+                }
+                segments.append(seg)
+            except (json.JSONDecodeError, TypeError):
+                continue
+        db.close()
+        return segments
+    except Exception:
+        db.close()
+        return []
+
+
+# Defer loading DB_SEGMENTS until after _get_db_connection is defined
+DB_SEGMENTS: List[Dict[str, Any]] = []
 
 
 def _normalize(text: str) -> List[str]:
@@ -211,26 +159,43 @@ def _build_index(segments: List[Dict[str, Any]]) -> Dict[str, Set[str]]:
 
 
 def _safe_load_index() -> Dict[str, Set[str]]:
-    try:
-        data = _load_json(CONTEXT_INDEX_PATH)
-        if isinstance(data, dict):
-            return {token: set(ids) for token, ids in data.items()}
-    except FileNotFoundError:
-        pass
-    except Exception:
-        pass
+    """Build inverted index from DB_SEGMENTS."""
     return _build_index(DB_SEGMENTS)
 
 
-INDEX = _safe_load_index()
-SEGMENT_BY_ID: Dict[str, Dict[str, Any]] = {seg["id"]: seg for seg in DB_SEGMENTS}
+# These will be initialized after _get_db_connection is defined
+INDEX: Dict[str, Set[str]] = {}
+SEGMENT_BY_ID: Dict[str, Dict[str, Any]] = {}
 
 
-def _find_table(table: str) -> Dict[str, Any]:
-    table_norm = table.lower()
-    for seg in DB_SEGMENTS:
-        if seg["id"].lower() == table_norm or seg.get("title", "").lower() == table_norm:
+def _find_table(table: str, database: str = "") -> Dict[str, Any]:
+    """Find a table segment by name (flexible matching), optionally filtered by database."""
+    # Normalize input: strip .json suffix if present
+    table_clean = table
+    if table_clean.endswith(".json"):
+        table_clean = table_clean[:-5]
+    table_norm = table_clean.lower()
+    
+    # Filter by database if specified
+    segments = DB_SEGMENTS
+    if database:
+        segments = [s for s in DB_SEGMENTS if s.get("database") == database]
+    
+    # Try exact match first (case-insensitive)
+    for seg in segments:
+        if seg["id"].lower() == table_norm:
             return seg
+    
+    # Try matching title
+    for seg in segments:
+        if seg.get("title", "").lower() == f"{table_norm} table":
+            return seg
+    
+    # Try partial match (table name contains search term)
+    for seg in segments:
+        if table_norm in seg["id"].lower():
+            return seg
+    
     return {}
 
 
@@ -272,7 +237,7 @@ def _build_graph() -> Dict[str, List[Dict[str, Any]]]:
     return graph
 
 
-GRAPH = _build_graph()
+GRAPH: Dict[str, List[Dict[str, Any]]] = {}
 
 
 # --- Database connection helpers ---
@@ -295,6 +260,19 @@ def _get_db_connection() -> Optional[sqlite3.Connection]:
             pass  # Vector search won't work but FTS will
     
     return db
+
+
+def _initialize_globals():
+    """Initialize global data structures after DB connection is available."""
+    global DB_SEGMENTS, INDEX, SEGMENT_BY_ID, GRAPH
+    DB_SEGMENTS = _safe_load_map()
+    INDEX = _safe_load_index()
+    SEGMENT_BY_ID = {seg["id"]: seg for seg in DB_SEGMENTS}
+    GRAPH = _build_graph()
+
+
+# Initialize globals now that _get_db_connection is defined
+_initialize_globals()
 
 
 def _generate_query_embedding(query: str) -> Optional[List[float]]:
@@ -390,31 +368,7 @@ def search_db_map(query: str, top_k: int = 3) -> List[Dict[str, Any]]:
     return scored[: max(1, top_k)]
 
 
-@mcp.resource("resource://db-map")
-def db_map() -> Dict[str, Any]:
-    """Full database context map."""
-    return {"segments": DB_SEGMENTS, "index_tokens": sorted(list(INDEX.keys()))}
-
-
-@mcp.resource("resource://db-map/{segment_id}")
-def db_map_segment(segment_id: str) -> Dict[str, Any]:
-    """Fetch a single segment by id."""
-    for seg in DB_SEGMENTS:
-        if seg["id"] == segment_id:
-            return seg
-    return {"error": f"segment '{segment_id}' not found"}
-
-
-@mcp.resource("resource://db-map-index")
-def db_map_index() -> Dict[str, Any]:
-    """
-    Expose the inverted index so clients can inspect token->segment mappings.
-    Useful for debugging and future smarter retrieval strategies.
-    """
-    return {"index": {token: sorted(list(ids)) for token, ids in INDEX.items()}}
-
-
-# --- New FTS5 and Vector Search Tools ---
+# --- Search Tools ---
 
 @mcp.tool
 def search_fts(
@@ -481,6 +435,7 @@ def search_fts(
                 d.domain,
                 d.summary,
                 d.content,
+                d.file_path,
                 bm25(documents_fts) as rank
             FROM documents_fts fts
             JOIN documents d ON d.id = fts.rowid
@@ -495,6 +450,10 @@ def search_fts(
         
         results = []
         for row in rows:
+            # Convert DB path to actual file path
+            file_path = row["file_path"]
+            actual_path = str(_db_path_to_file_path(file_path)) if file_path else None
+            
             result = {
                 "id": row["id"],
                 "doc_type": row["doc_type"],
@@ -504,6 +463,7 @@ def search_fts(
                 "domain": row["domain"],
                 "summary": row["summary"],
                 "content_preview": row["content"][:200] + "..." if len(row["content"]) > 200 else row["content"],
+                "file_path": actual_path,
                 "bm25_rank": round(row["rank"], 4),
             }
             results.append(result)
@@ -636,6 +596,7 @@ def search_vector(
                     d.domain,
                     d.summary,
                     d.content,
+                    d.file_path,
                     vm.distance
                 FROM vec_matches vm
                 JOIN documents d ON d.id = vm.document_id
@@ -654,6 +615,7 @@ def search_vector(
                     d.domain,
                     d.summary,
                     d.content,
+                    d.file_path,
                     v.distance
                 FROM documents_vec v
                 JOIN documents d ON d.id = v.document_id
@@ -667,6 +629,10 @@ def search_vector(
         
         results = []
         for row in rows[:limit]:  # Ensure we respect limit after filtering
+            # Convert DB path to actual file path
+            file_path = row["file_path"]
+            actual_path = str(_db_path_to_file_path(file_path)) if file_path else None
+            
             result = {
                 "id": row["id"],
                 "doc_type": row["doc_type"],
@@ -676,6 +642,7 @@ def search_vector(
                 "domain": row["domain"],
                 "summary": row["summary"],
                 "content_preview": row["content"][:200] + "..." if len(row["content"]) > 200 else row["content"],
+                "file_path": actual_path,
                 "distance": round(row["distance"], 4),
             }
             results.append(result)
@@ -725,7 +692,7 @@ def list_tables(database: str = "", domain: str = "") -> List[Dict[str, Any]]:
     db = _get_db_connection()
     if db:
         try:
-            filters = ["doc_type = 'table'"]
+            filters = ["doc_type = 'table'", "file_path LIKE '%.json'"]
             params: List[Any] = []
             
             if database:
@@ -738,19 +705,26 @@ def list_tables(database: str = "", domain: str = "") -> List[Dict[str, Any]]:
             filter_clause = " AND ".join(filters)
             
             cursor = db.execute(f"""
-                SELECT id, table_name, database_name, domain, summary
+                SELECT id, table_name, database_name, schema_name, domain, summary, file_path
                 FROM documents
                 WHERE {filter_clause}
             """, params)
             
             results = []
             for row in cursor.fetchall():
+                # Strip .json suffix from table name
+                table_name = row["table_name"]
+                if table_name.endswith(".json"):
+                    table_name = table_name[:-5]
+                
                 results.append({
-                    "name": row["table_name"],
-                    "title": f"{row['table_name']} table",
+                    "name": table_name,
+                    "title": f"{table_name} table",
                     "database": row["database_name"],
+                    "schema": row["schema_name"],
                     "domain": row["domain"],
                     "summary": row["summary"],
+                    "file_path": str(_db_path_to_file_path(row["file_path"])),
                 })
             
             db.close()
@@ -779,49 +753,70 @@ def list_tables(database: str = "", domain: str = "") -> List[Dict[str, Any]]:
 
 
 @mcp.tool
-def list_columns(table: str) -> Dict[str, Any]:
+def list_columns(table: str, database: str = "") -> Dict[str, Any]:
     """
-    List columns for a given table id/title.
+    List columns for a given table, with their types and descriptions.
 
     Args:
-        table: Table id or title.
+        table: Table name (e.g., 'merchants', 'DABSTEP_PAYMENTS').
+        database: Optional database filter (e.g., 'postgres_production', 'snowflake_production').
     Returns:
-        Dict with table id and column metadata or an error.
+        Dict with table name, columns list [{name, type, nullable, description}], and file_path.
     """
-    # Try database first
+    # Try to load from actual JSON file first
     db = _get_db_connection()
     if db:
         try:
-            cursor = db.execute("""
-                SELECT column_name, summary as description, content
-                FROM documents
-                WHERE doc_type = 'column' AND table_name = ?
-            """, (table,))
+            # Find the table's JSON file, optionally filtered by database
+            if database:
+                cursor = db.execute("""
+                    SELECT file_path, table_name
+                    FROM documents 
+                    WHERE doc_type = 'table' 
+                    AND (table_name = ? OR table_name LIKE ? OR LOWER(table_name) = LOWER(?))
+                    AND database_name = ?
+                    AND file_path LIKE '%.json'
+                    LIMIT 1
+                """, (table, f"%{table}%", table, database))
+            else:
+                cursor = db.execute("""
+                    SELECT file_path, table_name
+                    FROM documents 
+                    WHERE doc_type = 'table' 
+                    AND (table_name = ? OR table_name LIKE ? OR LOWER(table_name) = LOWER(?))
+                    AND file_path LIKE '%.json'
+                    LIMIT 1
+                """, (table, f"%{table}%", table))
+            row = cursor.fetchone()
+            db.close()
             
-            rows = cursor.fetchall()
-            if rows:
-                columns = []
-                for row in rows:
-                    # Parse type from content if available
-                    content = row["content"] or ""
-                    type_match = re.search(r"Type:\s*(\w+)", content)
-                    col_type = type_match.group(1) if type_match else "unknown"
+            if row:
+                json_content = _load_map_file(row["file_path"])
+                if json_content and "columns" in json_content:
+                    columns = []
+                    for col in json_content["columns"]:
+                        columns.append({
+                            "name": col.get("name"),
+                            "type": col.get("type"),
+                            "nullable": col.get("nullable", True),
+                            "description": col.get("description", ""),
+                        })
+                    # Strip .json suffix from table name
+                    table_name = row["table_name"]
+                    if table_name.endswith(".json"):
+                        table_name = table_name[:-5]
                     
-                    columns.append({
-                        "name": row["column_name"],
-                        "type": col_type,
-                        "description": row["description"],
-                    })
-                
-                db.close()
-                return {"table": table, "columns": columns}
-            
-            db.close()
+                    return {
+                        "table": table_name,
+                        "columns": columns,
+                        "file_path": str(_db_path_to_file_path(row["file_path"])),
+                    }
         except Exception:
-            db.close()
+            if db:
+                db.close()
     
     # Fallback to in-memory segments
-    seg = _find_table(table)
+    seg = _find_table(table, database)
     if not seg:
         return {"error": f"table '{table}' not found"}
     columns = []
@@ -890,17 +885,82 @@ def search_tables(
 
 
 @mcp.tool
-def get_table_schema(table: str, include_samples: bool = False) -> Dict[str, Any]:
+def get_table_schema(table: str, database: str = "", include_samples: bool = False) -> Dict[str, Any]:
     """
-    Retrieve full schema details for a specific table.
+    Retrieve full schema details for a specific table from the source JSON file.
 
     Args:
-        table: Table id or title.
-        include_samples: Reserved flag to include sample values.
+        table: Table name (e.g., 'payments', 'DABSTEP_PAYMENTS').
+        database: Optional database filter (e.g., 'postgres_production', 'snowflake_production').
+        include_samples: Include sample values from the JSON if available.
     Returns:
-        Schema details including columns, keys, relationships, or an error.
+        Complete schema with name, database, schema, description, row_count, columns,
+        primary_key, foreign_keys, indexes, related_tables, and file_path.
     """
-    seg = _find_table(table)
+    # First, try to get the file path from the database and load the actual JSON
+    db = _get_db_connection()
+    if db:
+        try:
+            # Search for the table by name (case-insensitive)
+            # Optionally filter by database
+            if database:
+                cursor = db.execute("""
+                    SELECT file_path, content, database_name, schema_name, domain, summary
+                    FROM documents 
+                    WHERE doc_type = 'table' 
+                    AND (table_name = ? OR table_name LIKE ? OR LOWER(table_name) = LOWER(?))
+                    AND database_name = ?
+                    AND file_path LIKE '%.json'
+                    LIMIT 1
+                """, (table, f"%{table}%", table, database))
+            else:
+                cursor = db.execute("""
+                    SELECT file_path, content, database_name, schema_name, domain, summary
+                    FROM documents 
+                    WHERE doc_type = 'table' 
+                    AND (table_name = ? OR table_name LIKE ? OR LOWER(table_name) = LOWER(?))
+                    AND file_path LIKE '%.json'
+                    LIMIT 1
+                """, (table, f"%{table}%", table))
+            row = cursor.fetchone()
+            db.close()
+            
+            if row:
+                # Try to load the actual JSON file for full content
+                json_content = _load_map_file(row["file_path"])
+                if json_content:
+                    columns = []
+                    for col in json_content.get("columns", []):
+                        col_entry = {
+                            "name": col.get("name"),
+                            "type": col.get("type"),
+                            "nullable": col.get("nullable", True),
+                            "description": col.get("description", ""),
+                        }
+                        if include_samples:
+                            col_entry["samples"] = col.get("sample_values", [])
+                        columns.append(col_entry)
+                    
+                    return {
+                        "name": json_content.get("table", table),
+                        "database": json_content.get("database", row["database_name"]),
+                        "schema": json_content.get("schema", row["schema_name"]),
+                        "description": json_content.get("description", row["summary"]),
+                        "row_count": json_content.get("row_count"),
+                        "columns": columns,
+                        "primary_key": json_content.get("primary_key", []),
+                        "foreign_keys": json_content.get("foreign_keys", []),
+                        "indexes": json_content.get("indexes", []),
+                        "related_tables": json_content.get("relationships", {}),
+                        "file_path": str(_db_path_to_file_path(row["file_path"])),
+                        "tokens_used": _estimate_tokens(json_content.get("description", "")),
+                    }
+        except Exception:
+            if db:
+                db.close()
+    
+    # Fallback to in-memory segments
+    seg = _find_table(table, database)
     if not seg:
         return {"error": f"table '{table}' not found"}
 
@@ -942,20 +1002,22 @@ def get_table_schema(table: str, include_samples: bool = False) -> Dict[str, Any
 
 @mcp.tool
 def get_join_path(
-    source_table: str, target_table: str, max_hops: int = 3
+    source_table: str, target_table: str, database: str = "", max_hops: int = 3
 ) -> Dict[str, Any]:
     """
-    Find the join path between two tables using relationship graph traversal.
+    Find the join path between two tables using foreign key graph traversal.
 
     Args:
-        source_table: Starting table id/title.
-        target_table: Destination table id/title.
-        max_hops: Maximum graph hops to explore.
+        source_table: Starting table name.
+        target_table: Destination table name.
+        database: Optional database filter (e.g., 'postgres_production', 'snowflake_production').
+        max_hops: Maximum number of joins to traverse (default 3).
     Returns:
-        Dict indicating whether a path was found and a SQL join snippet.
+        Dict with source, target, found (bool), hop_count, path steps, and sql_snippet.
+        Note: Requires foreign_keys to be defined in the source JSON files.
     """
-    src = _find_table(source_table).get("id")
-    tgt = _find_table(target_table).get("id")
+    src = _find_table(source_table, database).get("id")
+    tgt = _find_table(target_table, database).get("id")
     if not src or not tgt:
         return {"error": "source or target table not found"}
 
@@ -1087,6 +1149,41 @@ def list_domains(database: str = "") -> Dict[str, Any]:
 
 
 @mcp.tool
+def list_databases() -> Dict[str, Any]:
+    """
+    List all available databases in the index.
+    Use this to discover what databases exist before querying specific tables.
+
+    Returns:
+        Dict with list of databases, each containing name, table_count, domains, and schemas.
+    """
+    databases: DefaultDict[str, Dict[str, Any]] = defaultdict(
+        lambda: {"name": "", "table_count": 0, "domains": set(), "schemas": set()}
+    )
+    
+    for seg in DB_SEGMENTS:
+        db_name = seg.get("database", "default")
+        databases[db_name]["name"] = db_name
+        databases[db_name]["table_count"] += 1
+        if seg.get("domain"):
+            databases[db_name]["domains"].add(seg["domain"])
+        if seg.get("schema"):
+            databases[db_name]["schemas"].add(seg["schema"])
+    
+    return {
+        "databases": [
+            {
+                "name": db["name"],
+                "table_count": db["table_count"],
+                "domains": sorted(list(db["domains"])),
+                "schemas": sorted(list(db["schemas"])),
+            }
+            for db in sorted(databases.values(), key=lambda x: x["name"])
+        ],
+    }
+
+
+@mcp.tool
 def get_common_relationships(
     database: str = "", domain: str = "", limit: int = 10
 ) -> Dict[str, Any]:
@@ -1121,217 +1218,6 @@ def get_common_relationships(
             )
 
     return {"relationships": relationships[:limit], "tokens_used": _estimate_tokens(database + domain)}
-
-
-# --- Placeholder tools for planned data tooling. Implementations are stubs. ---
-
-
-@mcp.tool
-def get_table_samples(table: str, where: str = "", limit: int = 20) -> Dict[str, Any]:
-    """
-    Placeholder: return sample rows for a table with optional filter.
-
-    Args:
-        table: Table id/title.
-        where: Optional filter expression.
-        limit: Max rows to return.
-    Returns:
-        Not-implemented message.
-    """
-    return {"error": "get_table_samples not implemented", "table": table, "limit": limit, "where": where}
-
-
-@mcp.tool
-def get_table_stats(table: str, time_column: str = "", group_by: str = "") -> Dict[str, Any]:
-    """
-    Placeholder: basic profiling stats for a table.
-
-    Args:
-        table: Table id/title.
-        time_column: Optional time column for windowed stats.
-        group_by: Optional grouping column.
-    Returns:
-        Not-implemented message.
-    """
-    return {
-        "error": "get_table_stats not implemented",
-        "table": table,
-        "time_column": time_column,
-        "group_by": group_by,
-    }
-
-
-@mcp.tool
-def get_column_stats(table: str, column: str) -> Dict[str, Any]:
-    """
-    Placeholder: distribution/profile stats for a specific column.
-
-    Args:
-        table: Table id/title.
-        column: Column name to profile.
-    Returns:
-        Not-implemented message.
-    """
-    return {"error": "get_column_stats not implemented", "table": table, "column": column}
-
-
-@mcp.tool
-def run_query(query: str, limit: int = 1000, timeout_seconds: int = 30) -> Dict[str, Any]:
-    """
-    Placeholder: execute a read-only SQL query with safety guards.
-
-    Args:
-        query: SQL text.
-        limit: Max rows to return.
-        timeout_seconds: Query timeout seconds.
-    Returns:
-        Not-implemented message.
-    """
-    return {
-        "error": "run_query not implemented",
-        "limit": limit,
-        "timeout_seconds": timeout_seconds,
-        "query_preview": query[:200],
-    }
-
-
-@mcp.tool
-def explain_query(query: str) -> Dict[str, Any]:
-    """
-    Placeholder: provide an execution plan for a SQL query.
-
-    Args:
-        query: SQL text to explain.
-    Returns:
-        Not-implemented message.
-    """
-    return {"error": "explain_query not implemented", "query_preview": query[:200]}
-
-
-@mcp.tool
-def find_relationships(table: str) -> Dict[str, Any]:
-    """
-    Placeholder: auto-detect FK-like relationships for a table.
-
-    Args:
-        table: Table id/title.
-    Returns:
-        Not-implemented message.
-    """
-    return {"error": "find_relationships not implemented", "table": table}
-
-
-@mcp.tool
-def time_column_detection(table: str) -> Dict[str, Any]:
-    """
-    Placeholder: suggest timestamp/date columns and default grains.
-
-    Args:
-        table: Table id/title.
-    Returns:
-        Not-implemented message.
-    """
-    return {"error": "time_column_detection not implemented", "table": table}
-
-
-@mcp.tool
-def semantic_describe_table(table: str) -> Dict[str, Any]:
-    """
-    Placeholder: summarize table semantics using metadata and samples.
-
-    Args:
-        table: Table id/title.
-    Returns:
-        Not-implemented message.
-    """
-    return {"error": "semantic_describe_table not implemented", "table": table}
-
-
-@mcp.tool
-def semantic_describe_column(table: str, column: str) -> Dict[str, Any]:
-    """
-    Placeholder: summarize column meaning using metadata and samples.
-
-    Args:
-        table: Table id/title.
-        column: Column name.
-    Returns:
-        Not-implemented message.
-    """
-    return {"error": "semantic_describe_column not implemented", "table": table, "column": column}
-
-
-@mcp.tool
-def anomaly_scan(table: str, metric: str, time_column: str = "") -> Dict[str, Any]:
-    """
-    Placeholder: simple anomaly scan over a metric (optionally over time).
-
-    Args:
-        table: Table id/title.
-        metric: Metric column to scan.
-        time_column: Optional time column.
-    Returns:
-        Not-implemented message.
-    """
-    return {
-        "error": "anomaly_scan not implemented",
-        "table": table,
-        "metric": metric,
-        "time_column": time_column,
-    }
-
-
-@mcp.tool
-def data_freshness(table: str) -> Dict[str, Any]:
-    """
-    Placeholder: report last ingested timestamp and freshness SLA for a table.
-
-    Args:
-        table: Table id/title.
-    Returns:
-        Not-implemented message.
-    """
-    return {"error": "data_freshness not implemented", "table": table}
-
-
-@mcp.tool
-def metric_definition_lookup(name: str) -> Dict[str, Any]:
-    """
-    Placeholder: retrieve canonical metric definition by name.
-
-    Args:
-        name: Metric name to look up.
-    Returns:
-        Not-implemented message.
-    """
-    return {"error": "metric_definition_lookup not implemented", "name": name}
-
-
-@mcp.tool
-def export_results(format: str = "csv") -> Dict[str, Any]:
-    """
-    Placeholder: export last query results to a file format.
-
-    Args:
-        format: Output format (e.g., csv, parquet).
-    Returns:
-        Not-implemented message.
-    """
-    return {"error": "export_results not implemented", "format": format}
-
-
-@mcp.tool
-def paginate_samples(page: int = 1, page_size: int = 50) -> Dict[str, Any]:
-    """
-    Placeholder: paginate over sample/result sets.
-
-    Args:
-        page: Page number (1-based).
-        page_size: Number of rows per page.
-    Returns:
-        Not-implemented message.
-    """
-    return {"error": "paginate_samples not implemented", "page": page, "page_size": page_size}
 
 
 if __name__ == "__main__":

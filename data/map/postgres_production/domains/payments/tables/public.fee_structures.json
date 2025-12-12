@@ -1,0 +1,192 @@
+{
+  "table": "fee_structures",
+  "schema": "public",
+  "database": "postgres_production",
+  "description": "This table stores fee structure configurations for payment processing, with each record containing a unique fee_id and detailed fee parameters stored as JSON in the fee_data column including card scheme types, rates, fixed amounts, and merchant category codes. The table appears to be a standalone reference table for payment fee calculations, as it has no foreign key relationships with other tables. Based on the sample data, it serves as a configuration store for different payment processing fee structures that can be applied based on various criteria like card scheme (e.g., \"TransactPlus\"), merchant category codes, and transaction characteristics.",
+  "row_count": 1000,
+  "columns": [
+    {
+      "name": "fee_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "A unique identifier that automatically assigns sequential numbers to distinguish each fee structure record. Based on the sample values, this appears to be the primary means of referencing individual fee configurations within the system.",
+      "default": "nextval('fee_structures_fee_id_seq'::regclass)"
+    },
+    {
+      "name": "fee_data",
+      "type": "jsonb",
+      "nullable": true,
+      "description": "Purpose unclear from available data. Contains structured configuration or parameter information related to fee calculations, but the specific content and business meaning cannot be determined from the object references shown.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Records the timestamp when each fee structure record was initially inserted into the database. Automatically captures the creation time for audit trail and chronological tracking purposes.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "fee_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "fee_structures_pkey",
+      "index_definition": "CREATE UNIQUE INDEX fee_structures_pkey ON public.fee_structures USING btree (fee_id)",
+      "columns": [
+        "fee_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "fee_id": 1,
+      "fee_data": {
+        "ID": 1,
+        "aci": [
+          "C",
+          "B"
+        ],
+        "rate": 19,
+        "is_credit": false,
+        "card_scheme": "TransactPlus",
+        "account_type": [],
+        "fixed_amount": 0.1,
+        "intracountry": null,
+        "capture_delay": null,
+        "monthly_volume": null,
+        "monthly_fraud_level": null,
+        "merchant_category_code": [
+          8000,
+          8011,
+          8021,
+          8031,
+          8041,
+          7299,
+          9399,
+          8742
+        ]
+      },
+      "created_at": "2025-12-10T03:38:09.080Z"
+    },
+    {
+      "fee_id": 2,
+      "fee_data": {
+        "ID": 2,
+        "aci": [
+          "B"
+        ],
+        "rate": 86,
+        "is_credit": null,
+        "card_scheme": "GlobalCard",
+        "account_type": [],
+        "fixed_amount": 0.13,
+        "intracountry": 0,
+        "capture_delay": null,
+        "monthly_volume": null,
+        "monthly_fraud_level": ">8.3%",
+        "merchant_category_code": [
+          3000,
+          3001,
+          3002,
+          3003,
+          7011,
+          7032,
+          7512,
+          7513
+        ]
+      },
+      "created_at": "2025-12-10T03:38:09.080Z"
+    },
+    {
+      "fee_id": 3,
+      "fee_data": {
+        "ID": 3,
+        "aci": [
+          "C",
+          "A"
+        ],
+        "rate": 16,
+        "is_credit": true,
+        "card_scheme": "TransactPlus",
+        "account_type": [],
+        "fixed_amount": 0.09,
+        "intracountry": 0,
+        "capture_delay": ">5",
+        "monthly_volume": null,
+        "monthly_fraud_level": null,
+        "merchant_category_code": [
+          4111,
+          4121,
+          4131,
+          4411,
+          4511,
+          4789,
+          7513,
+          7523
+        ]
+      },
+      "created_at": "2025-12-10T03:38:09.080Z"
+    },
+    {
+      "fee_id": 4,
+      "fee_data": {
+        "ID": 4,
+        "aci": [
+          "C",
+          "A"
+        ],
+        "rate": 25,
+        "is_credit": null,
+        "card_scheme": "NexPay",
+        "account_type": [],
+        "fixed_amount": 0.11,
+        "intracountry": 1,
+        "capture_delay": null,
+        "monthly_volume": null,
+        "monthly_fraud_level": null,
+        "merchant_category_code": [
+          8062,
+          8011,
+          8021,
+          7231,
+          7298,
+          7991,
+          8049
+        ]
+      },
+      "created_at": "2025-12-10T03:38:09.080Z"
+    },
+    {
+      "fee_id": 5,
+      "fee_data": {
+        "ID": 5,
+        "aci": [],
+        "rate": 69,
+        "is_credit": false,
+        "card_scheme": "GlobalCard",
+        "account_type": [],
+        "fixed_amount": 0.13,
+        "intracountry": null,
+        "capture_delay": "<3",
+        "monthly_volume": ">5m",
+        "monthly_fraud_level": null,
+        "merchant_category_code": [
+          5411,
+          5412,
+          5499,
+          5912,
+          5812,
+          5813,
+          5911,
+          5983
+        ]
+      },
+      "created_at": "2025-12-10T03:38:09.080Z"
+    }
+  ],
+  "generated_at": "2025-12-11T22:51:36.014Z"
+}

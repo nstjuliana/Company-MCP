@@ -1,0 +1,220 @@
+{
+  "table": "payments",
+  "schema": "public",
+  "database": "postgres_production",
+  "description": "This table represents payment transactions processed through a payment system, storing detailed information about each transaction including merchant details, card information, transaction amounts, and fraud detection results. The table captures both successful and failed payment attempts with geographic data (issuing country, acquirer country, IP country) and device information for risk assessment and fraud prevention. Based on the large row count (138K+ records) and comprehensive transaction attributes, this appears to be a central fact table in a payment processing data model that logs all payment events with their associated metadata and security flags.",
+  "row_count": 138236,
+  "columns": [
+    {
+      "name": "payment_id",
+      "type": "character varying",
+      "nullable": false,
+      "description": "A unique identifier assigned to each payment transaction, formatted as an 11-digit numeric string. Based on the sequential nature of the sample values, this appears to be a system-generated reference number used to track individual payment records.",
+      "default": null
+    },
+    {
+      "name": "merchant_id",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Identifies the business or organization that received the payment, with examples including fitness centers, retail stores, golf clubs, and AI services. Based on the sample data, merchants appear to be categorized by business type with descriptive naming conventions.",
+      "default": null
+    },
+    {
+      "name": "card_brand",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Identifies the payment card processing network or brand used for the transaction. Based on sample values, this appears to track various payment processors including GlobalCard, SwiftCharge, TransactPlus, and NexPay.",
+      "default": null
+    },
+    {
+      "name": "transaction_amount",
+      "type": "numeric",
+      "nullable": true,
+      "description": "The monetary value of individual payment transactions processed through the system. Based on the sample values, amounts typically range from under $30 to several hundred dollars.",
+      "default": null
+    },
+    {
+      "name": "issuing_country",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Stores the two-letter country code indicating the nation where the payment method or financial instrument was issued. Based on the sample data, this includes European countries such as Netherlands, Sweden, Spain, Belgium, and Italy.",
+      "default": null
+    },
+    {
+      "name": "device_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Records the operating system or platform type of the device used to process the payment transaction. Values include mobile platforms like Android and iOS, desktop systems like Linux, and a catch-all category for unspecified devices.",
+      "default": null
+    },
+    {
+      "name": "shopper_interaction",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Indicates the type of interaction channel through which the customer completed their purchase transaction. Based on the sample data, this captures whether the payment was processed through an online commerce platform or at a physical point-of-sale terminal.",
+      "default": null
+    },
+    {
+      "name": "card_bin",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Contains the first 4-6 digits of payment card numbers, which identify the issuing bank and card type. Used for payment processing validation and fraud detection without storing complete card details.",
+      "default": null
+    },
+    {
+      "name": "is_fraudulent",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether a payment transaction has been identified or flagged as fraudulent activity. Based on the sample data, the vast majority of payments are legitimate with occasional instances of detected fraud.",
+      "default": "false"
+    },
+    {
+      "name": "is_refused",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether a payment transaction has been declined or rejected by the payment processor or financial institution. Based on the sample data, all observed payments appear to have been successfully processed without refusal.",
+      "default": "false"
+    },
+    {
+      "name": "aci",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Based on the sample values (F, D, C, G, E), this appears to be a classification or status code system using single letters to categorize payments. Purpose unclear from available data without additional context about what each letter code represents.",
+      "default": null
+    },
+    {
+      "name": "acquirer_country_code",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Stores the two-letter country code identifying the country where the payment acquirer (the financial institution processing the payment) is located. Based on the sample values, this includes countries such as the Netherlands, United States, and Italy.",
+      "default": null
+    },
+    {
+      "name": "ip_country",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Contains two-letter country codes indicating the geographic location associated with the IP address used during payment processing. Based on the sample data, this appears to track European countries where payment transactions originated.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Records the exact date and time when each payment record was initially created in the system. Automatically captures the moment of record insertion to maintain an audit trail of payment entry timing.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "payment_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "idx_payments_card_brand",
+      "index_definition": "CREATE INDEX idx_payments_card_brand ON public.payments USING btree (card_brand)",
+      "columns": [
+        "card_brand"
+      ],
+      "is_unique": false
+    },
+    {
+      "index_name": "idx_payments_merchant_id",
+      "index_definition": "CREATE INDEX idx_payments_merchant_id ON public.payments USING btree (merchant_id)",
+      "columns": [
+        "merchant_id"
+      ],
+      "is_unique": false
+    },
+    {
+      "index_name": "payments_pkey",
+      "index_definition": "CREATE UNIQUE INDEX payments_pkey ON public.payments USING btree (payment_id)",
+      "columns": [
+        "payment_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "payment_id": "10000636248",
+      "merchant_id": "Crossfit_Hanna",
+      "card_brand": "GlobalCard",
+      "transaction_amount": "58.66",
+      "issuing_country": "NL",
+      "device_type": "Linux",
+      "shopper_interaction": "Ecommerce",
+      "card_bin": "4571",
+      "is_fraudulent": false,
+      "is_refused": false,
+      "aci": "F",
+      "acquirer_country_code": "NL",
+      "ip_country": "BE",
+      "created_at": "2025-12-10T03:39:28.399Z"
+    },
+    {
+      "payment_id": "10001482390",
+      "merchant_id": "Belles_cookbook_store",
+      "card_brand": "GlobalCard",
+      "transaction_amount": "36.62",
+      "issuing_country": "SE",
+      "device_type": "Android",
+      "shopper_interaction": "Ecommerce",
+      "card_bin": "4556",
+      "is_fraudulent": false,
+      "is_refused": false,
+      "aci": "D",
+      "acquirer_country_code": "US",
+      "ip_country": "SE",
+      "created_at": "2025-12-10T03:39:28.399Z"
+    },
+    {
+      "payment_id": "10001579064",
+      "merchant_id": "Golfclub_Baron_Friso",
+      "card_brand": "GlobalCard",
+      "transaction_amount": "130.67",
+      "issuing_country": "ES",
+      "device_type": "Other",
+      "shopper_interaction": "POS",
+      "card_bin": "4556",
+      "is_fraudulent": false,
+      "is_refused": false,
+      "aci": "C",
+      "acquirer_country_code": "IT",
+      "ip_country": "ES",
+      "created_at": "2025-12-10T03:39:28.399Z"
+    },
+    {
+      "payment_id": "10002494026",
+      "merchant_id": "Crossfit_Hanna",
+      "card_brand": "SwiftCharge",
+      "transaction_amount": "229.73",
+      "issuing_country": "BE",
+      "device_type": "Android",
+      "shopper_interaction": "Ecommerce",
+      "card_bin": "4916",
+      "is_fraudulent": false,
+      "is_refused": false,
+      "aci": "F",
+      "acquirer_country_code": "NL",
+      "ip_country": "BE",
+      "created_at": "2025-12-10T03:39:28.399Z"
+    },
+    {
+      "payment_id": "10002671296",
+      "merchant_id": "Golfclub_Baron_Friso",
+      "card_brand": "TransactPlus",
+      "transaction_amount": "748.91",
+      "issuing_country": "IT",
+      "device_type": "Android",
+      "shopper_interaction": "Ecommerce",
+      "card_bin": "4891",
+      "is_fraudulent": false,
+      "is_refused": false,
+      "aci": "D",
+      "acquirer_country_code": "IT",
+      "ip_country": "BE",
+      "created_at": "2025-12-10T03:39:28.399Z"
+    }
+  ],
+  "generated_at": "2025-12-11T22:51:39.180Z"
+}

@@ -1,0 +1,51 @@
+{
+  "table": "buckets_vectors",
+  "schema": "storage",
+  "database": "postgres_production",
+  "description": "Based on the limited information provided, this table appears to be related to vector storage functionality within a storage system, likely for storing embeddings or vector representations associated with storage buckets. However, without column definitions or sample data, the specific business entity and relationships cannot be determined. The table currently contains no data and lacks defined relationships to other tables in the system.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "id",
+      "type": "text",
+      "nullable": false,
+      "description": "Purpose unclear from available data. Appears to be a unique identifier for records in the buckets vectors table.",
+      "default": null
+    },
+    {
+      "name": "type",
+      "type": "USER-DEFINED",
+      "nullable": false,
+      "description": "Specifies the category or classification of storage bucket within the vector storage system. Uses an enumerated value with \"VECTOR\" as the standard designation for buckets containing vector data.",
+      "default": "'VECTOR'::storage.buckettype"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "description": "Records the exact moment when a vector storage bucket was first created in the system. This timestamp cannot be null and automatically captures the current time when a new bucket is established.",
+      "default": "now()"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "description": "Records the timestamp when the bucket vector record was last modified, automatically set to the current time whenever changes occur.",
+      "default": "now()"
+    }
+  ],
+  "primary_key": [],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "buckets_vectors_pkey",
+      "index_definition": "CREATE UNIQUE INDEX buckets_vectors_pkey ON storage.buckets_vectors USING btree (id)",
+      "columns": [
+        "id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-11T22:51:13.471Z"
+}

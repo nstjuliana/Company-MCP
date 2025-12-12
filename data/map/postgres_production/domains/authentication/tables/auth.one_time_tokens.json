@@ -1,0 +1,99 @@
+{
+  "table": "one_time_tokens",
+  "schema": "auth",
+  "database": "postgres_production",
+  "description": "I cannot provide an accurate semantic description for this table as the column information is missing or incomplete (showing only commas), no sample data is available, and there are no foreign key relationships documented. Without visibility into the actual column names and their data types, any description would be pure speculation rather than being grounded in the available evidence.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "id",
+      "type": "uuid",
+      "nullable": false,
+      "description": "Serves as the primary identifier that uniquely distinguishes each one-time authentication token record within the system. Purpose unclear from available data due to lack of sample values.",
+      "default": null
+    },
+    {
+      "name": "user_id",
+      "type": "uuid",
+      "nullable": false,
+      "description": "Identifies the specific user account that a one-time authentication token belongs to. Links each temporary token to its owner for security and access control purposes.",
+      "default": null
+    },
+    {
+      "name": "token_type",
+      "type": "USER-DEFINED",
+      "nullable": false,
+      "description": "Categorizes the specific type of temporary authentication token being issued, such as for password reset, email verification, or account activation purposes. Purpose unclear from available data due to lack of sample values.",
+      "default": null
+    },
+    {
+      "name": "token_hash",
+      "type": "text",
+      "nullable": false,
+      "description": "A cryptographically hashed representation of a one-time authentication token used for secure user verification or password reset processes. This stores the irreversible hash value rather than the plain text token for security purposes.",
+      "default": null
+    },
+    {
+      "name": "relates_to",
+      "type": "text",
+      "nullable": false,
+      "description": "Purpose unclear from available data. Without sample values or additional context, the specific business meaning of this required text field in the authentication token table cannot be determined.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": false,
+      "description": "Records the exact moment when a one-time authentication token was generated in the system. This timestamp enables token expiration validation and audit tracking for security purposes.",
+      "default": "now()"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": false,
+      "description": "Records when each one-time authentication token was last modified, automatically set to the current timestamp whenever the token record is updated.",
+      "default": "now()"
+    }
+  ],
+  "primary_key": [
+    "id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "one_time_tokens_pkey",
+      "index_definition": "CREATE UNIQUE INDEX one_time_tokens_pkey ON auth.one_time_tokens USING btree (id)",
+      "columns": [
+        "id"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "one_time_tokens_relates_to_hash_idx",
+      "index_definition": "CREATE INDEX one_time_tokens_relates_to_hash_idx ON auth.one_time_tokens USING hash (relates_to)",
+      "columns": [
+        "relates_to"
+      ],
+      "is_unique": false
+    },
+    {
+      "index_name": "one_time_tokens_token_hash_hash_idx",
+      "index_definition": "CREATE INDEX one_time_tokens_token_hash_hash_idx ON auth.one_time_tokens USING hash (token_hash)",
+      "columns": [
+        "token_hash"
+      ],
+      "is_unique": false
+    },
+    {
+      "index_name": "one_time_tokens_user_id_token_type_key",
+      "index_definition": "CREATE UNIQUE INDEX one_time_tokens_user_id_token_type_key ON auth.one_time_tokens USING btree (user_id, token_type)",
+      "columns": [
+        "user_id",
+        "token_type"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-11T22:50:47.058Z"
+}

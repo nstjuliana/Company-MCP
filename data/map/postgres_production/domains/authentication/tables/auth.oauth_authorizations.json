@@ -1,0 +1,168 @@
+{
+  "table": "oauth_authorizations",
+  "schema": "auth",
+  "database": "postgres_production",
+  "description": "Based on the table name `auth.oauth_authorizations`, this table appears to store OAuth authorization records within an authentication system, likely tracking authorization grants or tokens issued during OAuth flows. However, without visible column information or sample data, I cannot determine the specific structure, relationships, or detailed functionality of this authorization entity. The table currently contains no data and has no established foreign key relationships with other tables in the database.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "id",
+      "type": "uuid",
+      "nullable": false,
+      "description": "Unique identifier for each OAuth authorization record that tracks when users grant permission to third-party applications to access their account. Serves as the primary key for linking authorization events to specific users and applications.",
+      "default": null
+    },
+    {
+      "name": "authorization_id",
+      "type": "text",
+      "nullable": false,
+      "description": "Purpose unclear from available data. Without sample values or additional context, the specific business meaning of this identifier within the OAuth authorization process cannot be determined.",
+      "default": null
+    },
+    {
+      "name": "client_id",
+      "type": "uuid",
+      "nullable": false,
+      "description": "Purpose unclear from available data. This appears to reference an external application or service in an OAuth authorization context, but without sample values or additional schema information, the specific business meaning cannot be determined.",
+      "default": null
+    },
+    {
+      "name": "user_id",
+      "type": "uuid",
+      "nullable": true,
+      "description": "References the unique identifier of the user who granted authorization in the OAuth flow. Can be null when authorization exists without an associated user account.",
+      "default": null
+    },
+    {
+      "name": "redirect_uri",
+      "type": "text",
+      "nullable": false,
+      "description": "Purpose unclear from available data. Based on the table context, this likely stores the URL where users should be redirected after OAuth authorization completes.",
+      "default": null
+    },
+    {
+      "name": "scope",
+      "type": "text",
+      "nullable": false,
+      "description": "Purpose unclear from available data. Likely defines the permissions or access levels granted through an OAuth authorization, but cannot be confirmed without sample values.",
+      "default": null
+    },
+    {
+      "name": "state",
+      "type": "text",
+      "nullable": true,
+      "description": "Purpose unclear from available data. This appears to be an optional text field within the OAuth authorization process, but without sample values or additional context, the specific business meaning cannot be determined.",
+      "default": null
+    },
+    {
+      "name": "resource",
+      "type": "text",
+      "nullable": true,
+      "description": "Purpose unclear from available data. This appears to store textual identifiers or references related to OAuth authorization processes, but the specific business meaning cannot be determined without sample values.",
+      "default": null
+    },
+    {
+      "name": "code_challenge",
+      "type": "text",
+      "nullable": true,
+      "description": "A cryptographically secure random string used in the PKCE (Proof Key for Code Exchange) OAuth 2.0 flow to prevent authorization code interception attacks. Purpose unclear from available data due to lack of sample values.",
+      "default": null
+    },
+    {
+      "name": "code_challenge_method",
+      "type": "USER-DEFINED",
+      "nullable": true,
+      "description": "Purpose unclear from available data. Likely relates to OAuth authorization flow security mechanisms, but cannot determine specific meaning without sample values or additional context.",
+      "default": null
+    },
+    {
+      "name": "response_type",
+      "type": "USER-DEFINED",
+      "nullable": false,
+      "description": "Specifies the type of response requested in an OAuth authorization flow, with \"code\" being the default indicating an authorization code grant type. This determines how the OAuth provider should respond after user authorization.",
+      "default": "'code'::auth.oauth_response_type"
+    },
+    {
+      "name": "status",
+      "type": "USER-DEFINED",
+      "nullable": false,
+      "description": "Tracks the current state of an OAuth authorization request, with requests initially set to pending status. Indicates whether the authorization process is awaiting approval, has been granted, denied, or is in another defined state.",
+      "default": "'pending'::auth.oauth_authorization_status"
+    },
+    {
+      "name": "authorization_code",
+      "type": "text",
+      "nullable": true,
+      "description": "A temporary code generated during the OAuth authorization flow that can be exchanged for an access token. Purpose unclear from available data due to lack of sample values.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "description": "Records the exact moment when an OAuth authorization was first established in the system. This timestamp serves as an audit trail for tracking when users granted permission to third-party applications.",
+      "default": "now()"
+    },
+    {
+      "name": "expires_at",
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "description": "Records when an OAuth authorization token or code will become invalid and can no longer be used for authentication. Set to expire 3 minutes after creation by default to ensure short-lived authorization windows for security purposes.",
+      "default": "(now() + '00:03:00'::interval)"
+    },
+    {
+      "name": "approved_at",
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "description": "Records the exact date and time when an OAuth authorization request was approved by the user. Remains null for pending or denied authorization requests.",
+      "default": null
+    },
+    {
+      "name": "nonce",
+      "type": "text",
+      "nullable": true,
+      "description": "A unique random value used to prevent replay attacks and ensure the security of OAuth authorization requests. This cryptographic token helps verify that authorization responses correspond to requests initiated by the same client.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "oauth_auth_pending_exp_idx",
+      "index_definition": "CREATE INDEX oauth_auth_pending_exp_idx ON auth.oauth_authorizations USING btree (expires_at) WHERE (status = 'pending'::auth.oauth_authorization_status)",
+      "columns": [
+        "expires_at"
+      ],
+      "is_unique": false
+    },
+    {
+      "index_name": "oauth_authorizations_authorization_code_key",
+      "index_definition": "CREATE UNIQUE INDEX oauth_authorizations_authorization_code_key ON auth.oauth_authorizations USING btree (authorization_code)",
+      "columns": [
+        "authorization_code"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "oauth_authorizations_authorization_id_key",
+      "index_definition": "CREATE UNIQUE INDEX oauth_authorizations_authorization_id_key ON auth.oauth_authorizations USING btree (authorization_id)",
+      "columns": [
+        "authorization_id"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "oauth_authorizations_pkey",
+      "index_definition": "CREATE UNIQUE INDEX oauth_authorizations_pkey ON auth.oauth_authorizations USING btree (id)",
+      "columns": [
+        "id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-11T22:50:39.317Z"
+}

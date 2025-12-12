@@ -1,0 +1,92 @@
+{
+  "table": "subscription",
+  "schema": "realtime",
+  "database": "postgres_production",
+  "description": "Based on the available information, this table appears to represent subscription entities within a realtime system, likely tracking active connections or subscriptions for real-time data streaming or notifications. The table has 7 columns with an 'id' primary key, suggesting it stores subscription records with associated metadata. However, without column details or sample data, the specific subscription attributes and business logic cannot be determined.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "id",
+      "type": "bigint",
+      "nullable": false,
+      "description": "Purpose unclear from available data. Likely serves as a unique identifier for subscription records based on standard database conventions.",
+      "default": null
+    },
+    {
+      "name": "subscription_id",
+      "type": "uuid",
+      "nullable": false,
+      "description": "A unique identifier that distinguishes each individual subscription record within the realtime subscription system. Purpose unclear from available data due to lack of sample values.",
+      "default": null
+    },
+    {
+      "name": "entity",
+      "type": "regclass",
+      "nullable": false,
+      "description": "Purpose unclear from available data. The regclass data type suggests this stores references to database objects like tables or views, but without sample values or additional context, the specific business meaning cannot be determined.",
+      "default": null
+    },
+    {
+      "name": "filters",
+      "type": "ARRAY",
+      "nullable": false,
+      "description": "Purpose unclear from available data. Contains an array of user-defined filter criteria with an empty array as the default value.",
+      "default": "'{}'::realtime.user_defined_filter[]"
+    },
+    {
+      "name": "claims",
+      "type": "jsonb",
+      "nullable": false,
+      "description": "Purpose unclear from available data. Stores structured authentication or authorization attributes in JSON format that cannot be null.",
+      "default": null
+    },
+    {
+      "name": "claims_role",
+      "type": "regrole",
+      "nullable": false,
+      "description": "Purpose unclear from available data. The column appears to store database role information related to subscription claims, but without sample values or additional context, the specific business meaning cannot be determined.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": false,
+      "description": "Records the exact moment when a realtime subscription was established in the system. Automatically captures the current UTC timestamp upon creation and cannot be left empty.",
+      "default": "timezone('utc'::text, now())"
+    }
+  ],
+  "primary_key": [
+    "id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "ix_realtime_subscription_entity",
+      "index_definition": "CREATE INDEX ix_realtime_subscription_entity ON realtime.subscription USING btree (entity)",
+      "columns": [
+        "entity"
+      ],
+      "is_unique": false
+    },
+    {
+      "index_name": "pk_subscription",
+      "index_definition": "CREATE UNIQUE INDEX pk_subscription ON realtime.subscription USING btree (id)",
+      "columns": [
+        "id"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "subscription_subscription_id_entity_filters_key",
+      "index_definition": "CREATE UNIQUE INDEX subscription_subscription_id_entity_filters_key ON realtime.subscription USING btree (subscription_id, entity, filters)",
+      "columns": [
+        "subscription_id",
+        "entity",
+        "filters"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-11T22:51:45.726Z"
+}

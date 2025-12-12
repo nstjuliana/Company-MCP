@@ -1,0 +1,72 @@
+{
+  "table": "merchant_category_codes",
+  "schema": "public",
+  "database": "postgres_production",
+  "description": "This table stores a reference catalog of Merchant Category Codes (MCCs) used to classify different types of businesses and merchants, with each record containing a unique 4-digit MCC code, its corresponding category description, and creation timestamp. The table serves as a standalone lookup/reference table with no foreign key relationships, indicating it functions as a master data source for MCC classifications that would typically be referenced by transaction or merchant-related tables elsewhere in the system. Based on the sample data showing code \"1520\" for \"General Contractors - Residential and Commercial,\" this appears to follow standard industry MCC classification schemes used in payment processing and financial systems.",
+  "row_count": 769,
+  "columns": [
+    {
+      "name": "mcc_code",
+      "type": "character varying",
+      "nullable": false,
+      "description": "Four-digit numeric codes that classify different types of merchant businesses or industries, with sample values representing various commercial sectors such as construction (1700s range) and publishing/printing (2700s range). These standardized codes are used to categorize merchants for payment processing and transaction classification purposes.",
+      "default": null
+    },
+    {
+      "name": "category_description",
+      "type": "text",
+      "nullable": true,
+      "description": "Contains detailed textual descriptions of business categories and industries, primarily focused on construction trades, contractors, and publishing services that merchants operate within.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Records when each merchant category code entry was initially added to the system. Based on the sample data showing identical timestamps, this appears to track bulk data creation events.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "mcc_code"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "merchant_category_codes_pkey",
+      "index_definition": "CREATE UNIQUE INDEX merchant_category_codes_pkey ON public.merchant_category_codes USING btree (mcc_code)",
+      "columns": [
+        "mcc_code"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "mcc_code": "1520",
+      "category_description": "General Contractors - Residential and Commercial",
+      "created_at": "2025-12-10T03:38:07.727Z"
+    },
+    {
+      "mcc_code": "1711",
+      "category_description": "Heating, Plumbing, and Air Conditioning Contractors",
+      "created_at": "2025-12-10T03:38:07.727Z"
+    },
+    {
+      "mcc_code": "1731",
+      "category_description": "Electrical Contractors",
+      "created_at": "2025-12-10T03:38:07.727Z"
+    },
+    {
+      "mcc_code": "1740",
+      "category_description": "Masonry, Stonework, Tile-Setting, Plastering, and Insulation Contractors",
+      "created_at": "2025-12-10T03:38:07.727Z"
+    },
+    {
+      "mcc_code": "1750",
+      "category_description": "Carpentry Contractors",
+      "created_at": "2025-12-10T03:38:07.727Z"
+    }
+  ],
+  "generated_at": "2025-12-11T22:51:37.125Z"
+}

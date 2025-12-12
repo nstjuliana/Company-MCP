@@ -1,0 +1,95 @@
+{
+  "table": "vector_indexes",
+  "schema": "storage",
+  "database": "postgres_production",
+  "description": "This table appears to be a metadata catalog for vector indexes used in a vector database or search system, storing configuration and operational details about high-dimensional vector indexes for similarity search or machine learning operations. The table is currently empty with no established relationships to other tables, suggesting it may be part of a newly implemented or standalone vector search infrastructure. Without visible column definitions or sample data, the specific attributes and functionality of the vector indexes cannot be determined.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "id",
+      "type": "text",
+      "nullable": false,
+      "description": "A unique identifier that serves as the primary key for each vector index record in the system. Since no sample values are available, the specific format and usage pattern cannot be determined from the available data.",
+      "default": "gen_random_uuid()"
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "nullable": false,
+      "description": "Purpose unclear from available data, though this appears to be an identifier or label for vector index configurations within the storage system.",
+      "default": null
+    },
+    {
+      "name": "bucket_id",
+      "type": "text",
+      "nullable": false,
+      "description": "Purpose unclear from available data. Appears to reference a storage container or grouping mechanism within the vector indexing system.",
+      "default": null
+    },
+    {
+      "name": "data_type",
+      "type": "text",
+      "nullable": false,
+      "description": "Purpose unclear from available data. Appears to specify the format or structure of data stored in vector indexes, but cannot be determined without sample values.",
+      "default": null
+    },
+    {
+      "name": "dimension",
+      "type": "integer",
+      "nullable": false,
+      "description": "Purpose unclear from available data. This appears to store a numeric value related to vector index configuration, but without sample values or additional context, the specific business meaning cannot be determined.",
+      "default": null
+    },
+    {
+      "name": "distance_metric",
+      "type": "text",
+      "nullable": false,
+      "description": "The method used to calculate distance or similarity between vectors in the index, such as cosine similarity, Euclidean distance, or Manhattan distance. Purpose unclear from available data due to lack of sample values.",
+      "default": null
+    },
+    {
+      "name": "metadata_configuration",
+      "type": "jsonb",
+      "nullable": true,
+      "description": "Purpose unclear from available data. Likely stores configuration settings or parameters related to metadata handling for vector search indexes in JSON format.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "description": "Records the exact date and time when each vector index was initially created in the system. Automatically populated upon index creation and remains unchanged throughout the index's lifecycle.",
+      "default": "now()"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "description": "Records the date and time when the vector index configuration or metadata was last modified. Automatically updated to the current timestamp whenever changes are made to the index record.",
+      "default": "now()"
+    }
+  ],
+  "primary_key": [],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "vector_indexes_name_bucket_id_idx",
+      "index_definition": "CREATE UNIQUE INDEX vector_indexes_name_bucket_id_idx ON storage.vector_indexes USING btree (name, bucket_id)",
+      "columns": [
+        "name",
+        "bucket_id"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "vector_indexes_pkey",
+      "index_definition": "CREATE UNIQUE INDEX vector_indexes_pkey ON storage.vector_indexes USING btree (id)",
+      "columns": [
+        "id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-11T22:51:26.764Z"
+}

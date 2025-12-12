@@ -1,0 +1,351 @@
+{
+  "table": "users",
+  "schema": "auth",
+  "database": "postgres_production",
+  "description": "This table represents the core user authentication entity within a secure schema, storing login credentials and user account data for the application's authentication system. Based on the database comment indicating it stores \"user login data within a secure schema,\" this table serves as the foundational user management component for controlling access to the system. The table currently has no relationships with other tables and contains no data, suggesting it may be part of a newly initialized authentication system or a standalone user management module.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "instance_id",
+      "type": "uuid",
+      "nullable": true,
+      "description": "Purpose unclear from available data. Could represent a unique identifier for a specific deployment, tenant, or service instance within a multi-tenant authentication system.",
+      "default": null
+    },
+    {
+      "name": "id",
+      "type": "uuid",
+      "nullable": false,
+      "description": "Uniquely identifies each user account within the authentication system. Serves as the primary reference for linking user data across the application.",
+      "default": null
+    },
+    {
+      "name": "aud",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The column appears to be related to user authentication but without sample values or additional context, its specific business meaning cannot be determined.",
+      "default": null
+    },
+    {
+      "name": "role",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. Likely stores user authorization levels or access permissions within the authentication system.",
+      "default": null
+    },
+    {
+      "name": "email",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. Likely stores contact information for user accounts, but cannot be confirmed without sample values or additional context.",
+      "default": null
+    },
+    {
+      "name": "encrypted_password",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Stores the hashed and encrypted version of a user's login password for authentication purposes. Contains the secure representation of the password that cannot be reversed to reveal the original plaintext value.",
+      "default": null
+    },
+    {
+      "name": "email_confirmed_at",
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "description": "Records the exact date and time when a user verified their email address through the confirmation process. Remains empty until the user completes email verification, indicating unconfirmed accounts.",
+      "default": null
+    },
+    {
+      "name": "invited_at",
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "description": "Records the date and time when a user received an invitation to join the system. Purpose unclear from available data due to lack of sample values.",
+      "default": null
+    },
+    {
+      "name": "confirmation_token",
+      "type": "character varying",
+      "nullable": true,
+      "description": "A unique token sent to users via email to verify their account registration or email address changes. Used in the authentication workflow to confirm user identity before activating account access.",
+      "default": null
+    },
+    {
+      "name": "confirmation_sent_at",
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "description": "Records the timestamp when an email confirmation was sent to the user as part of the account verification process. Purpose unclear from available data due to lack of sample values.",
+      "default": null
+    },
+    {
+      "name": "recovery_token",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Stores a temporary token used to authenticate and authorize password reset requests for user accounts. When present, this token allows users to securely change their password through the recovery process.",
+      "default": null
+    },
+    {
+      "name": "recovery_sent_at",
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "description": "Records the timestamp when a password recovery email or notification was last sent to the user. Used to track recovery attempt timing and potentially implement rate limiting or audit trails for account recovery processes.",
+      "default": null
+    },
+    {
+      "name": "email_change_token_new",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Stores a temporary token used to verify and authorize pending email address changes for user accounts. This token is likely generated when a user initiates an email change process and must be validated before the new email address becomes active.",
+      "default": null
+    },
+    {
+      "name": "email_change",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. Likely stores a new email address during the process of updating a user's primary email address.",
+      "default": null
+    },
+    {
+      "name": "email_change_sent_at",
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "description": "Records the timestamp when an email change confirmation message was sent to a user. Tracks when the system last attempted to deliver email verification for pending email address updates.",
+      "default": null
+    },
+    {
+      "name": "last_sign_in_at",
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "description": "Records the exact date and time when the user most recently successfully authenticated and signed into the system. Used to track user login activity and session management.",
+      "default": null
+    },
+    {
+      "name": "raw_app_meta_data",
+      "type": "jsonb",
+      "nullable": true,
+      "description": "Purpose unclear from available data. Appears to store application-specific metadata in a flexible JSON structure, but without sample values the specific business meaning cannot be determined.",
+      "default": null
+    },
+    {
+      "name": "raw_user_meta_data",
+      "type": "jsonb",
+      "nullable": true,
+      "description": "Purpose unclear from available data. Appears to store additional user information in a flexible JSON structure that supplements the standard user profile fields.",
+      "default": null
+    },
+    {
+      "name": "is_super_admin",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether a user has the highest level of administrative privileges within the system. Purpose unclear from available data due to lack of sample values.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "description": "Records the date and time when a user account was initially established in the system. Purpose unclear from available data due to lack of sample values.",
+      "default": null
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "description": "Records when a user account was last modified or updated. Since no sample values are available and no database comment is provided, the specific update triggers and business rules cannot be determined from the available data.",
+      "default": null
+    },
+    {
+      "name": "phone",
+      "type": "text",
+      "nullable": true,
+      "description": "Purpose unclear from available data. Likely stores contact telephone numbers for user accounts, but cannot be confirmed without sample values.",
+      "default": "NULL::character varying"
+    },
+    {
+      "name": "phone_confirmed_at",
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "description": "Records the exact moment when a user successfully verified their phone number through the confirmation process. Remains empty until phone verification is completed.",
+      "default": null
+    },
+    {
+      "name": "phone_change",
+      "type": "text",
+      "nullable": true,
+      "description": "Stores a new phone number that a user has requested to change to, but has not yet been verified or activated. This field temporarily holds the pending phone number during the phone number change process.",
+      "default": "''::character varying"
+    },
+    {
+      "name": "phone_change_token",
+      "type": "character varying",
+      "nullable": true,
+      "description": "A temporary security token used to verify and authorize changes to a user's phone number during the phone number update process. This token ensures that phone number modifications are authenticated and prevents unauthorized changes to user contact information.",
+      "default": "''::character varying"
+    },
+    {
+      "name": "phone_change_sent_at",
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "description": "Records the timestamp when a phone number change confirmation message was sent to the user. Tracks the delivery timing of phone verification communications during the phone update process.",
+      "default": null
+    },
+    {
+      "name": "confirmed_at",
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "description": "Records the date and time when a user's account was verified or activated through the confirmation process. A null value indicates the user has not yet completed account confirmation.",
+      "default": null
+    },
+    {
+      "name": "email_change_token_current",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Stores a temporary token used to validate and authorize a user's request to change their email address. This token is active during the email change process and likely gets cleared once the email change is confirmed or cancelled.",
+      "default": "''::character varying"
+    },
+    {
+      "name": "email_change_confirm_status",
+      "type": "smallint",
+      "nullable": true,
+      "description": "Tracks the confirmation status of a pending email address change request using numeric codes. Purpose unclear from available data due to lack of sample values to determine specific status meanings.",
+      "default": "0"
+    },
+    {
+      "name": "banned_until",
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "description": "Specifies the date and time when a user's ban or suspension will be lifted, allowing them to regain access to the system. When null, indicates the user is either not banned or has a permanent ban.",
+      "default": null
+    },
+    {
+      "name": "reauthentication_token",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Stores a temporary security token used to verify a user's identity during sensitive operations that require additional authentication beyond the initial login. This token is likely generated when users need to re-confirm their credentials for actions like password changes or account modifications.",
+      "default": "''::character varying"
+    },
+    {
+      "name": "reauthentication_sent_at",
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "description": "Records when a reauthentication request was most recently sent to the user. Used to track timing of security verification prompts that require users to confirm their identity before accessing sensitive features.",
+      "default": null
+    },
+    {
+      "name": "is_sso_user",
+      "type": "boolean",
+      "nullable": false,
+      "description": "Indicates whether a user account was created through Single Sign-On (SSO) authentication rather than traditional registration. When true, the account is allowed to have duplicate email addresses that would otherwise be restricted.",
+      "default": "false"
+    },
+    {
+      "name": "deleted_at",
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "description": "Records the date and time when a user account was soft deleted from the system. When populated, indicates the account is marked as deleted but data is retained for audit or recovery purposes.",
+      "default": null
+    },
+    {
+      "name": "is_anonymous",
+      "type": "boolean",
+      "nullable": false,
+      "description": "Indicates whether the user account represents an anonymous or guest user rather than a registered user with identified credentials. Controls access permissions and features available to users who have not completed full registration or authentication.",
+      "default": "false"
+    }
+  ],
+  "primary_key": [
+    "id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "confirmation_token_idx",
+      "index_definition": "CREATE UNIQUE INDEX confirmation_token_idx ON auth.users USING btree (confirmation_token) WHERE ((confirmation_token)::text !~ '^[0-9 ]*$'::text)",
+      "columns": [
+        "confirmation_token"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "email_change_token_current_idx",
+      "index_definition": "CREATE UNIQUE INDEX email_change_token_current_idx ON auth.users USING btree (email_change_token_current) WHERE ((email_change_token_current)::text !~ '^[0-9 ]*$'::text)",
+      "columns": [
+        "email_change_token_current"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "email_change_token_new_idx",
+      "index_definition": "CREATE UNIQUE INDEX email_change_token_new_idx ON auth.users USING btree (email_change_token_new) WHERE ((email_change_token_new)::text !~ '^[0-9 ]*$'::text)",
+      "columns": [
+        "email_change_token_new"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "reauthentication_token_idx",
+      "index_definition": "CREATE UNIQUE INDEX reauthentication_token_idx ON auth.users USING btree (reauthentication_token) WHERE ((reauthentication_token)::text !~ '^[0-9 ]*$'::text)",
+      "columns": [
+        "reauthentication_token"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "recovery_token_idx",
+      "index_definition": "CREATE UNIQUE INDEX recovery_token_idx ON auth.users USING btree (recovery_token) WHERE ((recovery_token)::text !~ '^[0-9 ]*$'::text)",
+      "columns": [
+        "recovery_token"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "users_email_partial_key",
+      "index_definition": "CREATE UNIQUE INDEX users_email_partial_key ON auth.users USING btree (email) WHERE (is_sso_user = false)",
+      "columns": [
+        "email"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "users_instance_id_email_idx",
+      "index_definition": "CREATE INDEX users_instance_id_email_idx ON auth.users USING btree (instance_id, lower((email)::text))",
+      "columns": [
+        "instance_id",
+        "lower((email"
+      ],
+      "is_unique": false
+    },
+    {
+      "index_name": "users_instance_id_idx",
+      "index_definition": "CREATE INDEX users_instance_id_idx ON auth.users USING btree (instance_id)",
+      "columns": [
+        "instance_id"
+      ],
+      "is_unique": false
+    },
+    {
+      "index_name": "users_is_anonymous_idx",
+      "index_definition": "CREATE INDEX users_is_anonymous_idx ON auth.users USING btree (is_anonymous)",
+      "columns": [
+        "is_anonymous"
+      ],
+      "is_unique": false
+    },
+    {
+      "index_name": "users_phone_key",
+      "index_definition": "CREATE UNIQUE INDEX users_phone_key ON auth.users USING btree (phone)",
+      "columns": [
+        "phone"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "users_pkey",
+      "index_definition": "CREATE UNIQUE INDEX users_pkey ON auth.users USING btree (id)",
+      "columns": [
+        "id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-11T22:51:06.769Z"
+}
