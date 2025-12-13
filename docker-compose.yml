@@ -17,6 +17,28 @@ services:
     networks:
       - mcp-network
 
+  # Web Chatbot UI
+  # Access via: http://localhost:3000
+  chatbot-ui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: chatbot-ui
+    ports:
+      - "${WEB_PORT:-3000}:3000"
+    environment:
+      - MCP_BASE_URL=http://mcp-server:8000
+      - WEB_PORT=3000
+      - FLASK_DEBUG=false
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      - mcp-server
+    restart: unless-stopped
+    networks:
+      - mcp-network
+    command: python chatbot/web_app.py
+
   # SFTP Server for file management
   # Connect via: sftp -P 2222 datauser@localhost
   sftp-server:

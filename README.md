@@ -183,7 +183,14 @@ docker run -p 8000:8000 --env-file .env db-context-mcp
 
 The MCP endpoint is served at `http://localhost:8000/mcp`.
 
-### 5. Test with the Python client
+### 5. Access the Chatbot UI (Optional)
+```bash
+python chatbot/web_app.py
+```
+
+Open your browser to `http://localhost:3000` to use the interactive chatbot interface.
+
+### 6. Test with the Python client
 ```bash
 python client.py
 ```
@@ -213,6 +220,7 @@ docker-compose up -d
 | Service | Port | Description |
 |---------|------|-------------|
 | **MCP Server** | `8000` | Database context MCP endpoint |
+| **Chatbot UI** | `3000` | Web-based chatbot interface |
 | **SFTP Server** | `2222` | SFTP access to `/data` directory |
 
 ### SFTP Access
@@ -235,6 +243,7 @@ Files are accessible at `/home/datauser/data/` which maps to the `./data` direct
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `MCP_PORT` | `8000` | MCP server HTTP port |
+| `WEB_PORT` | `3000` | Chatbot UI web port |
 | `OPENAI_API_KEY` | - | OpenAI API key for vector search |
 | `SFTP_PORT` | `2222` | SFTP server port |
 | `SFTP_USER` | `datauser` | SFTP username |
@@ -258,6 +267,55 @@ docker-compose up -d --build
 # View service status
 docker-compose ps
 ```
+
+---
+
+## Chatbot UI
+
+The Database Context MCP includes a modern web-based chatbot interface that allows you to interact with your database schemas using natural language.
+
+### Features
+
+- **Natural Language Queries**: Ask questions like "What databases are available?" or "Show me payment-related tables"
+- **Interactive Chat**: Conversational interface with message history
+- **Quick Suggestions**: Pre-built query suggestions to get you started
+- **Rich Formatting**: Clean, readable responses with proper formatting
+- **Responsive Design**: Works on desktop and mobile devices
+
+### Accessing the Chatbot
+
+#### Local Development
+```bash
+# Start the MCP server first
+python server.py &
+
+# Start the chatbot UI
+python chatbot/web_app.py
+```
+
+Open `http://localhost:3000` in your browser.
+
+#### Docker Deployment
+The chatbot UI is included in the Docker Compose setup:
+
+```bash
+docker-compose up -d
+```
+
+Access the chatbot at `http://localhost:3000`.
+
+### Example Queries
+
+Try these natural language queries:
+
+- "What databases are available?"
+- "Show me all tables in the payments domain"
+- "Find tables related to user authentication"
+- "Get schema for the payments table"
+- "List all domains in postgres_production"
+- "What tables are related to merchants?"
+
+The chatbot intelligently routes your queries to the appropriate MCP tools and formats the responses for easy reading.
 
 ---
 

@@ -1,5 +1,5 @@
 {
-  "table": "DABSTEP_PAYMENTS",
+  "table": "PAYMENTS",
   "schema": "PUBLIC",
   "database": "snowflake_production",
   "description": "This table represents payment transaction records processed through a payment service provider, capturing detailed information about each payment attempt including merchant details, card information, geographical data, and transaction outcomes. The table serves as a comprehensive transaction log that tracks payment processing events with temporal attributes (year, hour, minute, day of year), fraud indicators (HAS_FRAUDULENT_DISPUTE), and payment method details (card scheme, BIN, issuing country). Based on the column structure and sample data, this appears to be a fact table in a payments analytics data model, storing transactional events for reporting and fraud analysis purposes.",

@@ -14,6 +14,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy server and supporting files
 COPY server.py .
+COPY sql_service.py .
+# Copy chatbot UI files
+COPY chatbot/ chatbot/
 
 # Data directory will be mounted as volume
 # COPY data/ data/

@@ -1220,6 +1220,350 @@ def get_common_relationships(
     return {"relationships": relationships[:limit], "tokens_used": _estimate_tokens(database + domain)}
 
 
+# --- SQL Generation and Execution Tools ---
+
+SQL_SERVICE_AVAILABLE = False
+SQL_SERVICE_ERROR = None
+
+try:
+    from sql_service import generate_and_execute_sql, _sql_generator, _sql_executor
+    # Verify the service is actually functional
+    if _sql_generator.client is None:
+        SQL_SERVICE_AVAILABLE = False
+        SQL_SERVICE_ERROR = "OpenRouter API key not configured. Set OPENROUTER_API_KEY environment variable."
+        print(f"[MCP Server] SQL service imported but not configured: {SQL_SERVICE_ERROR}")
+    else:
+        SQL_SERVICE_AVAILABLE = True
+        SQL_SERVICE_ERROR = None
+        print("[MCP Server] SQL service loaded successfully")
+except ImportError as e:
+    SQL_SERVICE_AVAILABLE = False
+    SQL_SERVICE_ERROR = f"Could not import sql_service: {e}. Make sure sql_service.py exists and dependencies are installed."
+    print(f"[MCP Server] SQL service import failed: {e}")
+except Exception as e:
+    SQL_SERVICE_AVAILABLE = False
+    SQL_SERVICE_ERROR = f"SQL service initialization error: {e}"
+    print(f"[MCP Server] SQL service initialization error: {e}")
+
+
+@mcp.tool
+def generate_sql(
+    query: str,
+    database: str = "",
+    context_tables: List[str] = []
+) -> Dict[str, Any]:
+    """
+    Generate SQL query from natural language question using schema context.
+    
+    Args:
+        query: Natural language question (e.g., "How many customers do I have?")
+        database: Target database (postgres_production or snowflake_production). Auto-detected if not specified.
+        context_tables: Optional list of table names to include in schema context.
+    
+    Returns:
+        Dict with generated SQL, schema_context used, and any errors.
+        Note: SQL is generated but not executed. Use execute_sql() to run it.
+    """
+    if not SQL_SERVICE_AVAILABLE:
+        error_msg = "SQL service not available. Check dependencies and configuration."
+        if SQL_SERVICE_ERROR:
+            error_msg += f" Error: {SQL_SERVICE_ERROR}"
+        return {
+            "error": error_msg,
+            "sql": None,
+            "schema_context": {}
+        }
+    
+    # Auto-detect database if not specified
+    if not database:
+        # Try to infer from context_tables or query
+        for seg in DB_SEGMENTS:
+            if context_tables and seg["id"] in context_tables:
+                database = seg.get("database", "")
+                break
+        if not database:
+            # Default to postgres_production if available
+            databases = {seg.get("database") for seg in DB_SEGMENTS if seg.get("database")}
+            database = "postgres_production" if "postgres_production" in databases else list(databases)[0] if databases else ""
+    
+    if not database:
+        return {
+            "error": "Could not determine target database. Please specify database parameter.",
+            "sql": None,
+            "schema_context": {}
+        }
+    
+    # Build schema context
+    schema_context = {"database": database, "tables": []}
+    
+    # Find relevant tables
+    if context_tables:
+        for table_name in context_tables:
+            seg = _find_table(table_name, database)
+            if seg:
+                table_info = {
+                    "name": seg["id"],
+                    "description": seg.get("summary", ""),
+                    "columns": seg.get("columns", []),
+                    "primary_key": seg.get("keys", {}).get("primary", []),
+                    "foreign_keys": seg.get("keys", {}).get("foreign", [])
+                }
+                schema_context["tables"].append(table_info)
+    else:
+        # Auto-discover relevant tables from query
+        # Use search to find relevant tables
+        search_result = search_tables(query, database=database, limit=5)
+        for table in search_result.get("tables", [])[:3]:  # Top 3 most relevant
+            seg = _find_table(table["name"], database)
+            if seg:
+                table_info = {
+                    "name": seg["id"],
+                    "description": seg.get("summary", ""),
+                    "columns": seg.get("columns", []),
+                    "primary_key": seg.get("keys", {}).get("primary", []),
+                    "foreign_keys": seg.get("keys", {}).get("foreign", [])
+                }
+                schema_context["tables"].append(table_info)
+    
+    if not schema_context["tables"]:
+        return {
+            "error": f"No relevant tables found for query. Database: {database}",
+            "sql": None,
+            "schema_context": schema_context
+        }
+    
+    # Generate SQL
+    sql, error = _sql_generator.generate_sql(query, schema_context, database)
+    
+    if error:
+        return {
+            "error": error,
+            "sql": None,
+            "schema_context": schema_context
+        }
+    
+    return {
+        "sql": sql,
+        "schema_context": {
+            "database": database,
+            "table_count": len(schema_context["tables"]),
+            "tables": [t["name"] for t in schema_context["tables"]]
+        },
+        "tokens_used": _estimate_tokens(query)
+    }
+
+
+@mcp.tool
+def execute_sql(
+    sql: str,
+    database: str,
+    limit: int = 10000
+) -> Dict[str, Any]:
+    """
+    Execute a SQL query against the specified database.
+    
+    Args:
+        sql: SQL query to execute (must be read-only SELECT query)
+        database: Target database (postgres_production or snowflake_production)
+        limit: Maximum rows to return (default 10000, max 10000)
+    
+    Returns:
+        Dict with success status, data (rows), columns, row_count, and any errors.
+    """
+    if not SQL_SERVICE_AVAILABLE:
+        error_msg = "SQL service not available. Check dependencies and configuration."
+        if SQL_SERVICE_ERROR:
+            error_msg += f" Error: {SQL_SERVICE_ERROR}"
+        return {
+            "success": False,
+            "error": error_msg,
+            "data": [],
+            "columns": [],
+            "row_count": 0
+        }
+    
+    limit = max(1, min(limit, 10000))
+    
+    result = _sql_executor.execute_query(sql, database, limit)
+    
+    return result
+
+
+@mcp.tool
+def answer_question(
+    question: str,
+    database: str = ""
+) -> Dict[str, Any]:
+    """
+    Answer a natural language question by generating and executing SQL.
+    This is a convenience tool that combines generate_sql() and execute_sql().
+    
+    Args:
+        question: Natural language question (e.g., "How many customers do I have?")
+        database: Target database (postgres_production or snowflake_production). Auto-detected if not specified.
+    
+    Returns:
+        Dict with success status, answer (formatted text), data (rows), columns, row_count, and any errors.
+        Note: The generated SQL is not included in the response (hidden from user).
+    """
+    if not SQL_SERVICE_AVAILABLE:
+        return {
+            "success": False,
+            "error": "SQL service not available. Check dependencies and configuration.",
+            "answer": None,
+            "data": [],
+            "columns": [],
+            "row_count": 0
+        }
+    
+    # Valid database names
+    VALID_DATABASES = {"postgres_production", "snowflake_production"}
+    
+    # Auto-detect database if not specified
+    if not database:
+        # Use search to find relevant tables
+        search_result = search_tables(question, limit=5)
+        for table in search_result.get("tables", []):
+            seg = _find_table(table["name"])
+            if seg and seg.get("database"):
+                candidate_db = seg.get("database")
+                # Only use if it's a valid database name (not a domain)
+                if candidate_db in VALID_DATABASES:
+                    database = candidate_db
+                    break
+        
+        if not database:
+            databases = {seg.get("database") for seg in DB_SEGMENTS if seg.get("database")}
+            # Filter to only valid database names
+            valid_found = [db for db in databases if db in VALID_DATABASES]
+            database = "postgres_production" if "postgres_production" in valid_found else (valid_found[0] if valid_found else "")
+    
+    # Validate database name
+    if database not in VALID_DATABASES:
+        # Try to find the correct database by searching for tables
+        search_result = search_tables(question, limit=10)
+        for table in search_result.get("tables", []):
+            seg = _find_table(table["name"])
+            if seg and seg.get("database") in VALID_DATABASES:
+                database = seg.get("database")
+                break
+        
+        if database not in VALID_DATABASES:
+            # Default to postgres_production if available
+            databases = {seg.get("database") for seg in DB_SEGMENTS if seg.get("database")}
+            if "postgres_production" in databases:
+                database = "postgres_production"
+            else:
+                return {
+                    "success": False,
+                    "error": f"Invalid database name '{database}'. Valid databases are: {', '.join(VALID_DATABASES)}. Could not auto-detect correct database.",
+                    "answer": None,
+                    "data": [],
+                    "columns": [],
+                    "row_count": 0
+                }
+    
+    if not database:
+        return {
+            "success": False,
+            "error": "Could not determine target database. Please specify database parameter (postgres_production or snowflake_production).",
+            "answer": None,
+            "data": [],
+            "columns": [],
+            "row_count": 0
+        }
+    
+    # Build schema context
+    schema_context = {"database": database, "tables": []}
+    
+    # Find relevant tables
+    search_result = search_tables(question, database=database, limit=5)
+    for table in search_result.get("tables", [])[:3]:  # Top 3 most relevant
+        seg = _find_table(table["name"], database)
+        if seg:
+            table_info = {
+                "name": seg["id"],
+                "description": seg.get("summary", ""),
+                "columns": seg.get("columns", []),
+                "primary_key": seg.get("keys", {}).get("primary", []),
+                "foreign_keys": seg.get("keys", {}).get("foreign", [])
+            }
+            schema_context["tables"].append(table_info)
+    
+    if not schema_context["tables"]:
+        return {
+            "success": False,
+            "error": f"No relevant tables found for question. Database: {database}",
+            "answer": None,
+            "data": [],
+            "columns": [],
+            "row_count": 0
+        }
+    
+    # Generate and execute SQL
+    result = generate_and_execute_sql(question, schema_context, database)
+    
+    if not result.get("success"):
+        return {
+            "success": False,
+            "error": result.get("error", "Unknown error"),
+            "answer": None,
+            "data": [],
+            "columns": [],
+            "row_count": 0
+        }
+    
+    # Format answer
+    answer = _format_query_answer(question, result)
+    
+    return {
+        "success": True,
+        "answer": answer,
+        "data": result.get("data", []),
+        "columns": result.get("columns", []),
+        "row_count": result.get("row_count", 0),
+        "execution_time": result.get("execution_time", 0)
+    }
+
+
+def _format_query_answer(question: str, result: Dict[str, Any]) -> str:
+    """Format query results into a natural language answer."""
+    data = result.get("data", [])
+    row_count = result.get("row_count", 0)
+    
+    if row_count == 0:
+        return "No results found."
+    
+    # If single row with single column, return simple answer
+    if row_count == 1 and len(result.get("columns", [])) == 1:
+        value = data[0].get(result["columns"][0])
+        return f"The answer is: {value}"
+    
+    # If single row, format as sentence
+    if row_count == 1:
+        row = data[0]
+        parts = []
+        for col in result.get("columns", []):
+            value = row.get(col)
+            parts.append(f"{col}: {value}")
+        return ", ".join(parts)
+    
+    # Multiple rows - provide summary
+    if "count" in question.lower() or "how many" in question.lower():
+        # Count queries
+        if row_count == 1 and len(result.get("columns", [])) == 1:
+            return f"The answer is: {data[0].get(result['columns'][0])}"
+        else:
+            return f"Found {row_count} results."
+    
+    # General query with multiple rows
+    return f"Found {row_count} results. Showing data below."
+
+
 if __name__ == "__main__":
     # Bind to 0.0.0.0 for container networking; use HTTP transport for remote access.
-    mcp.run(transport="http", host="0.0.0.0", port=8000)
+    import sys
+    if len(sys.argv) > 1 and sys.argv[1] == "stdio":
+        mcp.run(transport="stdio")
+    else:
+        mcp.run(transport="http", host="0.0.0.0", port=8000)

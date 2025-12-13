@@ -1,0 +1,59 @@
+flowchart TD
+    %% User Interaction
+    User([👤 User]) -->|Types message| WebInterface[📱 Web Interface<br/>Flask App]
+
+    %% Web Interface Processing
+    WebInterface -->|POST /chat| ChatEndpoint[/chat Endpoint]
+    ChatEndpoint --> A{AI Agent<br/>Available?}
+
+    %% AI Agent Path
+    A -->|Yes| SessionManager[🔄 Session Manager<br/>Get/Create Context]
+    SessionManager --> AIAgent[🤖 AI Agent<br/>OpenRouter/Claude]
+    AIAgent -->|Process with history| ToolDecision{🤔 Which MCP<br/>Tool?}
+
+    %% MCP Tools
+    ToolDecision -->|Data Questions| AnswerQuestion[🔍 answer_question<br/>Tool]
+    ToolDecision -->|Schema Questions| SchemaTools[📋 Schema Tools<br/>list_databases,<br/>search_tables,<br/>get_table_schema]
+    ToolDecision -->|List/Overview| ListTools[📊 List Tools<br/>list_domains,<br/>list_tables]
+
+    %% SQL Execution Path
+    AnswerQuestion --> SqlService[🗄️ SQL Service<br/>generate_and_execute_sql]
+    SqlService -->|1. Generate SQL| SqlGenerator[🧠 SQL Generator<br/>OpenRouter API<br/>GPT-4o-mini]
+    SqlGenerator -->|2. Execute SQL| DatabaseLayer[🏗️ Database Layer]
+
+    %% Database Connections
+    DatabaseLayer -->|postgres_production| Postgres[(🐘 PostgreSQL<br/>Production)]
+    DatabaseLayer -->|snowflake_production| Snowflake[(❄️ Snowflake<br/>Production)]
+
+    %% Schema/Metadata Path (No SQL execution)
+    SchemaTools --> MCPServer[📚 MCP Server<br/>Database Context]
+    ListTools --> MCPServer
+    MCPServer -->|Load from JSON| DataFiles[📁 data/map/<br/>JSON files]
+
+    %% Results Flow Back
+    SqlService -->|Query Results| AIAgent
+    MCPServer -->|Schema/Metadata| AIAgent
+    AIAgent -->|Format Response| ContextUpdate[💾 Update<br/>Context]
+    ContextUpdate --> Response[📤 Formatted<br/>Response]
+
+    %% Fallback Path
+    A -->|No| PatternMatcher[🔍 Pattern Matcher<br/>Rule-based Processing]
+    PatternMatcher --> SqlService
+
+    %% Final Response
+    Response --> WebInterface
+    PatternMatcher --> Response
+
+    %% Styling
+    classDef userClass fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef aiClass fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef dbClass fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
+    classDef toolClass fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef responseClass fill:#fce4ec,stroke:#880e4f,stroke-width:2px
+
+    class User userClass
+    class AIAgent,SqlGenerator aiClass
+    class Postgres,Snowflake,DataFiles dbClass
+    class AnswerQuestion,SchemaTools,ListTools,SqlService,MCPServer toolClass
+    class Response responseClass
+
