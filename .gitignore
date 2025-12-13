@@ -1,3 +1,25 @@
 _docs/*
 
+# Environment files
 .env
+.env.local
+
+# SFTP keys (generated locally)
+sftp/ssh_host_*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+*.so
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

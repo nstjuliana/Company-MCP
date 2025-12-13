@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+  # MCP Server - Database Context Server
+  mcp-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mcp-server
+    ports:
+      - "${MCP_PORT:-8000}:8000"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+    networks:
+      - mcp-network
+
+  # SFTP Server for file management
+  # Connect via: sftp -P 2222 datauser@localhost
+  sftp-server:
+    image: atmoz/sftp:alpine
+    container_name: sftp-server
+    ports:
+      - "${SFTP_PORT:-2222}:22"
+    volumes:
+      - ./data:/home/${SFTP_USER:-datauser}/data
+      - sftp-keys:/etc/ssh/keys
+    command: "${SFTP_USER:-datauser}:${SFTP_PASSWORD:-changeme}:1001:1001:data"
+    restart: unless-stopped
+    networks:
+      - mcp-network
+
+networks:
+  mcp-network:
+    driver: bridge
+
+volumes:
+  sftp-keys:
+    name: company-mcp-sftp-keys

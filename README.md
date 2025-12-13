@@ -190,6 +190,77 @@ python client.py
 
 ---
 
+## Docker Compose Deployment
+
+For a full deployment with **MCP Server** and **SFTP Server**:
+
+### Quick Start with Docker Compose
+
+```bash
+# 1. Copy environment template
+cp .env.example .env
+
+# 2. Edit .env with your configuration
+#    - Set a secure SFTP_PASSWORD
+#    - Add OPENAI_API_KEY for vector search
+
+# 3. Start all services
+docker-compose up -d
+```
+
+### Services
+
+| Service | Port | Description |
+|---------|------|-------------|
+| **MCP Server** | `8000` | Database context MCP endpoint |
+| **SFTP Server** | `2222` | SFTP access to `/data` directory |
+
+### SFTP Access
+
+Connect to the SFTP server for programmatic file access:
+
+```bash
+# Connect via SFTP
+sftp -P 2222 datauser@localhost
+
+# Default credentials (change in .env):
+# User: datauser
+# Password: changeme
+```
+
+Files are accessible at `/home/datauser/data/` which maps to the `./data` directory.
+
+### Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `MCP_PORT` | `8000` | MCP server HTTP port |
+| `OPENAI_API_KEY` | - | OpenAI API key for vector search |
+| `SFTP_PORT` | `2222` | SFTP server port |
+| `SFTP_USER` | `datauser` | SFTP username |
+| `SFTP_PASSWORD` | `changeme` | SFTP password |
+
+### Docker Commands
+
+```bash
+# Start all services
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop all services
+docker-compose down
+
+# Rebuild after changes
+docker-compose up -d --build
+
+# View service status
+docker-compose ps
+```
+
+---
+
 ## Available Tools (14 total)
 
 ### Discovery Tools

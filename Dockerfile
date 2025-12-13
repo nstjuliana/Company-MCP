@@ -5,12 +5,18 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
+# Install curl for healthcheck
+RUN apt-get update && apt-get install -y --no-install-recommends curl && \
+    rm -rf /var/lib/apt/lists/*
+
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy server and supporting files
 COPY server.py .
-COPY data/ data/
+
+# Data directory will be mounted as volume
+# COPY data/ data/
 
 EXPOSE 8000
 
