@@ -52,20 +52,16 @@ mcp_servers: Dict[str, Dict[str, Any]] = {}
 def load_mcp_servers():
     """Load MCP server configurations from file."""
     global mcp_servers
+    mcp_servers = {}  # Always start with empty dict
     if MCP_CONFIG_PATH.exists():
         try:
             with open(MCP_CONFIG_PATH, "r") as f:
-                mcp_servers = json.load(f)
-        except Exception:
+                loaded = json.load(f)
+                if isinstance(loaded, dict):
+                    mcp_servers = loaded
+        except Exception as e:
+            print(f"[load_mcp_servers] Error loading config: {e}")
             mcp_servers = {}
-    # Always include the default MCP server
-    if "default" not in mcp_servers:
-        mcp_servers["default"] = {
-            "name": "Default MCP Server",
-            "url": MCP_SERVER_URL,
-            "enabled": True,
-            "description": "Built-in database context MCP server"
-        }
 
 
 def save_mcp_servers():
@@ -148,7 +144,8 @@ async def home(request: Request):
 @app.get("/api/mcp/servers")
 async def list_mcp_servers():
     """List all configured MCP servers."""
-    return {"servers": mcp_servers}
+    # Ensure we always return a valid dict
+    return {"servers": mcp_servers if isinstance(mcp_servers, dict) else {}}
 
 
 @app.post("/api/mcp/servers/{server_id}")
@@ -191,8 +188,6 @@ async def delete_mcp_server(server_id: str):
     """Delete an MCP server configuration."""
     if server_id not in mcp_servers:
         raise HTTPException(status_code=404, detail=f"Server '{server_id}' not found")
-    if server_id == "default":
-        raise HTTPException(status_code=400, detail="Cannot delete the default server")
     
     del mcp_servers[server_id]
     save_mcp_servers()
