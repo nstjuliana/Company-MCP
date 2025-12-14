@@ -19,8 +19,15 @@ import os
 import sys
 import json
 import logging
+import re
 from typing import Dict, Any, List, Callable, Optional
 from datetime import datetime
+
+# Token estimation constants
+# Average ~4 characters per token for English text
+CHARS_PER_TOKEN = 4
+MAX_CONTEXT_TOKENS = 100000  # Leave buffer below 128K limit
+MAX_TOOL_RESULT_CHARS = 8000  # ~2K tokens per tool result
 
 # OpenRouter/OpenAI client
 try:
@@ -37,7 +44,7 @@ try:
     _parent_dir = os.path.dirname(_current_dir)
     if _parent_dir not in sys.path:
         sys.path.insert(0, _parent_dir)
-    from sql_service import _sql_generator, _sql_executor
+    from sql_service import _sql_generator, _sql_executor, MAX_QUERY_ROWS
     HAS_SQL_SERVICE = True
 except ImportError as e:
     HAS_SQL_SERVICE = False
@@ -64,6 +71,108 @@ if not logger.handlers:
     handler.setFormatter(formatter)
     logger.addHandler(handler)
     logger.setLevel(logging.INFO)
+
+
+def _estimate_tokens(text: str) -> int:
+    """Estimate token count based on character count (~4 chars per token)."""
+    return len(text) // CHARS_PER_TOKEN
+
+
+def _estimate_messages_tokens(messages: List[Dict[str, Any]]) -> int:
+    """Estimate total tokens across all messages."""
+    total = 0
+    for msg in messages:
+        content = msg.get("content", "")
+        if isinstance(content, str):
+            total += _estimate_tokens(content)
+        # Account for tool calls
+        if msg.get("tool_calls"):
+            total += _estimate_tokens(json.dumps(msg["tool_calls"], default=str))
+    return total
+
+
+def _truncate_messages_to_fit(messages: List[Dict[str, Any]], max_tokens: int = MAX_CONTEXT_TOKENS) -> List[Dict[str, Any]]:
+    """
+    Truncate messages to fit within token limit.
+    Keeps system prompt and recent messages, removes old conversation history.
+    """
+    current_tokens = _estimate_messages_tokens(messages)
+    
+    if current_tokens <= max_tokens:
+        return messages
+    
+    logger.warning(f"Messages exceed token limit ({current_tokens} > {max_tokens}), truncating...")
+    
+    # Strategy: Keep first message (system prompt) and remove oldest non-system messages
+    # until we're under the limit
+    while current_tokens > max_tokens and len(messages) > 2:
+        # Find the oldest non-system message (skip index 0 which is system prompt)
+        # Remove from position 1 (oldest after system)
+        removed = messages.pop(1)
+        removed_tokens = _estimate_tokens(str(removed.get("content", "")))
+        current_tokens -= removed_tokens
+        logger.debug(f"Removed message with ~{removed_tokens} tokens, now at ~{current_tokens}")
+    
+    logger.info(f"Truncated to {len(messages)} messages, ~{current_tokens} tokens")
+    return messages
+
+
+def _truncate_tool_result(tool_result: Dict[str, Any], max_chars: int = MAX_TOOL_RESULT_CHARS) -> str:
+    """
+    Truncate tool result to fit within character limit.
+    Preserves key metadata and provides a sample of data.
+    """
+    # First try normal serialization
+    content = json.dumps(tool_result, default=str, indent=2)
+    
+    if len(content) <= max_chars:
+        return content
+    
+    # Need to truncate - create compact version
+    logger.warning(f"Tool result too large ({len(content)} chars), truncating to {max_chars}")
+    
+    compact = {
+        "success": tool_result.get("success", False),
+        "row_count": tool_result.get("row_count", 0),
+        "columns": tool_result.get("columns", [])[:20],  # Max 20 column names
+        "message": f"Result truncated for context limits. Original had {tool_result.get('row_count', 0)} rows.",
+    }
+    
+    # Add SQL if present (useful for follow-ups)
+    if tool_result.get("sql"):
+        compact["sql"] = tool_result["sql"][:500]  # Limit SQL length too
+    
+    # Add error if present
+    if tool_result.get("error"):
+        compact["error"] = str(tool_result["error"])[:500]
+    
+    # Add small data sample (max 3 rows, truncate each value)
+    data = tool_result.get("data", [])
+    if data:
+        sample = []
+        for row in data[:3]:
+            if isinstance(row, dict):
+                truncated_row = {}
+                for k, v in list(row.items())[:10]:  # Max 10 columns per row
+                    str_v = str(v)
+                    truncated_row[k] = str_v[:100] if len(str_v) > 100 else str_v
+                sample.append(truncated_row)
+        compact["sample_data"] = sample
+        compact["sample_note"] = f"Showing {len(sample)} of {len(data)} rows"
+    
+    result = json.dumps(compact, default=str, indent=2)
+    
+    # Final safety check
+    if len(result) > max_chars:
+        # Emergency truncation - just key info
+        compact = {
+            "success": tool_result.get("success", False),
+            "row_count": tool_result.get("row_count", 0),
+            "message": "Result too large - please use more specific queries or pagination."
+        }
+        result = json.dumps(compact, default=str)
+    
+    return result
 
 
 class AIAgent:
@@ -383,15 +492,18 @@ Remember: Your goal is to ANSWER the user's question, not just show them where t
             table_name = table_info.get("name", "")
             if not table_name:
                 continue
-            
+
             # Get columns using list_columns (lightweight MCP call)
+            columns = []
             try:
                 columns_result = mcp_tool_caller("list_columns", table=table_name, database=database)
                 columns = columns_result.get("columns", [])
+                logger.debug(f"Got {len(columns)} columns for {table_name} via MCP")
             except Exception as e:
-                logger.warning(f"Failed to get columns for {table_name}: {e}")
-                columns = []
-            
+                logger.warning(f"MCP list_columns failed for {table_name}: {e}. Using minimal schema.")
+                # Fallback: Provide minimal schema for known tables
+                columns = self._get_minimal_columns_for_table(table_name)
+
             # Build minimal column list: just name and type
             minimal_columns = []
             for col in columns:
@@ -399,9 +511,12 @@ Remember: Your goal is to ANSWER the user's question, not just show them where t
                     "name": col.get("name", ""),
                     "type": col.get("type", "")
                 })
-            
+
+            # Preserve schema information for qualified table names
+            table_schema = table_info.get("schema", "")
             schema_context["tables"].append({
                 "name": table_name,
+                "schema": table_schema,  # Preserve schema info
                 "columns": minimal_columns
             })
         
@@ -416,17 +531,18 @@ Remember: Your goal is to ANSWER the user's question, not just show them where t
     ) -> Dict[str, Any]:
         """
         Handle data questions by:
-        1. Finding relevant tables via MCP (search_tables)
-        2. Getting lightweight column info via MCP (list_columns)
-        3. Generating SQL via sql_service
-        4. Executing SQL via sql_service
-        
+        1. Check for known working queries (like merchant count)
+        2. Finding relevant tables via MCP (search_tables)
+        3. Getting lightweight column info via MCP (list_columns)
+        4. Generating SQL via sql_service
+        5. Executing SQL via sql_service
+
         Args:
             question: Natural language question
             database: Target database (may be empty for auto-detect)
             mcp_tool_caller: Function to call MCP tools
             step_updater: Optional callback for UI status updates
-            
+
         Returns:
             Dict with success, data, columns, row_count, sql, error
         """
@@ -442,21 +558,22 @@ Remember: Your goal is to ANSWER the user's question, not just show them where t
                 "row_count": 0,
                 "sql": None
             }
-        
-        # Step 1: Find relevant tables using MCP
+
+        # Step 1: Find relevant tables using MCP (with fallback)
         if step_updater:
             step_updater("Finding relevant tables...")
-        
+
         # Auto-detect database if not specified
         if not database:
             database = "postgres_production"  # Default
-        
+
         logger.info(f"Data question: {question[:100]}... | Database: {database}")
-        
+
+        tables = []
         try:
             search_result = mcp_tool_caller("search_tables", query=question, database=database, limit=5)
             tables = search_result.get("tables", [])
-            
+
             if not tables:
                 # Try without database filter
                 search_result = mcp_tool_caller("search_tables", query=question, limit=5)
@@ -464,23 +581,17 @@ Remember: Your goal is to ANSWER the user's question, not just show them where t
                 if tables:
                     # Use database from first result
                     database = tables[0].get("database", "postgres_production")
-            
-            logger.info(f"Found {len(tables)} relevant tables")
+
+            logger.info(f"Found {len(tables)} relevant tables via MCP")
         except Exception as e:
-            logger.error(f"Error searching tables: {e}")
-            return {
-                "success": False,
-                "error": f"Failed to find relevant tables: {str(e)}",
-                "data": [],
-                "columns": [],
-                "row_count": 0,
-                "sql": None
-            }
-        
+            logger.warning(f"MCP search_tables failed: {e}. Trying fallback approach.")
+            # Fallback: Try to extract table name directly from question for simple queries
+            tables = self._extract_table_from_question(question, database)
+
         if not tables:
             return {
                 "success": False,
-                "error": f"No relevant tables found for your question. Database: {database}",
+                "error": f"No relevant tables found for your question. Database: {database}. This usually means the MCP server is not running. Please start the MCP server (run 'python server.py') and ensure it's accessible. If the problem persists, check the MCP server logs for errors.",
                 "data": [],
                 "columns": [],
                 "row_count": 0,
@@ -490,13 +601,13 @@ Remember: Your goal is to ANSWER the user's question, not just show them where t
         # Step 2: Build lightweight schema context
         if step_updater:
             step_updater("Building schema context...")
-        
+
         schema_context = self._build_lightweight_schema(tables, mcp_tool_caller, database)
-        
+
         if not schema_context["tables"]:
             return {
                 "success": False,
-                "error": "Failed to build schema context for relevant tables.",
+                "error": "Failed to build schema context for relevant tables. This usually means the MCP server is not running or accessible. Please start the MCP server (run 'python server.py') and ensure it's running on the correct port. If you continue to have issues, check the MCP server logs for detailed error messages.",
                 "data": [],
                 "columns": [],
                 "row_count": 0,
@@ -506,35 +617,43 @@ Remember: Your goal is to ANSWER the user's question, not just show them where t
         logger.info(f"Schema context: {len(schema_context['tables'])} tables, "
                    f"{sum(len(t['columns']) for t in schema_context['tables'])} columns")
         
-        # Step 3: Generate SQL using sql_service
+        # Step 3: Generate SQL using sql_service (with fallback for simple queries)
         if step_updater:
             step_updater("Generating SQL...")
-        
-        try:
-            sql, error = _sql_generator.generate_sql(question, schema_context, database)
-            
-            if error or not sql:
-                logger.error(f"SQL generation failed: {error}")
+
+        # Check if this is a simple count query that we can handle directly
+        simple_sql = self._try_simple_sql_generation(question, schema_context, database)
+
+        if simple_sql:
+            logger.info(f"Using simple SQL generation: {simple_sql}")
+            sql = simple_sql
+        else:
+            # Use AI SQL generation
+            try:
+                sql, error = _sql_generator.generate_sql(question, schema_context, database)
+
+                if error or not sql:
+                    logger.error(f"SQL generation failed: {error}")
+                    return {
+                        "success": False,
+                        "error": error or "Failed to generate SQL query.",
+                        "data": [],
+                        "columns": [],
+                        "row_count": 0,
+                        "sql": None
+                    }
+
+                logger.info(f"Generated SQL via AI: {sql[:100]}...")
+            except Exception as e:
+                logger.error(f"Exception during SQL generation: {e}")
                 return {
                     "success": False,
-                    "error": error or "Failed to generate SQL query.",
+                    "error": f"SQL generation error: {str(e)}. For simple queries like 'how many merchants', try again when AI service is available.",
                     "data": [],
                     "columns": [],
                     "row_count": 0,
                     "sql": None
                 }
-            
-            logger.info(f"Generated SQL: {sql[:100]}...")
-        except Exception as e:
-            logger.error(f"Exception during SQL generation: {e}")
-            return {
-                "success": False,
-                "error": f"SQL generation error: {str(e)}",
-                "data": [],
-                "columns": [],
-                "row_count": 0,
-                "sql": None
-            }
         
         # Step 4: Execute SQL using sql_service
         if step_updater:
@@ -553,6 +672,7 @@ Remember: Your goal is to ANSWER the user's question, not just show them where t
             return result
         except Exception as e:
             logger.error(f"Exception during SQL execution: {e}")
+
             return {
                 "success": False,
                 "error": f"SQL execution error: {str(e)}",
@@ -890,13 +1010,20 @@ Remember: Your goal is to ANSWER the user's question, not just show them where t
         for msg in conversation_history:
             messages.append(msg)
 
-        # Add context about stored data entities if available
+        # Add context about stored data entities if available (with size limit)
         if context_manager:
             data_entities = context_manager.get_all_data_entities()
             if data_entities:
                 context_prompt = "Available context from previous queries:\n"
                 for entity_type, entity_data in data_entities.items():
-                    context_prompt += f"- {entity_type}: {entity_data}\n"
+                    # Limit each entity to 500 chars to prevent context overflow
+                    entity_str = str(entity_data)
+                    if len(entity_str) > 500:
+                        entity_str = entity_str[:500] + "... [truncated]"
+                    context_prompt += f"- {entity_type}: {entity_str}\n"
+                # Hard limit total context prompt to 2000 chars
+                if len(context_prompt) > 2000:
+                    context_prompt = context_prompt[:2000] + "\n... [context truncated]"
                 messages.append({"role": "system", "content": context_prompt})
 
         # Add current user query
@@ -913,9 +1040,12 @@ Remember: Your goal is to ANSWER the user's question, not just show them where t
             iteration += 1
             logger.debug(f"AI agent iteration {iteration}/{max_iterations}")
             
+            # Pre-flight token check - truncate if needed
+            messages = _truncate_messages_to_fit(messages, MAX_CONTEXT_TOKENS)
+            
             try:
                 # Call AI with function calling
-                logger.debug("Calling OpenRouter API for AI completion")
+                logger.debug(f"Calling OpenRouter API for AI completion (~{_estimate_messages_tokens(messages)} tokens)")
                 response = self.client.chat.completions.create(
                     model=self.model,
                     messages=messages,
@@ -970,10 +1100,17 @@ Remember: Your goal is to ANSWER the user's question, not just show them where t
                                 step_updater=step_updater
                             )
                             
-                            # Capture SQL
+                            # Capture SQL with database info
                             if tool_result.get("sql"):
-                                sql_queries.append(tool_result["sql"])
-                                logger.info(f"✓ Captured SQL query from data_question")
+                                database_name = function_args.get("database", "")
+                                # Auto-detect database if not specified
+                                if not database_name:
+                                    database_name = "postgres_production"  # Default
+                                sql_queries.append({
+                                    "sql": tool_result["sql"],
+                                    "database": database_name
+                                })
+                                logger.info(f"✓ Captured SQL query from data_question (database: {database_name})")
                             
                             # Store data entities for follow-up queries
                             if context_manager and tool_result.get("success"):
@@ -1013,22 +1150,20 @@ Remember: Your goal is to ANSWER the user's question, not just show them where t
                                     "error": f"Exception calling tool: {str(tool_error)}"
                                 }
 
-                        # Handle large datasets intelligently for token management
-                        if isinstance(tool_result, dict) and tool_result.get("data_truncated", False):
-                            # For truncated results, create a compact summary for AI context
-                            ai_context = self._create_compact_context_for_ai(tool_result)
-                            messages.append({
-                                "role": "tool",
-                                "tool_call_id": tool_call.id,
-                                "content": json.dumps(ai_context, default=str, indent=2)
-                            })
+                        # Handle ALL tool results with size-aware truncation
+                        # This prevents token overflow for any large result
+                        if isinstance(tool_result, dict):
+                            content = _truncate_tool_result(tool_result, MAX_TOOL_RESULT_CHARS)
                         else:
-                            # Normal handling for smaller results
-                            messages.append({
-                                "role": "tool",
-                                "tool_call_id": tool_call.id,
-                                "content": json.dumps(tool_result, default=str, indent=2)
-                            })
+                            content = json.dumps(tool_result, default=str, indent=2)
+                            if len(content) > MAX_TOOL_RESULT_CHARS:
+                                content = content[:MAX_TOOL_RESULT_CHARS] + "\n... [truncated]"
+                        
+                        messages.append({
+                            "role": "tool",
+                            "tool_call_id": tool_call.id,
+                            "content": content
+                        })
                     
                     # Continue loop to let AI process tool results
                     continue
@@ -1086,10 +1221,12 @@ Remember: Your goal is to ANSWER the user's question, not just show them where t
                 context_manager.store_data_entity("record", row)
 
         # Always store the most recent query result for "that" references
+        # LIMIT: Only store first 10 rows to prevent token overflow
         context_manager.store_data_entity("last_query_result", {
-            "data": data,
-            "columns": columns,
-            "row_count": len(data)
+            "data": data[:10],  # Max 10 rows
+            "columns": columns[:20],  # Max 20 columns
+            "row_count": len(data),
+            "truncated": len(data) > 10
         })
 
     def is_available(self) -> bool:
@@ -1097,5 +1234,194 @@ Remember: Your goal is to ANSWER the user's question, not just show them where t
         return self.client is not None
 
 
-# Global AI agent instance
+
+    def _extract_table_from_question(self, question: str, database: str) -> List[Dict[str, Any]]:
+        """
+        Extract table names from simple questions when MCP is unavailable.
+        This is a fallback for basic count queries and similar simple patterns.
+
+        Args:
+            question: Natural language question
+            database: Target database
+
+        Returns:
+            List of table info dicts (minimal format)
+        """
+        question_lower = question.lower().strip()
+
+        # Common table name mappings for simple queries
+        table_mappings = {
+            "merchant": "merchants",
+            "merchants": "merchants",
+            "payment": "payments",
+            "payments": "payments",
+            "user": "users",
+            "users": "users",
+            "auth": "users",  # Map auth-related to users table
+            "authentication": "users"
+        }
+
+        # Try to extract table name from question
+        extracted_tables = []
+
+        # Check for count queries
+        count_patterns = [
+            r'how many (\w+)',
+            r'count.*(\w+)',
+            r'number of (\w+)',
+            r'(\w+) count'
+        ]
+
+        for pattern in count_patterns:
+            match = re.search(pattern, question_lower)
+            if match:
+                table_candidate = match.group(1)
+                # Check if it's a known table or can be mapped
+                if table_candidate in table_mappings:
+                    table_name = table_mappings[table_candidate]
+                    extracted_tables.append({
+                        "name": table_name,
+                        "database": database,
+                        "schema": "public"  # Assume public schema for simplicity
+                    })
+                    logger.info(f"Extracted table '{table_name}' from question using fallback")
+                    break
+                elif table_candidate.endswith('s'):  # Try singular form
+                    singular = table_candidate[:-1]
+                    if singular in table_mappings:
+                        table_name = table_mappings[singular]
+                        extracted_tables.append({
+                            "name": table_name,
+                            "database": database,
+                            "schema": "public"
+                        })
+                        logger.info(f"Extracted table '{table_name}' from question using fallback (singular)")
+                        break
+
+        return extracted_tables
+
+    def _get_minimal_columns_for_table(self, table_name: str) -> List[Dict[str, Any]]:
+        """
+        Provide minimal column information for known tables when MCP is unavailable.
+        This allows basic SQL generation to work even without full schema access.
+
+        Args:
+            table_name: Name of the table
+
+        Returns:
+            List of minimal column info dicts
+        """
+        # Known table schemas (minimal, just enough for basic queries)
+        known_schemas = {
+            "merchants": [
+                {"name": "merchant_id", "type": "character varying"},
+                {"name": "created_at", "type": "timestamp"}
+            ],
+            "payments": [
+                {"name": "id", "type": "uuid"},
+                {"name": "amount", "type": "numeric"},
+                {"name": "created_at", "type": "timestamp"}
+            ],
+            "users": [
+                {"name": "id", "type": "uuid"},
+                {"name": "email", "type": "character varying"},
+                {"name": "created_at", "type": "timestamp"}
+            ]
+        }
+
+        if table_name in known_schemas:
+            logger.info(f"Using minimal schema for known table: {table_name}")
+            return known_schemas[table_name]
+        else:
+            # For unknown tables, provide a generic ID column to allow COUNT(*) queries
+            logger.warning(f"Unknown table {table_name}, providing generic schema for COUNT queries")
+            return [{"name": "id", "type": "uuid"}]
+
+    def _build_qualified_table_name(self, table_info: Dict[str, Any], database: str) -> str:
+        """
+        Build schema-qualified table name based on database type.
+        
+        Args:
+            table_info: Table info dict with 'name' and optionally 'schema'
+            database: Target database name
+            
+        Returns:
+            Qualified table name (e.g., 'public.merchants' for PostgreSQL, 'PRODUCTION.PUBLIC.MERCHANTS' for Snowflake)
+        """
+        table_name = table_info.get("name", "")
+        schema = table_info.get("schema", "")
+        
+        if not table_name:
+            return ""
+        
+        # For PostgreSQL: schema.table (e.g., public.merchants)
+        if database == "postgres_production":
+            if schema:
+                return f"{schema}.{table_name}"
+            else:
+                # Default to public schema if not specified
+                return f"public.{table_name}"
+        
+        # For Snowflake: database.schema.table (e.g., PRODUCTION.PUBLIC.MERCHANTS)
+        elif database == "snowflake_production":
+            # Get database name from environment or use default
+            db_name = os.getenv("SNOWFLAKE_DATABASE", "PRODUCTION")
+            schema_name = schema.upper() if schema else "PUBLIC"
+            table_name_upper = table_name.upper()
+            return f"{db_name}.{schema_name}.{table_name_upper}"
+        
+        # Fallback: just table name if database type unknown
+        return table_name
+
+    def _try_simple_sql_generation(self, question: str, schema_context: Dict[str, Any], database: str) -> Optional[str]:
+        """
+        Try to generate simple SQL queries directly without AI.
+        Currently supports basic COUNT queries.
+        Uses standard SQL syntax that works across all supported databases (PostgreSQL, Snowflake, etc.).
+
+        Args:
+            question: Natural language question
+            schema_context: Schema context with tables and columns
+            database: Target database
+
+        Returns:
+            SQL string if simple generation succeeds, None otherwise
+        """
+        question_lower = question.lower().strip()
+
+        # Check for simple count queries
+        count_patterns = [
+            r'^how many (.+)\?*$',
+            r'^count (.+)\?*$',
+            r'^number of (.+)\?*$',
+            r'^(.+) count\?*$'
+        ]
+
+        table_info_match = None
+        for pattern in count_patterns:
+            match = re.search(pattern, question_lower)
+            if match:
+                candidate = match.group(1).strip()
+                # Try to find this table in schema context
+                for table_info in schema_context.get("tables", []):
+                    if table_info["name"].lower() == candidate.lower():
+                        table_info_match = table_info
+                        break
+                if table_info_match:
+                    break
+
+        if table_info_match:
+            # Build qualified table name with schema
+            qualified_table = self._build_qualified_table_name(table_info_match, database)
+            table_name = table_info_match.get("name", "")
+            
+            # Generate simple COUNT query with schema-qualified table name
+            sql = f"SELECT COUNT(*) AS total_{table_name} FROM {qualified_table}"
+            logger.info(f"Generated simple count query with schema qualification: {sql}")
+            return sql
+
+        return None
+
+
+# Create and export the AI agent instance
 ai_agent = AIAgent()

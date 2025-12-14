@@ -29,12 +29,23 @@ except ImportError:
     HAS_POSTGRES = False
     psycopg2 = None
 
-try:
-    import snowflake.connector
-    HAS_SNOWFLAKE = True
-except ImportError:
-    HAS_SNOWFLAKE = False
-    snowflake = None
+# Lazy import snowflake to avoid startup crashes
+HAS_SNOWFLAKE = False
+snowflake = None
+
+def _try_import_snowflake():
+    global HAS_SNOWFLAKE, snowflake
+    if snowflake is not None:
+        return HAS_SNOWFLAKE
+    try:
+        _try_import_snowflake()
+        HAS_SNOWFLAKE = True
+        return True
+    except Exception as e:
+        HAS_SNOWFLAKE = False
+        snowflake = None
+        print(f"Warning: Failed to import snowflake.connector: {e}")
+        return False
 
 # OpenRouter for SQL generation
 try:
@@ -182,6 +193,8 @@ class DatabaseConnectionManager:
                 return None
             
             logger.info(f"Creating Snowflake connection: account={account}, user={user}, warehouse={warehouse}, database={database}, schema={schema}")
+            if not _try_import_snowflake():
+                raise Exception("Snowflake connector not available")
             conn = snowflake.connector.connect(
                 account=account,
                 user=user,
@@ -199,7 +212,7 @@ class DatabaseConnectionManager:
             return conn
         except Exception as e:
             error_msg = str(e)
-            if HAS_SNOWFLAKE and hasattr(snowflake.connector, 'errors'):
+            if _try_import_snowflake() and hasattr(snowflake.connector, 'errors'):
                 if hasattr(snowflake.connector.errors, 'ProgrammingError') and isinstance(e, snowflake.connector.errors.ProgrammingError):
                     logger.error(f"Snowflake connection failed (ProgrammingError): {error_msg}")
                     logger.error("Check: 1) Account name is correct, 2) User has proper permissions, 3) Warehouse/database exist")
@@ -410,13 +423,30 @@ class SQLGenerator:
         if "tables" in schema_context:
             lines.append("\nRelevant Tables:")
             for table in schema_context["tables"]:
-                lines.append(f"\nTable: {table.get('name', 'unknown')}")
+                table_name = table.get('name', 'unknown')
+                schema = table.get('schema', '')
+                database = schema_context.get('database', '')
+                
+                # Build qualified table name for display
+                if schema:
+                    if database == "snowflake_production":
+                        db_name = os.getenv("SNOWFLAKE_DATABASE", "PRODUCTION")
+                        qualified_name = f"{db_name}.{schema.upper()}.{table_name.upper()}"
+                    else:
+                        qualified_name = f"{schema}.{table_name}"
+                else:
+                    qualified_name = table_name
+                
+                lines.append(f"\nTable: {table_name}")
+                if schema:
+                    lines.append(f"  Schema: {schema}")
+                    lines.append(f"  Qualified Name: {qualified_name}")
                 if table.get('description'):
                     lines.append(f"  Description: {table['description']}")
                 
                 # Columns
                 if table.get('columns'):
-                    lines.append("  Columns:")
+                    lines.append(f"  Columns (ONLY these columns exist in {table_name}):")
                     for col in table['columns']:
                         col_desc = f"    - {col.get('name', 'unknown')} ({col.get('type', 'unknown')})"
                         if col.get('description'):
@@ -457,11 +487,13 @@ Schema Information:
 
 Requirements:
 1. Generate a read-only SELECT query
-2. Use proper table and column names from the schema
-3. Include appropriate JOINs if multiple tables are needed
-4. Use proper SQL syntax for {database}
-5. Add LIMIT if the query might return many rows (suggested: LIMIT 10000)
-6. Return only the SQL query, no explanations
+2. CRITICAL: Only use columns that are EXPLICITLY listed under each table in the schema above. Do NOT assume columns exist - if a column is not listed for a table, it does not exist in that table.
+3. Use proper table and column names from the schema
+4. IMPORTANT: Use schema-qualified table names (e.g., 'public.merchants' for PostgreSQL, 'PRODUCTION.PUBLIC.MERCHANTS' for Snowflake) when schema information is provided
+5. Include appropriate JOINs if multiple tables are needed
+6. Use proper SQL syntax for {database}
+7. Add LIMIT if the query might return many rows (suggested: LIMIT 10000)
+8. Return only the SQL query, no explanations
 
 SQL Query:"""
 
@@ -524,10 +556,12 @@ class SQLExecutor:
             if not conn:
                 error_msg = (
                     f"Could not connect to database '{database}'. "
-                    "Possible causes: 1) Database credentials not configured (check environment variables), "
+                    "Possible causes: 1) Database credentials not configured (check environment variables like TEST_DATABASE_URL, POSTGRES_HOST, etc.), "
                     "2) Database server is not running or unreachable, "
-                    "3) Network connectivity issues, "
-                    "4) Invalid credentials. "
+                    "3) Network connectivity issues or firewall blocking access, "
+                    "4) Invalid credentials or database name. "
+                    f"For PostgreSQL: check TEST_DATABASE_URL or POSTGRES_* environment variables. "
+                    f"For Snowflake: check SNOWFLAKE_* environment variables. "
                     "Check server logs for detailed error information."
                 )
                 logger.error(error_msg)
@@ -731,7 +765,7 @@ class SQLExecutor:
             
         except Exception as e:
             error_msg = f"Snowflake error: {str(e)}"
-            if HAS_SNOWFLAKE and hasattr(snowflake.connector, 'errors'):
+            if _try_import_snowflake() and hasattr(snowflake.connector, 'errors'):
                 if hasattr(snowflake.connector.errors, 'ProgrammingError') and isinstance(e, snowflake.connector.errors.ProgrammingError):
                     logger.error(f"Snowflake programming error: {error_msg}", exc_info=True)
                 elif hasattr(snowflake.connector.errors, 'DatabaseError') and isinstance(e, snowflake.connector.errors.DatabaseError):
@@ -785,7 +819,11 @@ def generate_and_execute_sql(
     - error: error message if failed
     - execution_time: query execution time
     """
-    # Validate database name
+    # Validate database name - ADD NEW DATABASES HERE
+    # To add support for a new database:
+    # 1. Add database name to VALID_DATABASES
+    # 2. Add connection method to DatabaseConnectionManager
+    # 3. Add execution method to SQLExecutor (_execute_<database_name>)
     VALID_DATABASES = {"postgres_production", "snowflake_production"}
     original_database = database
     if database not in VALID_DATABASES:

@@ -2250,8 +2250,13 @@ HTML_TEMPLATE = """
                 if (!text) return '';
                 // Tables - convert markdown tables to HTML tables
                 text = processTables(text);
-                // Headers (### Header Text -> <h3>Header Text</h3>)
+                // Headers - process from h6 to h1 to avoid conflicts (most specific first)
+                text = text.replace(/^###### (.+)$/gm, '<h6>$1</h6>');
+                text = text.replace(/^##### (.+)$/gm, '<h5>$1</h5>');
+                text = text.replace(/^#### (.+)$/gm, '<h4>$1</h4>');
                 text = text.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+                text = text.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+                text = text.replace(/^# (.+)$/gm, '<h1>$1</h1>');
                 // Bold - using string replace to avoid regex escaping issues
                 text = text.split('**').map(function(part, i) {
                     return i % 2 === 1 ? '<strong>' + part + '</strong>' : part;
@@ -2442,18 +2447,36 @@ HTML_TEMPLATE = """
                         </div>
                     `;
                 } else {
-                    popupContent.innerHTML = sqlQueries.map((sql, index) => `
+                    // Helper function to format database name for display
+                    function formatDatabaseName(dbName) {
+                        if (!dbName || dbName === 'Unknown') return 'Unknown';
+                        // Convert "postgres_production" -> "Postgres Production"
+                        // Convert "snowflake_production" -> "Snowflake Production"
+                        return dbName
+                            .split('_')
+                            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                            .join(' ');
+                    }
+                    
+                    popupContent.innerHTML = sqlQueries.map((queryItem, index) => {
+                        // Handle both string (backward compatibility) and object formats
+                        const sql = typeof queryItem === 'string' ? queryItem : queryItem.sql;
+                        const database = typeof queryItem === 'string' ? 'Unknown' : (queryItem.database || 'Unknown');
+                        const displayLabel = formatDatabaseName(database);
+                        
+                        return `
                         <div class="sql-query-block">
                             <div class="sql-query-header">
-                                <span class="sql-query-label">Query ${sqlQueries.length > 1 ? index + 1 : ''}</span>
+                                <span class="sql-query-label">${displayLabel}</span>
                                 <button class="sql-copy-btn" onclick="copySql(this, ${index})">Copy</button>
                             </div>
                             <pre class="sql-query-code">${highlightSql(sql)}</pre>
                         </div>
-                    `).join('');
+                    `;
+                    }).join('');
                     
-                    // Store queries for copy function
-                    window._currentSqlQueries = sqlQueries;
+                    // Store queries for copy function (extract SQL strings)
+                    window._currentSqlQueries = sqlQueries.map(q => typeof q === 'string' ? q : q.sql);
                 }
                 
                 overlay.classList.add('active');
@@ -2467,6 +2490,7 @@ HTML_TEMPLATE = """
             };
 
             window.copySql = function(btn, index) {
+                // _currentSqlQueries already contains just SQL strings
                 const sql = window._currentSqlQueries[index];
                 navigator.clipboard.writeText(sql).then(() => {
                     const originalText = btn.textContent;
