@@ -48,6 +48,32 @@ openai_client: Optional[AsyncOpenAI] = None
 # In-memory MCP server registry
 mcp_servers: Dict[str, Dict[str, Any]] = {}
 
+# Known internal MCP server mappings (external path -> internal URL)
+INTERNAL_MCP_SERVERS = {
+    "/mcp/dabstep": "http://mcp-dabstep:8000",
+    "/mcp/synth": "http://mcp-synth:8000",
+}
+
+
+def normalize_mcp_url(url: str) -> str:
+    """
+    Normalize MCP server URL to use internal Docker URLs when possible.
+    
+    Converts external URLs like https://company-mcp.com/mcp/dabstep
+    to internal URLs like http://mcp-dabstep:8000
+    
+    This allows users to enter either format and have it work correctly.
+    """
+    # Check if URL contains a known MCP path
+    for path, internal_url in INTERNAL_MCP_SERVERS.items():
+        if path in url:
+            # This is a known internal server, use internal URL
+            print(f"[normalize_mcp_url] Converting {url} -> {internal_url}")
+            return internal_url
+    
+    # Return original URL for truly external servers
+    return url
+
 
 def load_mcp_servers():
     """Load MCP server configurations from file."""
@@ -199,10 +225,12 @@ async def check_mcp_server_health(server_id: str):
     """Check health of a specific MCP server."""
     if server_id not in mcp_servers:
         raise HTTPException(status_code=404, detail=f"Server '{server_id}' not found")
-    
+
     server = mcp_servers[server_id]
+    # Normalize URL to use internal Docker URLs when possible
+    server_url = normalize_mcp_url(server['url'])
     try:
-        response = await http_client.get(f"{server['url']}/health")
+        response = await http_client.get(f"{server_url}/health")
         return {"status": "connected", "server_id": server_id, "http_status": response.status_code}
     except Exception as e:
         return {"status": "disconnected", "server_id": server_id, "error": str(e)}
@@ -222,6 +250,9 @@ def parse_sse_response(content: str) -> Dict[str, Any]:
 async def fetch_tools_from_server(server_id: str, server_url: str) -> List[Dict[str, Any]]:
     """Fetch tools from a single MCP server using session-based protocol."""
     try:
+        # Normalize URL to use internal Docker URLs when possible
+        server_url = normalize_mcp_url(server_url)
+        
         headers = {
             "Content-Type": "application/json",
             "Accept": "application/json, text/event-stream"
@@ -383,22 +414,24 @@ async def list_mcp_tools():
 async def get_all_mcp_tools() -> List[Dict[str, Any]]:
     """Fetch tools from all enabled MCP servers."""
     all_tools = []
-    
+
     print(f"[get_all_mcp_tools] Checking {len(mcp_servers)} servers: {list(mcp_servers.keys())}")
-    
+
     for server_id, server in mcp_servers.items():
         if not server.get("enabled", True):
             print(f"[get_all_mcp_tools] Skipping disabled server: {server_id}")
             continue
-        
+
         server_url = server['url']
+        # Normalize URL for internal use
+        normalized_url = normalize_mcp_url(server_url)
         tools = await fetch_tools_from_server(server_id, server_url)
         print(f"[get_all_mcp_tools] Got {len(tools)} tools from {server_id}")
-        
-        # Tag each tool with its server
+
+        # Tag each tool with its server (use normalized URL for actual calls)
         for tool in tools:
             tool["_server_id"] = server_id
-            tool["_server_url"] = server_url
+            tool["_server_url"] = normalized_url
             all_tools.append(tool)
     
     print(f"[get_all_mcp_tools] Total tools found: {len(all_tools)}")
@@ -429,11 +462,14 @@ def convert_mcp_tools_to_openai_format(mcp_tools: List[Dict[str, Any]]) -> List[
 async def call_mcp_tool_on_server(server_url: str, tool_name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
     """Call a specific tool on an MCP server using session-based protocol."""
     try:
+        # Normalize URL to use internal Docker URLs when possible
+        server_url = normalize_mcp_url(server_url)
+        
         headers = {
             "Content-Type": "application/json",
             "Accept": "application/json, text/event-stream"
         }
-        
+
         # Step 1: Initialize session
         init_payload = {
             "jsonrpc": "2.0",

@@ -1182,6 +1182,7 @@ button {
     margin-top: var(--space-sm);
 }
 
+
 /* Servers List */
 .servers-list {
     display: flex;
