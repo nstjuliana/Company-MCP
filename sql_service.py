@@ -476,18 +476,20 @@ class SQLExecutor:
         self,
         sql: str,
         database: str,
-        limit: int = MAX_QUERY_ROWS
+        limit: int = MAX_QUERY_ROWS,
+        offset: int = 0
     ) -> Dict[str, Any]:
         """
         Execute SQL query and return results.
-        
+
         Args:
             sql: SQL query to execute
             database: Target database name
             limit: Maximum rows to return
-            
+            offset: Number of rows to skip (for pagination)
+
         Returns:
-            Dict with 'success', 'data', 'columns', 'row_count', 'error'
+            Dict with 'success', 'data', 'columns', 'row_count', 'error', 'has_more'
         """
         # Validate SQL
         is_valid, error = SQLSecurityValidator.validate_read_only(sql)
@@ -503,12 +505,15 @@ class SQLExecutor:
         # Sanitize SQL
         sql = SQLSecurityValidator.sanitize_sql(sql)
         
-        # Add LIMIT if not present and query might return many rows
+        # Add LIMIT/OFFSET if not present and query might return many rows
         sql_upper = sql.upper()
         if 'LIMIT' not in sql_upper and limit > 0:
-            # Simple check - if query has ORDER BY or GROUP BY, add LIMIT
+            # Simple check - if query has ORDER BY or GROUP BY, add LIMIT and OFFSET
             if 'ORDER BY' in sql_upper or 'GROUP BY' in sql_upper:
-                sql = f"{sql.rstrip(';')} LIMIT {limit}"
+                if offset > 0:
+                    sql = f"{sql.rstrip(';')} LIMIT {limit} OFFSET {offset}"
+                else:
+                    sql = f"{sql.rstrip(';')} LIMIT {limit}"
         
         conn = None
         try:
@@ -538,9 +543,9 @@ class SQLExecutor:
             start_time = time.time()
             
             if database == "postgres_production":
-                return self._execute_postgres(conn, sql, limit, start_time)
+                return self._execute_postgres(conn, sql, limit, offset, start_time)
             elif database == "snowflake_production":
-                return self._execute_snowflake(conn, sql, limit, start_time)
+                return self._execute_snowflake(conn, sql, limit, offset, start_time)
             else:
                 return {
                     "success": False,
@@ -570,6 +575,7 @@ class SQLExecutor:
         conn: Any,
         sql: str,
         limit: int,
+        offset: int,
         start_time: float
     ) -> Dict[str, Any]:
         """Execute query on PostgreSQL."""
@@ -601,21 +607,33 @@ class SQLExecutor:
             # Fetch results
             rows = cursor.fetchmany(limit)
             columns = [desc[0] for desc in cursor.description] if cursor.description else []
-            
+
+            # Check if there are more rows available (fetch one extra to check)
+            has_more = False
+            if len(rows) == limit:
+                try:
+                    extra_row = cursor.fetchone()
+                    has_more = extra_row is not None
+                except:
+                    pass  # Ignore errors when checking for more rows
+
             # Convert rows to list of dicts
             data = [dict(row) for row in rows]
-            
+
             cursor.close()
             elapsed = time.time() - start_time
-            
+
             logger.info(f"PostgreSQL query executed successfully: {len(data)} rows returned in {elapsed:.3f}s")
-            
+
             return {
                 "success": True,
                 "data": data,
                 "columns": columns,
                 "row_count": len(data),
-                "execution_time": round(elapsed, 3)
+                "execution_time": round(elapsed, 3),
+                "has_more": has_more,
+                "limit_used": limit,
+                "offset_used": offset
             }
             
         except Exception as e:
@@ -651,6 +669,7 @@ class SQLExecutor:
         conn: Any,
         sql: str,
         limit: int,
+        offset: int,
         start_time: float
     ) -> Dict[str, Any]:
         """Execute query on Snowflake."""
@@ -679,23 +698,35 @@ class SQLExecutor:
             # Fetch results
             rows = cursor.fetchmany(limit)
             columns = [desc[0] for desc in cursor.description] if cursor.description else []
-            
+
+            # Check if there are more rows available (fetch one extra to check)
+            has_more = False
+            if len(rows) == limit:
+                try:
+                    extra_row = cursor.fetchone()
+                    has_more = extra_row is not None
+                except:
+                    pass  # Ignore errors when checking for more rows
+
             # Convert rows to list of dicts
             data = []
             for row in rows:
                 data.append({col: val for col, val in zip(columns, row)})
-            
+
             cursor.close()
             elapsed = time.time() - start_time
-            
+
             logger.info(f"Snowflake query executed successfully: {len(data)} rows returned in {elapsed:.3f}s")
-            
+
             return {
                 "success": True,
                 "data": data,
                 "columns": columns,
                 "row_count": len(data),
-                "execution_time": round(elapsed, 3)
+                "execution_time": round(elapsed, 3),
+                "has_more": has_more,
+                "limit_used": limit,
+                "offset_used": offset
             }
             
         except Exception as e:

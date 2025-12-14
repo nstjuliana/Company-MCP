@@ -67,6 +67,10 @@ def search_tables(query: str, database: str = "", domain: str = "", limit: int =
     """Placeholder function - will be overridden."""
     return {"error": "Database functions not initialized"}
 
+def list_columns(table: str, database: str = ""):
+    """Placeholder function - will be overridden."""
+    return {"error": "Database functions not initialized"}
+
 def get_table_schema(table: str, database: str = "", include_samples: bool = False):
     """Placeholder function - will be overridden."""
     return {"error": "Database functions not initialized"}
@@ -504,6 +508,30 @@ try:
             "total_matches": len(scored),
         }
 
+    def list_columns(table: str, database: str = ""):
+        """
+        List columns for a given table, with their types and descriptions.
+        This is a lightweight call - returns only essential column info.
+        """
+        seg = _find_table(table, database)
+        if not seg:
+            return {"error": f"table '{table}' not found"}
+        
+        columns = []
+        for col in seg.get("columns", []):
+            columns.append({
+                "name": col.get("name"),
+                "type": col.get("type"),
+                "nullable": col.get("nullable", True),
+                "description": col.get("description", ""),
+            })
+        
+        return {
+            "table": seg["id"],
+            "columns": columns,
+            "file_path": seg.get("file_path", "")
+        }
+
     def get_table_schema(table: str, database: str = "", include_samples: bool = False):
         """Retrieve full schema details for a specific table."""
         seg = _find_table(table, database)
@@ -769,6 +797,30 @@ except ImportError as e:
                 "tables": results,
                 "tokens_used": _estimate_tokens(query),
                 "total_matches": len(scored),
+            }
+
+        def list_columns(table: str, database: str = ""):
+            """
+            List columns for a given table, with their types and descriptions.
+            This is a lightweight call - returns only essential column info.
+            """
+            seg = _find_table(table, database)
+            if not seg:
+                return {"error": f"table '{table}' not found"}
+            
+            columns = []
+            for col in seg.get("columns", []):
+                columns.append({
+                    "name": col.get("name"),
+                    "type": col.get("type"),
+                    "nullable": col.get("nullable", True),
+                    "description": col.get("description", ""),
+                })
+            
+            return {
+                "table": seg["id"],
+                "database": seg.get("database", "default"),
+                "columns": columns,
             }
 
         def get_table_schema(table: str, database: str = "", include_samples: bool = False):
@@ -1048,6 +1100,14 @@ except ImportError as e:
         current_module.answer_question = answer_question
         current_module.generate_sql = generate_sql
         current_module.execute_sql = execute_sql
+        
+        # Make schema tools available at module level (overrides placeholders)
+        current_module.list_databases = list_databases
+        current_module.list_domains = list_domains
+        current_module.list_tables = list_tables
+        current_module.search_tables = search_tables
+        current_module.list_columns = list_columns
+        current_module.get_table_schema = get_table_schema
 
         MCP_AVAILABLE = True
         MCP_IMPORT_ERROR = None
@@ -2534,9 +2594,21 @@ def call_mcp_tool(tool_name: str, **kwargs) -> Dict[str, Any]:
 
     try:
         # Map tool names to imported functions - use globals() to safely check
+        # NOTE: MCP now provides schema context only - SQL tools removed
+        # SQL generation/execution is handled by ai_agent.py via sql_service directly
         tool_functions = {}
-        func_names = ["list_databases", "list_domains", "list_tables", "search_tables", 
-                     "get_table_schema", "answer_question", "generate_sql", "execute_sql", "add", "echo"]
+        func_names = [
+            # Discovery tools
+            "list_databases", "list_domains", "list_tables",
+            # Search tools  
+            "search_tables", "search_fts", "search_vector", "search_db_map",
+            # Schema tools
+            "list_columns", "get_table_schema", "get_domain_overview",
+            # Relationship tools
+            "get_join_path", "get_common_relationships",
+            # Utility tools
+            "add", "echo"
+        ]
         
         missing_funcs = []
         module_globals = globals()
@@ -2553,29 +2625,45 @@ def call_mcp_tool(tool_name: str, **kwargs) -> Dict[str, Any]:
             except Exception as e:
                 missing_funcs.append(f"{name}(error: {e})")
         
-        if missing_funcs:
+        # Only error if critical tools are missing (not all tools required)
+        critical_tools = ["list_tables", "search_tables", "list_columns"]
+        missing_critical = [t for t in critical_tools if t in missing_funcs]
+        if missing_critical:
             available = list(tool_functions.keys())
-            return {"error": f"Functions not available: {', '.join(missing_funcs)}. Available: {available}. MCP_AVAILABLE={MCP_AVAILABLE}"}
+            return {"error": f"Critical MCP tools not available: {', '.join(missing_critical)}. Available: {available}"}
 
         if tool_name not in tool_functions:
+            # Check if it's a removed SQL tool
+            if tool_name in ["answer_question", "generate_sql", "execute_sql"]:
+                return {"error": f"Tool '{tool_name}' has been removed from MCP. SQL operations are now handled by ai_agent internally."}
             return {"error": f"Unknown tool: {tool_name}. Available: {list(tool_functions.keys())}"}
 
         # Call the function directly
         logger.debug(f"Executing tool function: {tool_name}")
         result = tool_functions[tool_name](**kwargs)
 
-        # Some functions return dicts, others return values - handle appropriately
-        if isinstance(result, dict) and "error" in result:
+        # Handle different return types appropriately
+        if result is None:
+            return {"error": f"Tool {tool_name} returned None"}
+        elif isinstance(result, list):
+            # Some tools return lists directly (e.g., list_tables)
+            logger.debug(f"Tool {tool_name} returned list with {len(result)} items")
+            return {"data": result, "count": len(result)}
+        elif isinstance(result, dict) and "error" in result:
             logger.warning(f"Tool {tool_name} returned error: {result.get('error')}")
             return result
         elif tool_name in ["add", "echo"]:
             # Simple functions return values directly
             logger.debug(f"Tool {tool_name} returned value: {result}")
             return result
-        else:
+        elif isinstance(result, dict):
             # Complex functions return structured data
-            logger.debug(f"Tool {tool_name} returned structured data: success={result.get('success', 'N/A')}")
+            logger.debug(f"Tool {tool_name} returned dict with keys: {list(result.keys())}")
             return result
+        else:
+            # Wrap other return types
+            logger.debug(f"Tool {tool_name} returned {type(result).__name__}: {result}")
+            return {"result": result}
 
     except NameError as e:
         # Handle case where functions aren't defined
