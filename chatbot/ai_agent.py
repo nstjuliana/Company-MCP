@@ -277,7 +277,7 @@ Remember: Your goal is to ANSWER the user's question, not just show them where t
         mcp_tool_caller: Callable,
         context_manager: Optional[any] = None,
         step_updater: Optional[Callable[[str], None]] = None
-    ) -> str:
+    ) -> Dict[str, Any]:
         """
         Process user query using AI agent with function calling.
 
@@ -288,11 +288,14 @@ Remember: Your goal is to ANSWER the user's question, not just show them where t
             context_manager: Conversation context manager for storing/retrieving data entities
 
         Returns:
-            AI-generated response string
+            Dict with 'response' (str) and 'sql_queries' (list of executed SQL)
         """
         if not self.client:
             logger.error("AI agent not available. OPENROUTER_API_KEY not configured.")
-            return "AI agent not available. Please configure OPENROUTER_API_KEY."
+            return {"response": "AI agent not available. Please configure OPENROUTER_API_KEY.", "sql_queries": []}
+
+        # Track SQL queries executed during this request
+        sql_queries = []
 
         # Build messages for AI
         messages = [
@@ -394,6 +397,23 @@ Remember: Your goal is to ANSWER the user's question, not just show them where t
                         # Store data entities for follow-up queries if this is answer_question
                         if function_name == "answer_question" and context_manager and tool_result.get("success"):
                             self._store_data_entities_from_result(tool_result, context_manager)
+                        
+                        # Capture SQL from answer_question tool results
+                        if function_name == "answer_question":
+                            # Check if tool_result is a dict
+                            if isinstance(tool_result, dict):
+                                sql = tool_result.get("sql")
+                                # Check if SQL exists and is not empty
+                                if sql and isinstance(sql, str) and sql.strip():
+                                    sql_queries.append(sql)
+                                    logger.info(f"✓ Captured SQL query ({len(sql)} chars) from answer_question")
+                                else:
+                                    # Log the actual keys to debug
+                                    logger.warning(f"✗ answer_question returned no SQL. SQL value: {repr(sql)}")
+                                    logger.warning(f"  Result keys: {list(tool_result.keys())}")
+                                    logger.debug(f"  Full result (first 500 chars): {str(tool_result)[:500]}")
+                            else:
+                                logger.warning(f"✗ answer_question returned non-dict result: {type(tool_result)}")
 
                         # Add tool result to messages
                         messages.append({
@@ -409,15 +429,15 @@ Remember: Your goal is to ANSWER the user's question, not just show them where t
                     # AI has final answer (no more tool calls)
                     response_text = message.content or "I couldn't generate a response."
                     logger.info(f"AI generated final response (length: {len(response_text)})")
-                    return response_text
+                    return {"response": response_text, "sql_queries": sql_queries}
                     
             except Exception as e:
                 logger.error(f"Error in AI agentic loop: {e}", exc_info=True)
-                return f"I encountered an error while processing your request: {str(e)}"
+                return {"response": f"I encountered an error while processing your request: {str(e)}", "sql_queries": sql_queries}
         
         # If we hit max iterations
         logger.warning(f"AI agent hit max iterations ({max_iterations}) without final answer")
-        return "I'm having trouble processing that request. Please try rephrasing your question."
+        return {"response": "I'm having trouble processing that request. Please try rephrasing your question.", "sql_queries": sql_queries}
     
     def _store_data_entities_from_result(self, result: Dict[str, Any], context_manager):
         """

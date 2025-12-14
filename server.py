@@ -1516,13 +1516,17 @@ def answer_question(
     # Format answer
     answer = _format_query_answer(question, result)
     
+    # Get SQL from result (should be added by generate_and_execute_sql)
+    sql = result.get("sql")
+    
     return {
         "success": True,
         "answer": answer,
         "data": result.get("data", []),
         "columns": result.get("columns", []),
         "row_count": result.get("row_count", 0),
-        "execution_time": result.get("execution_time", 0)
+        "execution_time": result.get("execution_time", 0),
+        "sql": sql  # Include generated SQL for UI display (may be None if SQL generation failed)
     }
 
 

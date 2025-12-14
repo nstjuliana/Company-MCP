@@ -1353,18 +1353,64 @@ HTML_TEMPLATE = """
             font-size: 14px;
         }
 
+        .message-content h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 16px 0 8px 0;
+            line-height: 1.3;
+        }
+
+        .message-content .table-container {
+            overflow-x: auto;
+            margin: 16px -16px;
+            border-radius: 8px;
+        }
+
+        .message-content table {
+            width: auto;
+            min-width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+            font-size: 12px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            display: table;
+            max-width: none;
+        }
+
+        .message-content th,
+        .message-content td {
+            padding: 6px 8px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
+        }
+
+        .message-content th {
+            background: var(--bg-secondary);
+            font-weight: 600;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .message-content tbody tr:hover {
+            background: var(--action-hover);
+        }
+
+        .message-content tbody tr:last-child td {
+            border-bottom: none;
+        }
+
         /* Message Actions */
         .message-actions {
             display: flex;
             align-items: center;
             gap: 2px;
             margin-top: 8px;
-            opacity: 0;
-            transition: opacity 0.15s;
-        }
-
-        .message-group.assistant:hover .message-actions {
             opacity: 1;
+            transition: opacity 0.15s;
         }
 
         .action-btn {
@@ -1391,6 +1437,200 @@ HTML_TEMPLATE = """
             height: 18px;
         }
 
+        .action-btn.has-sql {
+            color: var(--text-secondary);
+        }
+
+        .action-btn.has-sql:hover {
+            color: #10b981;
+        }
+
+        /* SQL Popup */
+        .sql-popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s, visibility 0.2s;
+        }
+
+        .sql-popup-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .sql-popup {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+            transform: scale(0.95);
+            transition: transform 0.2s;
+        }
+
+        .sql-popup-overlay.active .sql-popup {
+            transform: scale(1);
+        }
+
+        .sql-popup-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sql-popup-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sql-popup-title svg {
+            width: 20px;
+            height: 20px;
+            color: #10b981;
+        }
+
+        .sql-popup-close {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-tertiary);
+            transition: all 0.15s;
+        }
+
+        .sql-popup-close:hover {
+            background: var(--action-hover);
+            color: var(--text-primary);
+        }
+
+        .sql-popup-close svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .sql-popup-content {
+            padding: 20px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .sql-query-block {
+            background: #1e1e1e;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .sql-query-block:last-child {
+            margin-bottom: 0;
+        }
+
+        .sql-query-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 16px;
+            background: #2d2d2d;
+            border-bottom: 1px solid #3d3d3d;
+        }
+
+        .sql-query-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .sql-copy-btn {
+            padding: 4px 10px;
+            font-size: 12px;
+            background: transparent;
+            border: 1px solid #4d4d4d;
+            border-radius: 6px;
+            color: #aaa;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .sql-copy-btn:hover {
+            background: #3d3d3d;
+            border-color: #5d5d5d;
+            color: #fff;
+        }
+
+        .sql-query-code {
+            padding: 16px;
+            font-family: 'SF Mono', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #d4d4d4;
+            white-space: pre-wrap;
+            word-break: break-word;
+            margin: 0;
+        }
+
+        /* SQL Syntax Highlighting */
+        .sql-keyword {
+            color: #569cd6;
+            font-weight: 500;
+        }
+
+        .sql-function {
+            color: #dcdcaa;
+        }
+
+        .sql-string {
+            color: #ce9178;
+        }
+
+        .sql-number {
+            color: #b5cea8;
+        }
+
+        .sql-comment {
+            color: #6a9955;
+            font-style: italic;
+        }
+
+        .no-sql-message {
+            text-align: center;
+            color: var(--text-tertiary);
+            padding: 40px 20px;
+        }
+
+        .no-sql-message svg {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 12px;
+            opacity: 0.5;
+        }
+
         /* JSON/Code Response */
         .json-response {
             background: #1e1e1e;
@@ -1407,19 +1647,27 @@ HTML_TEMPLATE = """
         }
 
         /* Tables */
+        .message-content .table-container {
+            overflow-x: auto;
+            margin: 12px -16px;
+            border-radius: 8px;
+        }
+
         .message-content table {
             border-collapse: collapse;
-            margin: 12px 0;
-            font-size: 14px;
-            width: 100%;
-            overflow-x: auto;
-            display: block;
+            margin: 0;
+            font-size: 12px;
+            width: auto;
+            min-width: 100%;
+            display: table;
+            max-width: none;
         }
 
         .message-content th, .message-content td {
             border: 1px solid var(--border-color);
-            padding: 8px 12px;
+            padding: 6px 8px;
             text-align: left;
+            white-space: nowrap;
         }
 
         .message-content th {
@@ -1771,10 +2019,38 @@ HTML_TEMPLATE = """
         </div>
     </main>
 
+    <!-- SQL Popup -->
+    <div class="sql-popup-overlay" id="sql-popup-overlay">
+        <div class="sql-popup">
+            <div class="sql-popup-header">
+                <div class="sql-popup-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 7V4a2 2 0 0 1 2-2h8.5L20 7.5V20a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <path d="M8 13h3"/>
+                        <path d="M8 17h5"/>
+                    </svg>
+                    Executed SQL Queries
+                </div>
+                <button class="sql-popup-close" onclick="closeSqlPopup()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="sql-popup-content" id="sql-popup-content">
+                <!-- SQL queries will be injected here -->
+            </div>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             let isLoading = false;
             let hasMessages = false;
+            let messageCounter = 0;
+            const messageSqlMap = new Map(); // Store SQL queries per message ID
 
             const chatArea = document.getElementById('chat-area');
             const chatContent = document.getElementById('chat-content');
@@ -1835,9 +2111,73 @@ HTML_TEMPLATE = """
             // Expose globally for onclick fallback
             window.handleSend = sendMessage;
 
+            // Process markdown tables
+            function processTables(text) {
+                // Split text into lines
+                const lines = text.split('\\n');
+                let result = [];
+                let inTable = false;
+                let tableRows = [];
+
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i].trim();
+
+                    // Check if this line is a table row (starts and ends with |)
+                    if (line.startsWith('|') && line.endsWith('|')) {
+                        const cells = line.split('|').slice(1, -1).map(cell => cell.trim());
+                        tableRows.push(cells);
+                        inTable = true;
+                    } else {
+                        // If we were in a table, process it
+                        if (inTable && tableRows.length > 0) {
+                            result.push(generateTableHTML(tableRows));
+                            tableRows = [];
+                            inTable = false;
+                        }
+                        result.push(line);
+                    }
+                }
+
+                // Handle table at end of text
+                if (inTable && tableRows.length > 0) {
+                    result.push(generateTableHTML(tableRows));
+                }
+
+                return result.join('\\n');
+            }
+
+            function generateTableHTML(rows) {
+                if (rows.length < 2) return rows.map(row => '|' + row.join('|') + '|').join('\\n');
+
+                // First row is headers, second row is separator, rest are data
+                const headers = rows[0];
+                const dataRows = rows.slice(2); // Skip header and separator rows
+
+                let html = '<table><thead><tr>';
+                headers.forEach(header => {
+                    html += '<th>' + header + '</th>';
+                });
+                html += '</tr></thead><tbody>';
+
+                dataRows.forEach(row => {
+                    html += '<tr>';
+                    row.forEach(cell => {
+                        html += '<td>' + cell + '</td>';
+                    });
+                    html += '</tr>';
+                });
+
+                html += '</tbody></table>';
+                return '<div class="table-container">' + html + '</div>';
+            }
+
             // Process markdown
             function processMarkdown(text) {
                 if (!text) return '';
+                // Tables - convert markdown tables to HTML tables
+                text = processTables(text);
+                // Headers (### Header Text -> <h3>Header Text</h3>)
+                text = text.replace(/^### (.+)$/gm, '<h3>$1</h3>');
                 // Bold - using string replace to avoid regex escaping issues
                 text = text.split('**').map(function(part, i) {
                     return i % 2 === 1 ? '<strong>' + part + '</strong>' : part;
@@ -1850,9 +2190,11 @@ HTML_TEMPLATE = """
             }
 
             // Add message
-            function addMessage(content, type, isJson = false) {
+            function addMessage(content, type, isJson = false, sqlQueries = []) {
+                const messageId = `msg-${++messageCounter}`;
                 const group = document.createElement('div');
                 group.className = `message-group ${type}`;
+                group.id = messageId;
 
                 const message = document.createElement('div');
                 message.className = `message ${type}`;
@@ -1874,6 +2216,15 @@ HTML_TEMPLATE = """
 
                 // Add action buttons for assistant messages
                 if (type === 'assistant') {
+                    // Store SQL queries for this message
+                    if (sqlQueries && sqlQueries.length > 0) {
+                        messageSqlMap.set(messageId, sqlQueries);
+                    }
+                    
+                    const hasSql = sqlQueries && sqlQueries.length > 0;
+                    const sqlBtnClass = hasSql ? 'action-btn has-sql' : 'action-btn';
+                    const sqlBtnTitle = hasSql ? `View SQL (${sqlQueries.length})` : 'No SQL executed';
+                    
                     const actions = document.createElement('div');
                     actions.className = 'message-actions';
                     actions.innerHTML = `
@@ -1895,11 +2246,12 @@ HTML_TEMPLATE = """
                                 <path d="M17 2h3a2 2 0 012 2v7a2 2 0 01-2 2h-3"/>
                             </svg>
                         </button>
-                        <button class="action-btn" type="button" title="Regenerate">
+                        <button class="${sqlBtnClass}" type="button" title="${sqlBtnTitle}" onclick="showSqlPopup('${messageId}')">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M1 4v6h6"/>
-                                <path d="M23 20v-6h-6"/>
-                                <path d="M20.49 9A9 9 0 005.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 013.51 15"/>
+                                <path d="M4 7V4a2 2 0 0 1 2-2h8.5L20 7.5V20a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                                <path d="M8 13h3"/>
+                                <path d="M8 17h5"/>
                             </svg>
                         </button>
                     `;
@@ -1963,17 +2315,20 @@ HTML_TEMPLATE = """
                     const data = await response.json();
                     removeLoadingIndicator();
 
+                    // Extract SQL queries from response
+                    const sqlQueries = data.sql_queries || [];
+
                     if (data.error) {
-                        addMessage('Error: ' + data.error, 'assistant');
+                        addMessage('Error: ' + data.error, 'assistant', false, []);
                     } else if (data.response) {
-                        addMessage(data.response, 'assistant', data.is_json);
+                        addMessage(data.response, 'assistant', data.is_json, sqlQueries);
                     } else {
-                        addMessage('Sorry, I couldn\\'t process your request.', 'assistant');
+                        addMessage('Sorry, I couldn\\'t process your request.', 'assistant', false, []);
                     }
                 } catch (error) {
                     console.error('Error sending message:', error);
                     removeLoadingIndicator();
-                    addMessage('Sorry, there was an error connecting to the server: ' + error.message, 'assistant');
+                    addMessage('Sorry, there was an error connecting to the server: ' + error.message, 'assistant', false, []);
                 } finally {
                     setLoading(false);
                 }
@@ -1994,6 +2349,120 @@ HTML_TEMPLATE = """
                     setTimeout(() => { btn.innerHTML = originalHTML; }, 2000);
                 });
             };
+
+            // SQL Popup functions (global)
+            window.showSqlPopup = function(messageId) {
+                const sqlQueries = messageSqlMap.get(messageId) || [];
+                const popupContent = document.getElementById('sql-popup-content');
+                const overlay = document.getElementById('sql-popup-overlay');
+                
+                if (sqlQueries.length === 0) {
+                    popupContent.innerHTML = `
+                        <div class="no-sql-message">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="8" x2="12" y2="12"/>
+                                <line x1="12" y1="16" x2="12.01" y2="16"/>
+                            </svg>
+                            <p>No SQL queries were executed for this response.</p>
+                        </div>
+                    `;
+                } else {
+                    popupContent.innerHTML = sqlQueries.map((sql, index) => `
+                        <div class="sql-query-block">
+                            <div class="sql-query-header">
+                                <span class="sql-query-label">Query ${sqlQueries.length > 1 ? index + 1 : ''}</span>
+                                <button class="sql-copy-btn" onclick="copySql(this, ${index})">Copy</button>
+                            </div>
+                            <pre class="sql-query-code">${highlightSql(sql)}</pre>
+                        </div>
+                    `).join('');
+                    
+                    // Store queries for copy function
+                    window._currentSqlQueries = sqlQueries;
+                }
+                
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            };
+
+            window.closeSqlPopup = function() {
+                const overlay = document.getElementById('sql-popup-overlay');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            };
+
+            window.copySql = function(btn, index) {
+                const sql = window._currentSqlQueries[index];
+                navigator.clipboard.writeText(sql).then(() => {
+                    const originalText = btn.textContent;
+                    btn.textContent = 'Copied!';
+                    setTimeout(() => { btn.textContent = originalText; }, 2000);
+                });
+            };
+
+            // Close popup on overlay click
+            document.getElementById('sql-popup-overlay').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeSqlPopup();
+                }
+            });
+
+            // Close popup on Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeSqlPopup();
+                }
+            });
+
+            // SQL syntax highlighting
+            function highlightSql(sql) {
+                // Escape HTML first
+                let escaped = sql
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;');
+                
+                // Keywords (case-insensitive)
+                const keywords = [
+                    'SELECT', 'FROM', 'WHERE', 'AND', 'OR', 'NOT', 'IN', 'LIKE', 'BETWEEN',
+                    'JOIN', 'LEFT', 'RIGHT', 'INNER', 'OUTER', 'FULL', 'CROSS', 'ON',
+                    'GROUP', 'BY', 'ORDER', 'HAVING', 'LIMIT', 'OFFSET', 'AS', 'DISTINCT',
+                    'UNION', 'ALL', 'EXCEPT', 'INTERSECT', 'CASE', 'WHEN', 'THEN', 'ELSE', 'END',
+                    'NULL', 'IS', 'TRUE', 'FALSE', 'ASC', 'DESC', 'WITH', 'OVER', 'PARTITION'
+                ];
+                
+                // Functions
+                const functions = [
+                    'COUNT', 'SUM', 'AVG', 'MIN', 'MAX', 'COALESCE', 'NULLIF', 'CAST',
+                    'CONCAT', 'SUBSTRING', 'TRIM', 'UPPER', 'LOWER', 'LENGTH', 'REPLACE',
+                    'DATE', 'NOW', 'CURRENT_DATE', 'CURRENT_TIMESTAMP', 'EXTRACT',
+                    'ROUND', 'FLOOR', 'CEIL', 'ABS', 'ROW_NUMBER', 'RANK', 'DENSE_RANK'
+                ];
+                
+                // Highlight keywords
+                keywords.forEach(kw => {
+                    const regex = new RegExp('\\\\b(' + kw + ')\\\\b', 'gi');
+                    escaped = escaped.replace(regex, '<span class="sql-keyword">$1</span>');
+                });
+                
+                // Highlight functions
+                functions.forEach(fn => {
+                    const regex = new RegExp('\\\\b(' + fn + ')\\\\s*\\\\(', 'gi');
+                    escaped = escaped.replace(regex, '<span class="sql-function">$1</span>(');
+                });
+                
+                // Highlight strings (single quotes)
+                escaped = escaped.replace(/'([^']*)'/g, '<span class="sql-string">\\'$1\\'</span>');
+                
+                // Highlight numbers
+                escaped = escaped.replace(/\\b(\\d+\\.?\\d*)\\b/g, '<span class="sql-number">$1</span>');
+                
+                // Highlight comments
+                escaped = escaped.replace(/--(.*)$/gm, '<span class="sql-comment">--$1</span>');
+                
+                return escaped;
+            }
 
             // Event listeners - attach these FIRST before anything else
             console.log('Attaching event listeners...');
@@ -2470,21 +2939,26 @@ def chat():
                 logger.debug(f"Conversation history: {len(history)} messages")
                 
                 # Process query with AI agent
-                response = ai_agent.process_query(
+                result = ai_agent.process_query(
                     user_query=message,
                     conversation_history=history,
                     mcp_tool_caller=call_mcp_tool,
                     context_manager=context
                 )
                 
+                # Extract response and SQL queries from result
+                response_text = result.get("response", "")
+                sql_queries = result.get("sql_queries", [])
+                
                 # Add messages to context
                 context.add_message("user", message)
-                context.add_message("assistant", response)
+                context.add_message("assistant", response_text)
                 
-                logger.info(f"AI agent response generated (length: {len(response)})")
+                logger.info(f"AI agent response generated (length: {len(response_text)}), SQL queries: {len(sql_queries)}")
                 return jsonify({
-                    "response": response,
-                    "is_json": False
+                    "response": response_text,
+                    "is_json": False,
+                    "sql_queries": sql_queries
                 })
             except Exception as ai_error:
                 logger.error(f"AI agent error: {ai_error}", exc_info=True)
