@@ -213,6 +213,82 @@ async def check_mcp_server_health(server_id: str):
         return {"status": "disconnected", "server_id": server_id, "error": str(e)}
 
 
+def parse_sse_response(content: str) -> Dict[str, Any]:
+    """Parse SSE event stream response to extract JSON data."""
+    for line in content.split('\n'):
+        if line.startswith('data: '):
+            try:
+                return json.loads(line[6:])
+            except json.JSONDecodeError:
+                continue
+    return {}
+
+
+async def fetch_tools_from_server(server_id: str, server_url: str) -> List[Dict[str, Any]]:
+    """Fetch tools from a single MCP server using session-based protocol."""
+    try:
+        headers = {
+            "Content-Type": "application/json",
+            "Accept": "application/json, text/event-stream"
+        }
+        
+        # Step 1: Initialize session
+        init_payload = {
+            "jsonrpc": "2.0",
+            "id": 1,
+            "method": "initialize",
+            "params": {
+                "protocolVersion": "2024-11-05",
+                "capabilities": {},
+                "clientInfo": {"name": "CompanyMCP-Frontend", "version": "1.0.0"}
+            }
+        }
+        
+        init_response = await http_client.post(
+            f"{server_url}/mcp",
+            json=init_payload,
+            headers=headers
+        )
+        
+        # Get session ID from response headers
+        session_id = init_response.headers.get("mcp-session-id")
+        if not session_id:
+            print(f"[fetch_tools_from_server] No session ID from {server_id}")
+            return []
+        
+        print(f"[fetch_tools_from_server] Got session {session_id[:8]}... from {server_id}")
+        
+        # Step 2: List tools with session
+        tools_payload = {
+            "jsonrpc": "2.0",
+            "id": 2,
+            "method": "tools/list",
+            "params": {}
+        }
+        
+        headers["mcp-session-id"] = session_id
+        
+        tools_response = await http_client.post(
+            f"{server_url}/mcp",
+            json=tools_payload,
+            headers=headers
+        )
+        
+        # Parse SSE response
+        content = tools_response.text
+        result = parse_sse_response(content)
+        tools = result.get("result", {}).get("tools", [])
+        
+        print(f"[fetch_tools_from_server] Got {len(tools)} tools from {server_id}")
+        return tools
+        
+    except Exception as e:
+        import traceback
+        print(f"[fetch_tools_from_server] Error from {server_id}: {e}")
+        traceback.print_exc()
+        return []
+
+
 @app.get("/api/mcp/servers/{server_id}/tools")
 async def get_mcp_server_tools(server_id: str):
     """Get available tools from a specific MCP server."""
@@ -220,28 +296,8 @@ async def get_mcp_server_tools(server_id: str):
         raise HTTPException(status_code=404, detail=f"Server '{server_id}' not found")
     
     server = mcp_servers[server_id]
-    try:
-        payload = {
-            "jsonrpc": "2.0",
-            "id": 1,
-            "method": "tools/list",
-            "params": {}
-        }
-        
-        response = await http_client.post(
-            f"{server['url']}/mcp",
-            json=payload,
-            headers={
-                "Content-Type": "application/json",
-                "Accept": "application/json, text/event-stream"
-            }
-        )
-        
-        result = response.json()
-        tools = result.get("result", {}).get("tools", [])
-        return {"server_id": server_id, "tools": tools}
-    except Exception as e:
-        return {"server_id": server_id, "tools": [], "error": str(e)}
+    tools = await fetch_tools_from_server(server_id, server['url'])
+    return {"server_id": server_id, "tools": tools}
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -333,40 +389,24 @@ async def get_all_mcp_tools() -> List[Dict[str, Any]]:
     """Fetch tools from all enabled MCP servers."""
     all_tools = []
     
+    print(f"[get_all_mcp_tools] Checking {len(mcp_servers)} servers: {list(mcp_servers.keys())}")
+    
     for server_id, server in mcp_servers.items():
         if not server.get("enabled", True):
+            print(f"[get_all_mcp_tools] Skipping disabled server: {server_id}")
             continue
         
-        try:
-            payload = {
-                "jsonrpc": "2.0",
-                "id": 1,
-                "method": "tools/list",
-                "params": {}
-            }
-            
-            response = await http_client.post(
-                f"{server['url']}/mcp",
-                json=payload,
-                headers={
-                    "Content-Type": "application/json",
-                    "Accept": "application/json, text/event-stream"
-                }
-            )
-            
-            result = response.json()
-            tools = result.get("result", {}).get("tools", [])
-            
-            # Tag each tool with its server
-            for tool in tools:
-                tool["_server_id"] = server_id
-                tool["_server_url"] = server["url"]
-                all_tools.append(tool)
-                
-        except Exception as e:
-            print(f"Error fetching tools from {server_id}: {e}")
-            continue
+        server_url = server['url']
+        tools = await fetch_tools_from_server(server_id, server_url)
+        print(f"[get_all_mcp_tools] Got {len(tools)} tools from {server_id}")
+        
+        # Tag each tool with its server
+        for tool in tools:
+            tool["_server_id"] = server_id
+            tool["_server_url"] = server_url
+            all_tools.append(tool)
     
+    print(f"[get_all_mcp_tools] Total tools found: {len(all_tools)}")
     return all_tools
 
 
@@ -392,11 +432,39 @@ def convert_mcp_tools_to_openai_format(mcp_tools: List[Dict[str, Any]]) -> List[
 
 
 async def call_mcp_tool_on_server(server_url: str, tool_name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
-    """Call a specific tool on an MCP server."""
+    """Call a specific tool on an MCP server using session-based protocol."""
     try:
-        payload = {
+        headers = {
+            "Content-Type": "application/json",
+            "Accept": "application/json, text/event-stream"
+        }
+        
+        # Step 1: Initialize session
+        init_payload = {
             "jsonrpc": "2.0",
             "id": 1,
+            "method": "initialize",
+            "params": {
+                "protocolVersion": "2024-11-05",
+                "capabilities": {},
+                "clientInfo": {"name": "CompanyMCP-Frontend", "version": "1.0.0"}
+            }
+        }
+        
+        init_response = await http_client.post(
+            f"{server_url}/mcp",
+            json=init_payload,
+            headers=headers
+        )
+        
+        session_id = init_response.headers.get("mcp-session-id")
+        if not session_id:
+            return {"error": "Failed to establish MCP session"}
+        
+        # Step 2: Call tool with session
+        tool_payload = {
+            "jsonrpc": "2.0",
+            "id": 2,
             "method": "tools/call",
             "params": {
                 "name": tool_name,
@@ -404,16 +472,17 @@ async def call_mcp_tool_on_server(server_url: str, tool_name: str, arguments: Di
             }
         }
         
+        headers["mcp-session-id"] = session_id
+        
         response = await http_client.post(
             f"{server_url}/mcp",
-            json=payload,
-            headers={
-                "Content-Type": "application/json",
-                "Accept": "application/json, text/event-stream"
-            }
+            json=tool_payload,
+            headers=headers
         )
         
-        result = response.json()
+        # Parse SSE response
+        content = response.text
+        result = parse_sse_response(content)
         
         if "error" in result:
             return {"error": result["error"]}
@@ -421,6 +490,8 @@ async def call_mcp_tool_on_server(server_url: str, tool_name: str, arguments: Di
         return result.get("result", result)
         
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         return {"error": str(e)}
 
 
@@ -452,31 +523,49 @@ async def chat(request: ChatRequest):
         mcp_tools = await get_all_mcp_tools()
         openai_tools = convert_mcp_tools_to_openai_format(mcp_tools)
         
+        # Log tool count for debugging
+        print(f"[Chat] Found {len(mcp_tools)} MCP tools from {len([s for s in mcp_servers.values() if s.get('enabled', True)])} servers")
+        
         # Build tool lookup for quick access
         tool_lookup = {
             f"{tool.get('_server_id', 'default')}__{tool['name']}": tool 
             for tool in mcp_tools
         }
         
+        # Build list of available servers for the prompt
+        enabled_servers = [(k, v) for k, v in mcp_servers.items() if v.get("enabled", True)]
+        server_list = ", ".join(f"{k} ({v['name']})" for k, v in enabled_servers)
+        
+        # Build list of tool names for the prompt
+        tool_names = [f"{t.get('_server_id', 'default')}__{t['name']}" for t in mcp_tools]
+        tool_list = ", ".join(tool_names[:20])  # Show first 20 tools
+        if len(tool_names) > 20:
+            tool_list += f" (and {len(tool_names) - 20} more)"
+        
         # Build messages for OpenAI
         messages = [
             {
                 "role": "system",
-                "content": """You are a helpful AI assistant with access to various MCP (Model Context Protocol) servers and their tools.
+                "content": f"""You are a helpful AI assistant with access to MCP (Model Context Protocol) servers and their tools.
 
-You can help users:
-- Query and explore databases using database context tools
-- Search for tables, schemas, and relationships
-- Find information about data structures
-- Execute various tools provided by connected MCP servers
+IMPORTANT: You MUST use the available tools to answer questions. Do NOT just say "let me check" - actually call the tools!
+
+Available MCP Servers: {server_list}
+
+Available Tools ({len(tool_names)} total): {tool_list}
+
+Tool naming convention: Tools are named as "server_id__tool_name". For example:
+- "default__list_tables" calls the list_tables tool on the default server
+- "synth-local__list_databases" calls list_databases on the synth-local server
 
 When answering questions:
-1. Use the available tools to get accurate, real-time information
-2. Provide clear, well-formatted responses
-3. If a tool returns an error, explain what went wrong and suggest alternatives
-4. Format data results in a readable way (use markdown tables, lists, etc.)
+1. ALWAYS use the available tools to get real data - don't make up information
+2. If asked about a specific server, use tools from that server (look for the server_id prefix)
+3. Provide clear, well-formatted responses with the actual data returned
+4. If a tool returns an error, explain what went wrong
+5. Format data results using markdown (tables, lists, code blocks)
 
-Current MCP servers available: """ + ", ".join(f"{k} ({v['name']})" for k, v in mcp_servers.items() if v.get("enabled", True))
+Remember: Call the tools, don't just describe what you would do!"""
             }
         ]
         
@@ -511,6 +600,9 @@ Current MCP servers available: """ + ", ".join(f"{k} ({v['name']})" for k, v in 
             response = await openai_client.chat.completions.create(**completion_params)
             
             assistant_message = response.choices[0].message
+            
+            # Log for debugging
+            print(f"[Chat] Response: content={bool(assistant_message.content)}, tool_calls={len(assistant_message.tool_calls) if assistant_message.tool_calls else 0}")
             
             # Check if the model wants to call tools
             if assistant_message.tool_calls:
@@ -553,7 +645,9 @@ Current MCP servers available: """ + ", ".join(f"{k} ({v['name']})" for k, v in 
                         arguments = {}
                     
                     # Execute the tool
+                    print(f"[Chat] Executing tool: {server_id}/{tool_name} with args: {arguments}")
                     tool_result = await call_mcp_tool_on_server(server_url, tool_name, arguments)
+                    print(f"[Chat] Tool result: {str(tool_result)[:200]}...")
                     
                     tools_used.append({
                         "server": server_id,
