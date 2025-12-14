@@ -82,7 +82,7 @@ services:
     volumes:
       - ./data:/home/${SFTP_USER:-datauser}/data
       - sftp-keys:/etc/ssh/keys
-      - ./scripts/sftp-entrypoint.sh:/etc/sftp.d/fix-permissions.sh:ro
+      - ./tests/sftp-entrypoint.sh:/etc/sftp.d/fix-permissions.sh:ro
     command: "${SFTP_USER:-datauser}:${SFTP_PASSWORD:-changeme}:1001:1001:data"
     restart: unless-stopped
     networks:
