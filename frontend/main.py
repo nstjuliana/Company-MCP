@@ -1,29 +1,35 @@
 """
 Company MCP Frontend - FastAPI Backend
-Provides web UI for MCP interaction, SFTP browsing, and documentation.
+Provides web UI for MCP interaction, SFTP browsing, and GPT-4o powered AI chat.
 """
 import os
 import json
 import paramiko
 import sqlite3
 import re
+import asyncio
 from pathlib import Path
 from typing import Optional, List, Dict, Any, Set
 from contextlib import asynccontextmanager
 from collections import defaultdict
+from datetime import datetime
 
 import httpx
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse, JSONResponse
-from pydantic import BaseModel
+from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
+from pydantic import BaseModel, Field
+from openai import AsyncOpenAI
 
 # Configuration
 SFTP_HOST = os.getenv("SFTP_HOST", "sftp-server")
 SFTP_PORT = int(os.getenv("SFTP_PORT", "22"))
 SFTP_USER = os.getenv("SFTP_USER", "datauser")
 SFTP_PASSWORD = os.getenv("SFTP_PASSWORD", "changeme")
+
+# OpenAI Configuration
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 
 # MCP Server URL - connects to MCP server within Docker network
 MCP_SERVER_URL = os.getenv("MCP_SERVER_URL", "http://mcp-dabstep:8000")
@@ -33,16 +39,49 @@ BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / "data"
 DB_PATH = DATA_DIR / "index" / "index.db"
 DATA_MAP_PATH = DATA_DIR / "map"
+MCP_CONFIG_PATH = BASE_DIR / "mcp_servers.json"
 
 # HTTP client
 http_client: Optional[httpx.AsyncClient] = None
+openai_client: Optional[AsyncOpenAI] = None
+
+# In-memory MCP server registry
+mcp_servers: Dict[str, Dict[str, Any]] = {}
+
+
+def load_mcp_servers():
+    """Load MCP server configurations from file."""
+    global mcp_servers
+    if MCP_CONFIG_PATH.exists():
+        try:
+            with open(MCP_CONFIG_PATH, "r") as f:
+                mcp_servers = json.load(f)
+        except Exception:
+            mcp_servers = {}
+    # Always include the default MCP server
+    if "default" not in mcp_servers:
+        mcp_servers["default"] = {
+            "name": "Default MCP Server",
+            "url": MCP_SERVER_URL,
+            "enabled": True,
+            "description": "Built-in database context MCP server"
+        }
+
+
+def save_mcp_servers():
+    """Save MCP server configurations to file."""
+    with open(MCP_CONFIG_PATH, "w") as f:
+        json.dump(mcp_servers, f, indent=2)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Manage HTTP client lifecycle."""
-    global http_client
+    global http_client, openai_client
     http_client = httpx.AsyncClient(timeout=60.0)
+    if OPENAI_API_KEY:
+        openai_client = AsyncOpenAI(api_key=OPENAI_API_KEY)
+    load_mcp_servers()
     yield
     await http_client.aclose()
 
@@ -64,7 +103,7 @@ templates = Jinja2Templates(directory=BASE_DIR / "templates")
 # ─────────────────────────────────────────────────────────────────────────────
 
 class ChatMessage(BaseModel):
-    role: str  # "user" or "assistant"
+    role: str  # "user", "assistant", or "system"
     content: str
 
 
@@ -78,6 +117,20 @@ class ToolCall(BaseModel):
     params: Dict[str, Any] = {}
 
 
+class MCPServerConfig(BaseModel):
+    name: str
+    url: str
+    enabled: bool = True
+    description: str = ""
+
+
+class MCPServerUpdate(BaseModel):
+    name: Optional[str] = None
+    url: Optional[str] = None
+    enabled: Optional[bool] = None
+    description: Optional[str] = None
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Page Routes
 # ─────────────────────────────────────────────────────────────────────────────
@@ -86,6 +139,109 @@ class ToolCall(BaseModel):
 async def home(request: Request):
     """Render the main SPA page."""
     return templates.TemplateResponse("index.html", {"request": request})
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# API Routes - MCP Server Management
+# ─────────────────────────────────────────────────────────────────────────────
+
+@app.get("/api/mcp/servers")
+async def list_mcp_servers():
+    """List all configured MCP servers."""
+    return {"servers": mcp_servers}
+
+
+@app.post("/api/mcp/servers/{server_id}")
+async def add_mcp_server(server_id: str, config: MCPServerConfig):
+    """Add a new MCP server configuration."""
+    if server_id in mcp_servers:
+        raise HTTPException(status_code=400, detail=f"Server '{server_id}' already exists")
+    
+    mcp_servers[server_id] = {
+        "name": config.name,
+        "url": config.url,
+        "enabled": config.enabled,
+        "description": config.description
+    }
+    save_mcp_servers()
+    return {"status": "created", "server_id": server_id}
+
+
+@app.put("/api/mcp/servers/{server_id}")
+async def update_mcp_server(server_id: str, update: MCPServerUpdate):
+    """Update an existing MCP server configuration."""
+    if server_id not in mcp_servers:
+        raise HTTPException(status_code=404, detail=f"Server '{server_id}' not found")
+    
+    if update.name is not None:
+        mcp_servers[server_id]["name"] = update.name
+    if update.url is not None:
+        mcp_servers[server_id]["url"] = update.url
+    if update.enabled is not None:
+        mcp_servers[server_id]["enabled"] = update.enabled
+    if update.description is not None:
+        mcp_servers[server_id]["description"] = update.description
+    
+    save_mcp_servers()
+    return {"status": "updated", "server": mcp_servers[server_id]}
+
+
+@app.delete("/api/mcp/servers/{server_id}")
+async def delete_mcp_server(server_id: str):
+    """Delete an MCP server configuration."""
+    if server_id not in mcp_servers:
+        raise HTTPException(status_code=404, detail=f"Server '{server_id}' not found")
+    if server_id == "default":
+        raise HTTPException(status_code=400, detail="Cannot delete the default server")
+    
+    del mcp_servers[server_id]
+    save_mcp_servers()
+    return {"status": "deleted"}
+
+
+@app.get("/api/mcp/servers/{server_id}/health")
+async def check_mcp_server_health(server_id: str):
+    """Check health of a specific MCP server."""
+    if server_id not in mcp_servers:
+        raise HTTPException(status_code=404, detail=f"Server '{server_id}' not found")
+    
+    server = mcp_servers[server_id]
+    try:
+        response = await http_client.get(f"{server['url']}/health")
+        return {"status": "connected", "server_id": server_id, "http_status": response.status_code}
+    except Exception as e:
+        return {"status": "disconnected", "server_id": server_id, "error": str(e)}
+
+
+@app.get("/api/mcp/servers/{server_id}/tools")
+async def get_mcp_server_tools(server_id: str):
+    """Get available tools from a specific MCP server."""
+    if server_id not in mcp_servers:
+        raise HTTPException(status_code=404, detail=f"Server '{server_id}' not found")
+    
+    server = mcp_servers[server_id]
+    try:
+        payload = {
+            "jsonrpc": "2.0",
+            "id": 1,
+            "method": "tools/list",
+            "params": {}
+        }
+        
+        response = await http_client.post(
+            f"{server['url']}/mcp",
+            json=payload,
+            headers={
+                "Content-Type": "application/json",
+                "Accept": "application/json, text/event-stream"
+            }
+        )
+        
+        result = response.json()
+        tools = result.get("result", {}).get("tools", [])
+        return {"server_id": server_id, "tools": tools}
+    except Exception as e:
+        return {"server_id": server_id, "tools": [], "error": str(e)}
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -170,14 +326,283 @@ async def list_mcp_tools():
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# API Routes - Chat
+# API Routes - Chat (GPT-4o Powered)
 # ─────────────────────────────────────────────────────────────────────────────
+
+async def get_all_mcp_tools() -> List[Dict[str, Any]]:
+    """Fetch tools from all enabled MCP servers."""
+    all_tools = []
+    
+    for server_id, server in mcp_servers.items():
+        if not server.get("enabled", True):
+            continue
+        
+        try:
+            payload = {
+                "jsonrpc": "2.0",
+                "id": 1,
+                "method": "tools/list",
+                "params": {}
+            }
+            
+            response = await http_client.post(
+                f"{server['url']}/mcp",
+                json=payload,
+                headers={
+                    "Content-Type": "application/json",
+                    "Accept": "application/json, text/event-stream"
+                }
+            )
+            
+            result = response.json()
+            tools = result.get("result", {}).get("tools", [])
+            
+            # Tag each tool with its server
+            for tool in tools:
+                tool["_server_id"] = server_id
+                tool["_server_url"] = server["url"]
+                all_tools.append(tool)
+                
+        except Exception as e:
+            print(f"Error fetching tools from {server_id}: {e}")
+            continue
+    
+    return all_tools
+
+
+def convert_mcp_tools_to_openai_format(mcp_tools: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """Convert MCP tool definitions to OpenAI function calling format."""
+    openai_tools = []
+    
+    for tool in mcp_tools:
+        # Build the parameters schema
+        input_schema = tool.get("inputSchema", {})
+        
+        openai_tool = {
+            "type": "function",
+            "function": {
+                "name": f"{tool.get('_server_id', 'default')}__{tool['name']}",
+                "description": tool.get("description", f"Tool: {tool['name']}"),
+                "parameters": input_schema if input_schema else {"type": "object", "properties": {}}
+            }
+        }
+        openai_tools.append(openai_tool)
+    
+    return openai_tools
+
+
+async def call_mcp_tool_on_server(server_url: str, tool_name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
+    """Call a specific tool on an MCP server."""
+    try:
+        payload = {
+            "jsonrpc": "2.0",
+            "id": 1,
+            "method": "tools/call",
+            "params": {
+                "name": tool_name,
+                "arguments": arguments
+            }
+        }
+        
+        response = await http_client.post(
+            f"{server_url}/mcp",
+            json=payload,
+            headers={
+                "Content-Type": "application/json",
+                "Accept": "application/json, text/event-stream"
+            }
+        )
+        
+        result = response.json()
+        
+        if "error" in result:
+            return {"error": result["error"]}
+        
+        return result.get("result", result)
+        
+    except Exception as e:
+        return {"error": str(e)}
+
+
+@app.get("/api/chat/status")
+async def chat_status():
+    """Check if GPT-4o chat is available."""
+    return {
+        "openai_configured": bool(OPENAI_API_KEY),
+        "mcp_servers_count": len(mcp_servers),
+        "enabled_servers": sum(1 for s in mcp_servers.values() if s.get("enabled", True))
+    }
+
 
 @app.post("/api/chat")
 async def chat(request: ChatRequest):
     """
-    Process a chat message using MCP tools.
-    This provides a simplified chat interface that routes queries to appropriate MCP tools.
+    Process a chat message using GPT-4o with MCP tool integration.
+    The AI can use tools from all connected MCP servers.
+    """
+    if not openai_client:
+        return {
+            "response": "OpenAI API key not configured. Please set OPENAI_API_KEY environment variable.",
+            "tools_used": [],
+            "error": True
+        }
+    
+    try:
+        # Fetch all available MCP tools
+        mcp_tools = await get_all_mcp_tools()
+        openai_tools = convert_mcp_tools_to_openai_format(mcp_tools)
+        
+        # Build tool lookup for quick access
+        tool_lookup = {
+            f"{tool.get('_server_id', 'default')}__{tool['name']}": tool 
+            for tool in mcp_tools
+        }
+        
+        # Build messages for OpenAI
+        messages = [
+            {
+                "role": "system",
+                "content": """You are a helpful AI assistant with access to various MCP (Model Context Protocol) servers and their tools.
+
+You can help users:
+- Query and explore databases using database context tools
+- Search for tables, schemas, and relationships
+- Find information about data structures
+- Execute various tools provided by connected MCP servers
+
+When answering questions:
+1. Use the available tools to get accurate, real-time information
+2. Provide clear, well-formatted responses
+3. If a tool returns an error, explain what went wrong and suggest alternatives
+4. Format data results in a readable way (use markdown tables, lists, etc.)
+
+Current MCP servers available: """ + ", ".join(f"{k} ({v['name']})" for k, v in mcp_servers.items() if v.get("enabled", True))
+            }
+        ]
+        
+        # Add conversation history
+        for msg in request.history[-10:]:  # Last 10 messages for context
+            messages.append({
+                "role": msg.role,
+                "content": msg.content
+            })
+        
+        # Add the current user message
+        messages.append({
+            "role": "user",
+            "content": request.message
+        })
+        
+        tools_used = []
+        max_tool_calls = 5  # Prevent infinite loops
+        tool_call_count = 0
+        
+        while tool_call_count < max_tool_calls:
+            # Call GPT-4o
+            completion_params = {
+                "model": "gpt-4o",
+                "messages": messages,
+            }
+            
+            if openai_tools:
+                completion_params["tools"] = openai_tools
+                completion_params["tool_choice"] = "auto"
+            
+            response = await openai_client.chat.completions.create(**completion_params)
+            
+            assistant_message = response.choices[0].message
+            
+            # Check if the model wants to call tools
+            if assistant_message.tool_calls:
+                # Add the assistant's message with tool calls
+                messages.append({
+                    "role": "assistant",
+                    "content": assistant_message.content or "",
+                    "tool_calls": [
+                        {
+                            "id": tc.id,
+                            "type": "function",
+                            "function": {
+                                "name": tc.function.name,
+                                "arguments": tc.function.arguments
+                            }
+                        }
+                        for tc in assistant_message.tool_calls
+                    ]
+                })
+                
+                # Execute each tool call
+                for tool_call in assistant_message.tool_calls:
+                    full_tool_name = tool_call.function.name
+                    
+                    # Parse the tool name to get server_id and actual tool name
+                    if "__" in full_tool_name:
+                        server_id, tool_name = full_tool_name.split("__", 1)
+                    else:
+                        server_id = "default"
+                        tool_name = full_tool_name
+                    
+                    # Get tool info
+                    tool_info = tool_lookup.get(full_tool_name, {})
+                    server_url = tool_info.get("_server_url", mcp_servers.get(server_id, {}).get("url", MCP_SERVER_URL))
+                    
+                    # Parse arguments
+                    try:
+                        arguments = json.loads(tool_call.function.arguments)
+                    except json.JSONDecodeError:
+                        arguments = {}
+                    
+                    # Execute the tool
+                    tool_result = await call_mcp_tool_on_server(server_url, tool_name, arguments)
+                    
+                    tools_used.append({
+                        "server": server_id,
+                        "tool": tool_name,
+                        "arguments": arguments
+                    })
+                    
+                    # Add tool result to messages
+                    messages.append({
+                        "role": "tool",
+                        "tool_call_id": tool_call.id,
+                        "content": json.dumps(tool_result, default=str)
+                    })
+                
+                tool_call_count += 1
+            else:
+                # No more tool calls, return the response
+                return {
+                    "response": assistant_message.content or "I processed your request but have no response.",
+                    "tools_used": tools_used,
+                    "error": False
+                }
+        
+        # Max tool calls reached, get final response
+        final_response = await openai_client.chat.completions.create(
+            model="gpt-4o",
+            messages=messages
+        )
+        
+        return {
+            "response": final_response.choices[0].message.content or "Request completed.",
+            "tools_used": tools_used,
+            "error": False
+        }
+    
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return {
+            "response": f"I encountered an error: {str(e)}",
+            "tools_used": [],
+            "error": True
+        }
+
+
+@app.post("/api/chat/simple")
+async def chat_simple(request: ChatRequest):
+    """
+    Simple chat endpoint that falls back to rule-based routing when OpenAI is unavailable.
     """
     message = request.message.lower()
     
@@ -188,7 +613,6 @@ async def chat(request: ChatRequest):
             return format_chat_response("list_databases", result)
         
         elif any(word in message for word in ["list", "show", "all"]) and "table" in message:
-            # Extract database if mentioned
             db = extract_database(message)
             result = await call_tool("list_tables", {"database": db} if db else {})
             return format_chat_response("list_tables", result)
@@ -198,19 +622,17 @@ async def chat(request: ChatRequest):
             return format_chat_response("list_domains", result)
         
         elif "schema" in message or "column" in message:
-            # Try to extract table name
             table = extract_table_name(message)
             if table:
                 result = await call_tool("get_table_schema", {"table": table})
                 return format_chat_response("get_table_schema", result)
             else:
                 return {
-                    "response": "Please specify a table name to get its schema. For example: 'Show schema for payments table'",
+                    "response": "Please specify a table name to get its schema.",
                     "tool_used": None
                 }
         
         elif "join" in message and ("path" in message or "between" in message):
-            # Extract table names for join path
             tables = extract_table_names(message)
             if len(tables) >= 2:
                 result = await call_tool("get_join_path", {
@@ -220,30 +642,17 @@ async def chat(request: ChatRequest):
                 return format_chat_response("get_join_path", result)
             else:
                 return {
-                    "response": "Please specify two table names for join path. For example: 'Find join path between merchants and payments'",
+                    "response": "Please specify two table names for join path.",
                     "tool_used": None
                 }
         
-        elif any(word in message for word in ["search", "find", "query"]):
-            # Default to FTS search
-            query = extract_search_query(message)
-            if query:
-                result = await call_tool("search_fts", {"query": query, "limit": 10})
-                return format_chat_response("search_fts", result)
-            else:
-                result = await call_tool("search_tables", {"query": message, "limit": 5})
-                return format_chat_response("search_tables", result)
-        
         else:
-            # Default: try semantic search
             result = await call_tool("search_tables", {"query": request.message, "limit": 5})
             return format_chat_response("search_tables", result)
     
-    except HTTPException:
-        raise
     except Exception as e:
         return {
-            "response": f"I encountered an error processing your request: {str(e)}",
+            "response": f"Error: {str(e)}",
             "tool_used": None,
             "error": True
         }

@@ -1,6 +1,6 @@
 /**
  * Company MCP Frontend - JavaScript Application
- * Handles navigation, chat, and file browsing
+ * Handles navigation, chat with GPT-4o, file browsing, and MCP server management
  */
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -12,7 +12,9 @@ const state = {
     mcpConnected: false,
     chatHistory: [],
     currentPath: '/data',
-    isLoading: false
+    isLoading: false,
+    mcpServers: {},
+    openaiConfigured: false
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -38,6 +40,11 @@ function navigateTo(page) {
         loadFiles(state.currentPath);
     } else if (page === 'home') {
         loadStats();
+    } else if (page === 'settings') {
+        loadMcpServers();
+        checkSystemStatus();
+    } else if (page === 'chat') {
+        checkChatStatus();
     }
 }
 
@@ -162,8 +169,16 @@ async function sendMessage(text = null) {
         // Remove loading
         loadingEl.remove();
         
+        // Format tools used info
+        let toolsInfo = null;
+        if (data.tools_used && data.tools_used.length > 0) {
+            toolsInfo = data.tools_used.map(t => `${t.server}/${t.tool}`).join(', ');
+        } else if (data.tool_used) {
+            toolsInfo = data.tool_used;
+        }
+        
         // Add assistant response
-        addMessage('assistant', data.response, data.tool_used);
+        addMessage('assistant', data.response, toolsInfo, data.error);
         
         // Store in history
         state.chatHistory.push({ role: 'user', content: message });
@@ -442,6 +457,302 @@ function escapeHtml(text) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
+// MCP Server Management
+// ═══════════════════════════════════════════════════════════════════════════
+
+async function loadMcpServers() {
+    const serversList = document.getElementById('serversList');
+    if (!serversList) return;
+    
+    serversList.innerHTML = '<div class="loading">Loading servers...</div>';
+    
+    try {
+        const response = await fetch('/api/mcp/servers');
+        const data = await response.json();
+        state.mcpServers = data.servers || {};
+        
+        renderServersList();
+    } catch (error) {
+        serversList.innerHTML = `<div class="loading">Error loading servers: ${error.message}</div>`;
+    }
+}
+
+function renderServersList() {
+    const serversList = document.getElementById('serversList');
+    if (!serversList) return;
+    
+    const servers = Object.entries(state.mcpServers);
+    
+    if (servers.length === 0) {
+        serversList.innerHTML = '<div class="loading">No servers configured</div>';
+        return;
+    }
+    
+    serversList.innerHTML = servers.map(([id, server]) => `
+        <div class="server-item ${server.enabled ? '' : 'disabled'}" data-server-id="${id}">
+            <div class="server-info">
+                <div class="server-header">
+                    <span class="server-name">${escapeHtml(server.name)}</span>
+                    <span class="server-id">${escapeHtml(id)}</span>
+                    ${id === 'default' ? '<span class="server-badge">Default</span>' : ''}
+                </div>
+                <div class="server-url">${escapeHtml(server.url)}</div>
+                ${server.description ? `<div class="server-description">${escapeHtml(server.description)}</div>` : ''}
+            </div>
+            <div class="server-actions">
+                <button class="btn-icon" onclick="checkServerHealth('${id}')" title="Check Health">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;min-width:16px;min-height:16px;flex-shrink:0;">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                    </svg>
+                </button>
+                <button class="btn-icon" onclick="viewServerTools('${id}')" title="View Tools">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;min-width:16px;min-height:16px;flex-shrink:0;">
+                        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                    </svg>
+                </button>
+                <label class="toggle" title="${server.enabled ? 'Disable' : 'Enable'} Server">
+                    <input type="checkbox" ${server.enabled ? 'checked' : ''} onchange="toggleServer('${id}', this.checked)">
+                    <span class="toggle-slider"></span>
+                </label>
+                ${id !== 'default' ? `
+                    <button class="btn-icon btn-danger" onclick="deleteServer('${id}')" title="Delete Server">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;min-width:16px;min-height:16px;flex-shrink:0;">
+                            <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                        </svg>
+                    </button>
+                ` : ''}
+            </div>
+            <div class="server-status" id="status-${id}"></div>
+        </div>
+    `).join('');
+}
+
+async function checkServerHealth(serverId) {
+    const statusEl = document.getElementById(`status-${serverId}`);
+    if (statusEl) {
+        statusEl.innerHTML = '<span class="checking">Checking...</span>';
+    }
+    
+    try {
+        const response = await fetch(`/api/mcp/servers/${serverId}/health`);
+        const data = await response.json();
+        
+        if (statusEl) {
+            if (data.status === 'connected') {
+                statusEl.innerHTML = '<span class="status-connected">✓ Connected</span>';
+            } else {
+                statusEl.innerHTML = `<span class="status-error">✗ ${data.error || 'Disconnected'}</span>`;
+            }
+        }
+    } catch (error) {
+        if (statusEl) {
+            statusEl.innerHTML = `<span class="status-error">✗ ${error.message}</span>`;
+        }
+    }
+}
+
+async function viewServerTools(serverId) {
+    const modal = document.getElementById('serverModal');
+    const modalName = document.getElementById('modalServerName');
+    const modalBody = document.getElementById('modalBody');
+    
+    modal.classList.add('active');
+    modalName.textContent = state.mcpServers[serverId]?.name || serverId;
+    modalBody.innerHTML = '<div class="loading">Loading tools...</div>';
+    
+    try {
+        const response = await fetch(`/api/mcp/servers/${serverId}/tools`);
+        const data = await response.json();
+        
+        if (data.error) {
+            modalBody.innerHTML = `<div class="error-message">${data.error}</div>`;
+            return;
+        }
+        
+        const tools = data.tools || [];
+        
+        if (tools.length === 0) {
+            modalBody.innerHTML = '<div class="empty-message">No tools available from this server.</div>';
+            return;
+        }
+        
+        modalBody.innerHTML = `
+            <div class="tools-list">
+                <p class="tools-count">${tools.length} tool${tools.length !== 1 ? 's' : ''} available</p>
+                ${tools.map(tool => `
+                    <div class="tool-item">
+                        <div class="tool-name">${escapeHtml(tool.name)}</div>
+                        <div class="tool-description">${escapeHtml(tool.description || 'No description')}</div>
+                        ${tool.inputSchema?.properties ? `
+                            <div class="tool-params">
+                                <strong>Parameters:</strong>
+                                ${Object.entries(tool.inputSchema.properties).map(([name, schema]) => 
+                                    `<span class="param">${name}: ${schema.type || 'any'}</span>`
+                                ).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    } catch (error) {
+        modalBody.innerHTML = `<div class="error-message">Error: ${error.message}</div>`;
+    }
+}
+
+function closeServerModal() {
+    const modal = document.getElementById('serverModal');
+    modal.classList.remove('active');
+}
+
+async function toggleServer(serverId, enabled) {
+    try {
+        await fetch(`/api/mcp/servers/${serverId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ enabled })
+        });
+        
+        state.mcpServers[serverId].enabled = enabled;
+        renderServersList();
+    } catch (error) {
+        alert(`Error toggling server: ${error.message}`);
+        loadMcpServers();
+    }
+}
+
+async function deleteServer(serverId) {
+    if (!confirm(`Are you sure you want to delete the server "${state.mcpServers[serverId]?.name || serverId}"?`)) {
+        return;
+    }
+    
+    try {
+        await fetch(`/api/mcp/servers/${serverId}`, {
+            method: 'DELETE'
+        });
+        
+        delete state.mcpServers[serverId];
+        renderServersList();
+    } catch (error) {
+        alert(`Error deleting server: ${error.message}`);
+    }
+}
+
+function refreshServers() {
+    loadMcpServers();
+    checkSystemStatus();
+}
+
+// Add Server Form Handler
+document.getElementById('addServerForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const serverId = document.getElementById('serverId').value.trim();
+    const serverName = document.getElementById('serverName').value.trim();
+    const serverUrl = document.getElementById('serverUrl').value.trim();
+    const serverDescription = document.getElementById('serverDescription').value.trim();
+    
+    try {
+        const response = await fetch(`/api/mcp/servers/${serverId}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name: serverName,
+                url: serverUrl,
+                enabled: true,
+                description: serverDescription
+            })
+        });
+        
+        if (!response.ok) {
+            const data = await response.json();
+            throw new Error(data.detail || 'Failed to add server');
+        }
+        
+        // Clear form
+        e.target.reset();
+        
+        // Reload servers
+        loadMcpServers();
+        checkSystemStatus();
+        
+    } catch (error) {
+        alert(`Error adding server: ${error.message}`);
+    }
+});
+
+async function checkSystemStatus() {
+    try {
+        const response = await fetch('/api/chat/status');
+        const data = await response.json();
+        
+        const openaiStatus = document.getElementById('openaiStatus');
+        const mcpServersCount = document.getElementById('mcpServersCount');
+        
+        if (openaiStatus) {
+            if (data.openai_configured) {
+                openaiStatus.innerHTML = '<span class="status-dot connected"></span> Configured';
+                state.openaiConfigured = true;
+            } else {
+                openaiStatus.innerHTML = '<span class="status-dot disconnected"></span> Not Configured';
+                state.openaiConfigured = false;
+            }
+        }
+        
+        if (mcpServersCount) {
+            mcpServersCount.textContent = `${data.enabled_servers} / ${data.mcp_servers_count}`;
+        }
+        
+        // Count total tools
+        let totalTools = 0;
+        for (const [id, server] of Object.entries(state.mcpServers)) {
+            if (server.enabled) {
+                try {
+                    const toolsResponse = await fetch(`/api/mcp/servers/${id}/tools`);
+                    const toolsData = await toolsResponse.json();
+                    totalTools += (toolsData.tools || []).length;
+                } catch (e) {
+                    // Ignore errors
+                }
+            }
+        }
+        
+        const totalToolsCount = document.getElementById('totalToolsCount');
+        if (totalToolsCount) {
+            totalToolsCount.textContent = totalTools;
+        }
+        
+    } catch (error) {
+        console.error('Error checking system status:', error);
+    }
+}
+
+async function checkChatStatus() {
+    const statusDot = document.getElementById('chatStatusDot');
+    const statusText = document.getElementById('chatStatusText');
+    
+    if (!statusDot || !statusText) return;
+    
+    try {
+        const response = await fetch('/api/chat/status');
+        const data = await response.json();
+        
+        if (data.openai_configured) {
+            statusDot.className = 'status-dot connected';
+            statusText.textContent = `GPT-4o Ready • ${data.enabled_servers} MCP server${data.enabled_servers !== 1 ? 's' : ''} connected`;
+            state.openaiConfigured = true;
+        } else {
+            statusDot.className = 'status-dot disconnected';
+            statusText.textContent = 'OpenAI API not configured';
+            state.openaiConfigured = false;
+        }
+    } catch (error) {
+        statusDot.className = 'status-dot disconnected';
+        statusText.textContent = 'Error checking status';
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
 // Initialization
 // ═══════════════════════════════════════════════════════════════════════════
 
@@ -452,6 +763,50 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Load initial stats
     loadStats();
+    
+    // Check chat status
+    checkChatStatus();
+    
+    // Initialize form handler for add server
+    const addServerForm = document.getElementById('addServerForm');
+    if (addServerForm) {
+        addServerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const serverId = document.getElementById('serverId').value.trim().toLowerCase();
+            const serverName = document.getElementById('serverName').value.trim();
+            const serverUrl = document.getElementById('serverUrl').value.trim();
+            const serverDescription = document.getElementById('serverDescription').value.trim();
+            
+            try {
+                const response = await fetch(`/api/mcp/servers/${serverId}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: serverName,
+                        url: serverUrl,
+                        enabled: true,
+                        description: serverDescription
+                    })
+                });
+                
+                if (!response.ok) {
+                    const data = await response.json();
+                    throw new Error(data.detail || 'Failed to add server');
+                }
+                
+                // Clear form
+                addServerForm.reset();
+                
+                // Reload servers
+                loadMcpServers();
+                checkSystemStatus();
+                
+            } catch (error) {
+                alert(`Error adding server: ${error.message}`);
+            }
+        });
+    }
 });
 
 

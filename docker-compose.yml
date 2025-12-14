@@ -58,6 +58,7 @@ services:
       dockerfile: Dockerfile
     container_name: mcp-frontend
     environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
       - SFTP_HOST=sftp-server
       - SFTP_PORT=22
       - SFTP_USER=${SFTP_USER:-datauser}
