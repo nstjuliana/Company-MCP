@@ -33,6 +33,28 @@ services:
     networks:
       - mcp-network
 
+  # Web Frontend - UI for MCP interaction
+  # Access via: http://localhost:3000
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: mcp-frontend
+    ports:
+      - "${FRONTEND_PORT:-3000}:80"
+    environment:
+      - MCP_SERVER_URL=http://mcp-server:8000
+      - SFTP_HOST=sftp-server
+      - SFTP_PORT=22
+      - SFTP_USER=${SFTP_USER:-datauser}
+      - SFTP_PASSWORD=${SFTP_PASSWORD:-changeme}
+    depends_on:
+      - mcp-server
+      - sftp-server
+    restart: unless-stopped
+    networks:
+      - mcp-network
+
 networks:
   mcp-network:
     driver: bridge
