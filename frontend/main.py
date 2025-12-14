@@ -5,9 +5,12 @@ Provides web UI for MCP interaction, SFTP browsing, and documentation.
 import os
 import json
 import paramiko
+import sqlite3
+import re
 from pathlib import Path
-from typing import Optional, List, Dict, Any
+from typing import Optional, List, Dict, Any, Set
 from contextlib import asynccontextmanager
+from collections import defaultdict
 
 import httpx
 from fastapi import FastAPI, HTTPException, Request
@@ -17,13 +20,18 @@ from fastapi.responses import HTMLResponse, JSONResponse
 from pydantic import BaseModel
 
 # Configuration
-MCP_SERVER_URL = os.getenv("MCP_SERVER_URL", "http://mcp-server:8000")
 SFTP_HOST = os.getenv("SFTP_HOST", "sftp-server")
 SFTP_PORT = int(os.getenv("SFTP_PORT", "22"))
 SFTP_USER = os.getenv("SFTP_USER", "datauser")
 SFTP_PASSWORD = os.getenv("SFTP_PASSWORD", "changeme")
 
-# HTTP client for MCP communication
+# Database paths
+BASE_DIR = Path(__file__).resolve().parent
+DATA_DIR = BASE_DIR / "data"
+DB_PATH = DATA_DIR / "index" / "index.db"
+DATA_MAP_PATH = DATA_DIR / "map"
+
+# HTTP client
 http_client: Optional[httpx.AsyncClient] = None
 
 
@@ -238,49 +246,289 @@ async def chat(request: ChatRequest):
         }
 
 
+def get_db_connection() -> Optional[sqlite3.Connection]:
+    """Get a connection to the SQLite database."""
+    if not DB_PATH.exists():
+        return None
+    db = sqlite3.connect(str(DB_PATH))
+    db.row_factory = sqlite3.Row
+    return db
+
+
+def load_json(path: Path) -> Any:
+    """Load JSON from a file path."""
+    with path.open("r", encoding="utf-8") as f:
+        return json.load(f)
+
+
 async def call_tool(tool: str, params: Dict[str, Any]) -> Dict[str, Any]:
-    """Helper to call MCP tool internally (returns dict, not JSONResponse)."""
+    """Execute MCP tool by directly querying the database."""
     try:
-        payload = {
-            "jsonrpc": "2.0",
-            "id": 1,
-            "method": "tools/call",
-            "params": {
-                "name": tool,
-                "arguments": params
-            }
-        }
-        
-        response = await http_client.post(
-            f"{MCP_SERVER_URL}/mcp",
-            json=payload,
-            headers={
-                "Content-Type": "application/json",
-                "Accept": "application/json, text/event-stream"
-            }
-        )
-        
-        result = response.json()
-        
-        if "error" in result:
-            return {"error": str(result["error"])}
-        
-        # MCP returns result in content array for tool calls
-        mcp_result = result.get("result", result)
-        if isinstance(mcp_result, dict) and "content" in mcp_result:
-            # Parse the text content from MCP response
-            content = mcp_result.get("content", [])
-            if content and isinstance(content, list) and len(content) > 0:
-                text = content[0].get("text", "")
-                try:
-                    return json.loads(text)
-                except json.JSONDecodeError:
-                    return {"response": text}
-        
-        return mcp_result
-        
+        if tool == "list_databases":
+            return await tool_list_databases()
+        elif tool == "list_tables":
+            return await tool_list_tables(params.get("database", ""), params.get("domain", ""))
+        elif tool == "list_domains":
+            return await tool_list_domains(params.get("database", ""))
+        elif tool == "get_table_schema":
+            return await tool_get_table_schema(params.get("table", ""), params.get("database", ""))
+        elif tool == "search_tables":
+            return await tool_search_tables(params.get("query", ""), params.get("limit", 5))
+        elif tool == "search_fts":
+            return await tool_search_fts(params.get("query", ""), params.get("limit", 10))
+        else:
+            return {"error": f"Unknown tool: {tool}"}
     except Exception as e:
         return {"error": str(e)}
+
+
+async def tool_list_databases() -> Dict[str, Any]:
+    """List all databases in the index."""
+    db = get_db_connection()
+    if not db:
+        return {"databases": [], "error": "Database not found"}
+    
+    try:
+        cursor = db.execute("""
+            SELECT database_name, COUNT(DISTINCT table_name) as table_count,
+                   GROUP_CONCAT(DISTINCT domain) as domains,
+                   GROUP_CONCAT(DISTINCT schema_name) as schemas
+            FROM documents 
+            WHERE doc_type = 'table'
+            GROUP BY database_name
+        """)
+        
+        databases = []
+        for row in cursor.fetchall():
+            databases.append({
+                "name": row["database_name"],
+                "table_count": row["table_count"],
+                "domains": [d for d in (row["domains"] or "").split(",") if d],
+                "schemas": [s for s in (row["schemas"] or "").split(",") if s],
+            })
+        
+        db.close()
+        return {"databases": databases}
+    except Exception as e:
+        db.close()
+        return {"databases": [], "error": str(e)}
+
+
+async def tool_list_tables(database: str = "", domain: str = "") -> List[Dict[str, Any]]:
+    """List tables, optionally filtered."""
+    db = get_db_connection()
+    if not db:
+        return []
+    
+    try:
+        filters = ["doc_type = 'table'", "file_path LIKE '%.json'"]
+        params = []
+        
+        if database:
+            filters.append("database_name = ?")
+            params.append(database)
+        if domain:
+            filters.append("domain = ?")
+            params.append(domain)
+        
+        cursor = db.execute(f"""
+            SELECT DISTINCT table_name, database_name, schema_name, domain, summary
+            FROM documents
+            WHERE {' AND '.join(filters)}
+        """, params)
+        
+        tables = []
+        for row in cursor.fetchall():
+            name = row["table_name"]
+            if name.endswith(".json"):
+                name = name[:-5]
+            tables.append({
+                "name": name,
+                "database": row["database_name"],
+                "schema": row["schema_name"],
+                "domain": row["domain"],
+                "summary": row["summary"] or "",
+            })
+        
+        db.close()
+        return tables
+    except Exception as e:
+        db.close()
+        return []
+
+
+async def tool_list_domains(database: str = "") -> Dict[str, Any]:
+    """List all domains."""
+    db = get_db_connection()
+    if not db:
+        return {"domains": []}
+    
+    try:
+        if database:
+            cursor = db.execute("""
+                SELECT domain, COUNT(DISTINCT table_name) as table_count
+                FROM documents 
+                WHERE doc_type = 'table' AND database_name = ?
+                GROUP BY domain
+            """, [database])
+        else:
+            cursor = db.execute("""
+                SELECT domain, COUNT(DISTINCT table_name) as table_count
+                FROM documents 
+                WHERE doc_type = 'table'
+                GROUP BY domain
+            """)
+        
+        domains = []
+        for row in cursor.fetchall():
+            domains.append({
+                "name": row["domain"] or "default",
+                "table_count": row["table_count"],
+            })
+        
+        db.close()
+        return {"domains": domains}
+    except Exception as e:
+        db.close()
+        return {"domains": [], "error": str(e)}
+
+
+async def tool_get_table_schema(table: str, database: str = "") -> Dict[str, Any]:
+    """Get full schema for a table."""
+    db = get_db_connection()
+    if not db:
+        return {"error": "Database not found"}
+    
+    try:
+        # Find the table
+        if database:
+            cursor = db.execute("""
+                SELECT file_path, database_name, schema_name, domain, summary
+                FROM documents 
+                WHERE doc_type = 'table' 
+                AND (table_name = ? OR table_name LIKE ? OR LOWER(table_name) = LOWER(?))
+                AND database_name = ?
+                AND file_path LIKE '%.json'
+                LIMIT 1
+            """, (table, f"%{table}%", table, database))
+        else:
+            cursor = db.execute("""
+                SELECT file_path, database_name, schema_name, domain, summary
+                FROM documents 
+                WHERE doc_type = 'table' 
+                AND (table_name = ? OR table_name LIKE ? OR LOWER(table_name) = LOWER(?))
+                AND file_path LIKE '%.json'
+                LIMIT 1
+            """, (table, f"%{table}%", table))
+        
+        row = cursor.fetchone()
+        db.close()
+        
+        if not row:
+            return {"error": f"Table '{table}' not found"}
+        
+        # Load the JSON file
+        file_path = row["file_path"]
+        if file_path.startswith("databases/"):
+            file_path = file_path[len("databases/"):]
+        
+        json_path = DATA_MAP_PATH / file_path
+        if not json_path.exists():
+            return {"error": f"Schema file not found"}
+        
+        schema = load_json(json_path)
+        
+        return {
+            "name": schema.get("table", table),
+            "database": schema.get("database", row["database_name"]),
+            "schema": schema.get("schema", row["schema_name"]),
+            "description": schema.get("description", row["summary"]),
+            "columns": schema.get("columns", []),
+            "primary_key": schema.get("primary_key", []),
+            "foreign_keys": schema.get("foreign_keys", []),
+        }
+    except Exception as e:
+        return {"error": str(e)}
+
+
+async def tool_search_tables(query: str, limit: int = 5) -> Dict[str, Any]:
+    """Search tables by query."""
+    db = get_db_connection()
+    if not db:
+        return {"tables": [], "total_matches": 0}
+    
+    try:
+        # Simple keyword search
+        keywords = re.findall(r"[a-z0-9]+", query.lower())
+        
+        cursor = db.execute("""
+            SELECT DISTINCT table_name, database_name, domain, summary
+            FROM documents 
+            WHERE doc_type = 'table' AND file_path LIKE '%.json'
+        """)
+        
+        results = []
+        for row in cursor.fetchall():
+            name = row["table_name"]
+            if name.endswith(".json"):
+                name = name[:-5]
+            
+            text = f"{name} {row['summary'] or ''}".lower()
+            score = sum(1 for kw in keywords if kw in text)
+            
+            if score > 0:
+                results.append({
+                    "name": name,
+                    "database": row["database_name"],
+                    "domain": row["domain"],
+                    "summary": row["summary"] or "",
+                    "relevance_score": score,
+                })
+        
+        db.close()
+        
+        results.sort(key=lambda x: x["relevance_score"], reverse=True)
+        return {"tables": results[:limit], "total_matches": len(results)}
+    except Exception as e:
+        db.close()
+        return {"tables": [], "total_matches": 0, "error": str(e)}
+
+
+async def tool_search_fts(query: str, limit: int = 10) -> Dict[str, Any]:
+    """Full-text search using FTS5."""
+    db = get_db_connection()
+    if not db:
+        return {"results": [], "total_matches": 0}
+    
+    try:
+        cursor = db.execute("""
+            SELECT d.table_name, d.database_name, d.domain, d.summary,
+                   bm25(documents_fts) as rank
+            FROM documents_fts fts
+            JOIN documents d ON d.id = fts.rowid
+            WHERE documents_fts MATCH ?
+            ORDER BY rank
+            LIMIT ?
+        """, [query, limit])
+        
+        results = []
+        for row in cursor.fetchall():
+            name = row["table_name"]
+            if name and name.endswith(".json"):
+                name = name[:-5]
+            results.append({
+                "name": name,
+                "database": row["database_name"],
+                "domain": row["domain"],
+                "summary": row["summary"] or "",
+            })
+        
+        db.close()
+        return {"results": results, "total_matches": len(results)}
+    except Exception as e:
+        db.close()
+        # Fall back to simple search
+        return await tool_search_tables(query, limit)
 
 
 def format_chat_response(tool: str, result: Any) -> Dict[str, Any]:
