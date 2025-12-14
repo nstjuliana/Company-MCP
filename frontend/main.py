@@ -25,6 +25,9 @@ SFTP_PORT = int(os.getenv("SFTP_PORT", "22"))
 SFTP_USER = os.getenv("SFTP_USER", "datauser")
 SFTP_PASSWORD = os.getenv("SFTP_PASSWORD", "changeme")
 
+# MCP Server URL - connects to MCP server within Docker network
+MCP_SERVER_URL = os.getenv("MCP_SERVER_URL", "http://mcp-dabstep:8000")
+
 # Database paths
 BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / "data"

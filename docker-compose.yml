@@ -62,10 +62,12 @@ services:
       - SFTP_PORT=22
       - SFTP_USER=${SFTP_USER:-datauser}
       - SFTP_PASSWORD=${SFTP_PASSWORD:-changeme}
+      - MCP_SERVER_URL=http://mcp-dabstep:8000
     volumes:
       - ./data:/app/data:ro
     depends_on:
       - sftp-server
+      - mcp-dabstep
     restart: unless-stopped
     networks:
       - mcp-network
