@@ -18,3 +18,4 @@ EXPOSE 80
 # Run the server
 CMD ["python", "main.py"]
 
+

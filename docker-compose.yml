@@ -3,7 +3,7 @@ version: "3.9"
 services:
   # Nginx Reverse Proxy - serves everything on port 80
   # Frontend at http://localhost/
-  # MCP Server at http://localhost/mcp
+  # MCP Servers at http://localhost/mcp/dabstep, http://localhost/mcp/synth
   nginx:
     image: nginx:alpine
     container_name: mcp-nginx
@@ -13,19 +13,38 @@ services:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
       - frontend
-      - mcp-server
+      - mcp-dabstep
+      - mcp-synth
     restart: unless-stopped
     networks:
       - mcp-network
 
-  # MCP Server - Database Context Server (internal only)
-  mcp-server:
+  # MCP Server - Dabstep Database Context
+  mcp-dabstep:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: mcp-server
+    container_name: mcp-dabstep
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - MCP_NAME=dabstep
+      - MCP_PORT=8000
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+    networks:
+      - mcp-network
+
+  # MCP Server - Synth Database Context
+  mcp-synth:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mcp-synth
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - MCP_NAME=synth
+      - MCP_PORT=8000
     volumes:
       - ./data:/app/data
     restart: unless-stopped
