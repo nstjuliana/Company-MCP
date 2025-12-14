@@ -167,7 +167,8 @@ try:
                                 "answer": None,
                                 "data": [],
                                 "columns": [],
-                                "row_count": 0
+                                "row_count": 0,
+                                "sql": None
                             }
                 
                 if not database:
@@ -177,7 +178,8 @@ try:
                         "answer": None,
                         "data": [],
                         "columns": [],
-                        "row_count": 0
+                        "row_count": 0,
+                        "sql": None
                     }
                 
                 # Build schema context
@@ -233,7 +235,8 @@ try:
                             "answer": None,
                             "data": [],
                             "columns": [],
-                            "row_count": 0
+                            "row_count": 0,
+                            "sql": None
                         }
                 
                 # Generate and execute SQL
@@ -246,7 +249,8 @@ try:
                         "answer": None,
                         "data": [],
                         "columns": [],
-                        "row_count": 0
+                        "row_count": 0,
+                        "sql": result.get("sql")
                     }
                 
                 # Format answer
@@ -273,7 +277,8 @@ try:
                     "data": data,
                     "columns": columns,
                     "row_count": row_count,
-                    "execution_time": result.get("execution_time", 0)
+                    "execution_time": result.get("execution_time", 0),
+                    "sql": result.get("sql")
                 }
             
             def generate_sql(query: str, database: str = "", context_tables: List[str] = []):
@@ -364,7 +369,8 @@ try:
                     "answer": None,
                     "data": [],
                     "columns": [],
-                    "row_count": 0
+                    "row_count": 0,
+                    "sql": None
                 }
             
             def generate_sql(query: str, database: str = "", context_tables: List[str] = []):
@@ -878,7 +884,8 @@ except ImportError as e:
                                 "answer": None,
                                 "data": [],
                                 "columns": [],
-                                "row_count": 0
+                                "row_count": 0,
+                                "sql": None
                             }
                 
                 if not database:
@@ -888,7 +895,8 @@ except ImportError as e:
                         "answer": None,
                         "data": [],
                         "columns": [],
-                        "row_count": 0
+                        "row_count": 0,
+                        "sql": None
                     }
                 
                 schema_context = {"database": database, "tables": []}
@@ -911,7 +919,8 @@ except ImportError as e:
                         "answer": None,
                         "data": [],
                         "columns": [],
-                        "row_count": 0
+                        "row_count": 0,
+                        "sql": None
                     }
                 
                 result = generate_and_execute_sql(question, schema_context, database)
@@ -922,7 +931,8 @@ except ImportError as e:
                         "answer": None,
                         "data": [],
                         "columns": [],
-                        "row_count": 0
+                        "row_count": 0,
+                        "sql": result.get("sql")
                     }
                 
                 # Format answer
@@ -947,7 +957,8 @@ except ImportError as e:
                     "data": data,
                     "columns": columns,
                     "row_count": row_count,
-                    "execution_time": result.get("execution_time", 0)
+                    "execution_time": result.get("execution_time", 0),
+                    "sql": result.get("sql")
                 }
             
             def generate_sql(query: str, database: str = "", context_tables: List[str] = []):
@@ -1013,7 +1024,8 @@ except ImportError as e:
                     "answer": None,
                     "data": [],
                     "columns": [],
-                    "row_count": 0
+                    "row_count": 0,
+                    "sql": None
                 }
             
             def generate_sql(query: str, database: str = "", context_tables: List[str] = []):
@@ -1074,7 +1086,8 @@ except Exception as e:
             "answer": None,
             "data": [],
             "columns": [],
-            "row_count": 0
+            "row_count": 0,
+            "sql": None
         }
     
     def generate_sql(query: str, database: str = "", context_tables: List[str] = []):
@@ -1438,11 +1451,12 @@ HTML_TEMPLATE = """
         }
 
         .action-btn.has-sql {
-            color: var(--text-secondary);
+            color: var(--text-tertiary);
         }
 
         .action-btn.has-sql:hover {
-            color: #10b981;
+            background: var(--action-hover);
+            color: var(--text-secondary);
         }
 
         /* SQL Popup */
