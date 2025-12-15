@@ -48,24 +48,46 @@ openai_client: Optional[AsyncOpenAI] = None
 # In-memory MCP server registry
 mcp_servers: Dict[str, Dict[str, Any]] = {}
 
+# Known internal MCP server mappings (external path -> internal URL)
+INTERNAL_MCP_SERVERS = {
+    "/mcp/dabstep": "http://mcp-dabstep:8000",
+    "/mcp/synth": "http://mcp-synth:8000",
+}
+
+
+def normalize_mcp_url(url: str) -> str:
+    """
+    Normalize MCP server URL to use internal Docker URLs when possible.
+    
+    Converts external URLs like https://company-mcp.com/mcp/dabstep
+    to internal URLs like http://mcp-dabstep:8000
+    
+    This allows users to enter either format and have it work correctly.
+    """
+    # Check if URL contains a known MCP path
+    for path, internal_url in INTERNAL_MCP_SERVERS.items():
+        if path in url:
+            # This is a known internal server, use internal URL
+            print(f"[normalize_mcp_url] Converting {url} -> {internal_url}")
+            return internal_url
+    
+    # Return original URL for truly external servers
+    return url
+
 
 def load_mcp_servers():
     """Load MCP server configurations from file."""
     global mcp_servers
+    mcp_servers = {}  # Always start with empty dict
     if MCP_CONFIG_PATH.exists():
         try:
             with open(MCP_CONFIG_PATH, "r") as f:
-                mcp_servers = json.load(f)
-        except Exception:
+                loaded = json.load(f)
+                if isinstance(loaded, dict):
+                    mcp_servers = loaded
+        except Exception as e:
+            print(f"[load_mcp_servers] Error loading config: {e}")
             mcp_servers = {}
-    # Always include the default MCP server
-    if "default" not in mcp_servers:
-        mcp_servers["default"] = {
-            "name": "Default MCP Server",
-            "url": MCP_SERVER_URL,
-            "enabled": True,
-            "description": "Built-in database context MCP server"
-        }
 
 
 def save_mcp_servers():
@@ -148,7 +170,8 @@ async def home(request: Request):
 @app.get("/api/mcp/servers")
 async def list_mcp_servers():
     """List all configured MCP servers."""
-    return {"servers": mcp_servers}
+    # Ensure we always return a valid dict
+    return {"servers": mcp_servers if isinstance(mcp_servers, dict) else {}}
 
 
 @app.post("/api/mcp/servers/{server_id}")
@@ -191,8 +214,6 @@ async def delete_mcp_server(server_id: str):
     """Delete an MCP server configuration."""
     if server_id not in mcp_servers:
         raise HTTPException(status_code=404, detail=f"Server '{server_id}' not found")
-    if server_id == "default":
-        raise HTTPException(status_code=400, detail="Cannot delete the default server")
     
     del mcp_servers[server_id]
     save_mcp_servers()
@@ -204,13 +225,94 @@ async def check_mcp_server_health(server_id: str):
     """Check health of a specific MCP server."""
     if server_id not in mcp_servers:
         raise HTTPException(status_code=404, detail=f"Server '{server_id}' not found")
-    
+
     server = mcp_servers[server_id]
+    # Normalize URL to use internal Docker URLs when possible
+    server_url = normalize_mcp_url(server['url'])
     try:
-        response = await http_client.get(f"{server['url']}/health")
+        response = await http_client.get(f"{server_url}/health")
         return {"status": "connected", "server_id": server_id, "http_status": response.status_code}
     except Exception as e:
         return {"status": "disconnected", "server_id": server_id, "error": str(e)}
+
+
+def parse_sse_response(content: str) -> Dict[str, Any]:
+    """Parse SSE event stream response to extract JSON data."""
+    for line in content.split('\n'):
+        if line.startswith('data: '):
+            try:
+                return json.loads(line[6:])
+            except json.JSONDecodeError:
+                continue
+    return {}
+
+
+async def fetch_tools_from_server(server_id: str, server_url: str) -> List[Dict[str, Any]]:
+    """Fetch tools from a single MCP server using session-based protocol."""
+    try:
+        # Normalize URL to use internal Docker URLs when possible
+        server_url = normalize_mcp_url(server_url)
+        
+        headers = {
+            "Content-Type": "application/json",
+            "Accept": "application/json, text/event-stream"
+        }
+        
+        # Step 1: Initialize session
+        init_payload = {
+            "jsonrpc": "2.0",
+            "id": 1,
+            "method": "initialize",
+            "params": {
+                "protocolVersion": "2024-11-05",
+                "capabilities": {},
+                "clientInfo": {"name": "CompanyMCP-Frontend", "version": "1.0.0"}
+            }
+        }
+        
+        init_response = await http_client.post(
+            f"{server_url}/mcp",
+            json=init_payload,
+            headers=headers
+        )
+        
+        # Get session ID from response headers
+        session_id = init_response.headers.get("mcp-session-id")
+        if not session_id:
+            print(f"[fetch_tools_from_server] No session ID from {server_id}")
+            return []
+        
+        print(f"[fetch_tools_from_server] Got session {session_id[:8]}... from {server_id}")
+        
+        # Step 2: List tools with session
+        tools_payload = {
+            "jsonrpc": "2.0",
+            "id": 2,
+            "method": "tools/list",
+            "params": {}
+        }
+        
+        headers["mcp-session-id"] = session_id
+        
+        tools_response = await http_client.post(
+            f"{server_url}/mcp",
+            json=tools_payload,
+            headers=headers
+        )
+        
+        # Parse SSE response
+        content = tools_response.text
+        result = parse_sse_response(content)
+        tools = result.get("result", {}).get("tools", [])
+        
+        print(f"[fetch_tools_from_server] Got {len(tools)} tools from {server_id}")
+        return tools
+        
+    except Exception as e:
+        import traceback
+        print(f"[fetch_tools_from_server] Error from {server_id}: {e}")
+        traceback.print_exc()
+        return []
 
 
 @app.get("/api/mcp/servers/{server_id}/tools")
@@ -220,28 +322,8 @@ async def get_mcp_server_tools(server_id: str):
         raise HTTPException(status_code=404, detail=f"Server '{server_id}' not found")
     
     server = mcp_servers[server_id]
-    try:
-        payload = {
-            "jsonrpc": "2.0",
-            "id": 1,
-            "method": "tools/list",
-            "params": {}
-        }
-        
-        response = await http_client.post(
-            f"{server['url']}/mcp",
-            json=payload,
-            headers={
-                "Content-Type": "application/json",
-                "Accept": "application/json, text/event-stream"
-            }
-        )
-        
-        result = response.json()
-        tools = result.get("result", {}).get("tools", [])
-        return {"server_id": server_id, "tools": tools}
-    except Exception as e:
-        return {"server_id": server_id, "tools": [], "error": str(e)}
+    tools = await fetch_tools_from_server(server_id, server['url'])
+    return {"server_id": server_id, "tools": tools}
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -332,41 +414,27 @@ async def list_mcp_tools():
 async def get_all_mcp_tools() -> List[Dict[str, Any]]:
     """Fetch tools from all enabled MCP servers."""
     all_tools = []
-    
+
+    print(f"[get_all_mcp_tools] Checking {len(mcp_servers)} servers: {list(mcp_servers.keys())}")
+
     for server_id, server in mcp_servers.items():
         if not server.get("enabled", True):
+            print(f"[get_all_mcp_tools] Skipping disabled server: {server_id}")
             continue
-        
-        try:
-            payload = {
-                "jsonrpc": "2.0",
-                "id": 1,
-                "method": "tools/list",
-                "params": {}
-            }
-            
-            response = await http_client.post(
-                f"{server['url']}/mcp",
-                json=payload,
-                headers={
-                    "Content-Type": "application/json",
-                    "Accept": "application/json, text/event-stream"
-                }
-            )
-            
-            result = response.json()
-            tools = result.get("result", {}).get("tools", [])
-            
-            # Tag each tool with its server
-            for tool in tools:
-                tool["_server_id"] = server_id
-                tool["_server_url"] = server["url"]
-                all_tools.append(tool)
-                
-        except Exception as e:
-            print(f"Error fetching tools from {server_id}: {e}")
-            continue
+
+        server_url = server['url']
+        # Normalize URL for internal use
+        normalized_url = normalize_mcp_url(server_url)
+        tools = await fetch_tools_from_server(server_id, server_url)
+        print(f"[get_all_mcp_tools] Got {len(tools)} tools from {server_id}")
+
+        # Tag each tool with its server (use normalized URL for actual calls)
+        for tool in tools:
+            tool["_server_id"] = server_id
+            tool["_server_url"] = normalized_url
+            all_tools.append(tool)
     
+    print(f"[get_all_mcp_tools] Total tools found: {len(all_tools)}")
     return all_tools
 
 
@@ -392,11 +460,42 @@ def convert_mcp_tools_to_openai_format(mcp_tools: List[Dict[str, Any]]) -> List[
 
 
 async def call_mcp_tool_on_server(server_url: str, tool_name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
-    """Call a specific tool on an MCP server."""
+    """Call a specific tool on an MCP server using session-based protocol."""
     try:
-        payload = {
+        # Normalize URL to use internal Docker URLs when possible
+        server_url = normalize_mcp_url(server_url)
+        
+        headers = {
+            "Content-Type": "application/json",
+            "Accept": "application/json, text/event-stream"
+        }
+
+        # Step 1: Initialize session
+        init_payload = {
             "jsonrpc": "2.0",
             "id": 1,
+            "method": "initialize",
+            "params": {
+                "protocolVersion": "2024-11-05",
+                "capabilities": {},
+                "clientInfo": {"name": "CompanyMCP-Frontend", "version": "1.0.0"}
+            }
+        }
+        
+        init_response = await http_client.post(
+            f"{server_url}/mcp",
+            json=init_payload,
+            headers=headers
+        )
+        
+        session_id = init_response.headers.get("mcp-session-id")
+        if not session_id:
+            return {"error": "Failed to establish MCP session"}
+        
+        # Step 2: Call tool with session
+        tool_payload = {
+            "jsonrpc": "2.0",
+            "id": 2,
             "method": "tools/call",
             "params": {
                 "name": tool_name,
@@ -404,16 +503,17 @@ async def call_mcp_tool_on_server(server_url: str, tool_name: str, arguments: Di
             }
         }
         
+        headers["mcp-session-id"] = session_id
+        
         response = await http_client.post(
             f"{server_url}/mcp",
-            json=payload,
-            headers={
-                "Content-Type": "application/json",
-                "Accept": "application/json, text/event-stream"
-            }
+            json=tool_payload,
+            headers=headers
         )
         
-        result = response.json()
+        # Parse SSE response
+        content = response.text
+        result = parse_sse_response(content)
         
         if "error" in result:
             return {"error": result["error"]}
@@ -421,6 +521,8 @@ async def call_mcp_tool_on_server(server_url: str, tool_name: str, arguments: Di
         return result.get("result", result)
         
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         return {"error": str(e)}
 
 
@@ -452,31 +554,49 @@ async def chat(request: ChatRequest):
         mcp_tools = await get_all_mcp_tools()
         openai_tools = convert_mcp_tools_to_openai_format(mcp_tools)
         
+        # Log tool count for debugging
+        print(f"[Chat] Found {len(mcp_tools)} MCP tools from {len([s for s in mcp_servers.values() if s.get('enabled', True)])} servers")
+        
         # Build tool lookup for quick access
         tool_lookup = {
             f"{tool.get('_server_id', 'default')}__{tool['name']}": tool 
             for tool in mcp_tools
         }
         
+        # Build list of available servers for the prompt
+        enabled_servers = [(k, v) for k, v in mcp_servers.items() if v.get("enabled", True)]
+        server_list = ", ".join(f"{k} ({v['name']})" for k, v in enabled_servers)
+        
+        # Build list of tool names for the prompt
+        tool_names = [f"{t.get('_server_id', 'default')}__{t['name']}" for t in mcp_tools]
+        tool_list = ", ".join(tool_names[:20])  # Show first 20 tools
+        if len(tool_names) > 20:
+            tool_list += f" (and {len(tool_names) - 20} more)"
+        
         # Build messages for OpenAI
         messages = [
             {
                 "role": "system",
-                "content": """You are a helpful AI assistant with access to various MCP (Model Context Protocol) servers and their tools.
+                "content": f"""You are a helpful AI assistant with access to MCP (Model Context Protocol) servers and their tools.
 
-You can help users:
-- Query and explore databases using database context tools
-- Search for tables, schemas, and relationships
-- Find information about data structures
-- Execute various tools provided by connected MCP servers
+IMPORTANT: You MUST use the available tools to answer questions. Do NOT just say "let me check" - actually call the tools!
+
+Available MCP Servers: {server_list}
+
+Available Tools ({len(tool_names)} total): {tool_list}
+
+Tool naming convention: Tools are named as "server_id__tool_name". For example:
+- "default__list_tables" calls the list_tables tool on the default server
+- "synth-local__list_databases" calls list_databases on the synth-local server
 
 When answering questions:
-1. Use the available tools to get accurate, real-time information
-2. Provide clear, well-formatted responses
-3. If a tool returns an error, explain what went wrong and suggest alternatives
-4. Format data results in a readable way (use markdown tables, lists, etc.)
+1. ALWAYS use the available tools to get real data - don't make up information
+2. If asked about a specific server, use tools from that server (look for the server_id prefix)
+3. Provide clear, well-formatted responses with the actual data returned
+4. If a tool returns an error, explain what went wrong
+5. Format data results using markdown (tables, lists, code blocks)
 
-Current MCP servers available: """ + ", ".join(f"{k} ({v['name']})" for k, v in mcp_servers.items() if v.get("enabled", True))
+Remember: Call the tools, don't just describe what you would do!"""
             }
         ]
         
@@ -511,6 +631,9 @@ Current MCP servers available: """ + ", ".join(f"{k} ({v['name']})" for k, v in 
             response = await openai_client.chat.completions.create(**completion_params)
             
             assistant_message = response.choices[0].message
+            
+            # Log for debugging
+            print(f"[Chat] Response: content={bool(assistant_message.content)}, tool_calls={len(assistant_message.tool_calls) if assistant_message.tool_calls else 0}")
             
             # Check if the model wants to call tools
             if assistant_message.tool_calls:
@@ -553,7 +676,9 @@ Current MCP servers available: """ + ", ".join(f"{k} ({v['name']})" for k, v in 
                         arguments = {}
                     
                     # Execute the tool
+                    print(f"[Chat] Executing tool: {server_id}/{tool_name} with args: {arguments}")
                     tool_result = await call_mcp_tool_on_server(server_url, tool_name, arguments)
+                    print(f"[Chat] Tool result: {str(tool_result)[:200]}...")
                     
                     tools_used.append({
                         "server": server_id,
@@ -1076,6 +1201,172 @@ def extract_search_query(message: str) -> Optional[str]:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# API Routes - Wiki (Database Documentation)
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Wiki markdown files base path - reading from local folder for now
+WIKI_BASE_PATH = BASE_DIR.parent / "sftp-markdown-files"
+
+
+def get_wiki_structure() -> Dict[str, Any]:
+    """Build hierarchical structure from the markdown files directory."""
+    structure = {"databases": []}
+    
+    if not WIKI_BASE_PATH.exists():
+        return structure
+    
+    # Iterate through databases
+    for db_path in sorted(WIKI_BASE_PATH.iterdir()):
+        if not db_path.is_dir():
+            continue
+        
+        db_info = {
+            "name": db_path.name,
+            "path": str(db_path.relative_to(WIKI_BASE_PATH)),
+            "domains": []
+        }
+        
+        # Look for domains directory
+        domains_path = db_path / "domains"
+        if domains_path.exists() and domains_path.is_dir():
+            for domain_path in sorted(domains_path.iterdir()):
+                if not domain_path.is_dir():
+                    continue
+                
+                domain_info = {
+                    "name": domain_path.name,
+                    "path": str(domain_path.relative_to(WIKI_BASE_PATH)),
+                    "tables": []
+                }
+                
+                # Look for tables directory
+                tables_path = domain_path / "tables"
+                if tables_path.exists() and tables_path.is_dir():
+                    for table_file in sorted(tables_path.iterdir()):
+                        if table_file.is_file() and table_file.suffix.lower() in ['.md', '.markdown']:
+                            table_name = table_file.stem
+                            domain_info["tables"].append({
+                                "name": table_name,
+                                "path": str(table_file.relative_to(WIKI_BASE_PATH)),
+                                "file": table_file.name
+                            })
+                
+                db_info["domains"].append(domain_info)
+        
+        structure["databases"].append(db_info)
+    
+    return structure
+
+
+def search_wiki_tables(query: str) -> List[Dict[str, Any]]:
+    """Search tables in wiki by name or content."""
+    results = []
+    query_lower = query.lower()
+    
+    if not WIKI_BASE_PATH.exists():
+        return results
+    
+    # Search through all markdown files
+    for md_file in WIKI_BASE_PATH.rglob("*.md"):
+        table_name = md_file.stem
+        relative_path = str(md_file.relative_to(WIKI_BASE_PATH))
+        
+        # Parse path to get database and domain
+        parts = relative_path.split("/")
+        database = parts[0] if len(parts) > 0 else ""
+        domain = parts[2] if len(parts) > 2 else ""  # skip "domains" folder
+        
+        # Check if query matches table name
+        name_match = query_lower in table_name.lower()
+        
+        # Check content for matches
+        content_match = False
+        snippet = ""
+        try:
+            content = md_file.read_text(encoding='utf-8')
+            if query_lower in content.lower():
+                content_match = True
+                # Extract snippet around match
+                idx = content.lower().find(query_lower)
+                start = max(0, idx - 50)
+                end = min(len(content), idx + len(query) + 100)
+                snippet = "..." + content[start:end].replace("\n", " ").strip() + "..."
+        except Exception:
+            pass
+        
+        if name_match or content_match:
+            results.append({
+                "name": table_name,
+                "path": relative_path,
+                "database": database,
+                "domain": domain,
+                "name_match": name_match,
+                "snippet": snippet if content_match else ""
+            })
+    
+    # Sort by relevance (name matches first)
+    results.sort(key=lambda x: (not x["name_match"], x["name"].lower()))
+    
+    return results[:50]  # Limit to 50 results
+
+
+@app.get("/api/wiki/structure")
+async def get_wiki_structure_endpoint():
+    """Get the hierarchical structure of wiki databases, domains, and tables."""
+    try:
+        structure = get_wiki_structure()
+        return structure
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/wiki/table")
+async def get_wiki_table(path: str):
+    """Get the markdown content for a specific table."""
+    try:
+        # Validate path doesn't escape wiki directory
+        file_path = WIKI_BASE_PATH / path
+        if not file_path.resolve().is_relative_to(WIKI_BASE_PATH.resolve()):
+            raise HTTPException(status_code=403, detail="Invalid path")
+        
+        if not file_path.exists():
+            raise HTTPException(status_code=404, detail="Table documentation not found")
+        
+        content = file_path.read_text(encoding='utf-8')
+        
+        # Parse path to get metadata
+        parts = path.split("/")
+        database = parts[0] if len(parts) > 0 else ""
+        domain = parts[2] if len(parts) > 2 else ""
+        table_name = file_path.stem
+        
+        return {
+            "path": path,
+            "name": table_name,
+            "database": database,
+            "domain": domain,
+            "content": content
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/wiki/search")
+async def search_wiki(q: str):
+    """Search for tables in the wiki."""
+    try:
+        if not q or len(q) < 2:
+            return {"results": [], "query": q}
+        
+        results = search_wiki_tables(q)
+        return {"results": results, "query": q}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # API Routes - SFTP File Browser
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -1099,6 +1390,9 @@ async def list_files(path: str = "/data"):
             files = []
             for item in sftp.listdir_attr(path):
                 is_dir = item.st_mode is not None and (item.st_mode & 0o40000)
+                # Skip markdown files (only filter files, not directories)
+                if not is_dir and item.filename.endswith('.md'):
+                    continue
                 files.append({
                     "name": item.filename,
                     "path": f"{path}/{item.filename}".replace("//", "/"),
@@ -1166,6 +1460,70 @@ async def get_file_content(path: str):
             transport.close()
     except FileNotFoundError:
         raise HTTPException(status_code=404, detail="File not found")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"SFTP error: {str(e)}")
+
+
+def find_markdown_files_recursive(sftp, path: str, base_path: str = "/data"):
+    """Recursively find all markdown files in SFTP directory."""
+    markdown_files = []
+    
+    try:
+        # Ensure path starts with /data
+        if not path.startswith("/data"):
+            path = f"/data{path}" if path.startswith("/") else f"/data/{path}"
+        
+        for item in sftp.listdir_attr(path):
+            item_path = f"{path}/{item.filename}".replace("//", "/")
+            is_dir = item.st_mode is not None and (item.st_mode & 0o40000)
+            
+            if is_dir:
+                # Recursively search subdirectories
+                try:
+                    markdown_files.extend(find_markdown_files_recursive(sftp, item_path, base_path))
+                except Exception:
+                    # Skip directories we can't access
+                    pass
+            else:
+                # Check if it's a markdown file
+                if item.filename.lower().endswith(('.md', '.markdown')):
+                    markdown_files.append({
+                        "name": item.filename,
+                        "path": item_path,
+                        "size": item.st_size,
+                        "modified": item.st_mtime,
+                        "relative_path": item_path.replace(base_path, "").lstrip("/")
+                    })
+    except Exception:
+        # Skip paths we can't access
+        pass
+    
+    return markdown_files
+
+
+@app.get("/api/files/markdown")
+async def get_all_markdown_files(root_path: str = "/data"):
+    """Get all markdown files recursively from SFTP directory."""
+    try:
+        sftp, transport = get_sftp_client()
+        try:
+            # Ensure path starts with /data
+            if not root_path.startswith("/data"):
+                root_path = f"/data{root_path}" if root_path.startswith("/") else f"/data/{root_path}"
+            
+            markdown_files = find_markdown_files_recursive(sftp, root_path, root_path)
+            
+            # Sort by path
+            markdown_files.sort(key=lambda x: x["path"].lower())
+            
+            return {
+                "count": len(markdown_files),
+                "files": markdown_files,
+                "root_path": root_path
+            }
+        finally:
+            sftp.close()
+            transport.close()
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"SFTP error: {str(e)}")
 
