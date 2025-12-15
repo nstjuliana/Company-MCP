@@ -100,6 +100,7 @@ services:
       - "${SFTP_PORT:-2222}:22"
     volumes:
       - ./data:/home/${SFTP_USER:-datauser}/data
+      - ./sftp-markdown-files:/home/${SFTP_USER:-datauser}/data/wiki
       - sftp-keys:/etc/ssh/keys
     command: "${SFTP_USER:-datauser}:${SFTP_PASSWORD:-changeme}:1001:1001:data"
     restart: unless-stopped

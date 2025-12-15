@@ -1,0 +1,65 @@
+{"location": "main.py:list_files", "message": "API called", "data": {"path": "/data"}, "hypothesisId": "H1-H5", "timestamp": 1765824501.9937449}
+{"location": "main.py:get_sftp_client", "message": "SFTP config", "data": {"host": "localhost", "port": 22, "user": "datauser"}, "hypothesisId": "H2,H3,H4", "timestamp": 1765824501.994355}
+{"location": "main.py:get_sftp_client", "message": "SFTP connected successfully", "data": {"host": "localhost", "port": 22}, "hypothesisId": "H1,H5", "timestamp": 1765824502.125819}
+{"location": "main.py:list_files", "message": "API called", "data": {"path": "/data/sftp-markdown-files"}, "hypothesisId": "H1-H5", "timestamp": 1765824503.6693969}
+{"location": "main.py:get_sftp_client", "message": "SFTP config", "data": {"host": "localhost", "port": 22, "user": "datauser"}, "hypothesisId": "H2,H3,H4", "timestamp": 1765824503.669997}
+{"location": "main.py:get_sftp_client", "message": "SFTP connected successfully", "data": {"host": "localhost", "port": 22}, "hypothesisId": "H1,H5", "timestamp": 1765824503.7655911}
+{"location": "main.py:get_sftp_client", "message": "SFTP config", "data": {"host": "localhost", "port": 22, "user": "datauser"}, "hypothesisId": "H2,H3,H4", "timestamp": 1765824505.97549}
+{"location": "main.py:get_sftp_client", "message": "SFTP connected successfully", "data": {"host": "localhost", "port": 22}, "hypothesisId": "H1,H5", "timestamp": 1765824506.0836961}
+{"location": "main.py:list_files", "message": "API called", "data": {"path": "/data/sftp-markdown-files"}, "hypothesisId": "H1-H5", "timestamp": 1765824561.519778}
+{"location": "main.py:get_sftp_client", "message": "SFTP config", "data": {"host": "localhost", "port": 22, "user": "datauser"}, "hypothesisId": "H2,H3,H4", "timestamp": 1765824561.520108}
+{"location": "main.py:get_sftp_client", "message": "SFTP connected successfully", "data": {"host": "localhost", "port": 22}, "hypothesisId": "H1,H5", "timestamp": 1765824561.621896}
+{"location": "main.py:list_files", "message": "API called", "data": {"path": "/data/sftp-markdown-files/domains"}, "hypothesisId": "H1-H5", "timestamp": 1765824562.971732}
+{"location": "main.py:get_sftp_client", "message": "SFTP config", "data": {"host": "localhost", "port": 22, "user": "datauser"}, "hypothesisId": "H2,H3,H4", "timestamp": 1765824562.9719172}
+{"location": "main.py:get_sftp_client", "message": "SFTP connected successfully", "data": {"host": "localhost", "port": 22}, "hypothesisId": "H1,H5", "timestamp": 1765824563.076475}
+{"location": "main.py:list_files", "message": "API called", "data": {"path": "/data/sftp-markdown-files/domains/academic"}, "hypothesisId": "H1-H5", "timestamp": 1765824566.6888478}
+{"location": "main.py:get_sftp_client", "message": "SFTP config", "data": {"host": "localhost", "port": 22, "user": "datauser"}, "hypothesisId": "H2,H3,H4", "timestamp": 1765824566.689041}
+{"location": "main.py:get_sftp_client", "message": "SFTP connected successfully", "data": {"host": "localhost", "port": 22}, "hypothesisId": "H1,H5", "timestamp": 1765824566.766322}
+{"location": "main.py:list_files", "message": "API called", "data": {"path": "/data/sftp-markdown-files"}, "hypothesisId": "H1-H5", "timestamp": 1765824567.472537}
+{"location": "main.py:get_sftp_client", "message": "SFTP config", "data": {"host": "localhost", "port": 22, "user": "datauser"}, "hypothesisId": "H2,H3,H4", "timestamp": 1765824567.4727502}
+{"location": "main.py:get_sftp_client", "message": "SFTP connected successfully", "data": {"host": "localhost", "port": 22}, "hypothesisId": "H1,H5", "timestamp": 1765824567.5744529}
+{"location": "main.py:list_files", "message": "API called", "data": {"path": "/data"}, "hypothesisId": "H1-H5", "timestamp": 1765824568.011219}
+{"location": "main.py:get_sftp_client", "message": "SFTP config", "data": {"host": "localhost", "port": 22, "user": "datauser"}, "hypothesisId": "H2,H3,H4", "timestamp": 1765824568.0113568}
+{"location": "main.py:get_sftp_client", "message": "SFTP connected successfully", "data": {"host": "localhost", "port": 22}, "hypothesisId": "H1,H5", "timestamp": 1765824568.082463}
+{"location": "main.py:get_sftp_client", "message": "SFTP config", "data": {"host": "localhost", "port": 22, "user": "datauser"}, "hypothesisId": "H2,H3,H4", "timestamp": 1765824635.167215}
+{"location": "main.py:get_sftp_client", "message": "SFTP connected successfully", "data": {"host": "localhost", "port": 22}, "hypothesisId": "H1,H5", "timestamp": 1765824635.281814}
+{"location": "main.py:get_sftp_client", "message": "SFTP config", "data": {"host": "localhost", "port": 22, "user": "datauser"}, "hypothesisId": "H2,H3,H4", "timestamp": 1765824729.309634}
+{"location": "main.py:get_sftp_client", "message": "SFTP connected successfully", "data": {"host": "localhost", "port": 22}, "hypothesisId": "H1,H5", "timestamp": 1765824729.397969}
+{"location": "main.py:list_files", "message": "API called", "data": {"path": "/data"}, "hypothesisId": "H1-H5", "timestamp": 1765824730.434836}
+{"location": "main.py:get_sftp_client", "message": "SFTP config", "data": {"host": "localhost", "port": 22, "user": "datauser"}, "hypothesisId": "H2,H3,H4", "timestamp": 1765824730.4354088}
+{"location": "main.py:get_sftp_client", "message": "SFTP connected successfully", "data": {"host": "localhost", "port": 22}, "hypothesisId": "H1,H5", "timestamp": 1765824730.519426}
+{"location": "main.py:get_sftp_client", "message": "SFTP config", "data": {"host": "localhost", "port": 22, "user": "datauser"}, "hypothesisId": "H2,H3,H4", "timestamp": 1765825081.39416}
+{"location": "main.py:get_sftp_client", "message": "SFTP connection FAILED", "data": {"error": "Unable to connect to localhost: [Errno 61] Connection refused", "error_type": "SSHException", "host": "localhost", "port": 22}, "hypothesisId": "H1,H2,H3,H4,H5", "timestamp": 1765825081.397578}
+{"location": "main.py:list_files", "message": "API called", "data": {"path": "/data"}, "hypothesisId": "H1-H5", "timestamp": 1765825100.108495}
+{"location": "main.py:get_sftp_client", "message": "SFTP config", "data": {"host": "localhost", "port": 22, "user": "datauser"}, "hypothesisId": "H2,H3,H4", "timestamp": 1765825100.1089542}
+{"location": "main.py:get_sftp_client", "message": "SFTP connection FAILED", "data": {"error": "Unable to connect to localhost: [Errno 61] Connection refused", "error_type": "SSHException", "host": "localhost", "port": 22}, "hypothesisId": "H1,H2,H3,H4,H5", "timestamp": 1765825100.110661}
+{"location": "main.py:list_files:exception", "message": "SFTP error caught", "data": {"error": "Unable to connect to localhost: [Errno 61] Connection refused", "error_type": "SSHException"}, "hypothesisId": "H1-H5", "timestamp": 1765825100.110968}
+{"location": "main.py:list_files", "message": "API called", "data": {"path": "/data"}, "hypothesisId": "H1-H5", "timestamp": 1765825115.13458}
+{"location": "main.py:get_sftp_client", "message": "SFTP config", "data": {"host": "localhost", "port": 22, "user": "datauser"}, "hypothesisId": "H2,H3,H4", "timestamp": 1765825115.1351008}
+{"location": "main.py:get_sftp_client", "message": "SFTP connection FAILED", "data": {"error": "Unable to connect to localhost: [Errno 61] Connection refused", "error_type": "SSHException", "host": "localhost", "port": 22}, "hypothesisId": "H1,H2,H3,H4,H5", "timestamp": 1765825115.137683}
+{"location": "main.py:list_files:exception", "message": "SFTP error caught", "data": {"error": "Unable to connect to localhost: [Errno 61] Connection refused", "error_type": "SSHException"}, "hypothesisId": "H1-H5", "timestamp": 1765825115.137949}
+{"location": "main.py:get_sftp_client", "message": "SFTP config", "data": {"host": "localhost", "port": 22, "user": "datauser"}, "hypothesisId": "H2,H3,H4", "timestamp": 1765825117.1138601}
+{"location": "main.py:get_sftp_client", "message": "SFTP connection FAILED", "data": {"error": "Unable to connect to localhost: [Errno 61] Connection refused", "error_type": "SSHException", "host": "localhost", "port": 22}, "hypothesisId": "H1,H2,H3,H4,H5", "timestamp": 1765825117.1155221}
+{"location": "main.py:list_files", "message": "API called", "data": {"path": "/data"}, "hypothesisId": "H1-H5", "timestamp": 1765825117.822724}
+{"location": "main.py:get_sftp_client", "message": "SFTP config", "data": {"host": "localhost", "port": 22, "user": "datauser"}, "hypothesisId": "H2,H3,H4", "timestamp": 1765825117.823262}
+{"location": "main.py:get_sftp_client", "message": "SFTP connection FAILED", "data": {"error": "Unable to connect to localhost: [Errno 61] Connection refused", "error_type": "SSHException", "host": "localhost", "port": 22}, "hypothesisId": "H1,H2,H3,H4,H5", "timestamp": 1765825117.826103}
+{"location": "main.py:list_files:exception", "message": "SFTP error caught", "data": {"error": "Unable to connect to localhost: [Errno 61] Connection refused", "error_type": "SSHException"}, "hypothesisId": "H1-H5", "timestamp": 1765825117.826494}
+{"location": "main.py:get_sftp_client", "message": "SFTP config", "data": {"host": "localhost", "port": 2222, "user": "datauser"}, "hypothesisId": "H2,H3,H4", "timestamp": 1765825211.028318}
+{"location": "main.py:get_sftp_client", "message": "SFTP connection FAILED", "data": {"error": "Unable to connect to localhost: [Errno 61] Connection refused", "error_type": "SSHException", "host": "localhost", "port": 2222}, "hypothesisId": "H1,H2,H3,H4,H5", "timestamp": 1765825211.031583}
+{"location": "main.py:list_files", "message": "API called", "data": {"path": "/data"}, "hypothesisId": "H1-H5", "timestamp": 1765825211.7038798}
+{"location": "main.py:get_sftp_client", "message": "SFTP config", "data": {"host": "localhost", "port": 2222, "user": "datauser"}, "hypothesisId": "H2,H3,H4", "timestamp": 1765825211.7043772}
+{"location": "main.py:get_sftp_client", "message": "SFTP connection FAILED", "data": {"error": "Unable to connect to localhost: [Errno 61] Connection refused", "error_type": "SSHException", "host": "localhost", "port": 2222}, "hypothesisId": "H1,H2,H3,H4,H5", "timestamp": 1765825211.7061582}
+{"location": "main.py:list_files:exception", "message": "SFTP error caught", "data": {"error": "Unable to connect to localhost: [Errno 61] Connection refused", "error_type": "SSHException"}, "hypothesisId": "H1-H5", "timestamp": 1765825211.7064419}
+{"location": "main.py:get_sftp_client", "message": "SFTP config", "data": {"host": "localhost", "port": 2222, "user": "datauser"}, "hypothesisId": "H2,H3,H4", "timestamp": 1765825248.907198}
+{"location": "main.py:get_sftp_client", "message": "SFTP connection FAILED", "data": {"error": "Unable to connect to localhost: [Errno 61] Connection refused", "error_type": "SSHException", "host": "localhost", "port": 2222}, "hypothesisId": "H1,H2,H3,H4,H5", "timestamp": 1765825248.90907}
+{"location": "main.py:list_files", "message": "API called", "data": {"path": "/data"}, "hypothesisId": "H1-H5", "timestamp": 1765825249.4147682}
+{"location": "main.py:get_sftp_client", "message": "SFTP config", "data": {"host": "localhost", "port": 2222, "user": "datauser"}, "hypothesisId": "H2,H3,H4", "timestamp": 1765825249.41538}
+{"location": "main.py:get_sftp_client", "message": "SFTP connection FAILED", "data": {"error": "Unable to connect to localhost: [Errno 61] Connection refused", "error_type": "SSHException", "host": "localhost", "port": 2222}, "hypothesisId": "H1,H2,H3,H4,H5", "timestamp": 1765825249.4178371}
+{"location": "main.py:list_files:exception", "message": "SFTP error caught", "data": {"error": "Unable to connect to localhost: [Errno 61] Connection refused", "error_type": "SSHException"}, "hypothesisId": "H1-H5", "timestamp": 1765825249.418321}
+{"location": "main.py:list_files", "message": "API called", "data": {"path": "/data"}, "hypothesisId": "H1-H5", "timestamp": 1765825488.6624582}
+{"location": "main.py:get_sftp_client", "message": "SFTP config", "data": {"host": "localhost", "port": 22, "user": "datauser"}, "hypothesisId": "H2,H3,H4", "timestamp": 1765825488.663454}
+{"location": "main.py:get_sftp_client", "message": "SFTP connected successfully", "data": {"host": "localhost", "port": 22}, "hypothesisId": "H1,H5", "timestamp": 1765825488.7870562}
+{"location": "main.py:get_sftp_client", "message": "SFTP config", "data": {"host": "localhost", "port": 22, "user": "datauser"}, "hypothesisId": "H2,H3,H4", "timestamp": 1765825491.1686342}
+{"location": "main.py:get_sftp_client", "message": "SFTP connected successfully", "data": {"host": "localhost", "port": 22}, "hypothesisId": "H1,H5", "timestamp": 1765825491.258624}
+{"location": "main.py:get_sftp_client", "message": "SFTP config", "data": {"host": "localhost", "port": 22, "user": "datauser"}, "hypothesisId": "H2,H3,H4", "timestamp": 1765825511.829259}
+{"location": "main.py:get_sftp_client", "message": "SFTP connected successfully", "data": {"host": "localhost", "port": 22}, "hypothesisId": "H1,H5", "timestamp": 1765825511.920349}

@@ -23,7 +23,9 @@ from pydantic import BaseModel, Field
 from openai import AsyncOpenAI
 
 # Configuration
-SFTP_HOST = os.getenv("SFTP_HOST", "sftp-server")
+# For local dev (outside Docker): use localhost and the exposed SFTP port
+# For Docker: docker-compose sets SFTP_HOST=sftp-server, SFTP_PORT=22
+SFTP_HOST = os.getenv("SFTP_HOST", "localhost")
 SFTP_PORT = int(os.getenv("SFTP_PORT", "22"))
 SFTP_USER = os.getenv("SFTP_USER", "datauser")
 SFTP_PASSWORD = os.getenv("SFTP_PASSWORD", "changeme")
@@ -1286,108 +1288,175 @@ def extract_search_query(message: str) -> Optional[str]:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# API Routes - Wiki (Database Documentation)
+# API Routes - Wiki (Database Documentation via SFTP)
 # ─────────────────────────────────────────────────────────────────────────────
 
-# Wiki markdown files base path - reading from local folder for now
-WIKI_BASE_PATH = BASE_DIR.parent / "sftp-markdown-files"
+# Wiki databases to include (filter)
+WIKI_ALLOWED_DATABASES = ["synthetic_250_postgres", "synthetic_250_snowflake"]
+WIKI_SFTP_BASE_PATH = "/data/wiki"
 
 
-def get_wiki_structure() -> Dict[str, Any]:
-    """Build hierarchical structure from the markdown files directory."""
+def get_wiki_structure_sftp() -> Dict[str, Any]:
+    """Build hierarchical structure from SFTP markdown files directory."""
     structure = {"databases": []}
     
-    if not WIKI_BASE_PATH.exists():
-        return structure
-    
-    # Iterate through databases
-    for db_path in sorted(WIKI_BASE_PATH.iterdir()):
-        if not db_path.is_dir():
-            continue
-        
-        db_info = {
-            "name": db_path.name,
-            "path": str(db_path.relative_to(WIKI_BASE_PATH)),
-            "domains": []
-        }
-        
-        # Look for domains directory
-        domains_path = db_path / "domains"
-        if domains_path.exists() and domains_path.is_dir():
-            for domain_path in sorted(domains_path.iterdir()):
-                if not domain_path.is_dir():
+    try:
+        sftp, transport = get_sftp_client()
+        try:
+            # Iterate through allowed databases only
+            for db_name in WIKI_ALLOWED_DATABASES:
+                db_path = f"{WIKI_SFTP_BASE_PATH}/{db_name}"
+                
+                try:
+                    sftp.stat(db_path)
+                except FileNotFoundError:
                     continue
                 
-                domain_info = {
-                    "name": domain_path.name,
-                    "path": str(domain_path.relative_to(WIKI_BASE_PATH)),
-                    "tables": []
+                db_info = {
+                    "name": db_name,
+                    "path": db_name,
+                    "domains": []
                 }
                 
-                # Look for tables directory
-                tables_path = domain_path / "tables"
-                if tables_path.exists() and tables_path.is_dir():
-                    for table_file in sorted(tables_path.iterdir()):
-                        if table_file.is_file() and table_file.suffix.lower() in ['.md', '.markdown']:
-                            table_name = table_file.stem
-                            domain_info["tables"].append({
-                                "name": table_name,
-                                "path": str(table_file.relative_to(WIKI_BASE_PATH)),
-                                "file": table_file.name
-                            })
+                # Look for domains directory
+                domains_path = f"{db_path}/domains"
+                try:
+                    for domain_item in sorted(sftp.listdir_attr(domains_path), key=lambda x: x.filename):
+                        if not (domain_item.st_mode and (domain_item.st_mode & 0o40000)):
+                            continue
+                        
+                        domain_name = domain_item.filename
+                        domain_info = {
+                            "name": domain_name,
+                            "path": f"{db_name}/domains/{domain_name}",
+                            "tables": []
+                        }
+                        
+                        # Look for tables directory
+                        tables_path = f"{domains_path}/{domain_name}/tables"
+                        try:
+                            for table_item in sorted(sftp.listdir_attr(tables_path), key=lambda x: x.filename):
+                                filename = table_item.filename
+                                # Only include markdown files
+                                if filename.lower().endswith(('.md', '.markdown')):
+                                    table_name = filename.rsplit('.', 1)[0]
+                                    domain_info["tables"].append({
+                                        "name": table_name,
+                                        "path": f"{db_name}/domains/{domain_name}/tables/{filename}",
+                                        "file": filename
+                                    })
+                        except FileNotFoundError:
+                            pass
+                        
+                        if domain_info["tables"]:  # Only add domains that have tables
+                            db_info["domains"].append(domain_info)
+                except FileNotFoundError:
+                    pass
                 
-                db_info["domains"].append(domain_info)
-        
-        structure["databases"].append(db_info)
+                if db_info["domains"]:  # Only add databases that have domains
+                    structure["databases"].append(db_info)
+        finally:
+            sftp.close()
+            transport.close()
+    except Exception as e:
+        print(f"[get_wiki_structure_sftp] Error: {e}")
     
     return structure
 
 
-def search_wiki_tables(query: str) -> List[Dict[str, Any]]:
-    """Search tables in wiki by name or content."""
+def find_wiki_markdown_files_sftp(sftp, path: str, base_path: str = WIKI_SFTP_BASE_PATH) -> List[Dict[str, Any]]:
+    """Recursively find all markdown files in SFTP wiki directory."""
+    markdown_files = []
+    
+    try:
+        for item in sftp.listdir_attr(path):
+            item_path = f"{path}/{item.filename}".replace("//", "/")
+            is_dir = item.st_mode is not None and (item.st_mode & 0o40000)
+            
+            if is_dir:
+                try:
+                    markdown_files.extend(find_wiki_markdown_files_sftp(sftp, item_path, base_path))
+                except Exception:
+                    pass
+            else:
+                if item.filename.lower().endswith(('.md', '.markdown')):
+                    relative_path = item_path.replace(base_path + "/", "")
+                    markdown_files.append({
+                        "name": item.filename,
+                        "path": item_path,
+                        "relative_path": relative_path,
+                        "size": item.st_size
+                    })
+    except Exception:
+        pass
+    
+    return markdown_files
+
+
+def search_wiki_tables_sftp(query: str) -> List[Dict[str, Any]]:
+    """Search tables in wiki by name or content via SFTP."""
     results = []
     query_lower = query.lower()
     
-    if not WIKI_BASE_PATH.exists():
-        return results
-    
-    # Search through all markdown files
-    for md_file in WIKI_BASE_PATH.rglob("*.md"):
-        table_name = md_file.stem
-        relative_path = str(md_file.relative_to(WIKI_BASE_PATH))
-        
-        # Parse path to get database and domain
-        parts = relative_path.split("/")
-        database = parts[0] if len(parts) > 0 else ""
-        domain = parts[2] if len(parts) > 2 else ""  # skip "domains" folder
-        
-        # Check if query matches table name
-        name_match = query_lower in table_name.lower()
-        
-        # Check content for matches
-        content_match = False
-        snippet = ""
+    try:
+        sftp, transport = get_sftp_client()
         try:
-            content = md_file.read_text(encoding='utf-8')
-            if query_lower in content.lower():
-                content_match = True
-                # Extract snippet around match
-                idx = content.lower().find(query_lower)
-                start = max(0, idx - 50)
-                end = min(len(content), idx + len(query) + 100)
-                snippet = "..." + content[start:end].replace("\n", " ").strip() + "..."
-        except Exception:
-            pass
-        
-        if name_match or content_match:
-            results.append({
-                "name": table_name,
-                "path": relative_path,
-                "database": database,
-                "domain": domain,
-                "name_match": name_match,
-                "snippet": snippet if content_match else ""
-            })
+            # Search through allowed databases only
+            for db_name in WIKI_ALLOWED_DATABASES:
+                db_path = f"{WIKI_SFTP_BASE_PATH}/{db_name}"
+                
+                try:
+                    sftp.stat(db_path)
+                except FileNotFoundError:
+                    continue
+                
+                # Find all markdown files in this database
+                md_files = find_wiki_markdown_files_sftp(sftp, db_path, WIKI_SFTP_BASE_PATH)
+                
+                for md_file in md_files:
+                    table_name = md_file["name"].rsplit('.', 1)[0]
+                    relative_path = md_file["relative_path"]
+                    
+                    # Parse path to get domain
+                    parts = relative_path.split("/")
+                    database = parts[0] if len(parts) > 0 else ""
+                    domain = parts[2] if len(parts) > 2 else ""  # skip "domains" folder
+                    
+                    # Check if query matches table name
+                    name_match = query_lower in table_name.lower()
+                    
+                    # Check content for matches (only for smaller files)
+                    content_match = False
+                    snippet = ""
+                    if md_file["size"] < 500000:  # Only search files < 500KB
+                        try:
+                            with sftp.open(md_file["path"], "r") as f:
+                                content = f.read()
+                                if isinstance(content, bytes):
+                                    content = content.decode("utf-8")
+                                if query_lower in content.lower():
+                                    content_match = True
+                                    idx = content.lower().find(query_lower)
+                                    start = max(0, idx - 50)
+                                    end = min(len(content), idx + len(query) + 100)
+                                    snippet = "..." + content[start:end].replace("\n", " ").strip() + "..."
+                        except Exception:
+                            pass
+                    
+                    if name_match or content_match:
+                        results.append({
+                            "name": table_name,
+                            "path": relative_path,
+                            "database": database,
+                            "domain": domain,
+                            "name_match": name_match,
+                            "snippet": snippet if content_match else ""
+                        })
+        finally:
+            sftp.close()
+            transport.close()
+    except Exception as e:
+        print(f"[search_wiki_tables_sftp] Error: {e}")
     
     # Sort by relevance (name matches first)
     results.sort(key=lambda x: (not x["name_match"], x["name"].lower()))
@@ -1397,9 +1466,9 @@ def search_wiki_tables(query: str) -> List[Dict[str, Any]]:
 
 @app.get("/api/wiki/structure")
 async def get_wiki_structure_endpoint():
-    """Get the hierarchical structure of wiki databases, domains, and tables."""
+    """Get the hierarchical structure of wiki databases, domains, and tables via SFTP."""
     try:
-        structure = get_wiki_structure()
+        structure = get_wiki_structure_sftp()
         return structure
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -1407,31 +1476,48 @@ async def get_wiki_structure_endpoint():
 
 @app.get("/api/wiki/table")
 async def get_wiki_table(path: str):
-    """Get the markdown content for a specific table."""
+    """Get the markdown content for a specific table via SFTP."""
     try:
-        # Validate path doesn't escape wiki directory
-        file_path = WIKI_BASE_PATH / path
-        if not file_path.resolve().is_relative_to(WIKI_BASE_PATH.resolve()):
-            raise HTTPException(status_code=403, detail="Invalid path")
-        
-        if not file_path.exists():
-            raise HTTPException(status_code=404, detail="Table documentation not found")
-        
-        content = file_path.read_text(encoding='utf-8')
-        
-        # Parse path to get metadata
+        # Validate path is within allowed databases
         parts = path.split("/")
-        database = parts[0] if len(parts) > 0 else ""
-        domain = parts[2] if len(parts) > 2 else ""
-        table_name = file_path.stem
+        if len(parts) < 1 or parts[0] not in WIKI_ALLOWED_DATABASES:
+            raise HTTPException(status_code=403, detail="Access to this database is not allowed")
         
-        return {
-            "path": path,
-            "name": table_name,
-            "database": database,
-            "domain": domain,
-            "content": content
-        }
+        # Build full SFTP path
+        sftp_path = f"{WIKI_SFTP_BASE_PATH}/{path}"
+        
+        sftp, transport = get_sftp_client()
+        try:
+            # Check file exists and get content
+            try:
+                stat = sftp.stat(sftp_path)
+            except FileNotFoundError:
+                raise HTTPException(status_code=404, detail="Table documentation not found")
+            
+            # Size limit
+            if stat.st_size > 1024 * 1024:  # 1MB limit
+                raise HTTPException(status_code=413, detail="File too large to display")
+            
+            with sftp.open(sftp_path, "r") as f:
+                content = f.read()
+                if isinstance(content, bytes):
+                    content = content.decode("utf-8")
+            
+            # Parse path to get metadata
+            database = parts[0] if len(parts) > 0 else ""
+            domain = parts[2] if len(parts) > 2 else ""
+            table_name = path.rsplit("/", 1)[-1].rsplit(".", 1)[0]
+            
+            return {
+                "path": path,
+                "name": table_name,
+                "database": database,
+                "domain": domain,
+                "content": content
+            }
+        finally:
+            sftp.close()
+            transport.close()
     except HTTPException:
         raise
     except Exception as e:
@@ -1440,12 +1526,12 @@ async def get_wiki_table(path: str):
 
 @app.get("/api/wiki/search")
 async def search_wiki(q: str):
-    """Search for tables in the wiki."""
+    """Search for tables in the wiki via SFTP."""
     try:
         if not q or len(q) < 2:
             return {"results": [], "query": q}
         
-        results = search_wiki_tables(q)
+        results = search_wiki_tables_sftp(q)
         return {"results": results, "query": q}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -1457,14 +1543,29 @@ async def search_wiki(q: str):
 
 def get_sftp_client():
     """Create SFTP connection."""
-    transport = paramiko.Transport((SFTP_HOST, SFTP_PORT))
-    transport.connect(username=SFTP_USER, password=SFTP_PASSWORD)
-    return paramiko.SFTPClient.from_transport(transport), transport
+    # #region agent log
+    import json as _json; open('/Users/user/Desktop/Github/Company-MCP/.cursor/debug.log','a').write(_json.dumps({"location":"main.py:get_sftp_client","message":"SFTP config","data":{"host":SFTP_HOST,"port":SFTP_PORT,"user":SFTP_USER},"hypothesisId":"H2,H3,H4","timestamp":__import__('time').time()})+'\n')
+    # #endregion
+    try:
+        transport = paramiko.Transport((SFTP_HOST, SFTP_PORT))
+        transport.connect(username=SFTP_USER, password=SFTP_PASSWORD)
+        # #region agent log
+        open('/Users/user/Desktop/Github/Company-MCP/.cursor/debug.log','a').write(_json.dumps({"location":"main.py:get_sftp_client","message":"SFTP connected successfully","data":{"host":SFTP_HOST,"port":SFTP_PORT},"hypothesisId":"H1,H5","timestamp":__import__('time').time()})+'\n')
+        # #endregion
+        return paramiko.SFTPClient.from_transport(transport), transport
+    except Exception as e:
+        # #region agent log
+        open('/Users/user/Desktop/Github/Company-MCP/.cursor/debug.log','a').write(_json.dumps({"location":"main.py:get_sftp_client","message":"SFTP connection FAILED","data":{"error":str(e),"error_type":type(e).__name__,"host":SFTP_HOST,"port":SFTP_PORT},"hypothesisId":"H1,H2,H3,H4,H5","timestamp":__import__('time').time()})+'\n')
+        # #endregion
+        raise
 
 
 @app.get("/api/files")
 async def list_files(path: str = "/data"):
     """List files in SFTP directory."""
+    # #region agent log
+    import json as _json; open('/Users/user/Desktop/Github/Company-MCP/.cursor/debug.log','a').write(_json.dumps({"location":"main.py:list_files","message":"API called","data":{"path":path},"hypothesisId":"H1-H5","timestamp":__import__('time').time()})+'\n')
+    # #endregion
     try:
         sftp, transport = get_sftp_client()
         try:
@@ -1498,6 +1599,9 @@ async def list_files(path: str = "/data"):
             sftp.close()
             transport.close()
     except Exception as e:
+        # #region agent log
+        import json as _json; open('/Users/user/Desktop/Github/Company-MCP/.cursor/debug.log','a').write(_json.dumps({"location":"main.py:list_files:exception","message":"SFTP error caught","data":{"error":str(e),"error_type":type(e).__name__},"hypothesisId":"H1-H5","timestamp":__import__('time').time()})+'\n')
+        # #endregion
         raise HTTPException(status_code=500, detail=f"SFTP error: {str(e)}")
 
 
