@@ -1323,6 +1323,388 @@ def get_common_relationships(
     return {"relationships": relationships[:limit], "tokens_used": _estimate_tokens(database + domain)}
 
 
+# --- Known Join Patterns for Common Business Scenarios ---
+
+KNOWN_PATTERNS: Dict[str, List[Dict[str, Any]]] = {
+    "product_id": [
+        {
+            "name": "margin_analysis",
+            "description": "Calculate profit margins by linking sales revenue to procurement costs",
+            "domains": ["sales", "inventory_and_supply_chain"],
+            "tables": ["sales_order_lines", "supplier_products", "purchase_order_lines"],
+            "bridge_table": "supplier_products",
+        },
+        {
+            "name": "inventory_check",
+            "description": "Check stock availability for products in orders",
+            "domains": ["sales", "inventory"],
+            "tables": ["sales_order_lines", "inventory_items"],
+            "bridge_table": None,
+        },
+        {
+            "name": "product_performance",
+            "description": "Analyze product sales, inventory levels, and promotions",
+            "domains": ["sales", "inventory", "marketing"],
+            "tables": ["products", "sales_order_lines", "inventory_items", "promotions"],
+            "bridge_table": None,
+        },
+    ],
+    "customer_id": [
+        {
+            "name": "customer_360",
+            "description": "Complete customer view across orders, support cases, and payments",
+            "domains": ["sales", "customer_service", "finance"],
+            "tables": ["customers", "sales_orders", "cases", "payment_transactions"],
+            "bridge_table": None,
+        },
+        {
+            "name": "customer_lifetime_value",
+            "description": "Calculate total customer spend across all orders",
+            "domains": ["sales", "finance"],
+            "tables": ["customers", "sales_orders", "sales_order_lines"],
+            "bridge_table": "sales_orders",
+        },
+    ],
+    "employee_id": [
+        {
+            "name": "hr_analysis",
+            "description": "Employee data across HR, payroll, and time tracking",
+            "domains": ["human_resources", "finance"],
+            "tables": ["employees", "payroll_records", "time_entries"],
+            "bridge_table": None,
+        },
+        {
+            "name": "employee_performance",
+            "description": "Track employee assignments and performance reviews",
+            "domains": ["human_resources", "projects"],
+            "tables": ["employees", "project_assignments", "performance_reviews"],
+            "bridge_table": None,
+        },
+    ],
+    "order_id": [
+        {
+            "name": "order_fulfillment",
+            "description": "Track orders from creation through shipping and delivery",
+            "domains": ["sales", "inventory"],
+            "tables": ["sales_orders", "sales_order_lines", "shipments", "shipment_items"],
+            "bridge_table": None,
+        },
+    ],
+    "supplier_id": [
+        {
+            "name": "supplier_performance",
+            "description": "Analyze supplier reliability, pricing, and order fulfillment",
+            "domains": ["inventory_and_supply_chain"],
+            "tables": ["suppliers", "supplier_products", "purchase_orders", "purchase_order_lines"],
+            "bridge_table": "supplier_products",
+        },
+    ],
+}
+
+
+def _infer_column_role(column_name: str, table_name: str, is_pk: bool, fk_refs: List[Dict[str, Any]]) -> str:
+    """Infer the role of a column in a table."""
+    # Check if it's the primary key
+    if is_pk:
+        return "primary_key"
+    
+    # Check if it references another table via FK
+    for fk in fk_refs:
+        fk_cols = fk.get("columns", [])
+        if column_name in fk_cols:
+            return "foreign_key"
+    
+    # Check naming conventions
+    if column_name.endswith("_id"):
+        return "foreign_key"  # Likely a FK even without explicit constraint
+    
+    return "attribute"
+
+
+def _find_bridge_tables(tables_by_domain: Dict[str, List[Dict[str, Any]]], column_name: str) -> List[str]:
+    """Find tables that could serve as bridge tables between domains."""
+    bridge_candidates = []
+    
+    # A bridge table typically:
+    # 1. Has multiple foreign keys
+    # 2. Contains the search column
+    # 3. Can connect different domains
+    
+    for domain, tables in tables_by_domain.items():
+        for table in tables:
+            # Look for tables with multiple FK relationships
+            fk_count = len(table.get("foreign_keys", []))
+            if fk_count >= 2:
+                bridge_candidates.append(table["table_name"])
+            # Also check for junction/bridge table naming patterns
+            table_lower = table["table_name"].lower()
+            if any(pattern in table_lower for pattern in ["_x_", "_to_", "bridge", "junction", "map", "link"]):
+                if table["table_name"] not in bridge_candidates:
+                    bridge_candidates.append(table["table_name"])
+    
+    return bridge_candidates
+
+
+def _generate_join_sql(tables: List[str], column_name: str, bridge_table: Optional[str] = None) -> str:
+    """Generate example SQL for joining tables via a common column."""
+    if len(tables) < 2:
+        return ""
+    
+    # If we have a bridge table, use it as the hub
+    if bridge_table and bridge_table in tables:
+        # Reorder tables so bridge is in the middle
+        other_tables = [t for t in tables if t != bridge_table]
+        if len(other_tables) >= 2:
+            sql_parts = [f"SELECT *\nFROM {other_tables[0]} t1"]
+            sql_parts.append(f"JOIN {bridge_table} b ON t1.{column_name} = b.{column_name}")
+            for i, t in enumerate(other_tables[1:], start=2):
+                sql_parts.append(f"JOIN {t} t{i} ON b.{column_name} = t{i}.{column_name}")
+            return "\n".join(sql_parts)
+    
+    # Simple chain join
+    sql_parts = [f"SELECT *\nFROM {tables[0]} t1"]
+    for i, t in enumerate(tables[1:], start=2):
+        sql_parts.append(f"JOIN {t} t{i} ON t1.{column_name} = t{i}.{column_name}")
+    return "\n".join(sql_parts)
+
+
+def _infer_join_patterns(
+    tables: List[Dict[str, Any]],
+    column_name: str,
+    tables_by_domain: Dict[str, List[Dict[str, Any]]]
+) -> List[Dict[str, Any]]:
+    """Infer join patterns for tables sharing a common column."""
+    patterns = []
+    
+    # First, check for known patterns
+    known = KNOWN_PATTERNS.get(column_name, [])
+    for pattern in known:
+        # Check if the pattern tables exist in our results
+        pattern_tables = pattern.get("tables", [])
+        found_tables = [t["table_name"] for t in tables]
+        matching_tables = [pt for pt in pattern_tables if any(pt.lower() in ft.lower() for ft in found_tables)]
+        
+        if len(matching_tables) >= 2:
+            patterns.append({
+                "pattern_name": pattern["name"],
+                "description": pattern["description"],
+                "tables": matching_tables,
+                "bridge_table": pattern.get("bridge_table"),
+                "example_sql": _generate_join_sql(matching_tables, column_name, pattern.get("bridge_table")),
+            })
+    
+    # Infer cross-domain patterns
+    domains = list(tables_by_domain.keys())
+    bridge_tables = _find_bridge_tables(tables_by_domain, column_name)
+    
+    for i, domain1 in enumerate(domains):
+        for domain2 in domains[i + 1:]:
+            # Skip if same domain
+            if domain1 == domain2:
+                continue
+            
+            tables1 = [t["table_name"] for t in tables_by_domain[domain1]]
+            tables2 = [t["table_name"] for t in tables_by_domain[domain2]]
+            
+            # Find if there's a bridge table connecting these domains
+            bridge = None
+            for bt in bridge_tables:
+                # Check if bridge table is in either domain's tables
+                if bt in tables1 or bt in tables2:
+                    bridge = bt
+                    break
+            
+            # Create a pattern name from domain names
+            pattern_name = f"{domain1.replace('_', ' ')}_to_{domain2.replace('_', ' ')}"
+            
+            # Select representative tables (first from each domain)
+            selected_tables = [tables1[0]] if tables1 else []
+            if bridge:
+                selected_tables.append(bridge)
+            selected_tables.extend([tables2[0]] if tables2 else [])
+            
+            if len(selected_tables) >= 2:
+                patterns.append({
+                    "pattern_name": pattern_name,
+                    "description": f"Join {domain1} and {domain2} data via {column_name}",
+                    "tables": selected_tables,
+                    "bridge_table": bridge,
+                    "example_sql": _generate_join_sql(selected_tables, column_name, bridge),
+                })
+    
+    return patterns
+
+
+@mcp.tool
+def get_column_usage(
+    column_name: str,
+    database: str = "",
+    domain: str = "",
+    include_patterns: bool = True
+) -> Dict[str, Any]:
+    """
+    Find all tables containing a specific column and suggest join patterns.
+    Useful for discovering implicit relationships through shared column names
+    (e.g., product_id across sales, inventory, and supply chain tables).
+
+    Args:
+        column_name: Column to search for (e.g., "product_id", "customer_id").
+        database: Optional database filter.
+        domain: Optional domain filter.
+        include_patterns: Include suggested join patterns (default: true).
+    Returns:
+        Dict with tables list grouped by domain, suggested join patterns, and token count.
+    """
+    mcp_name = _get_mcp_name()
+    
+    db = _get_db_connection(mcp_name)
+    if not db:
+        return {
+            "error": "Database not found. Run setup_db.py first.",
+            "column": column_name,
+            "total_tables": 0,
+            "tables": [],
+            "join_patterns": [],
+            "tokens_used": 0,
+        }
+    
+    try:
+        # Build query to find tables with this column
+        # We search in the JSON content stored in documents table
+        filters = ["doc_type = 'table'", "file_path LIKE '%.json'"]
+        params: List[Any] = []
+        
+        # Search for the column name in the content JSON
+        # The content contains columns array with column definitions
+        column_search = f'%"name": "{column_name}"%'
+        filters.append("content LIKE ?")
+        params.append(column_search)
+        
+        if database:
+            filters.append("database_name = ?")
+            params.append(database)
+        if domain:
+            filters.append("domain = ?")
+            params.append(domain)
+        
+        filter_clause = " AND ".join(filters)
+        
+        sql = f"""
+            SELECT 
+                id,
+                table_name,
+                database_name,
+                schema_name,
+                domain,
+                summary,
+                content,
+                file_path
+            FROM documents
+            WHERE {filter_clause}
+            ORDER BY domain, table_name
+        """
+        
+        cursor = db.execute(sql, params)
+        rows = cursor.fetchall()
+        
+        tables = []
+        tables_by_domain: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
+        
+        for row in rows:
+            table_name = row["table_name"]
+            if table_name.endswith(".json"):
+                table_name = table_name[:-5]
+            
+            # Parse the content JSON to get column details
+            try:
+                content = json.loads(row["content"]) if row["content"] else {}
+            except json.JSONDecodeError:
+                content = {}
+            
+            columns = content.get("columns", [])
+            primary_key = content.get("primary_key", [])
+            foreign_keys = content.get("foreign_keys", [])
+            
+            # Find the specific column in this table
+            column_info = None
+            for col in columns:
+                if col.get("name", "").lower() == column_name.lower():
+                    column_info = col
+                    break
+            
+            if not column_info:
+                # Column not found in this table - might be a partial match
+                continue
+            
+            # Determine column role
+            is_pk = column_name in primary_key
+            col_role = _infer_column_role(column_name, table_name, is_pk, foreign_keys)
+            
+            # Find FK reference if applicable
+            fk_ref = None
+            for fk in foreign_keys:
+                if column_name in fk.get("columns", []):
+                    fk_ref = fk.get("references", "")
+                    break
+            
+            table_entry = {
+                "table_name": table_name,
+                "schema_name": row["schema_name"],
+                "database": row["database_name"],
+                "domain": row["domain"] or "uncategorized",
+                "column_role": col_role,
+                "references": fk_ref,
+                "data_type": column_info.get("type", "unknown"),
+                "column_description": column_info.get("description", ""),
+            }
+            
+            tables.append(table_entry)
+            tables_by_domain[row["domain"] or "uncategorized"].append({
+                **table_entry,
+                "foreign_keys": foreign_keys,
+            })
+        
+        db.close()
+        
+        # Infer join patterns if requested
+        join_patterns = []
+        if include_patterns and len(tables) >= 2:
+            join_patterns = _infer_join_patterns(tables, column_name, tables_by_domain)
+        
+        # Build result grouped by domain
+        domains_summary = {
+            domain: {
+                "domain": domain,
+                "table_count": len(domain_tables),
+                "tables": [t["table_name"] for t in domain_tables],
+            }
+            for domain, domain_tables in tables_by_domain.items()
+        }
+        
+        result = {
+            "column": column_name,
+            "total_tables": len(tables),
+            "tables": tables,
+            "by_domain": domains_summary,
+            "join_patterns": join_patterns,
+            "tokens_used": _estimate_tokens(column_name + str(tables) + str(join_patterns)),
+        }
+        
+        return result
+        
+    except sqlite3.OperationalError as e:
+        db.close()
+        error_msg = str(e)
+        return {
+            "error": f"Database error: {error_msg}",
+            "column": column_name,
+            "total_tables": 0,
+            "tables": [],
+            "join_patterns": [],
+            "tokens_used": 0,
+        }
+
+
 if __name__ == "__main__":
     # Bind to 0.0.0.0 for container networking; use HTTP transport for remote access.
     # Port can be configured via MCP_PORT environment variable (default 8000)
