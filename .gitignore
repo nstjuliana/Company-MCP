@@ -26,3 +26,11 @@ Thumbs.db
 
 /data
 /tests
+
+memory-bank/
+planning/
+
+# SFTP sync state
+.synthetic_sync_state.json
+
+.gitignore
