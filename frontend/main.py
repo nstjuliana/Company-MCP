@@ -584,48 +584,13 @@ async def chat_status():
     }
 
 
-@app.post("/api/chat")
-async def chat(request: ChatRequest):
-    """
-    Process a chat message using GPT-4o with MCP tool integration.
-    The AI can use tools from all connected MCP servers.
-    """
-    if not openai_client:
-        return {
-            "response": "OpenAI API key not configured. Please set OPENAI_API_KEY environment variable.",
-            "tools_used": [],
-            "error": True
-        }
+def build_system_prompt(server_list: str, tool_names: List[str]) -> str:
+    """Build the system prompt for the chat assistant."""
+    tool_list = ", ".join(tool_names[:20])
+    if len(tool_names) > 20:
+        tool_list += f" (and {len(tool_names) - 20} more)"
     
-    try:
-        # Fetch all available MCP tools
-        mcp_tools = await get_all_mcp_tools()
-        openai_tools = convert_mcp_tools_to_openai_format(mcp_tools)
-        
-        # Log tool count for debugging
-        print(f"[Chat] Found {len(mcp_tools)} MCP tools from {len([s for s in mcp_servers.values() if s.get('enabled', True)])} servers")
-        
-        # Build tool lookup for quick access
-        tool_lookup = {
-            f"{tool.get('_server_id', 'default')}__{tool['name']}": tool 
-            for tool in mcp_tools
-        }
-        
-        # Build list of available servers for the prompt
-        enabled_servers = [(k, v) for k, v in mcp_servers.items() if v.get("enabled", True)]
-        server_list = ", ".join(f"{k} ({v['name']})" for k, v in enabled_servers)
-        
-        # Build list of tool names for the prompt
-        tool_names = [f"{t.get('_server_id', 'default')}__{t['name']}" for t in mcp_tools]
-        tool_list = ", ".join(tool_names[:20])  # Show first 20 tools
-        if len(tool_names) > 20:
-            tool_list += f" (and {len(tool_names) - 20} more)"
-        
-        # Build messages for OpenAI
-        messages = [
-            {
-                "role": "system",
-                "content": f"""You are a helpful AI assistant with access to MCP (Model Context Protocol) servers and their tools.
+    return f"""You are a helpful AI assistant with access to MCP (Model Context Protocol) servers and their tools.
 
 IMPORTANT: You MUST use the available tools to answer questions. Do NOT just say "let me check" - actually call the tools!
 
@@ -663,6 +628,266 @@ When answering questions that require database information, follow this workflow
 5. Format data results using markdown (tables, lists, code blocks)
 
 Remember: Call the tools, don't just describe what you would do!"""
+
+
+async def stream_sse_event(event_type: str, data: Any) -> str:
+    """Format a Server-Sent Event."""
+    json_data = json.dumps(data, default=str)
+    return f"event: {event_type}\ndata: {json_data}\n\n"
+
+
+@app.post("/api/chat/stream")
+async def chat_stream(request: ChatRequest):
+    """
+    Stream chat responses using Server-Sent Events.
+    Events: thinking, tool_start, tool_result, content_delta, content_done, error
+    """
+    async def generate():
+        if not openai_client:
+            yield await stream_sse_event("error", {
+                "message": "OpenAI API key not configured. Please set OPENAI_API_KEY environment variable."
+            })
+            return
+        
+        try:
+            # Fetch all available MCP tools
+            mcp_tools = await get_all_mcp_tools()
+            openai_tools = convert_mcp_tools_to_openai_format(mcp_tools)
+            
+            # Build tool lookup for quick access
+            tool_lookup = {
+                f"{tool.get('_server_id', 'default')}__{tool['name']}": tool 
+                for tool in mcp_tools
+            }
+            
+            # Build list of available servers for the prompt
+            enabled_servers = [(k, v) for k, v in mcp_servers.items() if v.get("enabled", True)]
+            server_list = ", ".join(f"{k} ({v['name']})" for k, v in enabled_servers)
+            
+            # Build list of tool names for the prompt
+            tool_names = [f"{t.get('_server_id', 'default')}__{t['name']}" for t in mcp_tools]
+            
+            # Build messages for OpenAI
+            messages = [
+                {
+                    "role": "system",
+                    "content": build_system_prompt(server_list, tool_names)
+                }
+            ]
+            
+            # Add conversation history
+            for msg in request.history[-10:]:
+                messages.append({
+                    "role": msg.role,
+                    "content": msg.content
+                })
+            
+            # Add the current user message
+            messages.append({
+                "role": "user",
+                "content": request.message
+            })
+            
+            tools_used = []
+            max_tool_calls = 10
+            tool_call_count = 0
+            
+            while tool_call_count < max_tool_calls:
+                # Call GPT-4o (non-streaming for tool calls phase)
+                completion_params = {
+                    "model": "gpt-4o",
+                    "messages": messages,
+                }
+                
+                if openai_tools:
+                    completion_params["tools"] = openai_tools
+                    completion_params["tool_choice"] = "auto"
+                
+                response = await openai_client.chat.completions.create(**completion_params)
+                assistant_message = response.choices[0].message
+                
+                # Check if the model wants to call tools
+                if assistant_message.tool_calls:
+                    # Send thinking event if there's content
+                    if assistant_message.content:
+                        yield await stream_sse_event("thinking", {
+                            "content": assistant_message.content
+                        })
+                    
+                    # Add the assistant's message with tool calls
+                    messages.append({
+                        "role": "assistant",
+                        "content": assistant_message.content or "",
+                        "tool_calls": [
+                            {
+                                "id": tc.id,
+                                "type": "function",
+                                "function": {
+                                    "name": tc.function.name,
+                                    "arguments": tc.function.arguments
+                                }
+                            }
+                            for tc in assistant_message.tool_calls
+                        ]
+                    })
+                    
+                    # Execute each tool call
+                    for tool_call in assistant_message.tool_calls:
+                        full_tool_name = tool_call.function.name
+                        
+                        # Parse the tool name to get server_id and actual tool name
+                        if "__" in full_tool_name:
+                            server_id, tool_name = full_tool_name.split("__", 1)
+                        else:
+                            server_id = "default"
+                            tool_name = full_tool_name
+                        
+                        # Get tool info
+                        tool_info = tool_lookup.get(full_tool_name, {})
+                        server_url = tool_info.get("_server_url", mcp_servers.get(server_id, {}).get("url", MCP_SERVER_URL))
+                        
+                        # Parse arguments
+                        try:
+                            arguments = json.loads(tool_call.function.arguments)
+                        except json.JSONDecodeError:
+                            arguments = {}
+                        
+                        # Send tool_start event
+                        yield await stream_sse_event("tool_start", {
+                            "server": server_id,
+                            "tool": tool_name,
+                            "arguments": arguments
+                        })
+                        
+                        # Execute the tool
+                        tool_result = await call_mcp_tool_on_server(server_url, tool_name, arguments)
+                        
+                        # Send tool_result event
+                        yield await stream_sse_event("tool_result", {
+                            "server": server_id,
+                            "tool": tool_name,
+                            "arguments": arguments,
+                            "result": tool_result
+                        })
+                        
+                        tools_used.append({
+                            "server": server_id,
+                            "tool": tool_name,
+                            "arguments": arguments
+                        })
+                        
+                        # Add tool result to messages
+                        messages.append({
+                            "role": "tool",
+                            "tool_call_id": tool_call.id,
+                            "content": json.dumps(tool_result, default=str)
+                        })
+                    
+                    tool_call_count += 1
+                else:
+                    # No more tool calls - stream the final response
+                    # Re-call with streaming enabled for the final response
+                    final_stream = await openai_client.chat.completions.create(
+                        model="gpt-4o",
+                        messages=messages,
+                        stream=True
+                    )
+                    
+                    full_content = ""
+                    async for chunk in final_stream:
+                        if chunk.choices and chunk.choices[0].delta.content:
+                            content = chunk.choices[0].delta.content
+                            full_content += content
+                            yield await stream_sse_event("content_delta", {
+                                "content": content
+                            })
+                    
+                    # Send completion event
+                    yield await stream_sse_event("content_done", {
+                        "full_content": full_content,
+                        "tools_used": tools_used
+                    })
+                    return
+            
+            # Max tool calls reached, stream final response
+            final_stream = await openai_client.chat.completions.create(
+                model="gpt-4o",
+                messages=messages,
+                stream=True
+            )
+            
+            full_content = ""
+            async for chunk in final_stream:
+                if chunk.choices and chunk.choices[0].delta.content:
+                    content = chunk.choices[0].delta.content
+                    full_content += content
+                    yield await stream_sse_event("content_delta", {
+                        "content": content
+                    })
+            
+            yield await stream_sse_event("content_done", {
+                "full_content": full_content,
+                "tools_used": tools_used
+            })
+            
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            yield await stream_sse_event("error", {
+                "message": str(e)
+            })
+    
+    return StreamingResponse(
+        generate(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            "X-Accel-Buffering": "no"
+        }
+    )
+
+
+@app.post("/api/chat")
+async def chat(request: ChatRequest):
+    """
+    Process a chat message using GPT-4o with MCP tool integration.
+    The AI can use tools from all connected MCP servers.
+    Note: For streaming responses, use /api/chat/stream instead.
+    """
+    if not openai_client:
+        return {
+            "response": "OpenAI API key not configured. Please set OPENAI_API_KEY environment variable.",
+            "tools_used": [],
+            "error": True
+        }
+    
+    try:
+        # Fetch all available MCP tools
+        mcp_tools = await get_all_mcp_tools()
+        openai_tools = convert_mcp_tools_to_openai_format(mcp_tools)
+        
+        # Log tool count for debugging
+        print(f"[Chat] Found {len(mcp_tools)} MCP tools from {len([s for s in mcp_servers.values() if s.get('enabled', True)])} servers")
+        
+        # Build tool lookup for quick access
+        tool_lookup = {
+            f"{tool.get('_server_id', 'default')}__{tool['name']}": tool 
+            for tool in mcp_tools
+        }
+        
+        # Build list of available servers for the prompt
+        enabled_servers = [(k, v) for k, v in mcp_servers.items() if v.get("enabled", True)]
+        server_list = ", ".join(f"{k} ({v['name']})" for k, v in enabled_servers)
+        
+        # Build list of tool names for the prompt
+        tool_names = [f"{t.get('_server_id', 'default')}__{t['name']}" for t in mcp_tools]
+        
+        # Build messages for OpenAI
+        messages = [
+            {
+                "role": "system",
+                "content": build_system_prompt(server_list, tool_names)
             }
         ]
         

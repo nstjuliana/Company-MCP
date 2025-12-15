@@ -161,50 +161,324 @@ async function sendMessage(textOrEvent = null) {
     // Show loading
     state.isLoading = true;
     chatSend.disabled = true;
-    const loadingEl = addLoadingIndicator();
+    
+    // Create streaming container
+    const streamingContainer = createStreamingContainer();
     
     try {
-        const response = await fetch('/api/chat', {
+        const response = await fetch('/api/chat/stream', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 
                 message,
-                history: state.chatHistory.slice(-10) // Last 10 messages for context
+                history: state.chatHistory.slice(-10)
             })
         });
         
-        const data = await response.json();
-        
-        // Remove loading
-        loadingEl.remove();
-        
-        // Show thinking steps if available
-        if (data.thinking_steps && data.thinking_steps.length > 0) {
-            addThinkingSteps(data.thinking_steps);
+        if (!response.ok) {
+            throw new Error(`HTTP error: ${response.status}`);
         }
         
-        // Format tools used info
-        let toolsInfo = null;
-        if (data.tools_used && data.tools_used.length > 0) {
-            toolsInfo = data.tools_used.map(t => `${t.server}/${t.tool}`).join(', ');
-        } else if (data.tool_used) {
-            toolsInfo = data.tool_used;
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        
+        let buffer = '';
+        let fullContent = '';
+        let toolsUsed = [];
+        let thinkingSteps = [];
+        
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            
+            buffer += decoder.decode(value, { stream: true });
+            
+            // Process complete SSE events
+            const lines = buffer.split('\n');
+            buffer = lines.pop() || ''; // Keep incomplete line in buffer
+            
+            let eventType = null;
+            for (const line of lines) {
+                if (line.startsWith('event: ')) {
+                    eventType = line.slice(7).trim();
+                } else if (line.startsWith('data: ') && eventType) {
+                    try {
+                        const data = JSON.parse(line.slice(6));
+                        handleStreamEvent(eventType, data, streamingContainer, {
+                            thinkingSteps,
+                            toolsUsed,
+                            fullContent: () => fullContent,
+                            setFullContent: (c) => { fullContent = c; }
+                        });
+                        
+                        if (eventType === 'content_delta') {
+                            fullContent += data.content;
+                        } else if (eventType === 'tool_start' || eventType === 'tool_result') {
+                            if (eventType === 'tool_result') {
+                                thinkingSteps.push({
+                                    type: 'tool_call',
+                                    server: data.server,
+                                    tool: data.tool,
+                                    arguments: data.arguments,
+                                    result: data.result
+                                });
+                                toolsUsed.push({
+                                    server: data.server,
+                                    tool: data.tool,
+                                    arguments: data.arguments
+                                });
+                            }
+                        } else if (eventType === 'thinking') {
+                            thinkingSteps.push({
+                                type: 'thinking',
+                                content: data.content
+                            });
+                        } else if (eventType === 'content_done') {
+                            fullContent = data.full_content || fullContent;
+                            toolsUsed = data.tools_used || toolsUsed;
+                        } else if (eventType === 'error') {
+                            fullContent = `Error: ${data.message}`;
+                        }
+                    } catch (e) {
+                        console.error('Error parsing SSE data:', e, line);
+                    }
+                    eventType = null;
+                }
+            }
         }
         
-        // Add assistant response
-        addMessage('assistant', data.response, null, data.error);
+        // Finalize the streaming container
+        finalizeStreamingContainer(streamingContainer, fullContent, toolsUsed);
         
         // Store in history
         state.chatHistory.push({ role: 'user', content: message });
-        state.chatHistory.push({ role: 'assistant', content: data.response });
+        state.chatHistory.push({ role: 'assistant', content: fullContent });
         
     } catch (error) {
-        loadingEl.remove();
+        console.error('Streaming error:', error);
+        streamingContainer.remove();
         addMessage('assistant', `Sorry, I encountered an error: ${error.message}`, null, true);
     } finally {
         state.isLoading = false;
         chatSend.disabled = false;
     }
+}
+
+function createStreamingContainer() {
+    const container = document.createElement('div');
+    container.className = 'message assistant streaming';
+    container.innerHTML = `
+        <div class="message-avatar">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729z"/>
+            </svg>
+        </div>
+        <div class="message-content">
+            <div class="streaming-steps"></div>
+            <div class="streaming-response">
+                <div class="typing-indicator">
+                    <span></span><span></span><span></span>
+                </div>
+            </div>
+        </div>
+    `;
+    chatMessages.appendChild(container);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    return container;
+}
+
+function handleStreamEvent(eventType, data, container, state) {
+    const stepsEl = container.querySelector('.streaming-steps');
+    const responseEl = container.querySelector('.streaming-response');
+    
+    switch (eventType) {
+        case 'thinking':
+            addStreamingStep(stepsEl, 'thinking', {
+                content: data.content
+            });
+            break;
+            
+        case 'tool_start':
+            addStreamingStep(stepsEl, 'tool_start', {
+                server: data.server,
+                tool: data.tool,
+                arguments: data.arguments
+            });
+            break;
+            
+        case 'tool_result':
+            updateToolWithResult(stepsEl, data);
+            break;
+            
+        case 'content_delta':
+            // Remove typing indicator if present
+            const typingIndicator = responseEl.querySelector('.typing-indicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+            
+            // Append content
+            let textEl = responseEl.querySelector('.message-text');
+            if (!textEl) {
+                textEl = document.createElement('div');
+                textEl.className = 'message-text streaming-text';
+                responseEl.appendChild(textEl);
+            }
+            
+            // Update the full content and re-render
+            const currentContent = state.fullContent() + data.content;
+            textEl.innerHTML = parseContent(currentContent);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            break;
+            
+        case 'content_done':
+            // Final content is handled in finalize
+            break;
+            
+        case 'error':
+            responseEl.innerHTML = `<div class="message-text error">${escapeHtml(data.message)}</div>`;
+            break;
+    }
+}
+
+function addStreamingStep(stepsEl, type, data) {
+    // Ensure steps container is visible
+    if (!stepsEl.querySelector('.streaming-steps-header')) {
+        const header = document.createElement('div');
+        header.className = 'streaming-steps-header';
+        header.innerHTML = `
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 6v6l4 2"/>
+            </svg>
+            <span>Agent Process</span>
+        `;
+        stepsEl.appendChild(header);
+    }
+    
+    const stepEl = document.createElement('div');
+    stepEl.className = `streaming-step step-${type}`;
+    
+    if (type === 'thinking') {
+        stepEl.innerHTML = `
+            <div class="step-icon">💭</div>
+            <div class="step-content">
+                <div class="step-label">Thinking</div>
+                <div class="step-text">${escapeHtml(data.content)}</div>
+            </div>
+        `;
+    } else if (type === 'tool_start') {
+        const isSQL = data.tool === 'execute_query' && data.arguments?.sql;
+        const argsDisplay = isSQL 
+            ? `<div class="step-sql"><pre><code class="language-sql">${escapeHtml(data.arguments.sql)}</code></pre></div>`
+            : `<div class="step-args"><pre>${escapeHtml(JSON.stringify(data.arguments, null, 2))}</pre></div>`;
+        
+        stepEl.dataset.server = data.server;
+        stepEl.dataset.tool = data.tool;
+        stepEl.innerHTML = `
+            <div class="step-icon">
+                <div class="step-spinner"></div>
+            </div>
+            <div class="step-content">
+                <div class="step-label">${escapeHtml(data.server)}/${escapeHtml(data.tool)}</div>
+                ${argsDisplay}
+                <div class="step-result-placeholder">
+                    <span class="executing-text">Executing...</span>
+                </div>
+            </div>
+        `;
+    }
+    
+    stepsEl.appendChild(stepEl);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function updateToolWithResult(stepsEl, data) {
+    // Find the matching tool step
+    const steps = stepsEl.querySelectorAll('.streaming-step.step-tool_start');
+    let targetStep = null;
+    
+    for (const step of steps) {
+        if (step.dataset.server === data.server && step.dataset.tool === data.tool) {
+            // Check if this step doesn't have a result yet
+            if (step.querySelector('.step-result-placeholder')) {
+                targetStep = step;
+                break;
+            }
+        }
+    }
+    
+    if (!targetStep) {
+        // Create a new completed step if we can't find the pending one
+        const stepEl = document.createElement('div');
+        stepEl.className = 'streaming-step step-tool_result';
+        
+        const isSQL = data.tool === 'execute_query' && data.arguments?.sql;
+        const argsDisplay = isSQL 
+            ? `<div class="step-sql"><pre><code class="language-sql">${escapeHtml(data.arguments.sql)}</code></pre></div>`
+            : `<div class="step-args"><pre>${escapeHtml(JSON.stringify(data.arguments, null, 2))}</pre></div>`;
+        
+        stepEl.innerHTML = `
+            <div class="step-icon">🔧</div>
+            <div class="step-content">
+                <div class="step-label">${escapeHtml(data.server)}/${escapeHtml(data.tool)}</div>
+                ${argsDisplay}
+                <details class="step-result">
+                    <summary>Result</summary>
+                    <pre>${formatToolResult(data.result)}</pre>
+                </details>
+            </div>
+        `;
+        stepsEl.appendChild(stepEl);
+    } else {
+        // Update existing step
+        targetStep.classList.remove('step-tool_start');
+        targetStep.classList.add('step-tool_result');
+        
+        // Replace spinner with wrench icon
+        const iconEl = targetStep.querySelector('.step-icon');
+        if (iconEl) {
+            iconEl.innerHTML = '🔧';
+        }
+        
+        // Replace placeholder with result
+        const placeholder = targetStep.querySelector('.step-result-placeholder');
+        if (placeholder) {
+            const resultEl = document.createElement('details');
+            resultEl.className = 'step-result';
+            resultEl.innerHTML = `
+                <summary>Result</summary>
+                <pre>${formatToolResult(data.result)}</pre>
+            `;
+            placeholder.replaceWith(resultEl);
+        }
+    }
+    
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function finalizeStreamingContainer(container, fullContent, toolsUsed) {
+    container.classList.remove('streaming');
+    
+    const responseEl = container.querySelector('.streaming-response');
+    
+    // Remove typing indicator if still present
+    const typingIndicator = responseEl.querySelector('.typing-indicator');
+    if (typingIndicator) {
+        typingIndicator.remove();
+    }
+    
+    // Set final content
+    let textEl = responseEl.querySelector('.message-text');
+    if (!textEl) {
+        textEl = document.createElement('div');
+        textEl.className = 'message-text';
+        responseEl.appendChild(textEl);
+    }
+    textEl.classList.remove('streaming-text');
+    textEl.innerHTML = parseContent(fullContent);
+    
+    chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
 function addMessage(role, content, toolUsed = null, isError = false) {
