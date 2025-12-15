@@ -143,7 +143,9 @@ chatInput.addEventListener('keydown', (e) => {
 
 chatSend.addEventListener('click', sendMessage);
 
-async function sendMessage(text = null) {
+async function sendMessage(textOrEvent = null) {
+    // Handle both direct calls with text and click events
+    const text = (typeof textOrEvent === 'string') ? textOrEvent : null;
     const message = text || chatInput.value.trim();
     if (!message || state.isLoading) return;
     
@@ -176,6 +178,11 @@ async function sendMessage(text = null) {
         // Remove loading
         loadingEl.remove();
         
+        // Show thinking steps if available
+        if (data.thinking_steps && data.thinking_steps.length > 0) {
+            addThinkingSteps(data.thinking_steps);
+        }
+        
         // Format tools used info
         let toolsInfo = null;
         if (data.tools_used && data.tools_used.length > 0) {
@@ -185,7 +192,7 @@ async function sendMessage(text = null) {
         }
         
         // Add assistant response
-        addMessage('assistant', data.response, toolsInfo, data.error);
+        addMessage('assistant', data.response, null, data.error);
         
         // Store in history
         state.chatHistory.push({ role: 'user', content: message });
@@ -225,6 +232,88 @@ function addMessage(role, content, toolUsed = null, isError = false) {
     
     chatMessages.appendChild(messageEl);
     chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function addThinkingSteps(steps) {
+    const stepsEl = document.createElement('div');
+    stepsEl.className = 'message assistant thinking-steps';
+    
+    let stepsHtml = `
+        <div class="message-avatar">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+        </div>
+        <div class="message-content">
+            <div class="thinking-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 6v6l4 2"/>
+                </svg>
+                Agent Process
+            </div>
+            <div class="thinking-body">
+    `;
+    
+    for (const step of steps) {
+        if (step.type === 'thinking') {
+            stepsHtml += `
+                <div class="step step-thinking">
+                    <div class="step-icon">💭</div>
+                    <div class="step-content">
+                        <div class="step-label">Thinking</div>
+                        <div class="step-text">${escapeHtml(step.content)}</div>
+                    </div>
+                </div>
+            `;
+        } else if (step.type === 'tool_call') {
+            const argsStr = JSON.stringify(step.arguments, null, 2);
+            const resultStr = formatToolResult(step.result);
+            const isSQL = step.tool === 'execute_query' && step.arguments.sql;
+            
+            stepsHtml += `
+                <div class="step step-tool">
+                    <div class="step-icon">🔧</div>
+                    <div class="step-content">
+                        <div class="step-label">${step.server}/${step.tool}</div>
+                        ${isSQL ? `<div class="step-sql"><pre><code class="language-sql">${escapeHtml(step.arguments.sql)}</code></pre></div>` : 
+                          `<div class="step-args"><pre>${escapeHtml(argsStr)}</pre></div>`}
+                        <details class="step-result">
+                            <summary>Result</summary>
+                            <pre>${resultStr}</pre>
+                        </details>
+                    </div>
+                </div>
+            `;
+        }
+    }
+    
+    stepsHtml += `
+            </div>
+        </div>
+    `;
+    
+    stepsEl.innerHTML = stepsHtml;
+    chatMessages.appendChild(stepsEl);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function formatToolResult(result) {
+    if (!result) return 'null';
+    
+    // Truncate large results
+    const str = JSON.stringify(result, null, 2);
+    if (str.length > 2000) {
+        return escapeHtml(str.substring(0, 2000) + '\n... (truncated)');
+    }
+    return escapeHtml(str);
+}
+
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }
 
 function addLoadingIndicator() {
@@ -1197,43 +1286,7 @@ function refreshServers() {
     checkSystemStatus();
 }
 
-// Add Server Form Handler
-document.getElementById('addServerForm')?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const serverId = document.getElementById('serverId').value.trim();
-    const serverName = document.getElementById('serverName').value.trim();
-    const serverUrl = document.getElementById('serverUrl').value.trim();
-    const serverDescription = document.getElementById('serverDescription').value.trim();
-    
-    try {
-        const response = await fetch(`/api/mcp/servers/${serverId}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                name: serverName,
-                url: serverUrl,
-                enabled: true,
-                description: serverDescription
-            })
-        });
-        
-        if (!response.ok) {
-            const data = await response.json();
-            throw new Error(data.detail || 'Failed to add server');
-        }
-        
-        // Clear form
-        e.target.reset();
-        
-        // Reload servers
-        loadMcpServers();
-        checkSystemStatus();
-        
-    } catch (error) {
-        alert(`Error adding server: ${error.message}`);
-    }
-});
+// Add Server Form Handler - defined once, attached in DOMContentLoaded
 
 async function checkSystemStatus() {
     try {

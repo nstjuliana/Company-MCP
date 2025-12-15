@@ -638,6 +638,125 @@ button {
     margin-top: var(--space-sm);
 }
 
+/* Thinking Steps */
+.thinking-steps {
+    margin-bottom: var(--space-md);
+}
+
+.thinking-steps .message-content {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(139, 92, 246, 0.08));
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: var(--radius-lg);
+    padding: var(--space-md);
+}
+
+.thinking-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--info);
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.thinking-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.step {
+    display: flex;
+    gap: var(--space-sm);
+    padding: var(--space-sm);
+    border-radius: var(--radius-md);
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.step-icon {
+    font-size: 1rem;
+    flex-shrink: 0;
+    width: 24px;
+    text-align: center;
+}
+
+.step-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.step-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--accent-400);
+    margin-bottom: var(--space-xs);
+}
+
+.step-thinking .step-label {
+    color: var(--text-secondary);
+}
+
+.step-text {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.step-sql pre,
+.step-args pre {
+    margin: var(--space-xs) 0;
+    padding: var(--space-sm);
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.step-sql pre {
+    color: var(--accent-300);
+}
+
+.step-args pre {
+    color: var(--text-muted);
+}
+
+.step-result {
+    margin-top: var(--space-xs);
+}
+
+.step-result summary {
+    cursor: pointer;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    padding: var(--space-xs) 0;
+}
+
+.step-result summary:hover {
+    color: var(--text-secondary);
+}
+
+.step-result pre {
+    margin-top: var(--space-xs);
+    padding: var(--space-sm);
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    overflow-x: auto;
+    max-height: 200px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
 /* Chat Input */
 .chat-input-area {
     padding-top: var(--space-lg);

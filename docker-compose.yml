@@ -1,9 +1,7 @@
-version: "3.9"
-
 services:
   # Nginx Reverse Proxy - serves everything on port 80
   # Frontend at http://localhost/
-  # MCP Servers at http://localhost/mcp/dabstep, http://localhost/mcp/synth
+  # MCP Servers at http://localhost/mcp/dabstep, http://localhost/mcp/synth, http://localhost/mcp/postgres
   nginx:
     image: nginx:alpine
     container_name: mcp-nginx
@@ -15,6 +13,7 @@ services:
       - frontend
       - mcp-dabstep
       - mcp-synth
+      - mcp-postgres
     restart: unless-stopped
     networks:
       - mcp-network
@@ -51,6 +50,24 @@ services:
     networks:
       - mcp-network
 
+  # MCP Server - PostgreSQL Database (Supabase)
+  # Read-only access to Supabase PostgreSQL via HTTP/SSE transport
+  mcp-postgres:
+    build:
+      context: ./postgres-mcp
+      dockerfile: Dockerfile
+    container_name: mcp-postgres
+    environment:
+      - POSTGRES_HOST=${SUPABASE_SYNTHETIC_HOST:-aws-0-us-west-2.pooler.supabase.com}
+      - POSTGRES_PORT=${SUPABASE_SYNTHETIC_PORT:-5432}
+      - POSTGRES_USER=${SUPABASE_SYNTHETIC_USER:-postgres.glfnbtbpoqkyiucdtctf}
+      - POSTGRES_PASSWORD=${SUPABASE_SYNTHETIC_PASSWORD:-compnacymcptest250}
+      - POSTGRES_DATABASE=${SUPABASE_SYNTHETIC_DATABASE:-postgres}
+      - MCP_PORT=8000
+    restart: unless-stopped
+    networks:
+      - mcp-network
+
   # Web Frontend - UI for MCP interaction (internal only)
   frontend:
     build:
@@ -66,6 +83,7 @@ services:
       - MCP_SERVER_URL=http://mcp-dabstep:8000
     volumes:
       - ./data:/app/data:ro
+      - ./frontend/mcp_servers.json:/app/mcp_servers.json
     depends_on:
       - sftp-server
       - mcp-dabstep

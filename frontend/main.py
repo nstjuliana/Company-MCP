@@ -52,26 +52,32 @@ mcp_servers: Dict[str, Dict[str, Any]] = {}
 INTERNAL_MCP_SERVERS = {
     "/mcp/dabstep": "http://mcp-dabstep:8000",
     "/mcp/synth": "http://mcp-synth:8000",
+    "/mcp/postgres": "http://mcp-postgres:8000",
 }
 
 
 def normalize_mcp_url(url: str) -> str:
     """
-    Normalize MCP server URL to use internal Docker URLs when possible.
+    Normalize MCP server URL to use internal Docker URLs when running locally.
     
-    Converts external URLs like https://company-mcp.com/mcp/dabstep
-    to internal URLs like http://mcp-dabstep:8000
+    Only converts localhost URLs (http://localhost/mcp/dabstep) to internal
+    Docker URLs (http://mcp-dabstep:8000).
     
-    This allows users to enter either format and have it work correctly.
+    Production URLs (https://company-mcp.com/mcp/synth) are left unchanged.
     """
-    # Check if URL contains a known MCP path
-    for path, internal_url in INTERNAL_MCP_SERVERS.items():
-        if path in url:
-            # This is a known internal server, use internal URL
-            print(f"[normalize_mcp_url] Converting {url} -> {internal_url}")
-            return internal_url
+    from urllib.parse import urlparse
     
-    # Return original URL for truly external servers
+    parsed = urlparse(url)
+    
+    # Only convert localhost URLs to internal Docker URLs
+    if parsed.hostname in ('localhost', '127.0.0.1'):
+        for path, internal_url in INTERNAL_MCP_SERVERS.items():
+            if path in url:
+                print(f"[normalize_mcp_url] Converting localhost URL {url} -> {internal_url}")
+                return internal_url
+    
+    # Return original URL for production/external servers
+    print(f"[normalize_mcp_url] Keeping external URL as-is: {url}")
     return url
 
 
@@ -222,16 +228,41 @@ async def delete_mcp_server(server_id: str):
 
 @app.get("/api/mcp/servers/{server_id}/health")
 async def check_mcp_server_health(server_id: str):
-    """Check health of a specific MCP server."""
+    """Check health of a specific MCP server by attempting to initialize a session."""
     if server_id not in mcp_servers:
         raise HTTPException(status_code=404, detail=f"Server '{server_id}' not found")
 
     server = mcp_servers[server_id]
     # Normalize URL to use internal Docker URLs when possible
     server_url = normalize_mcp_url(server['url'])
+    mcp_endpoint = get_mcp_endpoint(server_url)
+    
     try:
-        response = await http_client.get(f"{server_url}/health")
-        return {"status": "connected", "server_id": server_id, "http_status": response.status_code}
+        # Try to initialize an MCP session to verify the server is working
+        init_payload = {
+            "jsonrpc": "2.0",
+            "id": 1,
+            "method": "initialize",
+            "params": {
+                "protocolVersion": "2024-11-05",
+                "capabilities": {},
+                "clientInfo": {"name": "CompanyMCP-HealthCheck", "version": "1.0.0"}
+            }
+        }
+        
+        response = await http_client.post(
+            mcp_endpoint,
+            json=init_payload,
+            headers={"Content-Type": "application/json", "Accept": "application/json, text/event-stream"},
+            timeout=10.0
+        )
+        
+        # Check if we got a session ID back
+        session_id = response.headers.get("mcp-session-id")
+        if session_id and response.status_code == 200:
+            return {"status": "connected", "server_id": server_id, "session_id": session_id[:8] + "..."}
+        else:
+            return {"status": "disconnected", "server_id": server_id, "error": f"No session (HTTP {response.status_code})"}
     except Exception as e:
         return {"status": "disconnected", "server_id": server_id, "error": str(e)}
 
@@ -247,11 +278,26 @@ def parse_sse_response(content: str) -> Dict[str, Any]:
     return {}
 
 
+def get_mcp_endpoint(server_url: str) -> str:
+    """
+    Get the MCP endpoint URL for a server.
+    
+    For local Docker URLs (http://mcp-synth:8000), append /mcp.
+    For production URLs that already contain /mcp/ path, use as-is.
+    """
+    # If the URL already has /mcp/ in the path (production), don't append /mcp
+    if "/mcp/" in server_url or server_url.endswith("/mcp"):
+        return server_url
+    # For local Docker URLs, append /mcp
+    return f"{server_url}/mcp"
+
+
 async def fetch_tools_from_server(server_id: str, server_url: str) -> List[Dict[str, Any]]:
     """Fetch tools from a single MCP server using session-based protocol."""
     try:
         # Normalize URL to use internal Docker URLs when possible
         server_url = normalize_mcp_url(server_url)
+        mcp_endpoint = get_mcp_endpoint(server_url)
         
         headers = {
             "Content-Type": "application/json",
@@ -270,8 +316,9 @@ async def fetch_tools_from_server(server_id: str, server_url: str) -> List[Dict[
             }
         }
         
+        print(f"[fetch_tools_from_server] Connecting to {mcp_endpoint}")
         init_response = await http_client.post(
-            f"{server_url}/mcp",
+            mcp_endpoint,
             json=init_payload,
             headers=headers
         )
@@ -295,7 +342,7 @@ async def fetch_tools_from_server(server_id: str, server_url: str) -> List[Dict[
         headers["mcp-session-id"] = session_id
         
         tools_response = await http_client.post(
-            f"{server_url}/mcp",
+            mcp_endpoint,
             json=tools_payload,
             headers=headers
         )
@@ -464,6 +511,7 @@ async def call_mcp_tool_on_server(server_url: str, tool_name: str, arguments: Di
     try:
         # Normalize URL to use internal Docker URLs when possible
         server_url = normalize_mcp_url(server_url)
+        mcp_endpoint = get_mcp_endpoint(server_url)
         
         headers = {
             "Content-Type": "application/json",
@@ -483,7 +531,7 @@ async def call_mcp_tool_on_server(server_url: str, tool_name: str, arguments: Di
         }
         
         init_response = await http_client.post(
-            f"{server_url}/mcp",
+            mcp_endpoint,
             json=init_payload,
             headers=headers
         )
@@ -506,7 +554,7 @@ async def call_mcp_tool_on_server(server_url: str, tool_name: str, arguments: Di
         headers["mcp-session-id"] = session_id
         
         response = await http_client.post(
-            f"{server_url}/mcp",
+            mcp_endpoint,
             json=tool_payload,
             headers=headers
         )
@@ -586,10 +634,28 @@ Available MCP Servers: {server_list}
 Available Tools ({len(tool_names)} total): {tool_list}
 
 Tool naming convention: Tools are named as "server_id__tool_name". For example:
-- "default__list_tables" calls the list_tables tool on the default server
-- "synth-local__list_databases" calls list_databases on the synth-local server
+- "synth-mcp__search_tables" calls the search_tables tool on the synth-mcp server
+- "postgres-mcp__execute_query" calls execute_query on the postgres-mcp server
 
-When answering questions:
+=== DATABASE QUERY WORKFLOW ===
+When answering questions that require database information, follow this workflow:
+
+1. **FIRST: Use synth-mcp to understand the schema**
+   - Use synth-mcp tools (search_tables, list_tables, get_table_schema, search_fts, search_vector) to discover relevant tables and columns
+   - Understand table relationships, column types, and data structure before writing SQL
+   - synth-mcp has pre-indexed documentation about the database schema
+
+2. **THEN: Write SQL based on what you learned**
+   - Use the schema knowledge from synth-mcp to write accurate SQL
+   - Reference the correct table names, column names, and relationships
+   - Tables are in the "synthetic" schema (e.g., synthetic.accounts, synthetic.transactions)
+
+3. **FINALLY: Use postgres-mcp to execute the SQL**
+   - Use postgres-mcp__execute_query to run your SQL against the live database
+   - postgres-mcp provides read-only access (SELECT, WITH, EXPLAIN only)
+   - Results are limited to 1000 rows by default
+
+=== GENERAL GUIDELINES ===
 1. ALWAYS use the available tools to get real data - don't make up information
 2. If asked about a specific server, use tools from that server (look for the server_id prefix)
 3. Provide clear, well-formatted responses with the actual data returned
@@ -614,7 +680,8 @@ Remember: Call the tools, don't just describe what you would do!"""
         })
         
         tools_used = []
-        max_tool_calls = 5  # Prevent infinite loops
+        thinking_steps = []  # Track detailed steps for display
+        max_tool_calls = 10  # Prevent infinite loops
         tool_call_count = 0
         
         while tool_call_count < max_tool_calls:
@@ -637,6 +704,13 @@ Remember: Call the tools, don't just describe what you would do!"""
             
             # Check if the model wants to call tools
             if assistant_message.tool_calls:
+                # Capture any thinking/reasoning the assistant provided
+                if assistant_message.content:
+                    thinking_steps.append({
+                        "type": "thinking",
+                        "content": assistant_message.content
+                    })
+                
                 # Add the assistant's message with tool calls
                 messages.append({
                     "role": "assistant",
@@ -686,6 +760,15 @@ Remember: Call the tools, don't just describe what you would do!"""
                         "arguments": arguments
                     })
                     
+                    # Track detailed step for display
+                    thinking_steps.append({
+                        "type": "tool_call",
+                        "server": server_id,
+                        "tool": tool_name,
+                        "arguments": arguments,
+                        "result": tool_result
+                    })
+                    
                     # Add tool result to messages
                     messages.append({
                         "role": "tool",
@@ -699,6 +782,7 @@ Remember: Call the tools, don't just describe what you would do!"""
                 return {
                     "response": assistant_message.content or "I processed your request but have no response.",
                     "tools_used": tools_used,
+                    "thinking_steps": thinking_steps,
                     "error": False
                 }
         
@@ -711,6 +795,7 @@ Remember: Call the tools, don't just describe what you would do!"""
         return {
             "response": final_response.choices[0].message.content or "Request completed.",
             "tools_used": tools_used,
+            "thinking_steps": thinking_steps,
             "error": False
         }
     
