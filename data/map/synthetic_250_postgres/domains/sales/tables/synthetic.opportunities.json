@@ -1,0 +1,283 @@
+{
+  "table": "opportunities",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.opportunities\" table represents potential business deals or sales prospects, identified by an \"opportunity_id\". It includes details such as deal name, account and contact associations, deal stage, financial estimates, and closing information, with primary relationships likely to involve linking opportunities to accounts, contacts, and campaigns through foreign key columns. This table is integral in managing sales pipeline data, tracking the progress and details of ongoing and prospective deals crucial for revenue projections and sales strategies.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "opportunity_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each opportunity within the table. It is used to distinguish specific opportunities by assigning a sequential numeric identifier.",
+      "default": "nextval('synthetic.opportunities_opportunity_id_seq'::regclass)"
+    },
+    {
+      "name": "opportunity_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column contains descriptive text or titles for various business opportunities. The purpose is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "account_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely identifies the association of opportunities with specific accounts, allowing for tracking and management of opportunities within different accounts. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "contact_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "stage",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values suggest a varied assortment of contexts, possibly representing stages or descriptions related to opportunities, but lack discernible consistency.",
+      "default": null
+    },
+    {
+      "name": "amount",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the monetary value associated with various opportunities, likely reflecting potential revenue or investment amounts in a business context. The amounts are variable and may indicate different levels of financial significance for each opportunity.",
+      "default": null
+    },
+    {
+      "name": "probability",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents a numerical score or ranking used to assess the potential or likelihood of success for opportunities, with higher values indicating greater likelihood. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "expected_revenue",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the anticipated monetary value from potential business deals or sales opportunities, expressed in numeric amounts. The values reflect expected financial outcomes which might not be finalized.",
+      "default": null
+    },
+    {
+      "name": "close_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column represents the date on which an opportunity is expected or planned to close. The purpose of collecting these dates is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values suggest diverse and abstract concepts or phrases without a clear connection or context.",
+      "default": null
+    },
+    {
+      "name": "lead_source",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "next_step",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column appears to capture free-text descriptions of future actions or strategies related to various business opportunities. The narrative nature of the entries suggests they outline potential plans, steps, or considerations for advancing or managing opportunities.",
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "nullable": true,
+      "description": "The column contains narrative or descriptive text related to opportunities, potentially providing insights or context. The exact purpose or focus of these descriptions is unclear from the available data samples.",
+      "default": null
+    },
+    {
+      "name": "owner_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents the identifiers of individuals or entities responsible for managing or owning opportunities within the system. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "campaign_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely associates opportunities with specific marketing or sales campaigns, each represented by a unique numeric identifier. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "is_won",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether an opportunity was successfully converted or achieved. A value of true suggests success, while false suggests otherwise.",
+      "default": null
+    },
+    {
+      "name": "is_closed",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether an opportunity has been finalized or not, with a value of true meaning the opportunity is closed and a value of false meaning it remains open.",
+      "default": "false"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an opportunity was created or initiated. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the most recent date and time when an opportunity entry was updated, allowing tracking of modifications. Purpose unclear from available data regarding specific business impact.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "opportunity_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_opportunities_account_id",
+      "column_name": "account_id",
+      "referenced_table": "synthetic.accounts",
+      "referenced_column": "account_id"
+    },
+    {
+      "constraint_name": "fk_opportunities_campaign_id",
+      "column_name": "campaign_id",
+      "referenced_table": "synthetic.campaigns",
+      "referenced_column": "campaign_id"
+    },
+    {
+      "constraint_name": "fk_opportunities_contact_id",
+      "column_name": "contact_id",
+      "referenced_table": "synthetic.contacts",
+      "referenced_column": "contact_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "opportunities_pkey",
+      "index_definition": "CREATE UNIQUE INDEX opportunities_pkey ON synthetic.opportunities USING btree (opportunity_id)",
+      "columns": [
+        "opportunity_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "opportunity_id": 1,
+      "opportunity_name": "Gas moment when four price. Early west trial ten candidate in.",
+      "account_id": 71,
+      "contact_id": null,
+      "stage": "Audience save spring once.",
+      "amount": "5426.29",
+      "probability": 913,
+      "expected_revenue": "299.96",
+      "close_date": "2024-09-28T05:00:00.000Z",
+      "type": "Year beautiful big thought maybe see.",
+      "lead_source": "About Congress region many traditional. Firm study quite.",
+      "next_step": "Situation lose difficult ground bank. Including understand ten look believe bed.",
+      "description": "Point really major own gas performance. Around officer field though soldier away color your. Form sp...",
+      "owner_id": 162,
+      "campaign_id": 92,
+      "is_won": true,
+      "is_closed": false,
+      "created_at": "2025-12-13T09:18:18.002Z",
+      "updated_at": "2025-12-13T09:18:18.002Z"
+    },
+    {
+      "opportunity_id": 2,
+      "opportunity_name": "Speak father last mouth. Throw pattern thousand imagine.",
+      "account_id": 66,
+      "contact_id": null,
+      "stage": "Truth security word herself.",
+      "amount": "2250.17",
+      "probability": 206,
+      "expected_revenue": "792.07",
+      "close_date": "2024-03-18T05:00:00.000Z",
+      "type": "Identify center station understand.",
+      "lead_source": "Practice herself peace single. Air cover even of. Second action notice cause.",
+      "next_step": "Quality memory understand politics religious challenge.",
+      "description": "Daughter behind home phone great. Determine next most unit. Road herself international work with per...",
+      "owner_id": 243,
+      "campaign_id": 64,
+      "is_won": true,
+      "is_closed": false,
+      "created_at": "2025-12-13T09:18:18.002Z",
+      "updated_at": "2025-12-13T09:18:18.002Z"
+    },
+    {
+      "opportunity_id": 3,
+      "opportunity_name": "Deal probably appear positive. Successful age because best.",
+      "account_id": 71,
+      "contact_id": null,
+      "stage": "Operation send employee speak. Whatever do key.",
+      "amount": "5727.05",
+      "probability": 479,
+      "expected_revenue": "803.66",
+      "close_date": "2024-08-10T05:00:00.000Z",
+      "type": "Call role management space eight.",
+      "lead_source": "Not deal say.\nStrong how court also. Offer present choice two certain modern.",
+      "next_step": "Above stuff four despite security hear thing. Hundred section bit generation end indicate.",
+      "description": "Many answer four deal. Perhaps as out check most. Impact school understand child may scene.",
+      "owner_id": 565,
+      "campaign_id": 17,
+      "is_won": true,
+      "is_closed": true,
+      "created_at": "2025-12-13T09:18:18.002Z",
+      "updated_at": "2025-12-13T09:18:18.002Z"
+    },
+    {
+      "opportunity_id": 4,
+      "opportunity_name": "These we wide reveal. News team purpose law themselves.",
+      "account_id": 40,
+      "contact_id": null,
+      "stage": "Low have check quality everyone benefit fill.",
+      "amount": "3987.62",
+      "probability": 735,
+      "expected_revenue": "718.87",
+      "close_date": "2025-01-10T06:00:00.000Z",
+      "type": "Go sister old already affect for.",
+      "lead_source": "Teacher song company cell able old. Teach approach if we drop tend generation growth.",
+      "next_step": "Effort without prove major. Wind buy glass floor future. Million describe voice.",
+      "description": "Fine quite huge region body something official. Professor side type interest I.",
+      "owner_id": 539,
+      "campaign_id": 53,
+      "is_won": false,
+      "is_closed": true,
+      "created_at": "2025-12-13T09:18:18.002Z",
+      "updated_at": "2025-12-13T09:18:18.002Z"
+    },
+    {
+      "opportunity_id": 5,
+      "opportunity_name": "Your so main drive these somebody. Organization animal around campaign move Democrat single.",
+      "account_id": 17,
+      "contact_id": null,
+      "stage": "Dinner if public different look sign nothing kid.",
+      "amount": "9724.07",
+      "probability": 658,
+      "expected_revenue": "74.17",
+      "close_date": "2025-06-25T05:00:00.000Z",
+      "type": "Professional trial purpose.",
+      "lead_source": "Message window garden. Down role special watch remain son. Though tell mission investment.",
+      "next_step": "Sister Mr today technology voice. High care agreement avoid product. Cup food window tonight born.",
+      "description": "Ready assume indeed when material among nation. House any feel may sport develop difficult. Hit fath...",
+      "owner_id": 478,
+      "campaign_id": 88,
+      "is_won": false,
+      "is_closed": true,
+      "created_at": "2025-12-13T09:18:18.002Z",
+      "updated_at": "2025-12-13T09:18:18.002Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:41:56.453Z"
+}

@@ -1,0 +1,116 @@
+{
+  "table": "storage_locations",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.storage_locations\" table appears to represent a business entity related to storage locations within a system, identified uniquely by the \"location_id\" primary key. Without access to column names or sample data, specific attributes and their functions remain undefined, and the table's connections to other database tables through foreign keys are not specified. As the table currently contains no rows and no references to other tables, its precise role in the broader data model is indeterminate beyond its potential to hold data about various storage locations.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "location_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column serves as a unique identifier for storage locations within the database. The purpose is unclear from available data beyond uniquely distinguishing each location entry.",
+      "default": "nextval('synthetic.storage_locations_location_id_seq'::regclass)"
+    },
+    {
+      "name": "zone_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "location_code",
+      "type": "character varying",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "aisle",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "rack",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "shelf",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "bin",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "max_weight_kg",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column likely represents the maximum allowable weight, in kilograms, for items stored at a specific location. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "max_volume_cbm",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column likely represents the maximum storage capacity of a location in cubic meters for managing inventory or goods. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "is_available",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether a storage location is currently available for use. The default status assumes availability unless specified otherwise.",
+      "default": "true"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a storage location record is initially created, capturing the system-generated timestamp of the event. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column indicates the date and time when a storage location record was last modified. Its default value suggests it records the current timestamp upon any change if no other value is provided.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "location_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_storage_locations_zone_id",
+      "column_name": "zone_id",
+      "referenced_table": "synthetic.warehouse_zones",
+      "referenced_column": "zone_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "storage_locations_pkey",
+      "index_definition": "CREATE UNIQUE INDEX storage_locations_pkey ON synthetic.storage_locations USING btree (location_id)",
+      "columns": [
+        "location_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:42:47.751Z"
+}

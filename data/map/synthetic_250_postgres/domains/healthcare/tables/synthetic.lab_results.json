@@ -1,0 +1,122 @@
+{
+  "table": "lab_results",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.lab_results\" table in the \"synthetic_250_postgres\" database is intended to store information related to laboratory results, as indicated by its name, with \"result_id\" serving as the primary key. Although it has no defined column data or sample rows, its role can be inferred as capturing detailed laboratory outcomes, possibly linked to other data entities via two unspecified foreign key relationships. The absence of referencing tables and further information limits a detailed understanding of its interactions and dependencies within the data model.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "result_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each entry in laboratory results, serving as a sequential record number.",
+      "default": "nextval('synthetic.lab_results_result_id_seq'::regclass)"
+    },
+    {
+      "name": "order_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "A unique identifier linking laboratory test results to specific orders, ensuring result traceability within the medical testing process. Represents a key component for matching completed tests with their originating requests.",
+      "default": null
+    },
+    {
+      "name": "test_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "result_value",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "result_unit",
+      "type": "character varying",
+      "nullable": true,
+      "description": "The column likely records the units of measurement for laboratory test results. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "reference_range",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "abnormal_flag",
+      "type": "character varying",
+      "nullable": true,
+      "description": "The column likely indicates whether a lab test result is considered abnormal, but the specific details are unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "collected_date",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This represents the date and time when a laboratory sample was collected. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "resulted_date",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "The column records the date and time when laboratory results were finalized or entered into the system. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when each lab result entry was created. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column likely captures the date and time when a lab result record was last modified, helping track changes over time. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "result_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_lab_results_order_id",
+      "column_name": "order_id",
+      "referenced_table": "synthetic.lab_orders",
+      "referenced_column": "order_id"
+    },
+    {
+      "constraint_name": "fk_lab_results_test_id",
+      "column_name": "test_id",
+      "referenced_table": "synthetic.lab_tests",
+      "referenced_column": "test_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "lab_results_pkey",
+      "index_definition": "CREATE UNIQUE INDEX lab_results_pkey ON synthetic.lab_results USING btree (result_id)",
+      "columns": [
+        "result_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:41:40.366Z"
+}

@@ -1,0 +1,135 @@
+{
+  "table": "APPOINTMENTS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.APPOINTMENTS table represents a collection of scheduled healthcare appointments, uniquely identified by the APPOINTMENT_ID. It primarily stores metadata about each appointment, including a name, description, relevant dates, and associated prescription details, without directly interrelating with other database tables. The table's role in the data model is to maintain standalone appointment records that are likely intended for organizing and tracking healthcare events, as evidenced by attributes such as \"CLAIM_207_ATTR_0\" and \"PATIENT_207_ATTR_1,\" which suggest probable connections to patients and claims outside of the current schema configuration.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "APPOINTMENT_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column uniquely identifies each appointment within the system, ensuring that no two appointments share the same identifier.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column appears to represent a unique identifier or label for each appointment record. The names follow a sequential numbering system, indicating the order of appointments.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column stores text descriptions associated with individual appointment records. Each entry provides a brief descriptor that appears to uniquely identify the respective appointment.",
+      "default": null
+    },
+    {
+      "name": "CLAIM_207_ATTR_0",
+      "type": "DATE",
+      "nullable": true,
+      "description": "This column appears to represent the scheduled dates for appointments related to claims, reflecting future dates in December 2025. Purpose unclear from available data, as the designation of specific claims or details about the appointments is not provided.",
+      "default": null
+    },
+    {
+      "name": "PATIENT_207_ATTR_1",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column likely represents a unique identifier or code associated with patients who have appointments. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "PRESCRIPTION_207_ATTR_2",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column likely represents a specific attribute or code related to prescriptions assigned during appointments. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "PRESCRIPTION_207_ATTR_3",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "Purpose unclear from available data. The column contains sequential numeric identifiers which could represent categorical data or a sequence but lacks context to determine its specific business meaning.",
+      "default": null
+    },
+    {
+      "name": "RECORD_207_ATTR_4",
+      "type": "DATE",
+      "nullable": true,
+      "description": "This column represents scheduled appointment dates, likely indicating when appointments are planned to occur. Purpose unclear from available data as no specific business context is provided.",
+      "default": null
+    },
+    {
+      "name": "CREATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column records the date and time when an appointment entry was created. The data reflects that each timestamp is generated at the exact moment of the entry creation, indicating the initiation of an appointment record in the system.",
+      "default": "CURRENT_TIMESTAMP()"
+    }
+  ],
+  "primary_key": [
+    "APPOINTMENT_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "APPOINTMENT_ID": 1,
+      "NAME": "APPOINTMENTS 1",
+      "DESCRIPTION": "Description for APPOINTMENTS 1",
+      "CLAIM_207_ATTR_0": "2025-12-12",
+      "PATIENT_207_ATTR_1": null,
+      "PRESCRIPTION_207_ATTR_2": null,
+      "PRESCRIPTION_207_ATTR_3": 100,
+      "RECORD_207_ATTR_4": "2025-12-12",
+      "CREATED_AT": "2025-12-12 17:25:28.582"
+    },
+    {
+      "APPOINTMENT_ID": 2,
+      "NAME": "APPOINTMENTS 2",
+      "DESCRIPTION": "Description for APPOINTMENTS 2",
+      "CLAIM_207_ATTR_0": "2025-12-13",
+      "PATIENT_207_ATTR_1": 101,
+      "PRESCRIPTION_207_ATTR_2": 101,
+      "PRESCRIPTION_207_ATTR_3": 101,
+      "RECORD_207_ATTR_4": "2025-12-13",
+      "CREATED_AT": "2025-12-12 17:25:28.582"
+    },
+    {
+      "APPOINTMENT_ID": 3,
+      "NAME": "APPOINTMENTS 3",
+      "DESCRIPTION": "Description for APPOINTMENTS 3",
+      "CLAIM_207_ATTR_0": "2025-12-14",
+      "PATIENT_207_ATTR_1": 102,
+      "PRESCRIPTION_207_ATTR_2": 102,
+      "PRESCRIPTION_207_ATTR_3": 102,
+      "RECORD_207_ATTR_4": "2025-12-14",
+      "CREATED_AT": "2025-12-12 17:25:28.582"
+    },
+    {
+      "APPOINTMENT_ID": 4,
+      "NAME": "APPOINTMENTS 4",
+      "DESCRIPTION": "Description for APPOINTMENTS 4",
+      "CLAIM_207_ATTR_0": "2025-12-15",
+      "PATIENT_207_ATTR_1": null,
+      "PRESCRIPTION_207_ATTR_2": null,
+      "PRESCRIPTION_207_ATTR_3": 103,
+      "RECORD_207_ATTR_4": "2025-12-15",
+      "CREATED_AT": "2025-12-12 17:25:28.582"
+    },
+    {
+      "APPOINTMENT_ID": 5,
+      "NAME": "APPOINTMENTS 5",
+      "DESCRIPTION": "Description for APPOINTMENTS 5",
+      "CLAIM_207_ATTR_0": "2025-12-16",
+      "PATIENT_207_ATTR_1": 104,
+      "PRESCRIPTION_207_ATTR_2": 104,
+      "PRESCRIPTION_207_ATTR_3": 104,
+      "RECORD_207_ATTR_4": "2025-12-16",
+      "CREATED_AT": "2025-12-12 17:25:28.582"
+    }
+  ],
+  "generated_at": "2025-12-14T23:45:18.086Z"
+}

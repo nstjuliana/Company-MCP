@@ -1,0 +1,171 @@
+{
+  "table": "SHIPPING_ADDRESSES",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.SHIPPING_ADDRESSES table stores data related to shipping addresses, including a unique identifier (SHIPPING_ADDRESSE_ID), descriptive information (NAME and DESCRIPTION), and various attributes that might be associated with customer interactions such as wishlist preferences, cart details, and ratings over time. Although the table has no explicit foreign key relationships to other tables, it appears to serve as a standalone repository within the data model for managing and potentially analyzing specific address-related attributes necessary for processing shipments. The presence of timestamps and status indicators suggests its role in maintaining a historical record of address updates and tracking the activity statuses of shipping addresses.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "SHIPPING_ADDRESSE_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each shipping address entry in the system. Each number is assigned sequentially to differentiate between various shipping addresses.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "Purpose unclear from available data. The column appears to hold sequential identifiers, but their exact business role is not evident.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains descriptive text associated with specific shipping addresses, potentially to elaborate on details or unique aspects of each address entry. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "WISHLIST_190_ATTR_0",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "Purpose unclear from available data; the column contains numerical codes which might be associated with specific wishlist attributes or categories.",
+      "default": null
+    },
+    {
+      "name": "WISHLIST_190_ATTR_1",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The column appears to contain placeholder text associated with a wishlist attribute, but its specific function or meaning is not evident.",
+      "default": null
+    },
+    {
+      "name": "CART_190_ATTR_2",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "RATING_190_ATTR_3",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column appears to represent a rating or score associated with a shipping address, based on the numerical sample values provided. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CART_190_ATTR_4",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "SHIPPING_190_ATTR_5",
+      "type": "DATE",
+      "nullable": false,
+      "description": "This column likely represents the expected date of delivery for shipments, as indicated by the recurring sequence of consecutive dates. The dates suggest a schedule or timeline for package arrivals.",
+      "default": null
+    },
+    {
+      "name": "RATING_190_ATTR_6",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "UPDATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column records the date and time when the shipping address information was last updated. The purpose of these updates is to ensure the data reflects any recent changes or corrections.",
+      "default": null
+    },
+    {
+      "name": "STATUS",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column likely indicates the current operational state of shipping addresses, reflecting whether they are currently in use or not. Purpose unclear from available data as only one value, \"ACTIVE,\" is provided.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "SHIPPING_ADDRESSE_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "SHIPPING_ADDRESSE_ID": 1,
+      "NAME": "SHIPPING_ADDRESSES 1",
+      "DESCRIPTION": "Description for SHIPPING_ADDRESSES 1",
+      "WISHLIST_190_ATTR_0": null,
+      "WISHLIST_190_ATTR_1": "Sample WISHLIST_190_ATTR_1 1",
+      "CART_190_ATTR_2": null,
+      "RATING_190_ATTR_3": null,
+      "CART_190_ATTR_4": "Sample CART_190_ATTR_4 1",
+      "SHIPPING_190_ATTR_5": "2025-12-12",
+      "RATING_190_ATTR_6": "Sample RATING_190_ATTR_6 1",
+      "UPDATED_AT": "2026-01-11 00:00:00.000",
+      "STATUS": "ACTIVE"
+    },
+    {
+      "SHIPPING_ADDRESSE_ID": 2,
+      "NAME": "SHIPPING_ADDRESSES 2",
+      "DESCRIPTION": "Description for SHIPPING_ADDRESSES 2",
+      "WISHLIST_190_ATTR_0": 101,
+      "WISHLIST_190_ATTR_1": "Sample WISHLIST_190_ATTR_1 2",
+      "CART_190_ATTR_2": 101,
+      "RATING_190_ATTR_3": 101,
+      "CART_190_ATTR_4": "Sample CART_190_ATTR_4 2",
+      "SHIPPING_190_ATTR_5": "2025-12-13",
+      "RATING_190_ATTR_6": "Sample RATING_190_ATTR_6 2",
+      "UPDATED_AT": "2026-01-12 00:00:00.000",
+      "STATUS": "ACTIVE"
+    },
+    {
+      "SHIPPING_ADDRESSE_ID": 3,
+      "NAME": "SHIPPING_ADDRESSES 3",
+      "DESCRIPTION": "Description for SHIPPING_ADDRESSES 3",
+      "WISHLIST_190_ATTR_0": 102,
+      "WISHLIST_190_ATTR_1": "Sample WISHLIST_190_ATTR_1 3",
+      "CART_190_ATTR_2": 102,
+      "RATING_190_ATTR_3": 102,
+      "CART_190_ATTR_4": "Sample CART_190_ATTR_4 3",
+      "SHIPPING_190_ATTR_5": "2025-12-14",
+      "RATING_190_ATTR_6": "Sample RATING_190_ATTR_6 3",
+      "UPDATED_AT": "2026-01-13 00:00:00.000",
+      "STATUS": "ACTIVE"
+    },
+    {
+      "SHIPPING_ADDRESSE_ID": 4,
+      "NAME": "SHIPPING_ADDRESSES 4",
+      "DESCRIPTION": "Description for SHIPPING_ADDRESSES 4",
+      "WISHLIST_190_ATTR_0": null,
+      "WISHLIST_190_ATTR_1": "Sample WISHLIST_190_ATTR_1 4",
+      "CART_190_ATTR_2": null,
+      "RATING_190_ATTR_3": null,
+      "CART_190_ATTR_4": "Sample CART_190_ATTR_4 4",
+      "SHIPPING_190_ATTR_5": "2025-12-15",
+      "RATING_190_ATTR_6": "Sample RATING_190_ATTR_6 4",
+      "UPDATED_AT": "2026-01-14 00:00:00.000",
+      "STATUS": "ACTIVE"
+    },
+    {
+      "SHIPPING_ADDRESSE_ID": 5,
+      "NAME": "SHIPPING_ADDRESSES 5",
+      "DESCRIPTION": "Description for SHIPPING_ADDRESSES 5",
+      "WISHLIST_190_ATTR_0": 104,
+      "WISHLIST_190_ATTR_1": "Sample WISHLIST_190_ATTR_1 5",
+      "CART_190_ATTR_2": 104,
+      "RATING_190_ATTR_3": 104,
+      "CART_190_ATTR_4": "Sample CART_190_ATTR_4 5",
+      "SHIPPING_190_ATTR_5": "2025-12-16",
+      "RATING_190_ATTR_6": "Sample RATING_190_ATTR_6 5",
+      "UPDATED_AT": "2026-01-15 00:00:00.000",
+      "STATUS": "ACTIVE"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:49.809Z"
+}

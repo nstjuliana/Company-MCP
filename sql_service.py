@@ -227,14 +227,25 @@ class DatabaseConnectionManager:
     def get_connection(self, database: str) -> Optional[Any]:
         """Get connection for specified database."""
         logger.debug(f"Requesting connection for database: {database}")
-        if database == "postgres_production":
+        
+        # Map synthetic databases to their underlying connection types
+        # Synthetic databases use schema from SFTP but execute queries on real databases
+        connection_mapping = {
+            "synthetic_250_snowflake": "snowflake_production",  # Uses Snowflake connection
+            "synthetic_250_postgres": "postgres_production",     # Uses PostgreSQL connection
+        }
+        
+        # Get the actual connection type to use
+        actual_db = connection_mapping.get(database, database)
+        
+        if actual_db == "postgres_production":
             conn = self._get_postgres_connection()
             if conn:
                 logger.debug("PostgreSQL connection obtained successfully")
             else:
                 logger.error("Failed to obtain PostgreSQL connection")
             return conn
-        elif database == "snowflake_production":
+        elif actual_db == "snowflake_production":
             conn = self._get_snowflake_connection()
             if conn:
                 logger.debug("Snowflake connection obtained successfully")
@@ -242,7 +253,7 @@ class DatabaseConnectionManager:
                 logger.error("Failed to obtain Snowflake connection")
             return conn
         else:
-            logger.error(f"Unsupported database type: {database}. Supported: postgres_production, snowflake_production")
+            logger.error(f"Unsupported database type: {database}. Supported: synthetic_250_snowflake, synthetic_250_postgres")
             return None
     
     def close_all(self):
@@ -578,8 +589,10 @@ class SQLExecutor:
             
             if database == "postgres_production":
                 return self._execute_postgres(conn, sql, limit, offset, start_time)
-            elif database == "snowflake_production":
+            elif database == "synthetic_250_snowflake":
                 return self._execute_snowflake(conn, sql, limit, offset, start_time)
+            elif database == "synthetic_250_postgres":
+                return self._execute_postgres(conn, sql, limit, offset, start_time)
             else:
                 return {
                     "success": False,
@@ -819,29 +832,27 @@ def generate_and_execute_sql(
     - error: error message if failed
     - execution_time: query execution time
     """
-    # Validate database name - ADD NEW DATABASES HERE
-    # To add support for a new database:
-    # 1. Add database name to VALID_DATABASES
-    # 2. Add connection method to DatabaseConnectionManager
-    # 3. Add execution method to SQLExecutor (_execute_<database_name>)
-    VALID_DATABASES = {"postgres_production", "snowflake_production"}
+    # Validate database name - ONLY synthetic databases are allowed
+    VALID_DATABASES = {
+        "synthetic_250_snowflake",  # From data/sftp-markdown-files/synthetic_250_snowflake/
+        "synthetic_250_postgres",   # From data/sftp-markdown-files/synthetic_250_postgres/
+    }
     original_database = database
     if database not in VALID_DATABASES:
         error_msg = (
             f"Invalid database name '{database}'. Valid databases are: {', '.join(VALID_DATABASES)}. "
-            f"Received database name appears to be a domain name rather than a database name. "
-            f"Please use 'postgres_production' or 'snowflake_production'."
+            f"Only synthetic databases are supported: synthetic_250_snowflake, synthetic_250_postgres."
         )
         logger.error(error_msg)
         # Try to correct: if it's a domain name, try to find the actual database
-        # by checking schema_context or defaulting to postgres_production
+        # by checking schema_context or defaulting to synthetic_250_postgres
         if "database" in schema_context and schema_context["database"] in VALID_DATABASES:
             database = schema_context["database"]
             logger.info(f"Corrected database from schema_context: '{original_database}' -> '{database}'")
         else:
-            # Default to postgres_production
-            database = "postgres_production"
-            logger.warning(f"Invalid database name '{original_database}' detected. Defaulting to 'postgres_production'. "
+            # Default to synthetic_250_postgres
+            database = "synthetic_250_postgres"
+            logger.warning(f"Invalid database name '{original_database}' detected. Defaulting to 'synthetic_250_postgres'. "
                          f"Please ensure correct database name is passed.")
         # Update schema_context to reflect the corrected database
         schema_context["database"] = database

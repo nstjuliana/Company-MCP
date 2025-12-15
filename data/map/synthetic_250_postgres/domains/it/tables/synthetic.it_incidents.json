@@ -1,0 +1,231 @@
+{
+  "table": "it_incidents",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.it_incidents` table records details of IT-related incidents, capturing various attributes such as incident number, title, description, category, priority, severity, and status of each incident, along with metadata such as reporting and resolution details. The table's primary entity, `incident_id`, is the unique identifier, and while it references other entities via `reported_by`, `assigned_to`, and `affected_asset_id`, the specific relationships to other tables are not explicitly defined. This table serves as a critical component in tracking the lifecycle and handling of IT incidents within the data model.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "incident_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each incident within the IT incidents table and ensures each record has a distinct numerical identifier. Purpose unclear from available data.",
+      "default": "nextval('synthetic.it_incidents_incident_id_seq'::regclass)"
+    },
+    {
+      "name": "incident_number",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely represents a unique identifier assigned to each IT incident within the system, serving as a reference number to track and manage reported issues. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "title",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This field captures brief descriptions or summaries of IT incidents, highlighting key aspects or themes of each incident. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "nullable": true,
+      "description": "This column contains brief textual narratives associated with individual IT incidents, providing varied and often fragmented information about occurrences, actions, or reflections. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "category",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values do not indicate a consistent or specific category theme.",
+      "default": null
+    },
+    {
+      "name": "priority",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "severity",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column indicates the current state or progression of IT incidents, such as whether they are active, pending, or inactive. It provides insight into the resolution status of issues, aiding in tracking and management.",
+      "default": "'new'::character varying"
+    },
+    {
+      "name": "reported_by",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely stores unique identifiers associated with individuals who have reported incidents, with each number presumably representing a specific person. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "assigned_to",
+      "type": "integer",
+      "nullable": true,
+      "description": "Represents the identifier for individuals or entities responsible for addressing or managing specific IT incidents. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "affected_asset_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column identifies the asset linked to each IT incident, using unique numerical identifiers for different assets. Purpose unclear from available data beyond representing asset association.",
+      "default": null
+    },
+    {
+      "name": "resolution",
+      "type": "text",
+      "nullable": true,
+      "description": "This column seems to document the various resolutions or outcomes of IT incidents, potentially providing narrative explanations or summaries of actions taken. The purpose remains unclear from available data as the values appear somewhat random and lack clear structure.",
+      "default": null
+    },
+    {
+      "name": "resolved_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "The column records the date and time when IT incidents are marked as resolved, indicating when the issue was closed by the responsible team. It can be left blank if the incident is still unresolved.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when each IT incident entry is created. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an IT incident record was last updated. The exact purpose and frequency of updates are unclear from the available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "incident_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_it_incidents_affected_asset_id",
+      "column_name": "affected_asset_id",
+      "referenced_table": "synthetic.it_assets",
+      "referenced_column": "asset_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "it_incidents_incident_number_key",
+      "index_definition": "CREATE UNIQUE INDEX it_incidents_incident_number_key ON synthetic.it_incidents USING btree (incident_number)",
+      "columns": [
+        "incident_number"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "it_incidents_pkey",
+      "index_definition": "CREATE UNIQUE INDEX it_incidents_pkey ON synthetic.it_incidents USING btree (incident_id)",
+      "columns": [
+        "incident_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "incident_id": 1,
+      "incident_number": "869561344088331",
+      "title": "Easy agree house scientist environmental.",
+      "description": "Attention career strategy truth management management wide easy. Necessary able simply theory civil ...",
+      "category": "Sport house service describe at. Order concern collection.\nEach near trip low.",
+      "priority": "Election billion.",
+      "severity": "Spring loss mention.",
+      "status": "inactive",
+      "reported_by": 942,
+      "assigned_to": 131,
+      "affected_asset_id": 40,
+      "resolution": "Tough recently add recognize real prevent. Week heavy garden where. Start company family final draw.",
+      "resolved_at": "2025-12-06T16:46:26.961Z",
+      "created_at": "2025-12-13T09:15:58.642Z",
+      "updated_at": "2025-12-13T09:15:58.642Z"
+    },
+    {
+      "incident_id": 2,
+      "incident_number": "871515474691170",
+      "title": "Laugh card cell whose town.",
+      "description": "Another down yard. Act thank value dark phone nothing box.",
+      "category": "Both program actually hear. That Democrat enter away do raise senior cost.",
+      "priority": "Suggest lead wind.",
+      "severity": "Study themselves.",
+      "status": "pending",
+      "reported_by": 28,
+      "assigned_to": 929,
+      "affected_asset_id": 26,
+      "resolution": "Say well according floor four medical. Senior it doctor administration commercial. Of base rate use ...",
+      "resolved_at": "2023-12-22T08:49:14.101Z",
+      "created_at": "2025-12-13T09:15:58.642Z",
+      "updated_at": "2025-12-13T09:15:58.642Z"
+    },
+    {
+      "incident_id": 3,
+      "incident_number": "319841050755084",
+      "title": "Floor natural include majority.",
+      "description": "Site mean job particular anyone. Next risk you.",
+      "category": "Soon rest leave property even goal speech. Note treatment news weight piece become.",
+      "priority": "Some three eye tend.",
+      "severity": "Government say.",
+      "status": "pending",
+      "reported_by": 578,
+      "assigned_to": 679,
+      "affected_asset_id": 2,
+      "resolution": "Let indicate author team can north. Benefit although check. Last fill avoid tonight.",
+      "resolved_at": "2025-09-09T03:11:52.718Z",
+      "created_at": "2025-12-13T09:15:58.642Z",
+      "updated_at": "2025-12-13T09:15:58.642Z"
+    },
+    {
+      "incident_id": 4,
+      "incident_number": "702238045347827",
+      "title": "Price follow couple chance.",
+      "description": "Player popular consumer environmental nor listen. Guess maybe company learn commercial. Then couple ...",
+      "category": "Son final himself move entire quality eat newspaper. Reveal hotel quality capital dream back.",
+      "priority": "Artist but.",
+      "severity": "Rock understand.",
+      "status": "active",
+      "reported_by": 659,
+      "assigned_to": 439,
+      "affected_asset_id": 9,
+      "resolution": "Huge cultural think world computer them. Husband son month information thought.",
+      "resolved_at": "2024-05-04T00:39:39.460Z",
+      "created_at": "2025-12-13T09:15:58.642Z",
+      "updated_at": "2025-12-13T09:15:58.642Z"
+    },
+    {
+      "incident_id": 5,
+      "incident_number": "704445514344211",
+      "title": "Level enter.",
+      "description": "Fall nothing long eye she. Place mother federal task. Her media tonight avoid perhaps.",
+      "category": "Event make particular top produce explain. Other may kind education rock follow prepare perform.",
+      "priority": "Anything group make.",
+      "severity": "View open Congress.",
+      "status": "inactive",
+      "reported_by": 187,
+      "assigned_to": 52,
+      "affected_asset_id": 17,
+      "resolution": "Young agent me cell identify. Tough draw long policy stay. Vote final seat write player TV.",
+      "resolved_at": "2025-03-19T04:59:23.615Z",
+      "created_at": "2025-12-13T09:15:58.642Z",
+      "updated_at": "2025-12-13T09:15:58.642Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:37.081Z"
+}

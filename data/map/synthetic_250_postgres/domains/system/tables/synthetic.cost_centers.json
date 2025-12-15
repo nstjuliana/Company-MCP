@@ -1,0 +1,147 @@
+{
+  "table": "cost_centers",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.cost_centers\" table in the \"synthetic_250_postgres\" database represents a collection of organizational units responsible for tracking costs within a business, identifiable by unique \"cost_center_id\". This table records details such as a unique code, name, manager, and activity status, with no explicit foreign key relations stated but potentially structured to capture hierarchical relationships through \"parent_id\". It plays a crucial role in financial reporting and management, reflecting the operational structure and accountability of cost oversight within an organization.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "cost_center_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each cost center, ensuring each one can be distinctly recognized and referenced within the system. The identifiers are sequential numbers indicating the order of creation or entry.",
+      "default": "nextval('synthetic.cost_centers_cost_center_id_seq'::regclass)"
+    },
+    {
+      "name": "cost_center_code",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely represents unique identifiers for different cost centers within an organization. Purpose unclear from available data as the values are alphanumeric and do not provide additional context.",
+      "default": null
+    },
+    {
+      "name": "cost_center_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column contains descriptive labels or phrases associated with various cost centers, reflecting a varied range of activities or focus areas such as art, stock, behavior analysis, or campaign notices. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "parent_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents an identifier for the parent cost center to which each record is associated, potentially indicating a hierarchical relationship among cost centers. The recurring values suggest certain parent entities are more common than others within the dataset.",
+      "default": null
+    },
+    {
+      "name": "manager_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents a unique identifier assigned to individual managers associated with various cost centers in the organization. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "is_active",
+      "type": "boolean",
+      "nullable": true,
+      "description": "This column indicates whether a cost center is currently active within the business operations, with the default assumption being active unless specified otherwise. Since values include both true and false, it reflects the activation status for decision-making or reporting purposes.",
+      "default": "true"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a cost center entry was created. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the last modification date and time for entries associated with cost centers. It indicates when the data was most recently updated.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "cost_center_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_cost_centers_parent_id",
+      "column_name": "parent_id",
+      "referenced_table": "synthetic.cost_centers",
+      "referenced_column": "cost_center_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "cost_centers_cost_center_code_key",
+      "index_definition": "CREATE UNIQUE INDEX cost_centers_cost_center_code_key ON synthetic.cost_centers USING btree (cost_center_code)",
+      "columns": [
+        "cost_center_code"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "cost_centers_pkey",
+      "index_definition": "CREATE UNIQUE INDEX cost_centers_pkey ON synthetic.cost_centers USING btree (cost_center_id)",
+      "columns": [
+        "cost_center_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "cost_center_id": 1,
+      "cost_center_code": "CGYFVOSBRX",
+      "cost_center_name": "Value partner interesting on art. Always finish admit investment care man would.\nOne improve these a...",
+      "parent_id": null,
+      "manager_id": 8463,
+      "is_active": false,
+      "created_at": "2025-12-13T08:55:07.717Z",
+      "updated_at": "2025-12-13T08:55:07.717Z"
+    },
+    {
+      "cost_center_id": 2,
+      "cost_center_code": "ZCCLHUUDNJ",
+      "cost_center_name": "Sing ball wish might stock per. Cover avoid life issue street take chance.\nUpon build air eye. Struc...",
+      "parent_id": 1,
+      "manager_id": 8443,
+      "is_active": true,
+      "created_at": "2025-12-13T08:55:07.717Z",
+      "updated_at": "2025-12-13T08:55:07.717Z"
+    },
+    {
+      "cost_center_id": 3,
+      "cost_center_code": "DXLBFMUITT",
+      "cost_center_name": "Both class many total no sometimes. Face fear that central.\nForward herself view product deep color ...",
+      "parent_id": 1,
+      "manager_id": 5098,
+      "is_active": false,
+      "created_at": "2025-12-13T08:55:07.717Z",
+      "updated_at": "2025-12-13T08:55:07.717Z"
+    },
+    {
+      "cost_center_id": 4,
+      "cost_center_code": "ODHICZSNWE",
+      "cost_center_name": "Me physical near analysis generation behavior life teacher. Year concern benefit just.\nDiscussion ph...",
+      "parent_id": 1,
+      "manager_id": 8590,
+      "is_active": true,
+      "created_at": "2025-12-13T08:55:07.717Z",
+      "updated_at": "2025-12-13T08:55:07.717Z"
+    },
+    {
+      "cost_center_id": 5,
+      "cost_center_code": "GSGKSOWPAK",
+      "cost_center_name": "Reflect cold without. Black health turn level process sister democratic. Consider stay fight bad see...",
+      "parent_id": 2,
+      "manager_id": 3159,
+      "is_active": true,
+      "created_at": "2025-12-13T08:55:07.717Z",
+      "updated_at": "2025-12-13T08:55:07.717Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:05.627Z"
+}

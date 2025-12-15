@@ -1,0 +1,156 @@
+{
+  "table": "forecasts",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.forecasts\" table captures forecast-related data for users, including information such as the forecast period, year, and various financial amounts (quota, forecast, closed, and pipeline amounts). Even though there are no direct relationships with other tables, it serves a critical role in recording and potentially analyzing financial projections for specified time frames. Key columns like \"forecast_id\" as primary key and time-stamped entries with \"created_at\" and \"updated_at\" ensure unique identification and temporal tracking of forecasts.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "forecast_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "A unique identifier automatically assigned to each forecast entry to distinguish it from others within the dataset.",
+      "default": "nextval('synthetic.forecasts_forecast_id_seq'::regclass)"
+    },
+    {
+      "name": "user_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents a unique identifier for individual users associated with specific forecasts. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "forecast_period",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "forecast_year",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents the year for which a forecast is being made. The purpose is to identify the specific year associated with each forecast entry.",
+      "default": null
+    },
+    {
+      "name": "quota_amount",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents monetary targets or limits associated with specific forecasted activities, likely in a business or financial context. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "forecast_amount",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents projected monetary values, potentially estimates or predictions for future financial metrics given the range of the sample values. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "closed_amount",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column likely represents financial figures, possibly the total monetary value of finalized transactions or deals, given the structure of the values. Purpose unclear from available data.",
+      "default": "0"
+    },
+    {
+      "name": "pipeline_amount",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column likely represents projected or potential financial figures associated with pipeline operations or transactions, as evidenced by the monetary values listed. Purpose unclear from available data.",
+      "default": "0"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a forecast entry is created. It captures the moment a forecast becomes part of the system, likely reflecting the start of its availability.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a forecast entry was last modified. The default value suggests it captures the timestamp at the moment a new entry is created or updated.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "forecast_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "forecasts_pkey",
+      "index_definition": "CREATE UNIQUE INDEX forecasts_pkey ON synthetic.forecasts USING btree (forecast_id)",
+      "columns": [
+        "forecast_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "forecast_id": 1,
+      "user_id": 9367,
+      "forecast_period": "Claim two out my.",
+      "forecast_year": 2022,
+      "quota_amount": "36016.11",
+      "forecast_amount": "2147.36",
+      "closed_amount": "43685.56",
+      "pipeline_amount": "44588.22",
+      "created_at": "2025-12-13T08:59:13.844Z",
+      "updated_at": "2025-12-13T08:59:13.844Z"
+    },
+    {
+      "forecast_id": 2,
+      "user_id": 6950,
+      "forecast_period": "City information.",
+      "forecast_year": 2020,
+      "quota_amount": "43792.50",
+      "forecast_amount": "34888.18",
+      "closed_amount": "26985.25",
+      "pipeline_amount": "91168.70",
+      "created_at": "2025-12-13T08:59:13.844Z",
+      "updated_at": "2025-12-13T08:59:13.844Z"
+    },
+    {
+      "forecast_id": 3,
+      "user_id": 4258,
+      "forecast_period": "Ever physical.",
+      "forecast_year": 2023,
+      "quota_amount": "15894.01",
+      "forecast_amount": "21991.76",
+      "closed_amount": "58590.91",
+      "pipeline_amount": "51765.26",
+      "created_at": "2025-12-13T08:59:13.844Z",
+      "updated_at": "2025-12-13T08:59:13.844Z"
+    },
+    {
+      "forecast_id": 4,
+      "user_id": 8699,
+      "forecast_period": "Career candidate.",
+      "forecast_year": 2021,
+      "quota_amount": "84605.66",
+      "forecast_amount": "97918.23",
+      "closed_amount": "36520.73",
+      "pipeline_amount": "76094.95",
+      "created_at": "2025-12-13T08:59:13.844Z",
+      "updated_at": "2025-12-13T08:59:13.844Z"
+    },
+    {
+      "forecast_id": 5,
+      "user_id": 1475,
+      "forecast_period": "Second mother.",
+      "forecast_year": 2025,
+      "quota_amount": "91593.41",
+      "forecast_amount": "9328.44",
+      "closed_amount": "69561.75",
+      "pipeline_amount": "5101.50",
+      "created_at": "2025-12-13T08:59:13.844Z",
+      "updated_at": "2025-12-13T08:59:13.844Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:40:12.927Z"
+}

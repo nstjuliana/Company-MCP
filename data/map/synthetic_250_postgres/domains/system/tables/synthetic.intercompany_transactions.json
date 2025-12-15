@@ -1,0 +1,151 @@
+{
+  "table": "intercompany_transactions",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.intercompany_transactions` table represents transactions between different accounts within the same corporate group, each identified by a unique primary key `ic_transaction_id`. It includes details such as the account involved (`ic_account_id`), the date of the transaction (`transaction_date`), the monetary value of the transaction (`amount`), and its current `status`, among other attributes. Though it contains a foreign key relationship undefined in the provided data, the table serves as a record-keeping structure for managing intercompany financial activities within the synthetic database.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "ic_transaction_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each transaction within the intercompany transactions dataset. It sequentially assigns an identifier to each transaction, ensuring distinct tracking.",
+      "default": "nextval('synthetic.intercompany_transactions_ic_transaction_id_seq'::regclass)"
+    },
+    {
+      "name": "ic_account_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents an identifier for accounts involved in intercompany transactions, ensuring unique identification of entities within the organization's internal financial exchanges.",
+      "default": null
+    },
+    {
+      "name": "transaction_date",
+      "type": "date",
+      "nullable": false,
+      "description": "This column represents the dates on which intercompany transactions occur, capturing specific calendar days in various years including 2024 and 2025, observed in Central Standard or Daylight Time. The purpose is to track the timing of these financial events within the organizations involved.",
+      "default": null
+    },
+    {
+      "name": "amount",
+      "type": "numeric",
+      "nullable": false,
+      "description": "The column represents the transaction amounts exchanged between companies within a corporate group. Each value indicates the monetary size of a particular transaction, highlighting varying levels of intercompany financial activity.",
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column contains detailed narratives or insights related to various transactions involving customers, highlighting activities or events with diverse entities. Purpose unclear from available data, but it may include commentary on transaction context or specifics.",
+      "default": null
+    },
+    {
+      "name": "reference_number",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column represents unique identifiers assigned to each transaction within the intercompany transactions table. These identifiers help differentiate and track individual transactions.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column denotes the current stage or condition of intercompany transactions, reflecting various states such as 'active', 'pending', 'completed', 'cancelled', and 'inactive'. It is used to track the transaction's lifecycle and operational status.",
+      "default": "'pending'::character varying"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an intercompany transaction was created. It is used to track the timing of each transaction's entry into the system.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the last modification date and time of intercompany transactions. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "ic_transaction_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_intercompany_transactions_ic_account_id",
+      "column_name": "ic_account_id",
+      "referenced_table": "synthetic.intercompany_accounts",
+      "referenced_column": "ic_account_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "intercompany_transactions_pkey",
+      "index_definition": "CREATE UNIQUE INDEX intercompany_transactions_pkey ON synthetic.intercompany_transactions USING btree (ic_transaction_id)",
+      "columns": [
+        "ic_transaction_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "ic_transaction_id": 1,
+      "ic_account_id": 17,
+      "transaction_date": "2025-01-06T06:00:00.000Z",
+      "amount": "37006.58",
+      "description": "Customer card music provide these. Middle author likely nation manager real.",
+      "reference_number": "81014982022507895651",
+      "status": "active",
+      "created_at": "2025-12-13T08:55:26.879Z",
+      "updated_at": "2025-12-13T08:55:26.879Z"
+    },
+    {
+      "ic_transaction_id": 2,
+      "ic_account_id": 43,
+      "transaction_date": "2025-07-14T05:00:00.000Z",
+      "amount": "20756.73",
+      "description": "Back here quickly situation product guess. Crime quickly executive maintain according. Congress more...",
+      "reference_number": "68212432093173880222",
+      "status": "pending",
+      "created_at": "2025-12-13T08:55:26.879Z",
+      "updated_at": "2025-12-13T08:55:26.879Z"
+    },
+    {
+      "ic_transaction_id": 3,
+      "ic_account_id": 25,
+      "transaction_date": "2025-07-10T05:00:00.000Z",
+      "amount": "47020.46",
+      "description": "North chance civil property wait eat. Participant account wish interesting. Expect assume herself st...",
+      "reference_number": "64729539384264008879",
+      "status": "completed",
+      "created_at": "2025-12-13T08:55:26.879Z",
+      "updated_at": "2025-12-13T08:55:26.879Z"
+    },
+    {
+      "ic_transaction_id": 4,
+      "ic_account_id": 3,
+      "transaction_date": "2024-02-09T06:00:00.000Z",
+      "amount": "4086.48",
+      "description": "Tv light conference force. Town current morning action the.",
+      "reference_number": "10621309966229063470",
+      "status": "pending",
+      "created_at": "2025-12-13T08:55:26.879Z",
+      "updated_at": "2025-12-13T08:55:26.879Z"
+    },
+    {
+      "ic_transaction_id": 5,
+      "ic_account_id": 7,
+      "transaction_date": "2024-03-07T06:00:00.000Z",
+      "amount": "70403.25",
+      "description": "Doctor go manager the live include. Sometimes ever organization cup.",
+      "reference_number": "07132975335736105084",
+      "status": "cancelled",
+      "created_at": "2025-12-13T08:55:26.879Z",
+      "updated_at": "2025-12-13T08:55:26.879Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:13.694Z"
+}

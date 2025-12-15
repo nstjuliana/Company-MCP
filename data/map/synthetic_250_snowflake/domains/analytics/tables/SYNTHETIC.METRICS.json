@@ -1,0 +1,99 @@
+{
+  "table": "METRICS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.METRICS table represents a collection of performance metrics, where each record is uniquely identified by the METRIC_ID primary key. It includes columns such as NAME and DESCRIPTION for each metric, along with various attributes related to visualization and key performance indicators (e.g., VISUALIZATION_173_ATTR_0, VISUALIZATION_173_ATTR_1, KPI_173_ATTR_2). The table appears to function independently without direct relationships to other tables, serving as a standalone entity within the data model.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "METRIC_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column likely serves as a unique identifier for each metric recorded in the table. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column likely represents a series of labeled metrics or measurement categories numbered sequentially. Each entry denotes a distinct metric within a potentially broader set of evaluations or performance data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column provides a textual explanation for individual entries or records within the METRICS table, likely detailing specific attributes or characteristics associated with each metric. The purpose of these descriptions is to offer context or clarification for each metric's role or significance as indicated by their sequential numbering.",
+      "default": null
+    },
+    {
+      "name": "VISUALIZATION_173_ATTR_0",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "The column represents a sequential numerical identifier or reference count within a visualization-related context, starting from 100. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "VISUALIZATION_173_ATTR_1",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "This column likely indicates a binary status or condition related to the visualization metrics within the dataset, with true and false values representing two possible states or outcomes. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "KPI_173_ATTR_2",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "Purpose unclear from available data. The column contains sequential numerical values starting from 100.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "METRIC_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "METRIC_ID": 1,
+      "NAME": "METRICS 1",
+      "DESCRIPTION": "Description for METRICS 1",
+      "VISUALIZATION_173_ATTR_0": 100,
+      "VISUALIZATION_173_ATTR_1": true,
+      "KPI_173_ATTR_2": 100
+    },
+    {
+      "METRIC_ID": 2,
+      "NAME": "METRICS 2",
+      "DESCRIPTION": "Description for METRICS 2",
+      "VISUALIZATION_173_ATTR_0": 101,
+      "VISUALIZATION_173_ATTR_1": false,
+      "KPI_173_ATTR_2": 101
+    },
+    {
+      "METRIC_ID": 3,
+      "NAME": "METRICS 3",
+      "DESCRIPTION": "Description for METRICS 3",
+      "VISUALIZATION_173_ATTR_0": 102,
+      "VISUALIZATION_173_ATTR_1": true,
+      "KPI_173_ATTR_2": 102
+    },
+    {
+      "METRIC_ID": 4,
+      "NAME": "METRICS 4",
+      "DESCRIPTION": "Description for METRICS 4",
+      "VISUALIZATION_173_ATTR_0": 103,
+      "VISUALIZATION_173_ATTR_1": false,
+      "KPI_173_ATTR_2": 103
+    },
+    {
+      "METRIC_ID": 5,
+      "NAME": "METRICS 5",
+      "DESCRIPTION": "Description for METRICS 5",
+      "VISUALIZATION_173_ATTR_0": 104,
+      "VISUALIZATION_173_ATTR_1": true,
+      "KPI_173_ATTR_2": 104
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:16.703Z"
+}

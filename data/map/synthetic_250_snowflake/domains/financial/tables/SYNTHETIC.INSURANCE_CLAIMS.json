@@ -1,0 +1,123 @@
+{
+  "table": "INSURANCE_CLAIMS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.INSURANCE_CLAIMS table represents insurance claim records, identified by a unique INSURANCE_CLAIM_ID. It contains information about appointments and claims linked to insurance processes, with data on descriptions and specific attributes such as dates and monetary amounts. The table stands alone in the database with no direct relationships to other tables.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "INSURANCE_CLAIM_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column uniquely identifies each insurance claim within the system. It serves as a sequential identifier for tracking individual claims.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "Purpose unclear from available data. The sample values suggest a sequential identifier or label related to insurance claims rather than a traditional name.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains textual descriptions or identifiers pertaining to individual insurance claims, likely serving as a unique identifier or reference for each claim record. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "APPOINTMENT_211_ATTR_0",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values do not provide meaningful information to discern the business context.",
+      "default": null
+    },
+    {
+      "name": "CLAIM_211_ATTR_1",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "APPOINTMENT_211_ATTR_2",
+      "type": "DATE",
+      "nullable": true,
+      "description": "This column likely represents the scheduled date for an insurance-related appointment or event. Exact purpose is unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CLAIM_211_ATTR_3",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "PRESCRIPTION_211_ATTR_4",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column appears to represent a sequential or categorical identifier associated with a specific aspect of a prescription in an insurance claim. Purpose unclear from available data.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "INSURANCE_CLAIM_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "INSURANCE_CLAIM_ID": 1,
+      "NAME": "INSURANCE_CLAIMS 1",
+      "DESCRIPTION": "Description for INSURANCE_CLAIMS 1",
+      "APPOINTMENT_211_ATTR_0": "Sample APPOINTMENT_211_ATTR_0 1",
+      "CLAIM_211_ATTR_1": "Sample CLAIM_211_ATTR_1 1",
+      "APPOINTMENT_211_ATTR_2": "2025-12-12",
+      "CLAIM_211_ATTR_3": 100,
+      "PRESCRIPTION_211_ATTR_4": 100
+    },
+    {
+      "INSURANCE_CLAIM_ID": 2,
+      "NAME": "INSURANCE_CLAIMS 2",
+      "DESCRIPTION": "Description for INSURANCE_CLAIMS 2",
+      "APPOINTMENT_211_ATTR_0": "Sample APPOINTMENT_211_ATTR_0 2",
+      "CLAIM_211_ATTR_1": "Sample CLAIM_211_ATTR_1 2",
+      "APPOINTMENT_211_ATTR_2": "2025-12-13",
+      "CLAIM_211_ATTR_3": 101,
+      "PRESCRIPTION_211_ATTR_4": 101
+    },
+    {
+      "INSURANCE_CLAIM_ID": 3,
+      "NAME": "INSURANCE_CLAIMS 3",
+      "DESCRIPTION": "Description for INSURANCE_CLAIMS 3",
+      "APPOINTMENT_211_ATTR_0": "Sample APPOINTMENT_211_ATTR_0 3",
+      "CLAIM_211_ATTR_1": "Sample CLAIM_211_ATTR_1 3",
+      "APPOINTMENT_211_ATTR_2": "2025-12-14",
+      "CLAIM_211_ATTR_3": 102,
+      "PRESCRIPTION_211_ATTR_4": 102
+    },
+    {
+      "INSURANCE_CLAIM_ID": 4,
+      "NAME": "INSURANCE_CLAIMS 4",
+      "DESCRIPTION": "Description for INSURANCE_CLAIMS 4",
+      "APPOINTMENT_211_ATTR_0": "Sample APPOINTMENT_211_ATTR_0 4",
+      "CLAIM_211_ATTR_1": "Sample CLAIM_211_ATTR_1 4",
+      "APPOINTMENT_211_ATTR_2": "2025-12-15",
+      "CLAIM_211_ATTR_3": 103,
+      "PRESCRIPTION_211_ATTR_4": 103
+    },
+    {
+      "INSURANCE_CLAIM_ID": 5,
+      "NAME": "INSURANCE_CLAIMS 5",
+      "DESCRIPTION": "Description for INSURANCE_CLAIMS 5",
+      "APPOINTMENT_211_ATTR_0": "Sample APPOINTMENT_211_ATTR_0 5",
+      "CLAIM_211_ATTR_1": "Sample CLAIM_211_ATTR_1 5",
+      "APPOINTMENT_211_ATTR_2": "2025-12-16",
+      "CLAIM_211_ATTR_3": 104,
+      "PRESCRIPTION_211_ATTR_4": 104
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:49.804Z"
+}

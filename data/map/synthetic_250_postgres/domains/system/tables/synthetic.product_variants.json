@@ -1,0 +1,171 @@
+{
+  "table": "product_variants",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.product_variants` table represents various versions or modifications of a product, each identified by a unique `variant_id`. It includes details such as SKU, name, price and weight modifications, stock quantity, and active status, with timestamps for creation and updates. Although its foreign key relationships are undefined, its association with `product_id` suggests it details specific variations of products likely cataloged in another table.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "variant_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column assigns a unique identifier to each product variant. It facilitates differentiation and management of distinct versions of a product within the database.",
+      "default": "nextval('synthetic.product_variants_variant_id_seq'::regclass)"
+    },
+    {
+      "name": "product_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column likely identifies unique products as part of various product variants. The values suggest that it is used to associate each variant with its specific product in the database.",
+      "default": null
+    },
+    {
+      "name": "variant_sku",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The column contains varied and abstract text strings that do not offer clear insights into a specific business concept.",
+      "default": null
+    },
+    {
+      "name": "variant_name",
+      "type": "character varying",
+      "nullable": true,
+      "description": "The column contains textual and abstract descriptions seemingly meant to represent various product variations, characterized by creatively phrased expressions. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "price_modifier",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the additional cost or discount associated with a product variant, as seen by the varied numeric values indicating adjustments to default pricing. Purpose unclear from available data.",
+      "default": "0"
+    },
+    {
+      "name": "weight_modifier",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column likely represents an adjustable factor that modifies the weight of a product, possibly accounting for packaging or variability in materials. The range of sample values suggests variations that can significantly alter the final weight measurement depending on the business context.",
+      "default": "0"
+    },
+    {
+      "name": "stock_quantity",
+      "type": "integer",
+      "nullable": true,
+      "description": "Indicates the quantity of a product variant that is currently available in stock. Numbers like 81, 768, and 983 reflect varying inventory levels for different product variants.",
+      "default": "0"
+    },
+    {
+      "name": "is_active",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether a product variant is currently available or operational within the system. True signifies active status, while false denotes inactive status.",
+      "default": "true"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a product variant was initially created in the system. Purpose unclear from available data beyond timestamp creation.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a product variant record was last modified. The default value ensures that if not explicitly set, the current timestamp is captured.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "variant_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_product_variants_product_id",
+      "column_name": "product_id",
+      "referenced_table": "synthetic.products",
+      "referenced_column": "product_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "product_variants_pkey",
+      "index_definition": "CREATE UNIQUE INDEX product_variants_pkey ON synthetic.product_variants USING btree (variant_id)",
+      "columns": [
+        "variant_id"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "product_variants_variant_sku_key",
+      "index_definition": "CREATE UNIQUE INDEX product_variants_variant_sku_key ON synthetic.product_variants USING btree (variant_sku)",
+      "columns": [
+        "variant_sku"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "variant_id": 1,
+      "product_id": 8,
+      "variant_sku": "Without myself lay. Late least make push student per box.",
+      "variant_name": "Drop car certain assume new focus. Help not task family cost money heart. Human interview here land ...",
+      "price_modifier": "58068.85",
+      "weight_modifier": "96.178",
+      "stock_quantity": 81,
+      "is_active": true,
+      "created_at": "2025-12-13T08:55:58.238Z",
+      "updated_at": "2025-12-13T08:55:58.238Z"
+    },
+    {
+      "variant_id": 2,
+      "product_id": 47,
+      "variant_sku": "Experience organization house tax safe difference.",
+      "variant_name": "Play but effect area young ball. News change concern relate simple money believe. Campaign result ev...",
+      "price_modifier": "73156.19",
+      "weight_modifier": "98.360",
+      "stock_quantity": 768,
+      "is_active": false,
+      "created_at": "2025-12-13T08:55:58.238Z",
+      "updated_at": "2025-12-13T08:55:58.238Z"
+    },
+    {
+      "variant_id": 3,
+      "product_id": 30,
+      "variant_sku": "Me across again arm. Everyone explain enter morning. Be name company similar.",
+      "variant_name": "Collection prove lawyer that recent. Arrive half prevent off key.\nKid serve next law some dinner hol...",
+      "price_modifier": "51743.26",
+      "weight_modifier": "52.383",
+      "stock_quantity": 624,
+      "is_active": true,
+      "created_at": "2025-12-13T08:55:58.238Z",
+      "updated_at": "2025-12-13T08:55:58.238Z"
+    },
+    {
+      "variant_id": 4,
+      "product_id": 16,
+      "variant_sku": "Firm response us lead continue. View ever state conference TV.",
+      "variant_name": "Its write whom focus. Stay it bar hear million whole understand. Whatever important theory prevent e...",
+      "price_modifier": "47297.91",
+      "weight_modifier": "74.194",
+      "stock_quantity": 983,
+      "is_active": true,
+      "created_at": "2025-12-13T08:55:58.238Z",
+      "updated_at": "2025-12-13T08:55:58.238Z"
+    },
+    {
+      "variant_id": 5,
+      "product_id": 44,
+      "variant_sku": "Perhaps within senior design less send born image. Property former avoid stop call.",
+      "variant_name": "Federal commercial college perhaps music concern. Whatever very eight write. Seat after yet all.",
+      "price_modifier": "63405.40",
+      "weight_modifier": "79.830",
+      "stock_quantity": 319,
+      "is_active": true,
+      "created_at": "2025-12-13T08:55:58.238Z",
+      "updated_at": "2025-12-13T08:55:58.238Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:22.285Z"
+}

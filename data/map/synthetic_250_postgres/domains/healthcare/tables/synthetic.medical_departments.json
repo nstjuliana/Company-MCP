@@ -1,0 +1,140 @@
+{
+  "table": "medical_departments",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.medical_departments\" table represents various departments within a medical institution, each identified by a unique \"department_id,\" with details such as department name, location, phone number, department code, and head physician. This table is isolated in the dataset, with no direct foreign key references to or from other tables. It primarily serves to store and manage metadata about the distinct operational divisions of the medical facility.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "department_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each medical department within the organization. It assigns a sequential integer to ensure each department is distinct.",
+      "default": "nextval('synthetic.medical_departments_department_id_seq'::regclass)"
+    },
+    {
+      "name": "department_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column contains descriptive names or identifiers for various departments within a medical organization, as indicated by the multi-word phrases. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "department_code",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely contains unique identifiers for various departments within a medical facility, as suggested by the randomly generated alphanumeric codes. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "location",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "phone",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column contains contact phone numbers for medical departments, which may include extensions following the main number. The format of the numbers varies, using parentheses, hyphens, dots, or no separators, indicating different stylistic conventions for entry.",
+      "default": null
+    },
+    {
+      "name": "head_physician_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely identifies the lead physician in charge of each medical department using a unique numeric identifier. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a new entry was created in the medical departments table. The timestamp reflects the current moment it was captured, allowing historical tracking of entry creation.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column tracks the date and time when each record in the medical departments table was last updated. Purpose is unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "department_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "medical_departments_department_code_key",
+      "index_definition": "CREATE UNIQUE INDEX medical_departments_department_code_key ON synthetic.medical_departments USING btree (department_code)",
+      "columns": [
+        "department_code"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "medical_departments_pkey",
+      "index_definition": "CREATE UNIQUE INDEX medical_departments_pkey ON synthetic.medical_departments USING btree (department_id)",
+      "columns": [
+        "department_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "department_id": 1,
+      "department_name": "Bill dark within young trip. Sport care event administration hard although way talk. Already attenti...",
+      "department_code": "QDZZATVHDL",
+      "location": "Arm consider yes spring read watch. Stage public note save similar lay in. Everyone live party bill ...",
+      "phone": "(846)777-1581x081",
+      "head_physician_id": 3552,
+      "created_at": "2025-12-13T08:59:39.413Z",
+      "updated_at": "2025-12-13T08:59:39.413Z"
+    },
+    {
+      "department_id": 2,
+      "department_name": "Both decision drive. May newspaper cause offer participant.",
+      "department_code": "WGMNQKFIUF",
+      "location": "Type million air back.\nSmile manager best call production. Marriage soldier seek.\nStand chair should...",
+      "phone": "857-851-8396x90178",
+      "head_physician_id": 2208,
+      "created_at": "2025-12-13T08:59:39.413Z",
+      "updated_at": "2025-12-13T08:59:39.413Z"
+    },
+    {
+      "department_id": 3,
+      "department_name": "Brother crime claim audience window trip among break.\nTeam off pattern perhaps Republican able. Dog ...",
+      "department_code": "OJZULKYSEW",
+      "location": "Along matter public. Plan phone structure government state.\nGlass fly street law thought article gen...",
+      "phone": "519.827.3969x451",
+      "head_physician_id": 6636,
+      "created_at": "2025-12-13T08:59:39.413Z",
+      "updated_at": "2025-12-13T08:59:39.413Z"
+    },
+    {
+      "department_id": 4,
+      "department_name": "Health whom style hear consumer among south. Large control analysis of. Heart bar TV college great s...",
+      "department_code": "XGIHLOGKKC",
+      "location": "Cultural fine ten. Great technology magazine six. Behind see he.\nAuthority page along save quality p...",
+      "phone": "937-760-2656x768",
+      "head_physician_id": 5293,
+      "created_at": "2025-12-13T08:59:39.413Z",
+      "updated_at": "2025-12-13T08:59:39.413Z"
+    },
+    {
+      "department_id": 5,
+      "department_name": "Property marriage these series political final local. Pick various always consider camera big anythi...",
+      "department_code": "SAIBXZDQIA",
+      "location": "Change artist this country. Government company fly across kid. Another kid understand source city lo...",
+      "phone": "323.831.0173x101",
+      "head_physician_id": 3699,
+      "created_at": "2025-12-13T08:59:39.413Z",
+      "updated_at": "2025-12-13T08:59:39.413Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:41:38.086Z"
+}

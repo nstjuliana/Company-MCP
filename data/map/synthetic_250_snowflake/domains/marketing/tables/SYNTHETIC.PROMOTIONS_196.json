@@ -1,0 +1,159 @@
+{
+  "table": "PROMOTIONS_196",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.PROMOTIONS_196 table represents promotional campaigns within the database, identifiable by a unique PROMOTION_ID. It stores details such as the promotion's name, description, associated dates, and attributes relevant to wishlist, shipping, cart, and review contexts. This table functions independently without explicit foreign key relationships, suggesting it may serve as a standalone reference for promotions.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "PROMOTION_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents the unique identifier assigned to each promotion in the system, serving as a sequential number to differentiate promotional entries. Its purpose is to ensure each promotion can be individually referenced and managed.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column represents identifiers for different promotion campaigns in a sequential format. Each value denotes a distinct promotion labeled with a numeric suffix.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains textual descriptions associated with specific records in the promotions table. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "WISHLIST_216_ATTR_0",
+      "type": "DATE",
+      "nullable": false,
+      "description": "This column likely records the dates associated with specific wishlist activities or events within a promotional context, occurring in mid-December 2025. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "SHIPPING_216_ATTR_1",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "Represents a code identifying a shipping-related attribute associated with promotions. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CART_216_ATTR_2",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "REVIEW_216_ATTR_3",
+      "type": "DATE",
+      "nullable": true,
+      "description": "This column likely records the scheduled review dates for promotions. The dates are consecutive and suggest a systematic review process.",
+      "default": null
+    },
+    {
+      "name": "RATING_216_ATTR_4",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "Indicates whether a specific criterion or attribute related to promotions is met or not. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "RATING_216_ATTR_5",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column appears to represent numerical ratings related to a specific aspect of a promotion, with values ranging from 1 to 10. The purpose of these ratings in business terms is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "REVIEW_216_ATTR_6",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column likely represents a categorical rating or identifier used in reviews or assessments, where each number corresponds to a specific category or value. Purpose unclear from available data beyond indicating distinct classifications.",
+      "default": null
+    },
+    {
+      "name": "CREATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column records the date and time when each promotion was created, using the system's current timestamp at the moment of creation. It provides a precise historical reference for the timing of promotional events.",
+      "default": "CURRENT_TIMESTAMP()"
+    }
+  ],
+  "primary_key": [
+    "PROMOTION_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "PROMOTION_ID": 1,
+      "NAME": "PROMOTIONS_196 1",
+      "DESCRIPTION": "Description for PROMOTIONS_196 1",
+      "WISHLIST_216_ATTR_0": "2025-12-12",
+      "SHIPPING_216_ATTR_1": null,
+      "CART_216_ATTR_2": null,
+      "REVIEW_216_ATTR_3": "2025-12-12",
+      "RATING_216_ATTR_4": true,
+      "RATING_216_ATTR_5": "Sample RATING_216_ATTR_5 1",
+      "REVIEW_216_ATTR_6": null,
+      "CREATED_AT": "2025-12-12 17:26:59.080"
+    },
+    {
+      "PROMOTION_ID": 2,
+      "NAME": "PROMOTIONS_196 2",
+      "DESCRIPTION": "Description for PROMOTIONS_196 2",
+      "WISHLIST_216_ATTR_0": "2025-12-13",
+      "SHIPPING_216_ATTR_1": 101,
+      "CART_216_ATTR_2": 101,
+      "REVIEW_216_ATTR_3": "2025-12-13",
+      "RATING_216_ATTR_4": false,
+      "RATING_216_ATTR_5": "Sample RATING_216_ATTR_5 2",
+      "REVIEW_216_ATTR_6": 101,
+      "CREATED_AT": "2025-12-12 17:26:59.080"
+    },
+    {
+      "PROMOTION_ID": 3,
+      "NAME": "PROMOTIONS_196 3",
+      "DESCRIPTION": "Description for PROMOTIONS_196 3",
+      "WISHLIST_216_ATTR_0": "2025-12-14",
+      "SHIPPING_216_ATTR_1": 102,
+      "CART_216_ATTR_2": 102,
+      "REVIEW_216_ATTR_3": "2025-12-14",
+      "RATING_216_ATTR_4": true,
+      "RATING_216_ATTR_5": "Sample RATING_216_ATTR_5 3",
+      "REVIEW_216_ATTR_6": 102,
+      "CREATED_AT": "2025-12-12 17:26:59.080"
+    },
+    {
+      "PROMOTION_ID": 4,
+      "NAME": "PROMOTIONS_196 4",
+      "DESCRIPTION": "Description for PROMOTIONS_196 4",
+      "WISHLIST_216_ATTR_0": "2025-12-15",
+      "SHIPPING_216_ATTR_1": null,
+      "CART_216_ATTR_2": null,
+      "REVIEW_216_ATTR_3": "2025-12-15",
+      "RATING_216_ATTR_4": false,
+      "RATING_216_ATTR_5": "Sample RATING_216_ATTR_5 4",
+      "REVIEW_216_ATTR_6": null,
+      "CREATED_AT": "2025-12-12 17:26:59.080"
+    },
+    {
+      "PROMOTION_ID": 5,
+      "NAME": "PROMOTIONS_196 5",
+      "DESCRIPTION": "Description for PROMOTIONS_196 5",
+      "WISHLIST_216_ATTR_0": "2025-12-16",
+      "SHIPPING_216_ATTR_1": 104,
+      "CART_216_ATTR_2": 104,
+      "REVIEW_216_ATTR_3": "2025-12-16",
+      "RATING_216_ATTR_4": true,
+      "RATING_216_ATTR_5": "Sample RATING_216_ATTR_5 5",
+      "REVIEW_216_ATTR_6": 104,
+      "CREATED_AT": "2025-12-12 17:26:59.080"
+    }
+  ],
+  "generated_at": "2025-12-14T23:42:35.089Z"
+}

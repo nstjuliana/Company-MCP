@@ -1,0 +1,157 @@
+{
+  "table": "degree_requirements",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.degree_requirements\" table represents the academic requirements a student must satisfy to complete a specific program, identified by unique records for each requirement. It includes details such as the associated program and course (via the \"program_id\" and \"course_id\" columns), type of requirement, required credit hours, the minimum grade needed, and whether the requirement is mandatory, along with timestamps of when the record was created and last updated. The table references undefined relationships with other tables, suggesting it forms part of a broader educational data model encompassing programs and courses structure.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "requirement_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each entry in the table of degree requirements, serving as a primary key for distinguishing different sets of requirements.",
+      "default": "nextval('synthetic.degree_requirements_requirement_id_seq'::regclass)"
+    },
+    {
+      "name": "program_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents unique identifiers for various educational programs associated with specific degree requirements.",
+      "default": null
+    },
+    {
+      "name": "course_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents unique identifiers for courses that are part of a degree's requirements. Each number corresponds to a specific course needed to fulfill the educational program.",
+      "default": null
+    },
+    {
+      "name": "requirement_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values do not provide a clear insight into what this column represents in business terms.",
+      "default": null
+    },
+    {
+      "name": "credit_hours",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents the number of credit hours associated with a specific requirement needed for degree completion. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "minimum_grade",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "is_required",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether a specific course or requirement is essential to fulfill the criteria for completing a degree program. Its default value suggests that most requirements are considered essential unless otherwise specified.",
+      "default": "true"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a particular entry in the degree requirements table was initially created. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a modification was last made to a record in the degree requirements table. It is automatically set to the current timestamp when the record is inserted or updated.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "requirement_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_degree_requirements_course_id",
+      "column_name": "course_id",
+      "referenced_table": "synthetic.courses",
+      "referenced_column": "course_id"
+    },
+    {
+      "constraint_name": "fk_degree_requirements_program_id",
+      "column_name": "program_id",
+      "referenced_table": "synthetic.programs",
+      "referenced_column": "program_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "degree_requirements_pkey",
+      "index_definition": "CREATE UNIQUE INDEX degree_requirements_pkey ON synthetic.degree_requirements USING btree (requirement_id)",
+      "columns": [
+        "requirement_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "requirement_id": 1,
+      "program_id": 18,
+      "course_id": 3,
+      "requirement_type": "Outside way remember just Republican.",
+      "credit_hours": 947,
+      "minimum_grade": "Each.",
+      "is_required": true,
+      "created_at": "2025-12-13T09:17:07.152Z",
+      "updated_at": "2025-12-13T09:17:07.152Z"
+    },
+    {
+      "requirement_id": 2,
+      "program_id": 44,
+      "course_id": 18,
+      "requirement_type": "Like rich chance former everything offer.",
+      "credit_hours": 921,
+      "minimum_grade": "Beat.",
+      "is_required": true,
+      "created_at": "2025-12-13T09:17:07.152Z",
+      "updated_at": "2025-12-13T09:17:07.152Z"
+    },
+    {
+      "requirement_id": 3,
+      "program_id": 12,
+      "course_id": 21,
+      "requirement_type": "Probably of least yourself.",
+      "credit_hours": 17,
+      "minimum_grade": "Top.",
+      "is_required": true,
+      "created_at": "2025-12-13T09:17:07.152Z",
+      "updated_at": "2025-12-13T09:17:07.152Z"
+    },
+    {
+      "requirement_id": 4,
+      "program_id": 38,
+      "course_id": 10,
+      "requirement_type": "Should six audience organization the data sister.",
+      "credit_hours": 771,
+      "minimum_grade": "City.",
+      "is_required": false,
+      "created_at": "2025-12-13T09:17:07.152Z",
+      "updated_at": "2025-12-13T09:17:07.152Z"
+    },
+    {
+      "requirement_id": 5,
+      "program_id": 5,
+      "course_id": 20,
+      "requirement_type": "Trip crime some security.",
+      "credit_hours": 167,
+      "minimum_grade": "Fact.",
+      "is_required": true,
+      "created_at": "2025-12-13T09:17:07.152Z",
+      "updated_at": "2025-12-13T09:17:07.152Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:40:56.292Z"
+}

@@ -1,0 +1,151 @@
+{
+  "table": "abc_analysis",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.abc_analysis` table represents an ABC analysis of inventory in a business context, categorizing products based on their annual usage value and cumulative percentage. Each entry in the table is uniquely identified by `analysis_id` and includes attributes such as `product_id`, `warehouse_id`, and `classification` among others, highlighting the operational aspects of inventory classification. While it contains a foreign key relating to an undefined table, the absence of defined relationships or references suggests its use as a standalone analytical tool for assessing inventory value and performance.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "analysis_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column designates a unique identifier for each entry within the table, ensuring each analysis instance is distinctly recognized. The purpose is to sequentially number entries for tracking and reference.",
+      "default": "nextval('synthetic.abc_analysis_analysis_id_seq'::regclass)"
+    },
+    {
+      "name": "product_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for products involved in an ABC analysis. Each integer corresponds to a specific product being evaluated.",
+      "default": null
+    },
+    {
+      "name": "warehouse_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents a unique identifier for different warehouse locations associated with ABC analysis. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "analysis_date",
+      "type": "date",
+      "nullable": false,
+      "description": "This column captures the specific date on which an ABC analysis was conducted, providing a chronological reference for analysis activities within the synthetic dataset. The dates reflect various times throughout different years, suggesting that analyses occur on multiple occasions annually.",
+      "default": null
+    },
+    {
+      "name": "classification",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column appears to categorize or classify records using single-character codes, suggesting a system of grouping or identifying certain aspects of the data. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "annual_usage_value",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the total annual financial consumption or expenditure attributed to an entity within an ABC analysis framework, typically measured in a monetary unit, such as dollars. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "cumulative_percentage",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the cumulative percentage of a certain measurable attribute, likely summing up incremental contributions or values, possibly in the context of an analysis such as inventory, sales, or performance tracking. The exact purpose or the context of the cumulative data is unclear from the available information.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a record was created in the abc_analysis table, defaulting to the current timestamp at the time of record insertion. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a record in the abc_analysis table was last updated. It reflects changes made to a record, with the default time being the current time at the moment of the update.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "analysis_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_abc_analysis_warehouse_id",
+      "column_name": "warehouse_id",
+      "referenced_table": "synthetic.warehouses",
+      "referenced_column": "warehouse_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "abc_analysis_pkey",
+      "index_definition": "CREATE UNIQUE INDEX abc_analysis_pkey ON synthetic.abc_analysis USING btree (analysis_id)",
+      "columns": [
+        "analysis_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "analysis_id": 1,
+      "product_id": 130,
+      "warehouse_id": null,
+      "analysis_date": "2025-08-13T05:00:00.000Z",
+      "classification": "N",
+      "annual_usage_value": "637.87",
+      "cumulative_percentage": "752.790",
+      "created_at": "2025-12-13T09:10:16.074Z",
+      "updated_at": "2025-12-13T09:10:16.074Z"
+    },
+    {
+      "analysis_id": 2,
+      "product_id": 106,
+      "warehouse_id": null,
+      "analysis_date": "2024-08-28T05:00:00.000Z",
+      "classification": "X",
+      "annual_usage_value": "872.72",
+      "cumulative_percentage": "574.060",
+      "created_at": "2025-12-13T09:10:16.074Z",
+      "updated_at": "2025-12-13T09:10:16.074Z"
+    },
+    {
+      "analysis_id": 3,
+      "product_id": 481,
+      "warehouse_id": null,
+      "analysis_date": "2024-02-27T06:00:00.000Z",
+      "classification": "f",
+      "annual_usage_value": "478.71",
+      "cumulative_percentage": "340.710",
+      "created_at": "2025-12-13T09:10:16.074Z",
+      "updated_at": "2025-12-13T09:10:16.074Z"
+    },
+    {
+      "analysis_id": 4,
+      "product_id": 989,
+      "warehouse_id": null,
+      "analysis_date": "2025-04-19T05:00:00.000Z",
+      "classification": "Q",
+      "annual_usage_value": "51.38",
+      "cumulative_percentage": "941.060",
+      "created_at": "2025-12-13T09:10:16.074Z",
+      "updated_at": "2025-12-13T09:10:16.074Z"
+    },
+    {
+      "analysis_id": 5,
+      "product_id": 490,
+      "warehouse_id": null,
+      "analysis_date": "2024-12-06T06:00:00.000Z",
+      "classification": "a",
+      "annual_usage_value": "114.09",
+      "cumulative_percentage": "65.340",
+      "created_at": "2025-12-13T09:10:16.074Z",
+      "updated_at": "2025-12-13T09:10:16.074Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:05.096Z"
+}

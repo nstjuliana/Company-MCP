@@ -1,0 +1,133 @@
+{
+  "table": "bundle_items",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.bundle_items` table represents individual items that are part of a bundle, where each row specifies a product included in a bundle along with the quantity and whether it is required. This table serves a role in the data model as a linking entity that associates `bundle_id` and `product_id`, facilitating the management of product bundles, but lacks defined foreign key constraints to show direct relationships to other tables. The presence of timestamps `created_at` and `updated_at` indicates the table's role in tracking item configuration changes over time within a bundle.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "bundle_item_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each item within a bundle, serving as a sequential identifier for records in the table. It ensures each bundle item is distinct and can be tracked individually.",
+      "default": "nextval('synthetic.bundle_items_bundle_item_id_seq'::regclass)"
+    },
+    {
+      "name": "bundle_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier assigned to individual bundles, which may consist of multiple items grouped together for sale or promotional purposes. Each number signifies a distinct bundle within the collection.",
+      "default": null
+    },
+    {
+      "name": "product_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column contains identifiers for individual products included in a bundle. It serves to distinguish different products within the bundle offerings of the business.",
+      "default": null
+    },
+    {
+      "name": "quantity",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents the count of individual items included in a bundle. It indicates how many items are present within each bundle, with no bundles having less than one item.",
+      "default": "1"
+    },
+    {
+      "name": "is_required",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether an item in the bundle is mandatory or optional for its inclusion. The majority of sample values suggest that most items are not required.",
+      "default": "true"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column denotes the date and time when a record within the bundle_items table was created. It typically defaults to the current timestamp when a new record is inserted.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an item in the bundle was last updated. It is used to track changes or modifications to the bundle items, with values defaulting to the current timestamp if not specified.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "bundle_item_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_bundle_items_bundle_id",
+      "column_name": "bundle_id",
+      "referenced_table": "synthetic.product_bundles",
+      "referenced_column": "bundle_id"
+    },
+    {
+      "constraint_name": "fk_bundle_items_product_id",
+      "column_name": "product_id",
+      "referenced_table": "synthetic.products",
+      "referenced_column": "product_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "bundle_items_pkey",
+      "index_definition": "CREATE UNIQUE INDEX bundle_items_pkey ON synthetic.bundle_items USING btree (bundle_item_id)",
+      "columns": [
+        "bundle_item_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "bundle_item_id": 1,
+      "bundle_id": 18,
+      "product_id": 13,
+      "quantity": 7,
+      "is_required": true,
+      "created_at": "2025-12-13T08:57:02.682Z",
+      "updated_at": "2025-12-13T08:57:02.682Z"
+    },
+    {
+      "bundle_item_id": 2,
+      "bundle_id": 29,
+      "product_id": 5,
+      "quantity": 844,
+      "is_required": false,
+      "created_at": "2025-12-13T08:57:02.682Z",
+      "updated_at": "2025-12-13T08:57:02.682Z"
+    },
+    {
+      "bundle_item_id": 3,
+      "bundle_id": 39,
+      "product_id": 16,
+      "quantity": 538,
+      "is_required": false,
+      "created_at": "2025-12-13T08:57:02.682Z",
+      "updated_at": "2025-12-13T08:57:02.682Z"
+    },
+    {
+      "bundle_item_id": 4,
+      "bundle_id": 37,
+      "product_id": 32,
+      "quantity": 471,
+      "is_required": false,
+      "created_at": "2025-12-13T08:57:02.682Z",
+      "updated_at": "2025-12-13T08:57:02.682Z"
+    },
+    {
+      "bundle_item_id": 5,
+      "bundle_id": 37,
+      "product_id": 3,
+      "quantity": 754,
+      "is_required": true,
+      "created_at": "2025-12-13T08:57:02.682Z",
+      "updated_at": "2025-12-13T08:57:02.682Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:42:22.924Z"
+}

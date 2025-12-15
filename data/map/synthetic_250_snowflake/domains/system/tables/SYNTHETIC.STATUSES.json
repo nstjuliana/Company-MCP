@@ -1,0 +1,147 @@
+{
+  "table": "STATUSES",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The `SYNTHETIC.STATUSES` table represents the various statuses associated with business entities, identified uniquely by the `STATUSE_ID` primary key. It contains detailed information about each status, including a name, description, and various attributes related to tickets, cases, escalations, interactions, surveys, and knowledge, as evident from its columns and sample row data. With no direct foreign key relationships to other tables, this table serves as an independent reference point within the data model for status-related information, potentially impacting workflow or system state descriptions.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "STATUSE_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column likely represents unique identifiers assigned to various statuses within the database. Purpose unclear from available data beyond simple numerical identification.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column likely represents categorical identifiers or labels for different statuses. The sequential numbering in the sample values suggests a predefined or systematic categorization.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column stores descriptive text related to individual status entries within the statuses table. Each entry likely provides contextual or explanatory information about the respective status.",
+      "default": null
+    },
+    {
+      "name": "TICKET_163_ATTR_0",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column likely represents a sequential identifier or code related to a particular status, as suggested by the consecutive numeric values seen in the sample. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CASE_163_ATTR_1",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column likely records the date and time of specific events or actions that occurred sequentially, as indicated by the consistent daily progression of timestamp values. The precise nature of these events or actions is not clear from the available data.",
+      "default": null
+    },
+    {
+      "name": "ESCALATION_163_ATTR_2",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The column contains placeholder text values that do not provide insight into its business relevance.",
+      "default": null
+    },
+    {
+      "name": "INTERACTION_163_ATTR_3",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CASE_163_ATTR_4",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "The column likely represents whether a specific attribute or condition related to a status case is met or not, indicated as true for met and false for not met. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "SURVEY_163_ATTR_5",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "KNOWLEDGE_163_ATTR_6",
+      "type": "BOOLEAN",
+      "nullable": false,
+      "description": "This column indicates a binary status for a particular attribute or characteristic, likely used for categorizing or filtering entities within the system. Purpose unclear from available data due to lack of additional context.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "STATUSE_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "STATUSE_ID": 1,
+      "NAME": "STATUSES 1",
+      "DESCRIPTION": "Description for STATUSES 1",
+      "TICKET_163_ATTR_0": 100,
+      "CASE_163_ATTR_1": "2025-12-12 00:00:00.000",
+      "ESCALATION_163_ATTR_2": "Sample ESCALATION_163_ATTR_2 1",
+      "INTERACTION_163_ATTR_3": null,
+      "CASE_163_ATTR_4": true,
+      "SURVEY_163_ATTR_5": "Sample SURVEY_163_ATTR_5 1",
+      "KNOWLEDGE_163_ATTR_6": true
+    },
+    {
+      "STATUSE_ID": 2,
+      "NAME": "STATUSES 2",
+      "DESCRIPTION": "Description for STATUSES 2",
+      "TICKET_163_ATTR_0": 101,
+      "CASE_163_ATTR_1": "2025-12-13 00:00:00.000",
+      "ESCALATION_163_ATTR_2": "Sample ESCALATION_163_ATTR_2 2",
+      "INTERACTION_163_ATTR_3": 101,
+      "CASE_163_ATTR_4": false,
+      "SURVEY_163_ATTR_5": "Sample SURVEY_163_ATTR_5 2",
+      "KNOWLEDGE_163_ATTR_6": false
+    },
+    {
+      "STATUSE_ID": 3,
+      "NAME": "STATUSES 3",
+      "DESCRIPTION": "Description for STATUSES 3",
+      "TICKET_163_ATTR_0": 102,
+      "CASE_163_ATTR_1": "2025-12-14 00:00:00.000",
+      "ESCALATION_163_ATTR_2": "Sample ESCALATION_163_ATTR_2 3",
+      "INTERACTION_163_ATTR_3": 102,
+      "CASE_163_ATTR_4": true,
+      "SURVEY_163_ATTR_5": "Sample SURVEY_163_ATTR_5 3",
+      "KNOWLEDGE_163_ATTR_6": true
+    },
+    {
+      "STATUSE_ID": 4,
+      "NAME": "STATUSES 4",
+      "DESCRIPTION": "Description for STATUSES 4",
+      "TICKET_163_ATTR_0": 103,
+      "CASE_163_ATTR_1": "2025-12-15 00:00:00.000",
+      "ESCALATION_163_ATTR_2": "Sample ESCALATION_163_ATTR_2 4",
+      "INTERACTION_163_ATTR_3": null,
+      "CASE_163_ATTR_4": false,
+      "SURVEY_163_ATTR_5": "Sample SURVEY_163_ATTR_5 4",
+      "KNOWLEDGE_163_ATTR_6": false
+    },
+    {
+      "STATUSE_ID": 5,
+      "NAME": "STATUSES 5",
+      "DESCRIPTION": "Description for STATUSES 5",
+      "TICKET_163_ATTR_0": 104,
+      "CASE_163_ATTR_1": "2025-12-16 00:00:00.000",
+      "ESCALATION_163_ATTR_2": "Sample ESCALATION_163_ATTR_2 5",
+      "INTERACTION_163_ATTR_3": 104,
+      "CASE_163_ATTR_4": true,
+      "SURVEY_163_ATTR_5": "Sample SURVEY_163_ATTR_5 5",
+      "KNOWLEDGE_163_ATTR_6": true
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:54.584Z"
+}

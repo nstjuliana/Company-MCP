@@ -1,0 +1,135 @@
+{
+  "table": "BUNDLES",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.BUNDLES table represents a collection of product bundles, identified by a unique BUNDLE_ID, with attributes such as NAME, DESCRIPTION, and various rating and wishlist attributes (e.g., WISHLIST_199_ATTR_0 and RATING_199_ATTR_2). This table functions independently within the data model with no specified relationships to or from other tables. It primarily serves to catalog bundle entities with both static descriptors and potentially dynamic rating and wishlist metrics.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "BUNDLE_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "A sequential identifier uniquely assigned to each bundle in the collection. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column represents sequential identifiers for bundled items or groups, as indicated by the numbering in their names. The exact purpose of these bundles is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column provides a textual overview or summary associated with each bundle in the database, specifically indicating sequentially numbered descriptions. The purpose is to offer users an overview of the bundle without additional technical or detailed specifications.",
+      "default": null
+    },
+    {
+      "name": "WISHLIST_199_ATTR_0",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents sequential identifiers likely used for organizing or categorizing items in a wishlist related to product bundles. The purpose of these identifiers is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "CHECKOUT_199_ATTR_1",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column likely represents a categorical attribute associated with the checkout process, as suggested by the uniform numeric values. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "RATING_199_ATTR_2",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column likely represents a numeric rating or score related to a specific attribute (199) within a larger set of bundles. The purpose of this rating in business terms is unclear from the available data.",
+      "default": "72"
+    },
+    {
+      "name": "RATING_199_ATTR_3",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column appears to represent a categorical rating or scoring attribute related to bundles, with values ranging from 1 to 10. The specific purpose or significance of this rating is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "SHIPPING_199_ATTR_4",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column likely represents a categorical identifier or code related to a specific attribute of a shipping process or component. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "RATING_199_ATTR_5",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column appears to represent a category or classification indicated by numerical codes, possibly reflecting a level or score related to a rating system. The specific purpose or criteria for these codes is unclear from the available data.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "BUNDLE_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "BUNDLE_ID": 1,
+      "NAME": "BUNDLES 1",
+      "DESCRIPTION": "Description for BUNDLES 1",
+      "WISHLIST_199_ATTR_0": 100,
+      "CHECKOUT_199_ATTR_1": null,
+      "RATING_199_ATTR_2": 100,
+      "RATING_199_ATTR_3": "Sample RATING_199_ATTR_3 1",
+      "SHIPPING_199_ATTR_4": null,
+      "RATING_199_ATTR_5": null
+    },
+    {
+      "BUNDLE_ID": 2,
+      "NAME": "BUNDLES 2",
+      "DESCRIPTION": "Description for BUNDLES 2",
+      "WISHLIST_199_ATTR_0": 101,
+      "CHECKOUT_199_ATTR_1": 101,
+      "RATING_199_ATTR_2": 101,
+      "RATING_199_ATTR_3": "Sample RATING_199_ATTR_3 2",
+      "SHIPPING_199_ATTR_4": 101,
+      "RATING_199_ATTR_5": 101
+    },
+    {
+      "BUNDLE_ID": 3,
+      "NAME": "BUNDLES 3",
+      "DESCRIPTION": "Description for BUNDLES 3",
+      "WISHLIST_199_ATTR_0": 102,
+      "CHECKOUT_199_ATTR_1": 102,
+      "RATING_199_ATTR_2": 102,
+      "RATING_199_ATTR_3": "Sample RATING_199_ATTR_3 3",
+      "SHIPPING_199_ATTR_4": 102,
+      "RATING_199_ATTR_5": 102
+    },
+    {
+      "BUNDLE_ID": 4,
+      "NAME": "BUNDLES 4",
+      "DESCRIPTION": "Description for BUNDLES 4",
+      "WISHLIST_199_ATTR_0": 103,
+      "CHECKOUT_199_ATTR_1": null,
+      "RATING_199_ATTR_2": 103,
+      "RATING_199_ATTR_3": "Sample RATING_199_ATTR_3 4",
+      "SHIPPING_199_ATTR_4": null,
+      "RATING_199_ATTR_5": null
+    },
+    {
+      "BUNDLE_ID": 5,
+      "NAME": "BUNDLES 5",
+      "DESCRIPTION": "Description for BUNDLES 5",
+      "WISHLIST_199_ATTR_0": 104,
+      "CHECKOUT_199_ATTR_1": 104,
+      "RATING_199_ATTR_2": 104,
+      "RATING_199_ATTR_3": "Sample RATING_199_ATTR_3 5",
+      "SHIPPING_199_ATTR_4": 104,
+      "RATING_199_ATTR_5": 104
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:37.931Z"
+}

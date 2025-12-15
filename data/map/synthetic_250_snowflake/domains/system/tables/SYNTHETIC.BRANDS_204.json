@@ -1,0 +1,135 @@
+{
+  "table": "BRANDS_204",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.BRANDS_204 table encapsulates information about distinct brands, identified by the primary key BRAND_ID, with details such as NAME, DESCRIPTION, and various attributes related to checkout, wishlist, and cart interactions. Despite lacking explicit foreign key relationships, the table likely serves as a standalone entity within the database, potentially used for categorizing or detailing brand-specific information in the context of a larger retail or e-commerce application. This table plays a crucial role in managing brand metadata that could influence user interactions during shopping sessions.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "BRAND_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents unique identifiers assigned to different brands within the dataset. Each value is a distinct number associated with a specific brand entity.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column represents a sequence of identifiers or labels assigned to brand entities within the \"BRANDS_204\" category. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column contains descriptions for entries in the BRANDS_204 table. Each entry likely contains a unique identifier or narrative distinguishing the different brand entities.",
+      "default": null
+    },
+    {
+      "name": "CHECKOUT_224_ATTR_0",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column likely denotes a specific attribute or feature related to the checkout process for different brands, as inferred from the sequential nature of the sample values. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CHECKOUT_224_ATTR_1",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column likely represents a numerical attribute related to a checkout process or transaction, possibly an identifier or a status code associated with different brands or products. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "WISHLIST_224_ATTR_2",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column likely represents a unique identifier for specific attributes associated with a customer's wishlist related to brands. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "WISHLIST_224_ATTR_3",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CART_224_ATTR_4",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "VERSION",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents the sequential versioning or iteration number of brand entries, indicating different states or updates of a brand entity in ascending order. Each increment denotes a new version, ensuring consistent tracking of brand modifications over time.",
+      "default": "1"
+    }
+  ],
+  "primary_key": [
+    "BRAND_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "BRAND_ID": 1,
+      "NAME": "BRANDS_204 1",
+      "DESCRIPTION": "Description for BRANDS_204 1",
+      "CHECKOUT_224_ATTR_0": null,
+      "CHECKOUT_224_ATTR_1": null,
+      "WISHLIST_224_ATTR_2": null,
+      "WISHLIST_224_ATTR_3": "Sample WISHLIST_224_ATTR_3 1",
+      "CART_224_ATTR_4": true,
+      "VERSION": 100
+    },
+    {
+      "BRAND_ID": 2,
+      "NAME": "BRANDS_204 2",
+      "DESCRIPTION": "Description for BRANDS_204 2",
+      "CHECKOUT_224_ATTR_0": 101,
+      "CHECKOUT_224_ATTR_1": 101,
+      "WISHLIST_224_ATTR_2": 101,
+      "WISHLIST_224_ATTR_3": "Sample WISHLIST_224_ATTR_3 2",
+      "CART_224_ATTR_4": false,
+      "VERSION": 101
+    },
+    {
+      "BRAND_ID": 3,
+      "NAME": "BRANDS_204 3",
+      "DESCRIPTION": "Description for BRANDS_204 3",
+      "CHECKOUT_224_ATTR_0": 102,
+      "CHECKOUT_224_ATTR_1": 102,
+      "WISHLIST_224_ATTR_2": 102,
+      "WISHLIST_224_ATTR_3": "Sample WISHLIST_224_ATTR_3 3",
+      "CART_224_ATTR_4": true,
+      "VERSION": 102
+    },
+    {
+      "BRAND_ID": 4,
+      "NAME": "BRANDS_204 4",
+      "DESCRIPTION": "Description for BRANDS_204 4",
+      "CHECKOUT_224_ATTR_0": null,
+      "CHECKOUT_224_ATTR_1": null,
+      "WISHLIST_224_ATTR_2": null,
+      "WISHLIST_224_ATTR_3": "Sample WISHLIST_224_ATTR_3 4",
+      "CART_224_ATTR_4": false,
+      "VERSION": 103
+    },
+    {
+      "BRAND_ID": 5,
+      "NAME": "BRANDS_204 5",
+      "DESCRIPTION": "Description for BRANDS_204 5",
+      "CHECKOUT_224_ATTR_0": 104,
+      "CHECKOUT_224_ATTR_1": 104,
+      "WISHLIST_224_ATTR_2": 104,
+      "WISHLIST_224_ATTR_3": "Sample WISHLIST_224_ATTR_3 5",
+      "CART_224_ATTR_4": true,
+      "VERSION": 104
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:38.973Z"
+}

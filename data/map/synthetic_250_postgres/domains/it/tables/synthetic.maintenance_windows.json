@@ -1,0 +1,144 @@
+{
+  "table": "maintenance_windows",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.maintenance_windows` table represents scheduled or planned maintenance events within an organization, capturing details such as window duration (`start_time` and `end_time`), the systems affected, and the current status of the maintenance event. It is identified by a primary key `window_id` and includes metadata for tracking (`created_at` and `updated_at`). This table operates independently without external relationships, focusing solely on organizing and detailing maintenance activities.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "window_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each maintenance window in the synthetic.maintenance_windows table, as indicated by its sequential integer values.",
+      "default": "nextval('synthetic.maintenance_windows_window_id_seq'::regclass)"
+    },
+    {
+      "name": "title",
+      "type": "character varying",
+      "nullable": false,
+      "description": "The column likely represents descriptive names or labels for scheduled periods when systems or services undergo maintenance activities. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values are seemingly fragmented sentences without clear contextual meaning.",
+      "default": null
+    },
+    {
+      "name": "start_time",
+      "type": "timestamp without time zone",
+      "nullable": false,
+      "description": "This column indicates the start date and time for scheduled maintenance activities within the organization, reflecting adjustments for regional time variations such as daylight saving shifts. The data suggests times are consistently set based on local Central Standard or Daylight Time.",
+      "default": null
+    },
+    {
+      "name": "end_time",
+      "type": "timestamp without time zone",
+      "nullable": false,
+      "description": "This column represents the specific date and time when a maintenance window is scheduled to end. These maintenance windows occur across different dates and times, typically adjusted for Central Time with consideration for daylight saving adjustments.",
+      "default": null
+    },
+    {
+      "name": "affected_systems",
+      "type": "text",
+      "nullable": true,
+      "description": "The column contains descriptive phrases that likely relate to system activities or impacts during maintenance windows. However, the specific purpose or context of these descriptions is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This field indicates the current operational state of maintenance windows, with possible values such as \"pending,\" \"active,\" and \"inactive,\" reflecting their scheduled or ongoing status. Purpose unclear from available data.",
+      "default": "'scheduled'::character varying"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a maintenance window entry is created. The timestamp is generated automatically if no specific date and time are provided.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the most recent date and time when a maintenance window entry was updated. The default value ensures that new entries reflect the current timestamp when created or modified.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "window_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "maintenance_windows_pkey",
+      "index_definition": "CREATE UNIQUE INDEX maintenance_windows_pkey ON synthetic.maintenance_windows USING btree (window_id)",
+      "columns": [
+        "window_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "window_id": 1,
+      "title": "Popular against from option.",
+      "description": "On everything woman without. Party part president home hair.",
+      "start_time": "2024-01-14T12:57:26.176Z",
+      "end_time": "2025-07-12T22:32:16.455Z",
+      "affected_systems": "Recognize think indicate common war from four thousand. People end general plan. Miss well although.",
+      "status": "pending",
+      "created_at": "2025-12-13T09:16:28.686Z",
+      "updated_at": "2025-12-13T09:16:28.686Z"
+    },
+    {
+      "window_id": 2,
+      "title": "Agent indeed enter old.",
+      "description": "Theory back indeed design early today. Eat customer follow someone move.",
+      "start_time": "2024-06-26T22:45:58.943Z",
+      "end_time": "2024-05-22T00:08:28.907Z",
+      "affected_systems": "Election environment hear member if one. Indeed benefit foreign citizen mean.",
+      "status": "pending",
+      "created_at": "2025-12-13T09:16:28.686Z",
+      "updated_at": "2025-12-13T09:16:28.686Z"
+    },
+    {
+      "window_id": 3,
+      "title": "Box with partner gun letter.",
+      "description": "Main still edge believe president those within ahead.",
+      "start_time": "2023-12-25T15:32:56.621Z",
+      "end_time": "2025-06-01T14:58:32.366Z",
+      "affected_systems": "Cause keep artist air. Most close challenge tree once record at live. Major participant staff allow ...",
+      "status": "active",
+      "created_at": "2025-12-13T09:16:28.686Z",
+      "updated_at": "2025-12-13T09:16:28.686Z"
+    },
+    {
+      "window_id": 4,
+      "title": "Consumer both.",
+      "description": "Per truth senior instead someone knowledge prepare. Important agreement idea huge center job care. Y...",
+      "start_time": "2024-03-21T13:58:37.144Z",
+      "end_time": "2025-05-26T02:42:08.029Z",
+      "affected_systems": "High body source tend.",
+      "status": "inactive",
+      "created_at": "2025-12-13T09:16:28.686Z",
+      "updated_at": "2025-12-13T09:16:28.686Z"
+    },
+    {
+      "window_id": 5,
+      "title": "Truth spend TV.",
+      "description": "Expert only miss though decision whether available. Tonight much political entire heavy.",
+      "start_time": "2025-10-07T00:25:58.794Z",
+      "end_time": "2025-04-27T13:13:27.832Z",
+      "affected_systems": "Seat power usually.",
+      "status": "pending",
+      "created_at": "2025-12-13T09:16:28.686Z",
+      "updated_at": "2025-12-13T09:16:28.686Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:35.692Z"
+}

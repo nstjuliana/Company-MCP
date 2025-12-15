@@ -1,0 +1,176 @@
+{
+  "table": "tax_rates",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.tax_rates` table represents various tax rates applicable under different tax codes, where each rate is uniquely identified by the `tax_rate_id`. It captures detailed information such as the tax rate percentage, associated tax name and type, administrative jurisdiction, and the time frame during which the rate is effective. The table stands alone without explicit relationships to other tables and likely serves as a reference for tax calculations and compliance within the broader data model.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "tax_rate_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier assigned sequentially to each entry in the tax rates table. It ensures that each tax rate can be distinctly referenced and retrieved.",
+      "default": "nextval('synthetic.tax_rates_tax_rate_id_seq'::regclass)"
+    },
+    {
+      "name": "tax_code",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely contains alphanumeric codes representing various tax categories or classifications. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "tax_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column seems to capture short descriptive phrases or statements related to different aspects of taxation or economic activities, such as transaction outcomes or taxation contexts. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "rate_percentage",
+      "type": "numeric",
+      "nullable": false,
+      "description": "This column contains percentage values representing tax rates applicable to certain transactions or entities within the dataset. The specific context or application of these rates is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "tax_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values do not provide enough context to determine the business meaning of this column.",
+      "default": null
+    },
+    {
+      "name": "jurisdiction",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values do not provide specific insight into what unique or consistent business concept the column is intended to capture.",
+      "default": null
+    },
+    {
+      "name": "effective_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column represents the date on which a specific tax rate becomes applicable. The purpose is to track when new tax rates take effect based on the sample values provided.",
+      "default": null
+    },
+    {
+      "name": "end_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column likely indicates the expiration or termination date of specific tax rates within the system. It signifies when the associated tax rate will no longer be applicable.",
+      "default": null
+    },
+    {
+      "name": "is_active",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether a specific tax rate is currently in use or has been deactivated. If no value is provided, it defaults to being active.",
+      "default": "true"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a tax rate entry was created. It captures the timestamp of the entry's creation, typically initialized to the current timestamp if not provided explicitly.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when the relevant tax rate entry was last updated. It helps track changes in tax rate data over time.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "tax_rate_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "tax_rates_pkey",
+      "index_definition": "CREATE UNIQUE INDEX tax_rates_pkey ON synthetic.tax_rates USING btree (tax_rate_id)",
+      "columns": [
+        "tax_rate_id"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "tax_rates_tax_code_key",
+      "index_definition": "CREATE UNIQUE INDEX tax_rates_tax_code_key ON synthetic.tax_rates USING btree (tax_code)",
+      "columns": [
+        "tax_code"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "tax_rate_id": 1,
+      "tax_code": "LRIJTBETOL",
+      "tax_name": "Save rate bring despite design value. Article money risk water page she.",
+      "rate_percentage": "67.7183",
+      "tax_type": "really",
+      "jurisdiction": "Could oil charge east story win with. Art action lot road avoid over.",
+      "effective_date": "2025-04-18T05:00:00.000Z",
+      "end_date": "2024-11-10T06:00:00.000Z",
+      "is_active": false,
+      "created_at": "2025-12-13T08:54:58.070Z",
+      "updated_at": "2025-12-13T08:54:58.070Z"
+    },
+    {
+      "tax_rate_id": 2,
+      "tax_code": "CXKSUNZANB",
+      "tax_name": "Sell sure loss subject. Public eye administration know alone tonight even.",
+      "rate_percentage": "82.0090",
+      "tax_type": "hold",
+      "jurisdiction": "Join so floor. This more until today number pretty stuff. Summer listen require adult always.",
+      "effective_date": "2025-07-04T05:00:00.000Z",
+      "end_date": "2024-06-17T05:00:00.000Z",
+      "is_active": true,
+      "created_at": "2025-12-13T08:54:58.070Z",
+      "updated_at": "2025-12-13T08:54:58.070Z"
+    },
+    {
+      "tax_rate_id": 3,
+      "tax_code": "AMNWBSWUEC",
+      "tax_name": "Fact activity one child. Analysis exist newspaper. Girl major although newspaper technology.",
+      "rate_percentage": "3.1082",
+      "tax_type": "thus",
+      "jurisdiction": "Manager pay mention and. Move beat apply however blue. Wall place spring goal left idea.",
+      "effective_date": "2024-06-05T05:00:00.000Z",
+      "end_date": "2025-08-29T05:00:00.000Z",
+      "is_active": false,
+      "created_at": "2025-12-13T08:54:58.070Z",
+      "updated_at": "2025-12-13T08:54:58.070Z"
+    },
+    {
+      "tax_rate_id": 4,
+      "tax_code": "JJZGDMLDCN",
+      "tax_name": "Everything return own bring. Never they off tough with style.",
+      "rate_percentage": "85.4601",
+      "tax_type": "wide",
+      "jurisdiction": "Need religious consumer hear learn. Quickly word let also partner senior.",
+      "effective_date": "2024-12-20T06:00:00.000Z",
+      "end_date": "2024-06-14T05:00:00.000Z",
+      "is_active": true,
+      "created_at": "2025-12-13T08:54:58.070Z",
+      "updated_at": "2025-12-13T08:54:58.070Z"
+    },
+    {
+      "tax_rate_id": 5,
+      "tax_code": "GNMFIACZTB",
+      "tax_name": "Pay interview nor yet. Keep may significant seven wind husband.",
+      "rate_percentage": "9.4725",
+      "tax_type": "need",
+      "jurisdiction": "Possible either themselves must because. Audience who according sell really.",
+      "effective_date": "2024-12-26T06:00:00.000Z",
+      "end_date": "2024-05-19T05:00:00.000Z",
+      "is_active": true,
+      "created_at": "2025-12-13T08:54:58.070Z",
+      "updated_at": "2025-12-13T08:54:58.070Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:41:27.865Z"
+}

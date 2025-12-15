@@ -1,0 +1,247 @@
+{
+  "table": "accounts",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.accounts` table represents business accounts, capturing details such as account name, type, industry, contact information, employee count, and annual revenue. It primarily identifies accounts through a unique `account_id` and is not directly referenced by other tables, suggesting a standalone role in the data model. The table also includes metadata fields like `created_at` and `updated_at` to track record changes, and it accommodates account hierarchy via a nullable `parent_account_id`.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "account_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each account in the system, with sequential numeric values indicating the order of creation. It serves as a central identifier for account-related records.",
+      "default": "nextval('synthetic.accounts_account_id_seq'::regclass)"
+    },
+    {
+      "name": "account_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column represents descriptive phrases or narrative text likely used for labeling or describing entities or activities within accounts. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "account_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column appears to categorize accounts based on different themes or characteristics, such as ownership, usage purpose, associated roles, or storing functionalities. Purpose unclear from available data due to varied sample values.",
+      "default": null
+    },
+    {
+      "name": "industry",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "website",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column contains the URLs for the websites associated with various accounts. It likely serves as a contact or information point for these online business or personal entities.",
+      "default": null
+    },
+    {
+      "name": "phone",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column contains contact phone numbers associated with customer accounts. The numbers are in various formats, including those with extensions, indicating multiple possible formats for phone entries.",
+      "default": null
+    },
+    {
+      "name": "fax",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column contains fax numbers associated with accounts, often with additional extension numbers indicated. The numbers are formatted in various ways, including parentheses, dashes, and dots, reflecting a diversity of regions or styles.",
+      "default": null
+    },
+    {
+      "name": "employees_count",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents the number of employees associated with each account in the system. It captures employee counts ranging from small to relatively large numbers, as demonstrated by the sample values provided.",
+      "default": null
+    },
+    {
+      "name": "annual_revenue",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the total revenue generated annually by an account, which is expressed in monetary terms as evidenced by the sample values provided. The purpose is to capture financial performance data for each account year-over-year.",
+      "default": null
+    },
+    {
+      "name": "billing_address",
+      "type": "text",
+      "nullable": true,
+      "description": "This column lists the mailing addresses associated with individual or entity accounts, capturing both domestic and military-based locations as illustrated by full addresses including street and suite numbers, city, state abbreviations, and postal codes. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "shipping_address",
+      "type": "text",
+      "nullable": true,
+      "description": "This column contains the full shipping addresses, including street, city, state, and zip code, for the accounts in the system. These addresses represent locations where items can be delivered to account holders.",
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "nullable": true,
+      "description": "This column contains various text entries that appear to represent statements or reflections, possibly related to projects, concepts, and personal or organizational experiences. The exact purpose of these texts is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "owner_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents an identifier for an individual or entity that owns or is associated with each account record. The exact nature of the relationship is unclear from the data provided.",
+      "default": null
+    },
+    {
+      "name": "parent_account_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column signifies a linkage to another account, possibly representing an organizational hierarchy or grouping of accounts. Its purpose is unclear from the available data but likely involves identifying a connection or categorization between accounts.",
+      "default": null
+    },
+    {
+      "name": "is_active",
+      "type": "boolean",
+      "nullable": true,
+      "description": "This column indicates whether an account is currently active. The default setting suggests accounts are generally expected to be active unless specified otherwise.",
+      "default": "true"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column represents the date and time when an account was created, defaulting to the current timestamp at creation. The purpose is to track the inception of account records but its nullable nature suggests it can be optionally recorded or adjusted.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an account was last modified or updated. The sample values suggest routine updates occurring at the same timestamp, indicative of synchronization or batch processing.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "account_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_accounts_parent_account_id",
+      "column_name": "parent_account_id",
+      "referenced_table": "synthetic.accounts",
+      "referenced_column": "account_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "accounts_pkey",
+      "index_definition": "CREATE UNIQUE INDEX accounts_pkey ON synthetic.accounts USING btree (account_id)",
+      "columns": [
+        "account_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "account_id": 1,
+      "account_name": "Rise black natural daughter need talk series. Car section discussion force central another agree off...",
+      "account_type": "new",
+      "industry": "Feel picture city development. Site past lose and move.",
+      "website": "http://hogan.com/",
+      "phone": "+1-641-619-9039",
+      "fax": "(901)765-8592x6455",
+      "employees_count": 102,
+      "annual_revenue": "542.37",
+      "billing_address": "USNV Elliott, FPO AP 62776",
+      "shipping_address": "7049 Tara Corners Apt. 799, Port Travis, PW 40652",
+      "description": "Model age project recently. Nothing brother board possible.",
+      "owner_id": 3523,
+      "parent_account_id": null,
+      "is_active": false,
+      "created_at": "2025-12-13T08:58:25.555Z",
+      "updated_at": "2025-12-13T08:58:25.555Z"
+    },
+    {
+      "account_id": 2,
+      "account_name": "Feeling local draw figure. Plant child month never them goal.\nMuch tough face full play argue.",
+      "account_type": "owner",
+      "industry": "Whole serious way realize morning character. Western everyone conference feeling.",
+      "website": "https://www.hunter.com/",
+      "phone": "762-830-1180",
+      "fax": "9996262098",
+      "employees_count": 307,
+      "annual_revenue": "569.33",
+      "billing_address": "893 Reed Meadow Apt. 119, Jamesborough, VA 18308",
+      "shipping_address": "177 Pugh Wall Suite 569, East Jamesberg, TX 05853",
+      "description": "Away let project drug church check. Open trip expect authority.",
+      "owner_id": 9531,
+      "parent_account_id": 1,
+      "is_active": true,
+      "created_at": "2025-12-13T08:58:25.555Z",
+      "updated_at": "2025-12-13T08:58:25.555Z"
+    },
+    {
+      "account_id": 3,
+      "account_name": "Two fact into nothing as learn reach western. Avoid phone financial strategy pick sit. Tough world t...",
+      "account_type": "purpose",
+      "industry": "Reality cost behind worker.\nSee more my system.",
+      "website": "http://www.green.biz/",
+      "phone": "(454)509-3923",
+      "fax": "414-811-5440x9426",
+      "employees_count": 737,
+      "annual_revenue": "886.52",
+      "billing_address": "45684 Blair Corners Suite 544, North Amyland, MT 86347",
+      "shipping_address": "1669 Dana Lodge, Amberland, PW 94440",
+      "description": "Every remember total enough recently Mr often. Red all activity. Example artist everybody happy midd...",
+      "owner_id": 3192,
+      "parent_account_id": 2,
+      "is_active": true,
+      "created_at": "2025-12-13T08:58:25.555Z",
+      "updated_at": "2025-12-13T08:58:25.555Z"
+    },
+    {
+      "account_id": 4,
+      "account_name": "Break determine get that executive magazine. Participant stay meet shake practice sign new age. What...",
+      "account_type": "role",
+      "industry": "Your president degree ok. Put well rule degree sound structure. Never environment power blue.",
+      "website": "https://chang.info/",
+      "phone": "8095589900",
+      "fax": "618-313-1287x19485",
+      "employees_count": 257,
+      "annual_revenue": "754.56",
+      "billing_address": "1770 Donna Pines Apt. 250, East Timothy, WI 93478",
+      "shipping_address": "91899 Little Trafficway Suite 036, New Amanda, UT 85937",
+      "description": "Past floor face lose happen. While Congress way quite such respond. Push talk job performance choose...",
+      "owner_id": 9853,
+      "parent_account_id": 2,
+      "is_active": false,
+      "created_at": "2025-12-13T08:58:25.555Z",
+      "updated_at": "2025-12-13T08:58:25.555Z"
+    },
+    {
+      "account_id": 5,
+      "account_name": "Father follow energy social affect. Culture wall me hair including recent suddenly.",
+      "account_type": "various",
+      "industry": "Establish instead other anything find. Allow support cut Congress least.",
+      "website": "http://www.long.com/",
+      "phone": "001-744-502-0939x103",
+      "fax": "001-591-239-8336x649",
+      "employees_count": 646,
+      "annual_revenue": "176.53",
+      "billing_address": "91097 Thomas Key Suite 746, West Andrewbury, NY 53220",
+      "shipping_address": "04646 Dylan Parkway, Seanborough, WI 47889",
+      "description": "Do before quite technology represent specific art. Meet open challenge think.",
+      "owner_id": 8312,
+      "parent_account_id": 4,
+      "is_active": false,
+      "created_at": "2025-12-13T08:58:25.555Z",
+      "updated_at": "2025-12-13T08:58:25.555Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:40:03.718Z"
+}

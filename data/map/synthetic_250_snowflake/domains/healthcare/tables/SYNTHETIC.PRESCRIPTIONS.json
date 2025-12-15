@@ -1,0 +1,99 @@
+{
+  "table": "PRESCRIPTIONS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.PRESCRIPTIONS table represents prescription records with unique identifiers (PRESCRIPTION_ID). It contains details such as the name of the prescription, its description, and specific attributes related to appointment and billing information, with no direct relationships to other tables. This table serves to catalog prescription-specific data within the synthetic_250_snowflake database.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "PRESCRIPTION_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents a unique identifier assigned to each prescription record, ensuring that each entry can be individually referenced and tracked within the system.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column appears to contain unique identifiers or labels for prescription records, distinguishing individual entries within the dataset. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains textual descriptions associated with individual prescriptions. The purpose is unclear from the available data as all sample descriptions follow a repetitive pattern without revealing specific details.",
+      "default": null
+    },
+    {
+      "name": "APPOINTMENT_209_ATTR_0",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column likely represents some sort of identifier or reference number related to appointments, as indicated by the sequential pattern of the numbers. The exact purpose of these identifiers is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "PRESCRIPTION_209_ATTR_1",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The column seems to store placeholder text values without specific business context.",
+      "default": null
+    },
+    {
+      "name": "BILLING_209_ATTR_2",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "This column likely indicates a binary status related to the billing process for prescriptions, such as whether a specific condition is met or an action has been completed. Purpose unclear from available data.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "PRESCRIPTION_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "PRESCRIPTION_ID": 1,
+      "NAME": "PRESCRIPTIONS 1",
+      "DESCRIPTION": "Description for PRESCRIPTIONS 1",
+      "APPOINTMENT_209_ATTR_0": null,
+      "PRESCRIPTION_209_ATTR_1": "Sample PRESCRIPTION_209_ATTR_1 1",
+      "BILLING_209_ATTR_2": true
+    },
+    {
+      "PRESCRIPTION_ID": 2,
+      "NAME": "PRESCRIPTIONS 2",
+      "DESCRIPTION": "Description for PRESCRIPTIONS 2",
+      "APPOINTMENT_209_ATTR_0": 101,
+      "PRESCRIPTION_209_ATTR_1": "Sample PRESCRIPTION_209_ATTR_1 2",
+      "BILLING_209_ATTR_2": false
+    },
+    {
+      "PRESCRIPTION_ID": 3,
+      "NAME": "PRESCRIPTIONS 3",
+      "DESCRIPTION": "Description for PRESCRIPTIONS 3",
+      "APPOINTMENT_209_ATTR_0": 102,
+      "PRESCRIPTION_209_ATTR_1": "Sample PRESCRIPTION_209_ATTR_1 3",
+      "BILLING_209_ATTR_2": true
+    },
+    {
+      "PRESCRIPTION_ID": 4,
+      "NAME": "PRESCRIPTIONS 4",
+      "DESCRIPTION": "Description for PRESCRIPTIONS 4",
+      "APPOINTMENT_209_ATTR_0": null,
+      "PRESCRIPTION_209_ATTR_1": "Sample PRESCRIPTION_209_ATTR_1 4",
+      "BILLING_209_ATTR_2": false
+    },
+    {
+      "PRESCRIPTION_ID": 5,
+      "NAME": "PRESCRIPTIONS 5",
+      "DESCRIPTION": "Description for PRESCRIPTIONS 5",
+      "APPOINTMENT_209_ATTR_0": 104,
+      "PRESCRIPTION_209_ATTR_1": "Sample PRESCRIPTION_209_ATTR_1 5",
+      "BILLING_209_ATTR_2": true
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:03.113Z"
+}

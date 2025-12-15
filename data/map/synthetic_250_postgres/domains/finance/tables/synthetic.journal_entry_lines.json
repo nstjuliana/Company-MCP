@@ -1,0 +1,157 @@
+{
+  "table": "journal_entry_lines",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.journal_entry_lines\" table represents the line items of financial journal entries, detailing individual transaction components including debit and credit amounts for specific accounts. Each entry is uniquely identified by \"line_id\" and is associated with a broader entry identified by \"entry_id,\" suggesting a relation to a primary \"journal entries\" table. The table serves as a detailed ledger, tracking financial transactions with fields like \"account_id,\" \"debit_amount,\" \"credit_amount,\" and timestamps for auditing and chronological record-keeping.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "line_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each individual entry line within a journal entry. It serves as a sequential identifier to maintain order.",
+      "default": "nextval('synthetic.journal_entry_lines_line_id_seq'::regclass)"
+    },
+    {
+      "name": "entry_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column likely represents a unique identifier for each entry within a journal or ledger, helping to distinguish individual records for financial or business transactions. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "account_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents unique identifiers for different accounts associated with journal entry lines. These identifiers facilitate linking each journal entry line to the corresponding financial account within the system.",
+      "default": null
+    },
+    {
+      "name": "debit_amount",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the monetary amount debited in individual journal entries, reflecting typical financial transactions that may vary significantly in value. The amounts show a range of financial debits likely used for various business or accounting purposes.",
+      "default": "0"
+    },
+    {
+      "name": "credit_amount",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the monetary value of credits recorded in journal entries. Sample values suggest it includes various amounts possibly corresponding to individual credit transactions.",
+      "default": "0"
+    },
+    {
+      "name": "description",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column appears to contain narrative text or commentary related to journal entries, likely providing context or elaboration on the entry. The content is likely descriptive and might include details or reflections relevant to financial, operational, or general journal topics.",
+      "default": null
+    },
+    {
+      "name": "cost_center",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values suggest the column may store abstract or narrative information rather than traditional numerical or categorical entries typically associated with a cost center.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when each journal entry line was created, serving as a timestamp for entry creation within the journal system. Its values are automatically populated at the current time when a new entry line is added, but the purpose beyond tracking creation time is unclear from the available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a journal entry was last modified. The values are automatically updated to the current date and time when an update occurs.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "line_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_journal_entry_lines_account_id",
+      "column_name": "account_id",
+      "referenced_table": "synthetic.chart_of_accounts",
+      "referenced_column": "account_id"
+    },
+    {
+      "constraint_name": "fk_journal_entry_lines_entry_id",
+      "column_name": "entry_id",
+      "referenced_table": "synthetic.journal_entries",
+      "referenced_column": "entry_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "journal_entry_lines_pkey",
+      "index_definition": "CREATE UNIQUE INDEX journal_entry_lines_pkey ON synthetic.journal_entry_lines USING btree (line_id)",
+      "columns": [
+        "line_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "line_id": 1,
+      "entry_id": 28,
+      "account_id": 10,
+      "debit_amount": "24495.32",
+      "credit_amount": "41263.97",
+      "description": "Enjoy address major morning. Civil lay enjoy.",
+      "cost_center": "Young above want answer.",
+      "created_at": "2025-12-13T08:54:22.764Z",
+      "updated_at": "2025-12-13T08:54:22.764Z"
+    },
+    {
+      "line_id": 2,
+      "entry_id": 44,
+      "account_id": 12,
+      "debit_amount": "17081.37",
+      "credit_amount": "7988.94",
+      "description": "Meet a executive machine agency civil clearly. Six know general difference actually really.",
+      "cost_center": "Guess floor have argue country church life.",
+      "created_at": "2025-12-13T08:54:22.764Z",
+      "updated_at": "2025-12-13T08:54:22.764Z"
+    },
+    {
+      "line_id": 3,
+      "entry_id": 25,
+      "account_id": 40,
+      "debit_amount": "68345.14",
+      "credit_amount": "49816.96",
+      "description": "Rest business work. Second build most environment message grow begin face. Against require station m...",
+      "cost_center": "List record certainly similar.",
+      "created_at": "2025-12-13T08:54:22.764Z",
+      "updated_at": "2025-12-13T08:54:22.764Z"
+    },
+    {
+      "line_id": 4,
+      "entry_id": 38,
+      "account_id": 10,
+      "debit_amount": "23295.63",
+      "credit_amount": "63826.67",
+      "description": "Condition data any without happen cup. Keep chance stop.",
+      "cost_center": "Data day suddenly past.",
+      "created_at": "2025-12-13T08:54:22.764Z",
+      "updated_at": "2025-12-13T08:54:22.764Z"
+    },
+    {
+      "line_id": 5,
+      "entry_id": 30,
+      "account_id": 17,
+      "debit_amount": "66717.39",
+      "credit_amount": "89900.96",
+      "description": "Official thank issue debate into question. Base fill school fire why. Health inside set happy senior...",
+      "cost_center": "Floor board family red smile upon blue language.",
+      "created_at": "2025-12-13T08:54:22.764Z",
+      "updated_at": "2025-12-13T08:54:22.764Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:40:16.355Z"
+}

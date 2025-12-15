@@ -1,0 +1,147 @@
+{
+  "table": "ATTACHMENTS_165",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The \"ATTACHMENTS_165\" table represents a collection of attachments, each uniquely identified by the \"ATTACHMENT_ID\" primary key. It captures metadata about each attachment, such as its name, description, relevant survey and ticket attributes, knowledge-related data, and update timestamp. With no foreign key relationships, it likely serves as a standalone entity or reference table within the data model without dependencies on other tables.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "ATTACHMENT_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents a unique identifier assigned to each attachment within the dataset. Each value in the column denotes a distinct attachment entry.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "The column likely stores identifiers or labels for attachments, as indicated by the sequential numerical format in the sample values. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column contains textual descriptions associated with entries in the ATTACHMENTS_165 table, each uniquely numbered, likely to identify or provide additional details about individual attachments. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "SURVEY_185_ATTR_0",
+      "type": "DATE",
+      "nullable": true,
+      "description": "This column likely represents the planned or actual dates of survey-related activities or events. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CASE_185_ATTR_1",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column likely represents a coded identifier or sequence number associated with specific cases, as indicated by the incrementing values. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "TICKET_185_ATTR_2",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column appears to represent a sequence of unique identifiers, possibly acting as an internal reference code or ID related to tickets. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "KNOWLEDGE_185_ATTR_3",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "Purpose unclear from available data. The sample values provided are generic and do not indicate a specific business meaning.",
+      "default": null
+    },
+    {
+      "name": "INTERACTION_185_ATTR_4",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column likely represents some form of categorical code or identifier related to interactions, where each number aligns with a specific type or category. Purpose unclear from available data.",
+      "default": "90"
+    },
+    {
+      "name": "TICKET_185_ATTR_5",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column likely represents the date and time associated with a specific recurring event or action related to tickets, as evidenced by the consecutive daily timestamps. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "UPDATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column records the date and time when entries related to attachments were last updated. Based on the sample values, updates likely occur in a sequence of consecutive days.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "ATTACHMENT_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "ATTACHMENT_ID": 1,
+      "NAME": "ATTACHMENTS_165 1",
+      "DESCRIPTION": "Description for ATTACHMENTS_165 1",
+      "SURVEY_185_ATTR_0": "2025-12-12",
+      "CASE_185_ATTR_1": null,
+      "TICKET_185_ATTR_2": 100,
+      "KNOWLEDGE_185_ATTR_3": "Sample KNOWLEDGE_185_ATTR_3 1",
+      "INTERACTION_185_ATTR_4": null,
+      "TICKET_185_ATTR_5": "2025-12-12 00:00:00.000",
+      "UPDATED_AT": "2026-01-11 00:00:00.000"
+    },
+    {
+      "ATTACHMENT_ID": 2,
+      "NAME": "ATTACHMENTS_165 2",
+      "DESCRIPTION": "Description for ATTACHMENTS_165 2",
+      "SURVEY_185_ATTR_0": "2025-12-13",
+      "CASE_185_ATTR_1": 101,
+      "TICKET_185_ATTR_2": 101,
+      "KNOWLEDGE_185_ATTR_3": "Sample KNOWLEDGE_185_ATTR_3 2",
+      "INTERACTION_185_ATTR_4": 101,
+      "TICKET_185_ATTR_5": "2025-12-13 00:00:00.000",
+      "UPDATED_AT": "2026-01-12 00:00:00.000"
+    },
+    {
+      "ATTACHMENT_ID": 3,
+      "NAME": "ATTACHMENTS_165 3",
+      "DESCRIPTION": "Description for ATTACHMENTS_165 3",
+      "SURVEY_185_ATTR_0": "2025-12-14",
+      "CASE_185_ATTR_1": 102,
+      "TICKET_185_ATTR_2": 102,
+      "KNOWLEDGE_185_ATTR_3": "Sample KNOWLEDGE_185_ATTR_3 3",
+      "INTERACTION_185_ATTR_4": 102,
+      "TICKET_185_ATTR_5": "2025-12-14 00:00:00.000",
+      "UPDATED_AT": "2026-01-13 00:00:00.000"
+    },
+    {
+      "ATTACHMENT_ID": 4,
+      "NAME": "ATTACHMENTS_165 4",
+      "DESCRIPTION": "Description for ATTACHMENTS_165 4",
+      "SURVEY_185_ATTR_0": "2025-12-15",
+      "CASE_185_ATTR_1": null,
+      "TICKET_185_ATTR_2": 103,
+      "KNOWLEDGE_185_ATTR_3": "Sample KNOWLEDGE_185_ATTR_3 4",
+      "INTERACTION_185_ATTR_4": null,
+      "TICKET_185_ATTR_5": "2025-12-15 00:00:00.000",
+      "UPDATED_AT": "2026-01-14 00:00:00.000"
+    },
+    {
+      "ATTACHMENT_ID": 5,
+      "NAME": "ATTACHMENTS_165 5",
+      "DESCRIPTION": "Description for ATTACHMENTS_165 5",
+      "SURVEY_185_ATTR_0": "2025-12-16",
+      "CASE_185_ATTR_1": 104,
+      "TICKET_185_ATTR_2": 104,
+      "KNOWLEDGE_185_ATTR_3": "Sample KNOWLEDGE_185_ATTR_3 5",
+      "INTERACTION_185_ATTR_4": 104,
+      "TICKET_185_ATTR_5": "2025-12-16 00:00:00.000",
+      "UPDATED_AT": "2026-01-15 00:00:00.000"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:38.560Z"
+}

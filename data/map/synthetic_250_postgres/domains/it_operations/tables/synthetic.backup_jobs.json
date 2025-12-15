@@ -1,0 +1,180 @@
+{
+  "table": "backup_jobs",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.backup_jobs\" table represents scheduled tasks that perform backup operations for a system, characterized by attributes such as job identifiers, names, server associations, types, schedules, retention parameters, destinations, activity statuses, and execution logs. Despite having no direct foreign key relationships or being referenced by other tables, the table serves as a core entity for tracking and managing backup tasks, providing informative insights into the scheduling and execution outcomes. The data model supports backup management by detailing actions, configurations, and execution records, facilitating systematic data preservation efforts.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "job_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each backup job within the dataset, serving as an auto-incremented numeric identifier. It ensures that every entry is distinct for tracking and reference purposes.",
+      "default": "nextval('synthetic.backup_jobs_job_id_seq'::regclass)"
+    },
+    {
+      "name": "job_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column represents the descriptive titles assigned to individual backup jobs, reflecting varied themes or actions such as decision-making, regional support, risk management, and strategic planning. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "server_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely identifies servers that are involved in backup operations, distinguishing them numerically. The specific purpose of this server identification is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "backup_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values do not provide a coherent understanding of what this column signifies in a business context.",
+      "default": null
+    },
+    {
+      "name": "schedule",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values appear to be incomplete or nonsensical sentences, making it challenging to determine what business information this column intends to capture.",
+      "default": null
+    },
+    {
+      "name": "retention_days",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely indicates the number of days for which backup jobs are retained in the system. The values suggest a range of retention periods, hinting at varying backup retention policies.",
+      "default": null
+    },
+    {
+      "name": "destination",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column appears to represent diverse descriptive text, potentially summarizing or detailing aspects related to specific jobs or tasks involved in backup operations. The content is varied and abstract, making its specific business purpose unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "is_active",
+      "type": "boolean",
+      "nullable": true,
+      "description": "This column indicates whether each backup job is currently active or not. By default, backup jobs are considered active unless otherwise specified.",
+      "default": "true"
+    },
+    {
+      "name": "last_run",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when the backup jobs were last executed. It captures run timestamps across different times of the year, reflecting obedience to daylight saving transitions.",
+      "default": null
+    },
+    {
+      "name": "last_status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column records the current status of backup jobs, indicating whether they are pending, active, or inactive. The purpose of tracking these statuses allows for monitoring and managing backup processes.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a backup job was created. The timestamp is captured without the time zone information and defaults to the current system time when a new entry is added.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column represents the timestamp of when a backup job was last updated. It reflects the most recent modification or update to a backup job record.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "job_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "backup_jobs_pkey",
+      "index_definition": "CREATE UNIQUE INDEX backup_jobs_pkey ON synthetic.backup_jobs USING btree (job_id)",
+      "columns": [
+        "job_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "job_id": 1,
+      "job_name": "Level significant usually rule effect pass. Everyone research figure admit. Student body set.",
+      "server_id": 2,
+      "backup_type": "Result environmental and garden budget.",
+      "schedule": "Thought out system.",
+      "retention_days": 991,
+      "destination": "Black cup must. Media resource town fear board. Computer difficult week science yard.",
+      "is_active": false,
+      "last_run": "2025-03-15T15:24:23.735Z",
+      "last_status": "pending",
+      "created_at": "2025-12-13T09:16:15.940Z",
+      "updated_at": "2025-12-13T09:16:15.940Z"
+    },
+    {
+      "job_id": 2,
+      "job_name": "There close possible life. Support under our region see its. Feel measure pattern.",
+      "server_id": 2,
+      "backup_type": "Fight guess speak against manage development.",
+      "schedule": "Picture impact often might identify process floor. Nation design top process sometimes where.",
+      "retention_days": 824,
+      "destination": "Right clear laugh wait traditional media. Eye market structure phone could.",
+      "is_active": true,
+      "last_run": "2024-11-23T16:52:33.004Z",
+      "last_status": "inactive",
+      "created_at": "2025-12-13T09:16:15.940Z",
+      "updated_at": "2025-12-13T09:16:15.940Z"
+    },
+    {
+      "job_id": 3,
+      "job_name": "Board produce next risk. Oil letter man chair. Economic large inside eye help.",
+      "server_id": 1,
+      "backup_type": "Middle score reach owner recently.",
+      "schedule": "Like play single her thought career idea. Oil his suffer such their rock within thank.",
+      "retention_days": 145,
+      "destination": "Not everything sign reality unit. Its none identify full.",
+      "is_active": true,
+      "last_run": "2024-09-01T03:36:07.051Z",
+      "last_status": "pending",
+      "created_at": "2025-12-13T09:16:15.940Z",
+      "updated_at": "2025-12-13T09:16:15.940Z"
+    },
+    {
+      "job_id": 4,
+      "job_name": "Yet voice career eat able forward sometimes. On sometimes meet thought work work simply.",
+      "server_id": 2,
+      "backup_type": "Person none man throw law.",
+      "schedule": "More first one dream dark health skin right. Wide economy individual.",
+      "retention_days": 991,
+      "destination": "Quality people member budget. Account skill respond occur.",
+      "is_active": false,
+      "last_run": "2024-10-06T10:26:38.109Z",
+      "last_status": "active",
+      "created_at": "2025-12-13T09:16:15.940Z",
+      "updated_at": "2025-12-13T09:16:15.940Z"
+    },
+    {
+      "job_id": 5,
+      "job_name": "Everyone way her decade check represent PM. Hair sister daughter true beat alone.",
+      "server_id": 2,
+      "backup_type": "Book reason treat collection.",
+      "schedule": "This into that. Both deep type pretty color hair increase.",
+      "retention_days": 15,
+      "destination": "There center respond design cause catch. Task customer world news.",
+      "is_active": false,
+      "last_run": "2025-05-05T11:07:12.018Z",
+      "last_status": "pending",
+      "created_at": "2025-12-13T09:16:15.940Z",
+      "updated_at": "2025-12-13T09:16:15.940Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:11.940Z"
+}

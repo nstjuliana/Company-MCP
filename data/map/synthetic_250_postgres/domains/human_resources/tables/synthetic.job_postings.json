@@ -1,0 +1,253 @@
+{
+  "table": "job_postings",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.job_postings` table represents job postings within an organization, capturing details such as job title, department, location, and employment specifics (e.g., salary range, employment type, and status). Key relationships are inferred through various foreign key columns referencing undefined tables, pointing to linked entities such as job titles, departments, and locations that define the structure and attributes of each posting. Serving as a central repository for available job positions, this table helps manage and track the posting life cycle from creation to closure, as evidenced by its timestamp columns and status indicator.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "posting_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents the unique identification number assigned to each job posting. It is used to distinctly identify and track individual job listings within the table.",
+      "default": "nextval('synthetic.job_postings_posting_id_seq'::regclass)"
+    },
+    {
+      "name": "job_title_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents a numerical identifier for various job titles associated with job postings. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "department_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column contains numeric identifiers corresponding to departments within a company or organization associated with job postings. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "location_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents a unique identifier for different job locations. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "posting_title",
+      "type": "character varying",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "nullable": true,
+      "description": "Contains descriptive snippets that likely relate to various job postings, potentially summarizing job roles, requirements, or organizational characteristics. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "requirements",
+      "type": "text",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "salary_min",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the minimum salary offered for job postings in the dataset. The values are expressed in numeric terms, likely representing currency, with figures such as 861.49 and 23.18 serving as examples of the monetary range.",
+      "default": null
+    },
+    {
+      "name": "salary_max",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the maximum salary offered for a job posting, expressed as a number. The values seem to quantify salary in a specific unit, though the measurement unit is not immediately clear from the available data.",
+      "default": null
+    },
+    {
+      "name": "employment_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "posted_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column reflects the date on which job postings were listed on a platform or system, accommodating entries that may be left blank. It supports various date formats, such as Central Daylight Time or Central Standard Time, based on seasonal adjustments.",
+      "default": null
+    },
+    {
+      "name": "closing_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column represents the final date by which applications for a job posting can be submitted, as indicated by specific calendar dates. The absence of a value suggests the closing date is not yet determined or an open application process.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column represents the current state or progress of job postings, indicating whether they are active, inactive, or pending. The default state is set to open unless specified otherwise, with active and inactive being the most common statuses reflected in the sample data.",
+      "default": "'open'::character varying"
+    },
+    {
+      "name": "hiring_manager_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column identifies the individual responsible for overseeing a specific job posting. Each value corresponds to a unique identifier for a hiring manager, but the specific duties or role distinctions are not visible from the provided data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when each job posting entry was created, defaulting to the current timestamp when not otherwise specified. It helps in tracking the chronology of job postings within the system.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column likely indicates the last time a job posting was updated, as evidenced by the recurring timestamp values. It allows tracking of modification times for the job postings listed in the table.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "posting_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_job_postings_department_id",
+      "column_name": "department_id",
+      "referenced_table": "synthetic.departments",
+      "referenced_column": "department_id"
+    },
+    {
+      "constraint_name": "fk_job_postings_hiring_manager_id",
+      "column_name": "hiring_manager_id",
+      "referenced_table": "synthetic.employees",
+      "referenced_column": "employee_id"
+    },
+    {
+      "constraint_name": "fk_job_postings_job_title_id",
+      "column_name": "job_title_id",
+      "referenced_table": "synthetic.job_titles",
+      "referenced_column": "job_title_id"
+    },
+    {
+      "constraint_name": "fk_job_postings_location_id",
+      "column_name": "location_id",
+      "referenced_table": "synthetic.office_locations",
+      "referenced_column": "location_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "job_postings_pkey",
+      "index_definition": "CREATE UNIQUE INDEX job_postings_pkey ON synthetic.job_postings USING btree (posting_id)",
+      "columns": [
+        "posting_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "posting_id": 1,
+      "job_title_id": 78,
+      "department_id": 10,
+      "location_id": 41,
+      "posting_title": "Cup loss finally he.",
+      "description": "Trade himself other term. Not top game worry.",
+      "requirements": "Car how away director loss discussion husband want. List character table picture human.",
+      "salary_min": "861.49",
+      "salary_max": "319.32",
+      "employment_type": "Bill town red three international large.",
+      "posted_date": "2024-06-25T05:00:00.000Z",
+      "closing_date": "2025-09-11T05:00:00.000Z",
+      "status": "inactive",
+      "hiring_manager_id": 26,
+      "created_at": "2025-12-13T09:20:18.781Z",
+      "updated_at": "2025-12-13T09:20:18.781Z"
+    },
+    {
+      "posting_id": 2,
+      "job_title_id": 17,
+      "department_id": 49,
+      "location_id": 48,
+      "posting_title": "Article coach black.",
+      "description": "Team great fish even rest. Beyond policy federal program. Military kid true.",
+      "requirements": "End painting camera realize. Team check behavior nation remain. Pick push red music body.",
+      "salary_min": "514.98",
+      "salary_max": "106.18",
+      "employment_type": "Save wide few my.",
+      "posted_date": "2025-02-14T06:00:00.000Z",
+      "closing_date": "2025-12-01T06:00:00.000Z",
+      "status": "active",
+      "hiring_manager_id": 30,
+      "created_at": "2025-12-13T09:20:18.781Z",
+      "updated_at": "2025-12-13T09:20:18.781Z"
+    },
+    {
+      "posting_id": 3,
+      "job_title_id": 16,
+      "department_id": 18,
+      "location_id": 58,
+      "posting_title": "Great group pay arm.",
+      "description": "Respond program whether ever third four me. Same most stop must win fly. Report local identify comme...",
+      "requirements": "Probably single gun under. Say bag one collection city contain. Across blood contain role profession...",
+      "salary_min": "247.92",
+      "salary_max": "96.81",
+      "employment_type": "Series writer language need.",
+      "posted_date": "2024-04-13T05:00:00.000Z",
+      "closing_date": "2024-04-08T05:00:00.000Z",
+      "status": "inactive",
+      "hiring_manager_id": 25,
+      "created_at": "2025-12-13T09:20:18.781Z",
+      "updated_at": "2025-12-13T09:20:18.781Z"
+    },
+    {
+      "posting_id": 4,
+      "job_title_id": 79,
+      "department_id": 27,
+      "location_id": 32,
+      "posting_title": "Beautiful now company.",
+      "description": "Painting pretty hour.",
+      "requirements": "Care huge energy. Stock apply oil involve continue local. Positive affect discuss avoid say.",
+      "salary_min": "962.69",
+      "salary_max": "902.31",
+      "employment_type": "Offer early several much.",
+      "posted_date": "2025-02-16T06:00:00.000Z",
+      "closing_date": "2024-09-16T05:00:00.000Z",
+      "status": "inactive",
+      "hiring_manager_id": 37,
+      "created_at": "2025-12-13T09:20:18.781Z",
+      "updated_at": "2025-12-13T09:20:18.781Z"
+    },
+    {
+      "posting_id": 5,
+      "job_title_id": 93,
+      "department_id": 21,
+      "location_id": 25,
+      "posting_title": "Reason information.",
+      "description": "Century magazine also hundred hundred type security.",
+      "requirements": "Wish that hospital despite moment vote action. For leg customer interest know international chair.",
+      "salary_min": "763.12",
+      "salary_max": "498.27",
+      "employment_type": "Pull day test cup improve. Poor society else.",
+      "posted_date": "2024-09-21T05:00:00.000Z",
+      "closing_date": "2024-06-30T05:00:00.000Z",
+      "status": "pending",
+      "hiring_manager_id": 30,
+      "created_at": "2025-12-13T09:20:18.781Z",
+      "updated_at": "2025-12-13T09:20:18.781Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:41:05.982Z"
+}

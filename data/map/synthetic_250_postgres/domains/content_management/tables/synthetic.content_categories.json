@@ -1,0 +1,123 @@
+{
+  "table": "content_categories",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.content_categories` table represents a categorization system for organizing content, with each category uniquely identified by the `category_id`. It includes hierarchical relationships through the `parent_id`, allowing the establishment of parent-child category structures. The table also tracks creation and update timestamps, indicating the history of each category’s lifecycle.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "category_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column assigns a unique numeric identifier to each category within the content categories table, ensuring each category can be distinctly recognized and referenced. The presence of sequential whole numbers suggests these identifiers are generated systematically as new categories are added.",
+      "default": "nextval('synthetic.content_categories_category_id_seq'::regclass)"
+    },
+    {
+      "name": "category_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column represents various categories that could potentially classify content or topics; however, the exact purpose or classification criterion is unclear from the available data due to the abstract and varied nature of the sample values.",
+      "default": null
+    },
+    {
+      "name": "slug",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The column contains various concatenated phrases that appear to be related to different topics or areas.",
+      "default": null
+    },
+    {
+      "name": "parent_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely indicates the hierarchical relationship between categories within the content system, representing a reference to a category's parent category within the same dataset. The connection creates a structured taxonomy where each entry can have a direct superior category, allowing for nested categorization.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a content category was initially created in the system. The values suggest that it captures entries in a uniform timestamp format, likely reflecting the time zones in which events occur.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column indicates the most recent date and time when a record within the content categories table was updated. The timing of updates suggests this is used to track changes or modifications to the content categories.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "category_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_content_categories_parent_id",
+      "column_name": "parent_id",
+      "referenced_table": "synthetic.content_categories",
+      "referenced_column": "category_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "content_categories_pkey",
+      "index_definition": "CREATE UNIQUE INDEX content_categories_pkey ON synthetic.content_categories USING btree (category_id)",
+      "columns": [
+        "category_id"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "content_categories_slug_key",
+      "index_definition": "CREATE UNIQUE INDEX content_categories_slug_key ON synthetic.content_categories USING btree (slug)",
+      "columns": [
+        "slug"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "category_id": 1,
+      "category_name": "Agent if bill media address sister. Mouth by small law.",
+      "slug": "Reveal present consider many pay. North on decision research.",
+      "parent_id": null,
+      "created_at": "2025-12-13T09:15:06.859Z",
+      "updated_at": "2025-12-13T09:15:06.859Z"
+    },
+    {
+      "category_id": 2,
+      "category_name": "Room never relate fall most. Pm ground election behind into. Indeed best rather strategy company.",
+      "slug": "Business executive total look person spend race. Money doctor television fish.",
+      "parent_id": 1,
+      "created_at": "2025-12-13T09:15:06.859Z",
+      "updated_at": "2025-12-13T09:15:06.859Z"
+    },
+    {
+      "category_id": 3,
+      "category_name": "Leg popular from the individual decade. Girl over discover discussion summer.",
+      "slug": "Top enough like dinner brother brother. Throughout fund top model. Other nice such large.",
+      "parent_id": 2,
+      "created_at": "2025-12-13T09:15:06.859Z",
+      "updated_at": "2025-12-13T09:15:06.859Z"
+    },
+    {
+      "category_id": 4,
+      "category_name": "Help less arrive turn more Mrs work there.",
+      "slug": "Thank scene fast TV even material enter. Sit join firm clear media deal necessary.",
+      "parent_id": 1,
+      "created_at": "2025-12-13T09:15:06.859Z",
+      "updated_at": "2025-12-13T09:15:06.859Z"
+    },
+    {
+      "category_id": 5,
+      "category_name": "Always worker reach skin high. Pass speak man language traditional beat.",
+      "slug": "Choose social almost PM during under feeling story.",
+      "parent_id": 4,
+      "created_at": "2025-12-13T09:15:06.859Z",
+      "updated_at": "2025-12-13T09:15:06.859Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:44:13.638Z"
+}

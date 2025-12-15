@@ -1,0 +1,147 @@
+{
+  "table": "RATINGS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.RATINGS table captures rating-related data, uniquely identified by RATING_ID, and is a standalone entity with no defined relationships to other tables. The table seems to track information about specific ratings, including descriptive elements and attributes related to shipping and checkout processes, as evidenced by columns like NAME, DESCRIPTION, and various attributes prefixed with \"CHECKOUT\" and \"SHIPPING.\" It plays a role in organizing and storing details regarding ratings, likely in the context of products or services, evidenced by DATE-related and BOOLEAN columns indicating status and timestamps.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "RATING_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each rating entry in the ratings table. Each number corresponds to a distinct rating record.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column represents a categorization or enumeration of different rating identifiers, expressed sequentially from 1 to 10. Each value suggests an identifier that may correspond to an entry or group within a broader rating system.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column provides textual explanations or details related to individual ratings, most likely intended to offer context or additional information about each rating entry. The specific purpose or nature of these descriptions is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "CHECKOUT_192_ATTR_0",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "This column represents a binary indicator related to a checkout attribute, possibly recording a condition or action's presence or absence during the checkout process. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "SHIPPING_192_ATTR_1",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The column appears to store timestamps within the Central Standard Time zone, possibly indicating dates and times related to an unspecified event.",
+      "default": null
+    },
+    {
+      "name": "SHIPPING_192_ATTR_2",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "This column indicates whether a particular attribute of shipping is met or not for a given rating, with possible outcomes being true or false. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "RATING_192_ATTR_3",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "This column indicates a binary condition related to an attribute of ratings, marking it as either true or false. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "RATING_192_ATTR_4",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "The column likely represents a categorization or evaluation metric numbered sequentially, as indicated by the sample values. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "SHIPPING_192_ATTR_5",
+      "type": "DATE",
+      "nullable": false,
+      "description": "This column likely represents scheduled shipping dates for deliveries, as evidenced by the sequential daily values. The non-nullable status indicates that every record must have an assigned shipping date.",
+      "default": null
+    },
+    {
+      "name": "CREATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column records the exact date and time when a new entry is added to the ratings table. It ensures that each rating is timestamped at the moment of its creation, using the local Central Standard Time zone.",
+      "default": "CURRENT_TIMESTAMP()"
+    }
+  ],
+  "primary_key": [
+    "RATING_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "RATING_ID": 1,
+      "NAME": "RATINGS 1",
+      "DESCRIPTION": "Description for RATINGS 1",
+      "CHECKOUT_192_ATTR_0": true,
+      "SHIPPING_192_ATTR_1": "2025-12-12 00:00:00.000",
+      "SHIPPING_192_ATTR_2": true,
+      "RATING_192_ATTR_3": true,
+      "RATING_192_ATTR_4": "Sample RATING_192_ATTR_4 1",
+      "SHIPPING_192_ATTR_5": "2025-12-12",
+      "CREATED_AT": "2025-12-12 17:27:05.529"
+    },
+    {
+      "RATING_ID": 2,
+      "NAME": "RATINGS 2",
+      "DESCRIPTION": "Description for RATINGS 2",
+      "CHECKOUT_192_ATTR_0": false,
+      "SHIPPING_192_ATTR_1": "2025-12-13 00:00:00.000",
+      "SHIPPING_192_ATTR_2": false,
+      "RATING_192_ATTR_3": false,
+      "RATING_192_ATTR_4": "Sample RATING_192_ATTR_4 2",
+      "SHIPPING_192_ATTR_5": "2025-12-13",
+      "CREATED_AT": "2025-12-12 17:27:05.529"
+    },
+    {
+      "RATING_ID": 3,
+      "NAME": "RATINGS 3",
+      "DESCRIPTION": "Description for RATINGS 3",
+      "CHECKOUT_192_ATTR_0": true,
+      "SHIPPING_192_ATTR_1": "2025-12-14 00:00:00.000",
+      "SHIPPING_192_ATTR_2": true,
+      "RATING_192_ATTR_3": true,
+      "RATING_192_ATTR_4": "Sample RATING_192_ATTR_4 3",
+      "SHIPPING_192_ATTR_5": "2025-12-14",
+      "CREATED_AT": "2025-12-12 17:27:05.529"
+    },
+    {
+      "RATING_ID": 4,
+      "NAME": "RATINGS 4",
+      "DESCRIPTION": "Description for RATINGS 4",
+      "CHECKOUT_192_ATTR_0": false,
+      "SHIPPING_192_ATTR_1": "2025-12-15 00:00:00.000",
+      "SHIPPING_192_ATTR_2": false,
+      "RATING_192_ATTR_3": false,
+      "RATING_192_ATTR_4": "Sample RATING_192_ATTR_4 4",
+      "SHIPPING_192_ATTR_5": "2025-12-15",
+      "CREATED_AT": "2025-12-12 17:27:05.529"
+    },
+    {
+      "RATING_ID": 5,
+      "NAME": "RATINGS 5",
+      "DESCRIPTION": "Description for RATINGS 5",
+      "CHECKOUT_192_ATTR_0": true,
+      "SHIPPING_192_ATTR_1": "2025-12-16 00:00:00.000",
+      "SHIPPING_192_ATTR_2": true,
+      "RATING_192_ATTR_3": true,
+      "RATING_192_ATTR_4": "Sample RATING_192_ATTR_4 5",
+      "SHIPPING_192_ATTR_5": "2025-12-16",
+      "CREATED_AT": "2025-12-12 17:27:05.529"
+    }
+  ],
+  "generated_at": "2025-12-14T23:42:57.788Z"
+}

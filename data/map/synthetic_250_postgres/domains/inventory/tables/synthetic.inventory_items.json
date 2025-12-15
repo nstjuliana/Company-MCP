@@ -1,0 +1,129 @@
+{
+  "table": "inventory_items",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.inventory_items` table is intended to store data related to inventory items, uniquely identified by the `inventory_id` as its primary key. Despite having 13 columns, the lack of specific column names and sample data limits further interpretation of its structure and content. The table participates in relationships with other undefined tables via foreign keys, indicating it may hold or process item-specific details essential for inventory management within the overall data model.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "inventory_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This unique identifier systematically assigns a sequential number to each item in the inventory, ensuring distinct tracking and management of inventory items. Purpose unclear from available data.",
+      "default": "nextval('synthetic.inventory_items_inventory_id_seq'::regclass)"
+    },
+    {
+      "name": "product_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Unique identifier for each item in the inventory, necessary for tracking and managing stock.",
+      "default": null
+    },
+    {
+      "name": "variant_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "warehouse_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Identifies the specific storage location associated with inventory items.",
+      "default": null
+    },
+    {
+      "name": "location_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "Represents an identifier associated with the physical location of inventory items. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "quantity_on_hand",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents the current number of each inventory item available in stock. The value cannot be negative or missing, ensuring accurate stock levels are maintained.",
+      "default": "0"
+    },
+    {
+      "name": "quantity_reserved",
+      "type": "integer",
+      "nullable": true,
+      "description": "This field likely indicates the portion of an item's stock that has been set aside or earmarked, potentially for pending orders or future commitments. The absence of a specific count implies that an item is not currently reserved.",
+      "default": "0"
+    },
+    {
+      "name": "quantity_available",
+      "type": "integer",
+      "nullable": true,
+      "description": "Represents the number of units available for items currently in stock. The count is stored as a whole number and can be left unspecified, in which case it defaults to zero.",
+      "default": "0"
+    },
+    {
+      "name": "reorder_point",
+      "type": "integer",
+      "nullable": true,
+      "description": "The numeric threshold at which inventory stock for an item is considered low, prompting the initiation of a reorder process. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "reorder_quantity",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "last_count_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column likely records the date when the inventory was last physically counted or assessed. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an inventory item entry was created in the system. The timestamp helps track when data entries are added, although the exact values are unavailable.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Records the last modification date and time for items in the inventory, capturing the timing of updates. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "inventory_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_inventory_items_location_id",
+      "column_name": "location_id",
+      "referenced_table": "synthetic.storage_locations",
+      "referenced_column": "location_id"
+    },
+    {
+      "constraint_name": "fk_inventory_items_warehouse_id",
+      "column_name": "warehouse_id",
+      "referenced_table": "synthetic.warehouses",
+      "referenced_column": "warehouse_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "inventory_items_pkey",
+      "index_definition": "CREATE UNIQUE INDEX inventory_items_pkey ON synthetic.inventory_items USING btree (inventory_id)",
+      "columns": [
+        "inventory_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:42:25.442Z"
+}

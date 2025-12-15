@@ -1,0 +1,111 @@
+{
+  "table": "FILTERS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.FILTERS table represents a collection of filter configurations, identified uniquely by FILTER_ID, used within a dashboard or data visualization context. Each filter configuration includes a name, description, and various attributes (DASHBOARD_178_ATTR_0, VISUALIZATION_178_ATTR_1, QUERY_178_ATTR_2, and VISUALIZATION_178_ATTR_3), indicating its integration and application within specific visualizations or queries. This table operates independently within the database, as it neither references nor is referenced by other tables, suggesting it serves as a standalone repository of filters for dashboard functionalities.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "FILTER_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents a unique identifier for individual filters within the database, ensuring each entry can be distinctly recognized and accessed. Purpose unclear from available data beyond identifying filters.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column appears to represent a sequential naming system or identifiers for a set of filters, labeled numerically. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains textual descriptions or identifiers related to specific filters used within the dataset. The exact purpose of these descriptions is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "DASHBOARD_178_ATTR_0",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents a sequential identifier or code associated with a specific entity or record in the dashboard filter. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "VISUALIZATION_178_ATTR_1",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "QUERY_178_ATTR_2",
+      "type": "DATE",
+      "nullable": true,
+      "description": "This column likely represents scheduled or recurring date entries around mid-December 2025, presumably related to a specific filter event or process. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "VISUALIZATION_178_ATTR_3",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column appears to store a set of numerical identifiers used for categorizing or filtering data in a visualization context. Purpose unclear from available data.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "FILTER_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "FILTER_ID": 1,
+      "NAME": "FILTERS 1",
+      "DESCRIPTION": "Description for FILTERS 1",
+      "DASHBOARD_178_ATTR_0": 100,
+      "VISUALIZATION_178_ATTR_1": "Sample VISUALIZATION_178_ATTR_1 1",
+      "QUERY_178_ATTR_2": "2025-12-12",
+      "VISUALIZATION_178_ATTR_3": null
+    },
+    {
+      "FILTER_ID": 2,
+      "NAME": "FILTERS 2",
+      "DESCRIPTION": "Description for FILTERS 2",
+      "DASHBOARD_178_ATTR_0": 101,
+      "VISUALIZATION_178_ATTR_1": "Sample VISUALIZATION_178_ATTR_1 2",
+      "QUERY_178_ATTR_2": "2025-12-13",
+      "VISUALIZATION_178_ATTR_3": 101
+    },
+    {
+      "FILTER_ID": 3,
+      "NAME": "FILTERS 3",
+      "DESCRIPTION": "Description for FILTERS 3",
+      "DASHBOARD_178_ATTR_0": 102,
+      "VISUALIZATION_178_ATTR_1": "Sample VISUALIZATION_178_ATTR_1 3",
+      "QUERY_178_ATTR_2": "2025-12-14",
+      "VISUALIZATION_178_ATTR_3": 102
+    },
+    {
+      "FILTER_ID": 4,
+      "NAME": "FILTERS 4",
+      "DESCRIPTION": "Description for FILTERS 4",
+      "DASHBOARD_178_ATTR_0": 103,
+      "VISUALIZATION_178_ATTR_1": "Sample VISUALIZATION_178_ATTR_1 4",
+      "QUERY_178_ATTR_2": "2025-12-15",
+      "VISUALIZATION_178_ATTR_3": null
+    },
+    {
+      "FILTER_ID": 5,
+      "NAME": "FILTERS 5",
+      "DESCRIPTION": "Description for FILTERS 5",
+      "DASHBOARD_178_ATTR_0": 104,
+      "VISUALIZATION_178_ATTR_1": "Sample VISUALIZATION_178_ATTR_1 5",
+      "QUERY_178_ATTR_2": "2025-12-16",
+      "VISUALIZATION_178_ATTR_3": 104
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:44.096Z"
+}

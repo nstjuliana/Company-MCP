@@ -1,0 +1,120 @@
+{
+  "table": "currencies",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.currencies` table represents a collection of currency information, with each row uniquely identified by the `currency_code`. Key columns include `currency_name`, `symbol`, `decimal_places`, and `is_active`, which capture the essential attributes of each currency, such as its name, symbol representation, numerical precision, and active status. The table does not reference or is referenced by other tables, suggesting it serves as a standalone entity within the database model for managing and maintaining currency data attributes.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "currency_code",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column represents unique codes used to identify different synthetic or hypothetical currencies within a dataset. Each code is an abbreviation assigned to a specific currency for distinguishing it from other currencies in the table.",
+      "default": null
+    },
+    {
+      "name": "currency_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column represents the names of different currencies, such as Canadian Dollar, Japanese Yen, US Dollar, Euro, and British Pound, used for financial transactions. It ensures that each currency is clearly identified by its standard abbreviation.",
+      "default": null
+    },
+    {
+      "name": "symbol",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. Sample values do not provide sufficient context to determine a specific business representation.",
+      "default": null
+    },
+    {
+      "name": "decimal_places",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": "2"
+    },
+    {
+      "name": "is_active",
+      "type": "boolean",
+      "nullable": true,
+      "description": "This field indicates the current status of a currency, with true representing that the currency is active and false indicating it is not currently active. The absence of additional information prevents further elaboration on its business context.",
+      "default": "true"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a record in the currencies table was initially created in the database. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the last date and time when information related to currencies was updated, using the current timestamp as the default value. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "currency_code"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "currencies_pkey",
+      "index_definition": "CREATE UNIQUE INDEX currencies_pkey ON synthetic.currencies USING btree (currency_code)",
+      "columns": [
+        "currency_code"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "currency_code": "BNB",
+      "currency_name": "CAD",
+      "symbol": "Address.",
+      "decimal_places": 3085,
+      "is_active": false,
+      "created_at": "2025-12-13T08:55:01.324Z",
+      "updated_at": "2025-12-13T08:55:01.324Z"
+    },
+    {
+      "currency_code": "VSO",
+      "currency_name": "CAD",
+      "symbol": "Station.",
+      "decimal_places": 5064,
+      "is_active": true,
+      "created_at": "2025-12-13T08:55:01.324Z",
+      "updated_at": "2025-12-13T08:55:01.324Z"
+    },
+    {
+      "currency_code": "CEB",
+      "currency_name": "JPY",
+      "symbol": "Put ask.",
+      "decimal_places": 622,
+      "is_active": true,
+      "created_at": "2025-12-13T08:55:01.324Z",
+      "updated_at": "2025-12-13T08:55:01.324Z"
+    },
+    {
+      "currency_code": "CUB",
+      "currency_name": "USD",
+      "symbol": "Sing.",
+      "decimal_places": 3812,
+      "is_active": true,
+      "created_at": "2025-12-13T08:55:01.324Z",
+      "updated_at": "2025-12-13T08:55:01.324Z"
+    },
+    {
+      "currency_code": "DPC",
+      "currency_name": "USD",
+      "symbol": "Serve.",
+      "decimal_places": 8626,
+      "is_active": false,
+      "created_at": "2025-12-13T08:55:01.324Z",
+      "updated_at": "2025-12-13T08:55:01.324Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:41:19.428Z"
+}

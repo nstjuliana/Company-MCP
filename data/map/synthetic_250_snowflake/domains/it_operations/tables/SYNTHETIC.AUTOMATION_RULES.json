@@ -1,0 +1,123 @@
+{
+  "table": "AUTOMATION_RULES",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.AUTOMATION_RULES table represents a set of automation rules with each rule uniquely identified by the primary key AUTOMATION_RULE_ID. The table lacks direct relationships with other tables, indicating standalone use within the data model to manage or define automation processes or conditions, as suggested by the boolean attributes such as EVENT_146_ATTR_2. These attributes, alongside the NAME and DESCRIPTION columns, imply configuration settings or conditions that trigger certain automated actions or events.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "AUTOMATION_RULE_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column uniquely identifies each automation rule within the automation rules table, as indicated by its sequence of numerical values.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column represents a sequence of identifiers for different automation rules within the system. Each entry appears to uniquely identify a rule by its order or designation number.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column provides textual descriptions for individual automation rules, offering details that help users understand the purpose or functionality of each rule. Purpose beyond providing basic descriptions is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "EMAIL_146_ATTR_0",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "AD_146_ATTR_1",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The column contains numerical values with a common pattern but lacks sufficient context for a definitive business interpretation.",
+      "default": null
+    },
+    {
+      "name": "EVENT_146_ATTR_2",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "This column indicates a binary condition related to automation rules, such as whether a specific event attribute condition is met. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "AD_146_ATTR_3",
+      "type": "BOOLEAN",
+      "nullable": false,
+      "description": "The column indicates whether a specific condition within an automation rule is met or not. It expresses a binary outcome for automation logic, showing either a true or false state.",
+      "default": null
+    },
+    {
+      "name": "EVENT_146_ATTR_4",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "AUTOMATION_RULE_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "AUTOMATION_RULE_ID": 1,
+      "NAME": "AUTOMATION_RULES 1",
+      "DESCRIPTION": "Description for AUTOMATION_RULES 1",
+      "EMAIL_146_ATTR_0": null,
+      "AD_146_ATTR_1": null,
+      "EVENT_146_ATTR_2": true,
+      "AD_146_ATTR_3": true,
+      "EVENT_146_ATTR_4": true
+    },
+    {
+      "AUTOMATION_RULE_ID": 2,
+      "NAME": "AUTOMATION_RULES 2",
+      "DESCRIPTION": "Description for AUTOMATION_RULES 2",
+      "EMAIL_146_ATTR_0": 101,
+      "AD_146_ATTR_1": 101,
+      "EVENT_146_ATTR_2": false,
+      "AD_146_ATTR_3": false,
+      "EVENT_146_ATTR_4": false
+    },
+    {
+      "AUTOMATION_RULE_ID": 3,
+      "NAME": "AUTOMATION_RULES 3",
+      "DESCRIPTION": "Description for AUTOMATION_RULES 3",
+      "EMAIL_146_ATTR_0": 102,
+      "AD_146_ATTR_1": 102,
+      "EVENT_146_ATTR_2": true,
+      "AD_146_ATTR_3": true,
+      "EVENT_146_ATTR_4": true
+    },
+    {
+      "AUTOMATION_RULE_ID": 4,
+      "NAME": "AUTOMATION_RULES 4",
+      "DESCRIPTION": "Description for AUTOMATION_RULES 4",
+      "EMAIL_146_ATTR_0": null,
+      "AD_146_ATTR_1": null,
+      "EVENT_146_ATTR_2": false,
+      "AD_146_ATTR_3": false,
+      "EVENT_146_ATTR_4": false
+    },
+    {
+      "AUTOMATION_RULE_ID": 5,
+      "NAME": "AUTOMATION_RULES 5",
+      "DESCRIPTION": "Description for AUTOMATION_RULES 5",
+      "EMAIL_146_ATTR_0": 104,
+      "AD_146_ATTR_1": 104,
+      "EVENT_146_ATTR_2": true,
+      "AD_146_ATTR_3": true,
+      "EVENT_146_ATTR_4": true
+    }
+  ],
+  "generated_at": "2025-12-14T23:45:04.296Z"
+}

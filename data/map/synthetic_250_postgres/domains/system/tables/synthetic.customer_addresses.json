@@ -1,0 +1,116 @@
+{
+  "table": "customer_addresses",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.customer_addresses` table is designed to store address information for customers, with `address_id` serving as the primary key, indicating a unique identifier for each address entry. Although specific column details and relationships are undefined, the table likely plays a role in associating customer data with respective addresses within the synthetic database model. Without data or explicit relationships, its function in relation to other tables cannot be further specified.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "address_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for customer addresses, automatically assigned to ensure each address entry is distinct and traceable within the system.",
+      "default": "nextval('synthetic.customer_addresses_address_id_seq'::regclass)"
+    },
+    {
+      "name": "customer_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents the unique identifier assigned to each customer within the customer addresses table. It ensures that each customer is distinctly associated with their specific address details.",
+      "default": null
+    },
+    {
+      "name": "address_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column indicates the category or role of a customer's address, with a default to 'shipping' if not specified. Purpose unclear from available data.",
+      "default": "'shipping'::character varying"
+    },
+    {
+      "name": "address_line1",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column represents the primary line of a customer's street address, which is essential for identifying the specific location of residence or business for customer-related activities.",
+      "default": null
+    },
+    {
+      "name": "address_line2",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column is intended to store additional address details, such as apartment or suite numbers, for a customer's address. It is optional and may not be used if such extra information is not applicable.",
+      "default": null
+    },
+    {
+      "name": "city",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column identifies the city associated with customer addresses and is crucial for determining geographic distribution. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "state_province",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely represents the administrative region within a country corresponding to a customer's address, such as a state or province. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "postal_code",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely represents the postal or ZIP code component of a customer's address, used for regional identification in mailing and delivery services. Purpose unclear from available data due to lack of sample values.",
+      "default": null
+    },
+    {
+      "name": "country_code",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This field likely represents the standardized designation or abbreviation for the countries associated with customer addresses. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "is_default",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether a customer address is the primary or preferred one in records, with the option to be unset.",
+      "default": "false"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column logs the date and time when a customer address record was created. The specific purpose of this information is unclear from the available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a customer's address information was last updated. It reflects changes to the address details as they occur, with the most recent timestamp capturing the latest modification.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "address_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_customer_addresses_customer_id",
+      "column_name": "customer_id",
+      "referenced_table": "synthetic.customers",
+      "referenced_column": "customer_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "customer_addresses_pkey",
+      "index_definition": "CREATE UNIQUE INDEX customer_addresses_pkey ON synthetic.customer_addresses USING btree (address_id)",
+      "columns": [
+        "address_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:39:05.627Z"
+}

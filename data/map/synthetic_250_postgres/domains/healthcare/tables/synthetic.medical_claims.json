@@ -1,0 +1,231 @@
+{
+  "table": "medical_claims",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.medical_claims` table represents medical claims within a healthcare billing system, specifically tracking financial transactions tied to patient healthcare services. Each claim, identified by a unique `claim_id`, is associated with a patient and an insurance provider, including details such as service date, submission date, charges, and payment status, reflecting the claim lifecycle from submission to resolution. While it hints at relationships with entities like `patient_id` and `insurance_id`, further links to their respective tables are needed to fully integrate this table into the broader healthcare records system.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "claim_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each medical claim within the dataset. The values are sequential integers, suggesting they serve as identifiers rather than carrying inherent business meaning.",
+      "default": "nextval('synthetic.medical_claims_claim_id_seq'::regclass)"
+    },
+    {
+      "name": "claim_number",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely represents unique identifiers assigned to individual medical claims, facilitating tracking and reference in healthcare billing processes. Purpose unclear from available data if additional business logic or significance applies to these identifiers.",
+      "default": null
+    },
+    {
+      "name": "patient_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each patient within the medical claims records, differentiating individuals with distinct numerical identifiers. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "encounter_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "insurance_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column appears to represent unique identifiers assigned to different insurance policies or providers associated with medical claims. Purpose unclear from available data beyond associating claims with multiple policies or providers as indicated by numerical identifiers.",
+      "default": null
+    },
+    {
+      "name": "service_date",
+      "type": "date",
+      "nullable": false,
+      "description": "This column represents the date on which a medical service was provided to a patient. The dates are recorded in Central Time, indicating when services occurred within this time zone.",
+      "default": null
+    },
+    {
+      "name": "submitted_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column records the date when a medical claim was submitted, reflecting when the claim information was officially entered into the system. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "total_charges",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the monetary amount associated with individual medical claims. These values indicate the charges incurred during healthcare services, with varying amounts reflecting different levels of service or treatment complexity.",
+      "default": null
+    },
+    {
+      "name": "allowed_amount",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the monetary amount that is authorized for payment in a medical claim. The allowed amounts indicate the financial limit approved for coverage in each instance.",
+      "default": null
+    },
+    {
+      "name": "paid_amount",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column likely represents the amounts paid in a series of financial transactions, possibly related to medical insurance claims. The values reflect monetary compensation or reimbursement amounts, but further context is needed to understand the specific nature of these payments.",
+      "default": null
+    },
+    {
+      "name": "patient_responsibility",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column likely represents the monetary amount that a patient is required to pay out-of-pocket for a medical service or claim. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column indicates the current state of a medical claim, categorizing it as either pending, active, or inactive. It helps track the processing status within the claim management workflow.",
+      "default": "'pending'::character varying"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time a medical claim entry was created in the system. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a record in the medical claims table was last updated. Purpose unclear from available data as it lacks context or specific changes linked to the timestamps shown.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "claim_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_medical_claims_encounter_id",
+      "column_name": "encounter_id",
+      "referenced_table": "synthetic.encounters",
+      "referenced_column": "encounter_id"
+    },
+    {
+      "constraint_name": "fk_medical_claims_insurance_id",
+      "column_name": "insurance_id",
+      "referenced_table": "synthetic.insurance_policies",
+      "referenced_column": "insurance_id"
+    },
+    {
+      "constraint_name": "fk_medical_claims_patient_id",
+      "column_name": "patient_id",
+      "referenced_table": "synthetic.patients",
+      "referenced_column": "patient_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "medical_claims_claim_number_key",
+      "index_definition": "CREATE UNIQUE INDEX medical_claims_claim_number_key ON synthetic.medical_claims USING btree (claim_number)",
+      "columns": [
+        "claim_number"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "medical_claims_pkey",
+      "index_definition": "CREATE UNIQUE INDEX medical_claims_pkey ON synthetic.medical_claims USING btree (claim_id)",
+      "columns": [
+        "claim_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "claim_id": 1,
+      "claim_number": "087775190032260",
+      "patient_id": 29,
+      "encounter_id": null,
+      "insurance_id": 30,
+      "service_date": "2024-11-23T06:00:00.000Z",
+      "submitted_date": "2024-07-08T05:00:00.000Z",
+      "total_charges": "680.11",
+      "allowed_amount": "3451.70",
+      "paid_amount": "8780.82",
+      "patient_responsibility": "780.26",
+      "status": "pending",
+      "created_at": "2025-12-13T09:22:34.082Z",
+      "updated_at": "2025-12-13T09:22:34.082Z"
+    },
+    {
+      "claim_id": 2,
+      "claim_number": "784326748464310",
+      "patient_id": 38,
+      "encounter_id": null,
+      "insurance_id": 12,
+      "service_date": "2025-07-31T05:00:00.000Z",
+      "submitted_date": "2025-12-04T06:00:00.000Z",
+      "total_charges": "767.78",
+      "allowed_amount": "1299.04",
+      "paid_amount": "5033.61",
+      "patient_responsibility": "868.21",
+      "status": "active",
+      "created_at": "2025-12-13T09:22:34.082Z",
+      "updated_at": "2025-12-13T09:22:34.082Z"
+    },
+    {
+      "claim_id": 3,
+      "claim_number": "233854376730585",
+      "patient_id": 34,
+      "encounter_id": null,
+      "insurance_id": 10,
+      "service_date": "2025-01-08T06:00:00.000Z",
+      "submitted_date": "2024-02-06T06:00:00.000Z",
+      "total_charges": "304.12",
+      "allowed_amount": "1628.05",
+      "paid_amount": "9348.03",
+      "patient_responsibility": "225.47",
+      "status": "pending",
+      "created_at": "2025-12-13T09:22:34.082Z",
+      "updated_at": "2025-12-13T09:22:34.082Z"
+    },
+    {
+      "claim_id": 4,
+      "claim_number": "645996822431212",
+      "patient_id": 19,
+      "encounter_id": null,
+      "insurance_id": 6,
+      "service_date": "2024-08-28T05:00:00.000Z",
+      "submitted_date": "2025-11-27T06:00:00.000Z",
+      "total_charges": "250.61",
+      "allowed_amount": "6354.22",
+      "paid_amount": "5512.91",
+      "patient_responsibility": "125.17",
+      "status": "inactive",
+      "created_at": "2025-12-13T09:22:34.082Z",
+      "updated_at": "2025-12-13T09:22:34.082Z"
+    },
+    {
+      "claim_id": 5,
+      "claim_number": "889839230781412",
+      "patient_id": 40,
+      "encounter_id": null,
+      "insurance_id": 35,
+      "service_date": "2025-10-16T05:00:00.000Z",
+      "submitted_date": "2025-06-25T05:00:00.000Z",
+      "total_charges": "93.43",
+      "allowed_amount": "6413.46",
+      "paid_amount": "5922.17",
+      "patient_responsibility": "580.65",
+      "status": "active",
+      "created_at": "2025-12-13T09:22:34.082Z",
+      "updated_at": "2025-12-13T09:22:34.082Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:41:43.474Z"
+}

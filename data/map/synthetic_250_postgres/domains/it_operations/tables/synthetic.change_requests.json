@@ -1,0 +1,187 @@
+{
+  "table": "change_requests",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.change_requests` table represents requests for changes made within projects, capturing details such as the request's title, description, impact analysis, and approval information. It plays a central role in tracking change requests linked to specific projects, indicated by the foreign key relationship to the `project_id`. Key attributes include who requested and approved the change, the status of the request, and timestamps for creation and updates, allowing for detailed monitoring and auditing of change management processes.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "request_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each change request in the system, with sequential numbers assigned automatically to ensure each request has a distinct identifier.",
+      "default": "nextval('synthetic.change_requests_request_id_seq'::regclass)"
+    },
+    {
+      "name": "project_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Represents a unique identifier for a project associated with a change request. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "request_title",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column represents the brief descriptions or titles of change requests, capturing key elements or objectives of each request in a concise format. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "nullable": true,
+      "description": "This column contains descriptive narratives or summaries related to change requests, potentially capturing details, rationale, or context around the change. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "impact_analysis",
+      "type": "text",
+      "nullable": true,
+      "description": "This column contains narrative descriptions or summaries of the potential consequences, considerations, and factors affected by a proposed change request. The purpose of these entries is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "requested_by",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely identifies the individual or entity that initiated a change request, represented by a unique integer ID. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "request_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column records the date when a change request was submitted, reflecting the time zone adjustments for Central Standard or Daylight Time. The dates are essential for tracking the timeline of change requests within the time context specific to the Central region.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column indicates the current state of a change request within the system, reflecting whether it is active, pending, or inactive. The default state assigned to new change requests is 'submitted'.",
+      "default": "'submitted'::character varying"
+    },
+    {
+      "name": "approved_by",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents the identifiers for personnel who have approved change requests. The values suggest a link to a list of authorized approvers within the organization.",
+      "default": null
+    },
+    {
+      "name": "approval_date",
+      "type": "date",
+      "nullable": true,
+      "description": "The column represents the date on which a change request received formal approval. The date may not be present if the request is pending approval or if no approval is required.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a change request is initially created. The absence of a specified time zone indicates an adaptable timestamp based on system defaults.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a change request was last modified. The timestamp reflects Central Standard Time and updates to the current timestamp by default if no alternative is provided.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "request_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_change_requests_project_id",
+      "column_name": "project_id",
+      "referenced_table": "synthetic.pm_projects",
+      "referenced_column": "project_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "change_requests_pkey",
+      "index_definition": "CREATE UNIQUE INDEX change_requests_pkey ON synthetic.change_requests USING btree (request_id)",
+      "columns": [
+        "request_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "request_id": 1,
+      "project_id": 82,
+      "request_title": "Agent every.",
+      "description": "Say quality throughout beautiful. All behavior discussion own night respond.",
+      "impact_analysis": "Determine operation speak according south recently. Everyone democratic shake bill here grow. Page s...",
+      "requested_by": 115,
+      "request_date": "2025-01-18T06:00:00.000Z",
+      "status": "active",
+      "approved_by": 760,
+      "approval_date": "2025-08-09T05:00:00.000Z",
+      "created_at": "2025-12-13T09:13:52.207Z",
+      "updated_at": "2025-12-13T09:13:52.207Z"
+    },
+    {
+      "request_id": 2,
+      "project_id": 36,
+      "request_title": "Those gun court attorney product.",
+      "description": "Talk term herself law. Class great prove reduce raise author.",
+      "impact_analysis": "Rock clear here writer policy news range. Director allow firm environment.",
+      "requested_by": 251,
+      "request_date": "2024-05-14T05:00:00.000Z",
+      "status": "active",
+      "approved_by": 143,
+      "approval_date": "2025-10-31T05:00:00.000Z",
+      "created_at": "2025-12-13T09:13:52.207Z",
+      "updated_at": "2025-12-13T09:13:52.207Z"
+    },
+    {
+      "request_id": 3,
+      "project_id": 95,
+      "request_title": "Defense material those poor.",
+      "description": "Cause seat much section investment. Human despite young meeting before another body physical.",
+      "impact_analysis": "As high you more wife team activity result. Seem shoulder future fall citizen about reveal. Will sev...",
+      "requested_by": 105,
+      "request_date": "2025-08-18T05:00:00.000Z",
+      "status": "pending",
+      "approved_by": 759,
+      "approval_date": "2024-12-17T06:00:00.000Z",
+      "created_at": "2025-12-13T09:13:52.207Z",
+      "updated_at": "2025-12-13T09:13:52.207Z"
+    },
+    {
+      "request_id": 4,
+      "project_id": 70,
+      "request_title": "Check several much.",
+      "description": "Out major born. These story film around there water. Rule staff within mouth.",
+      "impact_analysis": "Process water close month. Institution deep much role cut find yet practice.",
+      "requested_by": 90,
+      "request_date": "2024-10-27T05:00:00.000Z",
+      "status": "pending",
+      "approved_by": 433,
+      "approval_date": "2024-12-24T06:00:00.000Z",
+      "created_at": "2025-12-13T09:13:52.207Z",
+      "updated_at": "2025-12-13T09:13:52.207Z"
+    },
+    {
+      "request_id": 5,
+      "project_id": 5,
+      "request_title": "Easy ask again.",
+      "description": "Open according remain arrive attack. Teacher audience draw. Democrat car very number line six space.",
+      "impact_analysis": "Best issue interest level. Pull worker better.",
+      "requested_by": 31,
+      "request_date": "2024-10-01T05:00:00.000Z",
+      "status": "active",
+      "approved_by": 224,
+      "approval_date": "2024-08-16T05:00:00.000Z",
+      "created_at": "2025-12-13T09:13:52.207Z",
+      "updated_at": "2025-12-13T09:13:52.207Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:12.174Z"
+}

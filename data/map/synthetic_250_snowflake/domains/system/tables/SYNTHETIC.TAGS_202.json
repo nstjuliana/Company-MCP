@@ -1,0 +1,111 @@
+{
+  "table": "TAGS_202",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.TAGS_202 table represents a collection of tags identified by unique TAG_IDs, each accompanied by relevant metadata such as name, description, and timestamps associated with shipping, rating, and review events. With no relationships to other tables, this table likely serves a standalone function in the data model, capturing temporal information and basic details about distinct tagging entities. The presence of timestamped attributes suggests a focus on tracking or auditing events linked to each tag.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "TAG_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column serves as a unique identifier for individual tags within the database. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column represents a sequential identifier for tags within the dataset, likely associated with different entries or entities in TAGS_202. The numbers indicate that each tag is discretely numbered, suggesting order or categorization.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column provides a textual description for each tag associated with the TAGS_202 table, ensuring unique detail or identification for a corresponding record. The repetitive sample values suggest a placeholder pattern rather than a meaningful description, making its specific business application unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "SHIPPING_222_ATTR_0",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "Represents the timestamp indicating when a certain shipping-related event or attribute was recorded or modified. The specific purpose of the timestamp is unclear from the available data.",
+      "default": "CURRENT_TIMESTAMP()"
+    },
+    {
+      "name": "RATING_222_ATTR_1",
+      "type": "DATE",
+      "nullable": false,
+      "description": "This column captures the specific date with no time offset details associated with an event or occurrence related to the rating attributes in the dataset. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "REVIEW_222_ATTR_2",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column appears to record timestamp information, possibly indicating dates and times of reviews or events related to tags. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CREATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column records the exact date and time when each entry in the table was created. It captures the moment of creation automatically using the current timestamp as the default value.",
+      "default": "CURRENT_TIMESTAMP()"
+    }
+  ],
+  "primary_key": [
+    "TAG_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "TAG_ID": 1,
+      "NAME": "TAGS_202 1",
+      "DESCRIPTION": "Description for TAGS_202 1",
+      "SHIPPING_222_ATTR_0": "2025-12-12 17:27:36.944",
+      "RATING_222_ATTR_1": "2025-12-12",
+      "REVIEW_222_ATTR_2": "2025-12-12 00:00:00.000",
+      "CREATED_AT": "2025-12-12 17:27:36.944"
+    },
+    {
+      "TAG_ID": 2,
+      "NAME": "TAGS_202 2",
+      "DESCRIPTION": "Description for TAGS_202 2",
+      "SHIPPING_222_ATTR_0": "2025-12-12 17:27:36.944",
+      "RATING_222_ATTR_1": "2025-12-13",
+      "REVIEW_222_ATTR_2": "2025-12-13 00:00:00.000",
+      "CREATED_AT": "2025-12-12 17:27:36.944"
+    },
+    {
+      "TAG_ID": 3,
+      "NAME": "TAGS_202 3",
+      "DESCRIPTION": "Description for TAGS_202 3",
+      "SHIPPING_222_ATTR_0": "2025-12-12 17:27:36.944",
+      "RATING_222_ATTR_1": "2025-12-14",
+      "REVIEW_222_ATTR_2": "2025-12-14 00:00:00.000",
+      "CREATED_AT": "2025-12-12 17:27:36.944"
+    },
+    {
+      "TAG_ID": 4,
+      "NAME": "TAGS_202 4",
+      "DESCRIPTION": "Description for TAGS_202 4",
+      "SHIPPING_222_ATTR_0": "2025-12-12 17:27:36.944",
+      "RATING_222_ATTR_1": "2025-12-15",
+      "REVIEW_222_ATTR_2": "2025-12-15 00:00:00.000",
+      "CREATED_AT": "2025-12-12 17:27:36.944"
+    },
+    {
+      "TAG_ID": 5,
+      "NAME": "TAGS_202 5",
+      "DESCRIPTION": "Description for TAGS_202 5",
+      "SHIPPING_222_ATTR_0": "2025-12-12 17:27:36.944",
+      "RATING_222_ATTR_1": "2025-12-16",
+      "REVIEW_222_ATTR_2": "2025-12-16 00:00:00.000",
+      "CREATED_AT": "2025-12-12 17:27:36.944"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:53.894Z"
+}

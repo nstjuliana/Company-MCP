@@ -1,0 +1,138 @@
+{
+  "table": "servers",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.servers\" table in the \"synthetic_250_postgres\" database is designed to store information pertaining to server entities, uniquely identified by the \"server_id\" primary key. The table is intended to reference other tables via foreign keys, though specific relationships and column details are currently undefined, indicating incomplete integration within the data model. With no current rows or elucidated column data, its purpose appears foundational for representing server-specific data within a broader synthetic context.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "server_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "A unique identifier is assigned to each entry to distinguish individual servers. This ensures that each server can be referenced and managed distinctly within the system.",
+      "default": "nextval('synthetic.servers_server_id_seq'::regclass)"
+    },
+    {
+      "name": "asset_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "The exact purpose of this column is unclear from the available data, as there are no sample values or comments provided to indicate its business significance.",
+      "default": null
+    },
+    {
+      "name": "hostname",
+      "type": "character varying",
+      "nullable": false,
+      "description": "The column represents the unique identifier or label assigned to each server, reflecting its role or identity within a networked environment. Specifics regarding the format or naming conventions used for these identifiers are not clear from the available data.",
+      "default": null
+    },
+    {
+      "name": "ip_address",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "os",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column identifies the operating system used by each entry in the table related to servers. Purpose unclear from available data due to lack of sample values.",
+      "default": null
+    },
+    {
+      "name": "os_version",
+      "type": "character varying",
+      "nullable": true,
+      "description": "The column captures the version information for the operating system installed on the servers. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "cpu_cores",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column indicates the number of processing cores available in a server, which can impact the server's ability to handle simultaneous computational tasks. The specific role or impact of these cores in business operations is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "ram_gb",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column indicates the amount of memory, measured in gigabytes, that is allocated to a server. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "storage_gb",
+      "type": "integer",
+      "nullable": true,
+      "description": "This field likely indicates the amount of storage capacity, in gigabytes, that is associated with a server. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "environment",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "role",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Indicates the current operational state of a server, with a default state of \"running.\" Purpose unclear from available data.",
+      "default": "'running'::character varying"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This field captures the date and time when a server record is initially created. It may be left empty if the specific creation time is not available.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Records the date and time when a server entry was last modified. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "server_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_servers_asset_id",
+      "column_name": "asset_id",
+      "referenced_table": "synthetic.it_assets",
+      "referenced_column": "asset_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "servers_hostname_key",
+      "index_definition": "CREATE UNIQUE INDEX servers_hostname_key ON synthetic.servers USING btree (hostname)",
+      "columns": [
+        "hostname"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "servers_pkey",
+      "index_definition": "CREATE UNIQUE INDEX servers_pkey ON synthetic.servers USING btree (server_id)",
+      "columns": [
+        "server_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:39:30.819Z"
+}

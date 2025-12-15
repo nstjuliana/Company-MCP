@@ -1,0 +1,176 @@
+{
+  "table": "org_policies",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.org_policies` table represents a collection of organizational policies, each uniquely identified by a `policy_id`. It includes details such as policy codes, names, categories, content, and dates for effectiveness and review, which suggests its role in cataloging and managing policies over time. The table does not have relationships with other tables, indicating it functions independently within the data model.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "policy_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents unique identifiers for policies associated with an organization. Each value is incrementally assigned to ensure distinct recognition of individual policies.",
+      "default": "nextval('synthetic.org_policies_policy_id_seq'::regclass)"
+    },
+    {
+      "name": "policy_code",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely contains unique identifiers for organization policies, serving as alphanumeric codes that differentiate individual policy records. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "policy_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column represents descriptive titles or summaries associated with organizational policies, which are expressed in a verbose manner in the sample values. The specific focus or nature of these policies is not clearly discernible from the data provided.",
+      "default": null
+    },
+    {
+      "name": "category",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values suggest a wide variety of text entries, indicating this column might categorize diverse or descriptive narratives or comments related to organizational policies.",
+      "default": null
+    },
+    {
+      "name": "content",
+      "type": "text",
+      "nullable": true,
+      "description": "This column likely contains narrative or descriptive text related to various organizational policies or activities. The content appears to be a set of fragments or summaries concerning diverse topics within the organization.",
+      "default": null
+    },
+    {
+      "name": "effective_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column represents the start date from which a policy becomes valid or active. The specific date reflects the activation of an organization's policy within the Central Time Zone.",
+      "default": null
+    },
+    {
+      "name": "review_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column represents the date on which an organization's policies are scheduled for review. Based on the sample values, these reviews occur at various times throughout the year, suggesting routine policy assessments.",
+      "default": null
+    },
+    {
+      "name": "version",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column captures the current state of an organization's policy, indicating whether it is active, completed, inactive, or pending. It helps track the lifecycle stage of these policies within the organization.",
+      "default": "'active'::character varying"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a policy was created in the organization's system. The values are automatically set to the current time when a new policy is added.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a change or update was made to a record in the organization's policy data. It helps track the most recent modifications for auditing and review purposes.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "policy_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "org_policies_pkey",
+      "index_definition": "CREATE UNIQUE INDEX org_policies_pkey ON synthetic.org_policies USING btree (policy_id)",
+      "columns": [
+        "policy_id"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "org_policies_policy_code_key",
+      "index_definition": "CREATE UNIQUE INDEX org_policies_policy_code_key ON synthetic.org_policies USING btree (policy_code)",
+      "columns": [
+        "policy_code"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "policy_id": 1,
+      "policy_code": "FSUZFMPFVP",
+      "policy_name": "Cultural approach artist development couple speak. Act kid because Republican throw. Yourself scienc...",
+      "category": "Word herself past admit time thousand. Player civil economic son but movie individual.",
+      "content": "Product plant two water. Manage set necessary lay region citizen.",
+      "effective_date": "2024-01-03T06:00:00.000Z",
+      "review_date": "2025-11-12T06:00:00.000Z",
+      "version": "Recent major while.",
+      "status": "active",
+      "created_at": "2025-12-13T08:54:10.018Z",
+      "updated_at": "2025-12-13T08:54:10.018Z"
+    },
+    {
+      "policy_id": 2,
+      "policy_code": "RJVNFVIQZM",
+      "policy_name": "Vote certain glass far control response and. This sort age upon trial way human. Analysis need commu...",
+      "category": "Son test new across. Lot operation program language think.",
+      "content": "Key night open third whatever. Listen policy star former determine price.",
+      "effective_date": "2024-09-24T05:00:00.000Z",
+      "review_date": "2023-12-17T06:00:00.000Z",
+      "version": "Only especially.",
+      "status": "active",
+      "created_at": "2025-12-13T08:54:10.018Z",
+      "updated_at": "2025-12-13T08:54:10.018Z"
+    },
+    {
+      "policy_id": 3,
+      "policy_code": "GWHZOHVXAZ",
+      "policy_name": "Read chance through happen professional production. Their city town response. Set book despite.\nDeci...",
+      "category": "Whom ask player wife. Range work choose kitchen set stuff.",
+      "content": "Not deal say.",
+      "effective_date": "2025-08-01T05:00:00.000Z",
+      "review_date": "2024-01-25T06:00:00.000Z",
+      "version": "Break individual.",
+      "status": "completed",
+      "created_at": "2025-12-13T08:54:10.018Z",
+      "updated_at": "2025-12-13T08:54:10.018Z"
+    },
+    {
+      "policy_id": 4,
+      "policy_code": "MCFWVUKEPO",
+      "policy_name": "Two certain modern service. Figure production cold high network.\nMind effect pressure any bar plant ...",
+      "category": "Many answer four deal. Perhaps as out check most. Impact school understand child may scene.",
+      "content": "Become city consumer employee. He local mention eye house knowledge participant strategy. Store bank...",
+      "effective_date": "2024-11-09T06:00:00.000Z",
+      "review_date": "2024-09-10T05:00:00.000Z",
+      "version": "Authority claim.",
+      "status": "inactive",
+      "created_at": "2025-12-13T08:54:10.018Z",
+      "updated_at": "2025-12-13T08:54:10.018Z"
+    },
+    {
+      "policy_id": 5,
+      "policy_code": "RSRTGYTMXK",
+      "policy_name": "Public investment every must mind. Military popular production live key. Go sister old already affec...",
+      "category": "Generation growth less by. Professional body wear.",
+      "content": "Husband billion garden possible rule maintain. Hour forget possible life. Professor charge team movi...",
+      "effective_date": "2025-06-12T05:00:00.000Z",
+      "review_date": "2025-07-08T05:00:00.000Z",
+      "version": "Think guy mention.",
+      "status": "completed",
+      "created_at": "2025-12-13T08:54:10.018Z",
+      "updated_at": "2025-12-13T08:54:10.018Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:14.759Z"
+}

@@ -1,0 +1,139 @@
+{
+  "table": "project_budgets",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.project_budgets` table captures financial details related to project budgeting, including the allocation and utilization of funds across various categories. It records the budgeted and actual amounts, providing insights into financial performance via variance calculations. The table is linked to another entity through the `project_id` foreign key, suggesting its role in tracking budgetary metrics within broader project management processes.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "budget_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column likely serves as a unique identifier for each project budget entry, ensuring that each budget can be distinctly referenced. The sequential nature of the sample values suggests it is used to maintain the order of budget records within the system.",
+      "default": "nextval('synthetic.project_budgets_budget_id_seq'::regclass)"
+    },
+    {
+      "name": "project_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents unique identifiers assigned to various projects, ensuring each project is distinctly tracked within the database.",
+      "default": null
+    },
+    {
+      "name": "category",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely represents descriptive text or labels associated with project budget categories. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "budgeted_amount",
+      "type": "numeric",
+      "nullable": false,
+      "description": "This column represents the allocated financial resources for various projects within the organization. It quantifies the expected expenditure in monetary terms for each project.",
+      "default": null
+    },
+    {
+      "name": "actual_amount",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the monetary amount that has been actually spent or used in various projects. The values reflect real expenditure figures that may vary project by project.",
+      "default": "0"
+    },
+    {
+      "name": "variance",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the differences in budgeted versus actual expenditures for various projects. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a project budget entry was created. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when each project budget entry was last modified. It reflects updates in the system and defaults to the current timestamp when the entry is created or changed.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "budget_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_project_budgets_project_id",
+      "column_name": "project_id",
+      "referenced_table": "synthetic.pm_projects",
+      "referenced_column": "project_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "project_budgets_pkey",
+      "index_definition": "CREATE UNIQUE INDEX project_budgets_pkey ON synthetic.project_budgets USING btree (budget_id)",
+      "columns": [
+        "budget_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "budget_id": 1,
+      "project_id": 72,
+      "category": "Force feeling total practice. Peace their crime where turn.",
+      "budgeted_amount": "5477.63",
+      "actual_amount": "1314.64",
+      "variance": "852.42",
+      "created_at": "2025-12-13T09:13:31.784Z",
+      "updated_at": "2025-12-13T09:13:31.784Z"
+    },
+    {
+      "budget_id": 2,
+      "project_id": 72,
+      "category": "Produce study practice radio into. Question answer good tonight future.",
+      "budgeted_amount": "8942.61",
+      "actual_amount": "7624.92",
+      "variance": "45.94",
+      "created_at": "2025-12-13T09:13:31.784Z",
+      "updated_at": "2025-12-13T09:13:31.784Z"
+    },
+    {
+      "budget_id": 3,
+      "project_id": 91,
+      "category": "Laugh cause agent edge push take. Sign go help it or home newspaper rule.",
+      "budgeted_amount": "7841.06",
+      "actual_amount": "4601.22",
+      "variance": "124.24",
+      "created_at": "2025-12-13T09:13:31.784Z",
+      "updated_at": "2025-12-13T09:13:31.784Z"
+    },
+    {
+      "budget_id": 4,
+      "project_id": 61,
+      "category": "Success much husband risk tell. Plan woman south become.",
+      "budgeted_amount": "4418.45",
+      "actual_amount": "16.75",
+      "variance": "958.03",
+      "created_at": "2025-12-13T09:13:31.784Z",
+      "updated_at": "2025-12-13T09:13:31.784Z"
+    },
+    {
+      "budget_id": 5,
+      "project_id": 63,
+      "category": "From consider view fine far development first. Resource notice also within. Major him show benefit.",
+      "budgeted_amount": "9956.98",
+      "actual_amount": "9094.98",
+      "variance": "882.15",
+      "created_at": "2025-12-13T09:13:31.784Z",
+      "updated_at": "2025-12-13T09:13:31.784Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:42:09.266Z"
+}

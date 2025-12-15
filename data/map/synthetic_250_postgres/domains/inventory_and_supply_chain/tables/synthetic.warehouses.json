@@ -1,0 +1,124 @@
+{
+  "table": "warehouses",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.warehouses\" table represents a collection of warehouse entities within the database \"synthetic_250_postgres,\" uniquely identified by the primary key \"warehouse_id.\" As the table contains no rows or column information and has no foreign key relationships, it serves as a standalone entity, possibly intended to house data about warehouses in the context of synthetic data modeling. Without any connections to other tables, the role of this table in the data model is isolated and indeterminate based on the available metadata.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "warehouse_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Unique identifier assigned to each warehouse, ensuring every entry in the table can be distinctly recognized. Purpose unclear from available data.",
+      "default": "nextval('synthetic.warehouses_warehouse_id_seq'::regclass)"
+    },
+    {
+      "name": "warehouse_code",
+      "type": "character varying",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "warehouse_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "The column represents the name assigned to each warehouse, serving as a unique identifier within the warehouse database. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "address_line1",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely represents a part of the physical location or address associated with a warehouse, capturing the primary line of address information. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "city",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This field represents the city location for the various warehouses in the system. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "state",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column represents the location state associated with the warehouses, which helps identify their geographical regions. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "country",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column identifies the country associated with each warehouse. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "postal_code",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely represents the postal identification number associated with each warehouse location, useful for addressing and geographical categorization. Purpose unclear from available data due to absence of sample values.",
+      "default": null
+    },
+    {
+      "name": "capacity_sqft",
+      "type": "integer",
+      "nullable": true,
+      "description": "Specifies the storage capacity of a warehouse measured in square feet, which can be undefined for some entries.",
+      "default": null
+    },
+    {
+      "name": "is_active",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether a warehouse is currently operational or not, with a default assumption as operational unless specified otherwise.",
+      "default": "true"
+    },
+    {
+      "name": "manager_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "The column likely designates the identification number of the individual responsible for managing warehouse operations. Purpose unclear from available data due to the absence of sample values.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a warehouse record is initially created, aiding in tracking the establishment history of entries. It may enhance reporting and auditing processes by supplying temporal context.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Records the date and time when each warehouse entry was last updated. This timestamp facilitates tracking changes to warehouse information over time.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "warehouse_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "warehouses_pkey",
+      "index_definition": "CREATE UNIQUE INDEX warehouses_pkey ON synthetic.warehouses USING btree (warehouse_id)",
+      "columns": [
+        "warehouse_id"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "warehouses_warehouse_code_key",
+      "index_definition": "CREATE UNIQUE INDEX warehouses_warehouse_code_key ON synthetic.warehouses USING btree (warehouse_code)",
+      "columns": [
+        "warehouse_code"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:42:48.960Z"
+}

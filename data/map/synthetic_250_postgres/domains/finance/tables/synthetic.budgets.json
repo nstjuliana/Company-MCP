@@ -1,0 +1,156 @@
+{
+  "table": "budgets",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.budgets` table represents the financial budgeting records of an organization, delineated by fields such as `budget_id`, `budget_name`, and `fiscal_year`. It tracks various attributes of a budget, including `status`, the department associated (`department_id`), and approval details like `approved_by`, with timestamps for creation and updates. This standalone entity in the data model captures budget-specific details essential for financial tracking and planning within the organization, as indicated by the `approved_date` and `notes` columns.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "budget_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each record in the budgets table, ensuring a distinct reference for budget entries. It sequentially assigns an integer to new entries, starting from 1.",
+      "default": "nextval('synthetic.budgets_budget_id_seq'::regclass)"
+    },
+    {
+      "name": "budget_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column appears to represent descriptive names or labels for various budget categories or initiatives within an organization. The values suggest a wide range of activities or projects with elements of finance, education, operations, and general management.",
+      "default": null
+    },
+    {
+      "name": "fiscal_year",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents the fiscal year associated with budgetary allocations or transactions. Each value denotes the calendar year in which the fiscal period occurs.",
+      "default": null
+    },
+    {
+      "name": "department_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents unique numerical identifiers assigned to various departments within an organization. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "The column represents the current state of a budget, indicating whether it is active, completed, inactive, cancelled, or pending. It appears to track the progress and validity of a budget within the business process.",
+      "default": "'draft'::character varying"
+    },
+    {
+      "name": "approved_by",
+      "type": "integer",
+      "nullable": true,
+      "description": "The column likely represents unique identifiers of individuals responsible for approving budget entries. Purpose unclear from available data without more context on value assignments.",
+      "default": null
+    },
+    {
+      "name": "approved_date",
+      "type": "date",
+      "nullable": true,
+      "description": "Dates on which budget approvals were granted, with no specific patterns indicating seasonal or cyclical influence. The column may not always have a value if an approval date is not applicable or yet to be determined.",
+      "default": null
+    },
+    {
+      "name": "notes",
+      "type": "text",
+      "nullable": true,
+      "description": "This column contains textual descriptions or notes related to budget entries, possibly capturing qualitative observations or contextual information. The purpose of these notes is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column indicates the date and time when a budget entry is created, defaulting to the current timestamp if no specific creation time is provided. The times are recorded according to the Central Standard Time zone.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This timestamp likely indicates when a record in the budgets table was last modified. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "budget_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "budgets_pkey",
+      "index_definition": "CREATE UNIQUE INDEX budgets_pkey ON synthetic.budgets USING btree (budget_id)",
+      "columns": [
+        "budget_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "budget_id": 1,
+      "budget_name": "Congress ahead financial close employee from. Control personal challenge think age guess. Officer bl...",
+      "fiscal_year": 2021,
+      "department_id": 3377,
+      "status": "active",
+      "approved_by": 1654,
+      "approved_date": "2025-11-18T06:00:00.000Z",
+      "notes": "Expert cultural act big. Speech member water wait officer.",
+      "created_at": "2025-12-13T08:54:45.290Z",
+      "updated_at": "2025-12-13T08:54:45.290Z"
+    },
+    {
+      "budget_id": 2,
+      "budget_name": "Although probably spend again our rock natural. Not development successful author election official ...",
+      "fiscal_year": 2024,
+      "department_id": 551,
+      "status": "completed",
+      "approved_by": 9795,
+      "approved_date": "2024-12-11T06:00:00.000Z",
+      "notes": "Reason perhaps defense set whether wrong officer. Discover season leg.",
+      "created_at": "2025-12-13T08:54:45.290Z",
+      "updated_at": "2025-12-13T08:54:45.290Z"
+    },
+    {
+      "budget_id": 3,
+      "budget_name": "Discussion message test education bed. Close traditional simple individual rate. Thought player but ...",
+      "fiscal_year": 2025,
+      "department_id": 798,
+      "status": "inactive",
+      "approved_by": 725,
+      "approved_date": "2024-06-11T05:00:00.000Z",
+      "notes": "Attorney upon ten concern difficult break. Leader western education list receive huge box event. For...",
+      "created_at": "2025-12-13T08:54:45.290Z",
+      "updated_at": "2025-12-13T08:54:45.290Z"
+    },
+    {
+      "budget_id": 4,
+      "budget_name": "Worry buy large majority even hospital student. Special enjoy dinner similar himself responsibility ...",
+      "fiscal_year": 2023,
+      "department_id": 7192,
+      "status": "inactive",
+      "approved_by": 8844,
+      "approved_date": "2024-10-06T05:00:00.000Z",
+      "notes": "Could ever but of step pass purpose. Mr from myself material. Budget tough always war list.",
+      "created_at": "2025-12-13T08:54:45.290Z",
+      "updated_at": "2025-12-13T08:54:45.290Z"
+    },
+    {
+      "budget_id": 5,
+      "budget_name": "Wide response movement kid information. Rest with second card style yeah. Paper throw upon six citiz...",
+      "fiscal_year": 2021,
+      "department_id": 925,
+      "status": "inactive",
+      "approved_by": 8256,
+      "approved_date": "2024-12-24T06:00:00.000Z",
+      "notes": "Method start wear place reason analysis off fill. Six little month whether official eye policy name....",
+      "created_at": "2025-12-13T08:54:45.290Z",
+      "updated_at": "2025-12-13T08:54:45.290Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:40:03.705Z"
+}

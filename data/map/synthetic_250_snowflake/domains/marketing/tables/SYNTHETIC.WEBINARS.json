@@ -1,0 +1,111 @@
+{
+  "table": "WEBINARS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The table SYNTHETIC.WEBINARS represents a collection of webinar records, each uniquely identified by the WEBINAR_ID primary key. Each entry in the table provides details about a specific webinar, including its name and description, along with several attribute fields (such as CAMPAIGN_136_ATTR_0 and WEBINAR_136_ATTR_1) possibly used for categorization or additional configuration. As there are no foreign keys or references from other tables, this table appears to function independently within the database, primarily serving as a repository of webinar information.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "WEBINAR_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column uniquely identifies each webinar in the database. The sequential numeric values suggest that it tracks the order in which webinars are recorded.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column represents the naming or labeling of different webinars, indicated by their sequential numbering. It appears to reflect a series or catalog of webinar events.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains textual summaries or titles for specific webinars, likely indicating their content or topic. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CAMPAIGN_136_ATTR_0",
+      "type": "BOOLEAN",
+      "nullable": false,
+      "description": "This column indicates whether a specific attribute related to campaign 136 was present during webinars. It consistently captures a yes or no condition for each instance.",
+      "default": null
+    },
+    {
+      "name": "WEBINAR_136_ATTR_1",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CAMPAIGN_136_ATTR_2",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "WEBINAR_136_ATTR_3",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "This column likely indicates a binary status or preference associated with webinars, such as availability or a specific feature being enabled or disabled. Purpose unclear from available data.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "WEBINAR_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "WEBINAR_ID": 1,
+      "NAME": "WEBINARS 1",
+      "DESCRIPTION": "Description for WEBINARS 1",
+      "CAMPAIGN_136_ATTR_0": true,
+      "WEBINAR_136_ATTR_1": "Sample WEBINAR_136_ATTR_1 1",
+      "CAMPAIGN_136_ATTR_2": "Sample CAMPAIGN_136_ATTR_2 1",
+      "WEBINAR_136_ATTR_3": true
+    },
+    {
+      "WEBINAR_ID": 2,
+      "NAME": "WEBINARS 2",
+      "DESCRIPTION": "Description for WEBINARS 2",
+      "CAMPAIGN_136_ATTR_0": false,
+      "WEBINAR_136_ATTR_1": "Sample WEBINAR_136_ATTR_1 2",
+      "CAMPAIGN_136_ATTR_2": "Sample CAMPAIGN_136_ATTR_2 2",
+      "WEBINAR_136_ATTR_3": false
+    },
+    {
+      "WEBINAR_ID": 3,
+      "NAME": "WEBINARS 3",
+      "DESCRIPTION": "Description for WEBINARS 3",
+      "CAMPAIGN_136_ATTR_0": true,
+      "WEBINAR_136_ATTR_1": "Sample WEBINAR_136_ATTR_1 3",
+      "CAMPAIGN_136_ATTR_2": "Sample CAMPAIGN_136_ATTR_2 3",
+      "WEBINAR_136_ATTR_3": true
+    },
+    {
+      "WEBINAR_ID": 4,
+      "NAME": "WEBINARS 4",
+      "DESCRIPTION": "Description for WEBINARS 4",
+      "CAMPAIGN_136_ATTR_0": false,
+      "WEBINAR_136_ATTR_1": "Sample WEBINAR_136_ATTR_1 4",
+      "CAMPAIGN_136_ATTR_2": "Sample CAMPAIGN_136_ATTR_2 4",
+      "WEBINAR_136_ATTR_3": false
+    },
+    {
+      "WEBINAR_ID": 5,
+      "NAME": "WEBINARS 5",
+      "DESCRIPTION": "Description for WEBINARS 5",
+      "CAMPAIGN_136_ATTR_0": true,
+      "WEBINAR_136_ATTR_1": "Sample WEBINAR_136_ATTR_1 5",
+      "CAMPAIGN_136_ATTR_2": "Sample CAMPAIGN_136_ATTR_2 5",
+      "WEBINAR_136_ATTR_3": true
+    }
+  ],
+  "generated_at": "2025-12-14T23:42:40.782Z"
+}

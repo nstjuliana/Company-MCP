@@ -1,0 +1,111 @@
+{
+  "table": "RESOLUTIONS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.RESOLUTIONS table represents the business entity of resolution records within a synthetic database, with unique identifiers for each resolution as indicated by the primary key column RESOLUTION_ID. Each resolution includes detailed attributes such as a unique name, description, and various escalation and interaction metrics, and survey completion status, as seen in the sample data. With no relationships to or from other tables, this table appears to be a standalone entity within the data model, possibly used for tracking and managing resolution processes or statuses.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "RESOLUTION_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents unique identifiers assigned to each resolution within the system, ensuring each has a distinct reference. Purpose unclear from available data beyond identifying resolutions.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column likely represents a numbered list or series of resolution identifiers used to distinguish between different resolutions. The purpose of these identifiers is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains textual descriptions providing additional information for specific resolution records in the database. The purpose of these descriptions is to offer context or clarification about the resolutions, though the exact nature of this information is not specified in the sample values.",
+      "default": null
+    },
+    {
+      "name": "ESCALATION_157_ATTR_0",
+      "type": "DATE",
+      "nullable": true,
+      "description": "This column records the date on which a particular escalation process is set to begin or occur. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "ESCALATION_157_ATTR_1",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "INTERACTION_157_ATTR_2",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "SURVEY_157_ATTR_3",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "This column likely represents a binary response, such as a yes/no answer, related to a specific aspect of survey 157. The precise nature of the attribute measured is unclear from the available data.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "RESOLUTION_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "RESOLUTION_ID": 1,
+      "NAME": "RESOLUTIONS 1",
+      "DESCRIPTION": "Description for RESOLUTIONS 1",
+      "ESCALATION_157_ATTR_0": "2025-12-12",
+      "ESCALATION_157_ATTR_1": "Sample ESCALATION_157_ATTR_1 1",
+      "INTERACTION_157_ATTR_2": "Sample INTERACTION_157_ATTR_2 1",
+      "SURVEY_157_ATTR_3": true
+    },
+    {
+      "RESOLUTION_ID": 2,
+      "NAME": "RESOLUTIONS 2",
+      "DESCRIPTION": "Description for RESOLUTIONS 2",
+      "ESCALATION_157_ATTR_0": "2025-12-13",
+      "ESCALATION_157_ATTR_1": "Sample ESCALATION_157_ATTR_1 2",
+      "INTERACTION_157_ATTR_2": "Sample INTERACTION_157_ATTR_2 2",
+      "SURVEY_157_ATTR_3": false
+    },
+    {
+      "RESOLUTION_ID": 3,
+      "NAME": "RESOLUTIONS 3",
+      "DESCRIPTION": "Description for RESOLUTIONS 3",
+      "ESCALATION_157_ATTR_0": "2025-12-14",
+      "ESCALATION_157_ATTR_1": "Sample ESCALATION_157_ATTR_1 3",
+      "INTERACTION_157_ATTR_2": "Sample INTERACTION_157_ATTR_2 3",
+      "SURVEY_157_ATTR_3": true
+    },
+    {
+      "RESOLUTION_ID": 4,
+      "NAME": "RESOLUTIONS 4",
+      "DESCRIPTION": "Description for RESOLUTIONS 4",
+      "ESCALATION_157_ATTR_0": "2025-12-15",
+      "ESCALATION_157_ATTR_1": "Sample ESCALATION_157_ATTR_1 4",
+      "INTERACTION_157_ATTR_2": "Sample INTERACTION_157_ATTR_2 4",
+      "SURVEY_157_ATTR_3": false
+    },
+    {
+      "RESOLUTION_ID": 5,
+      "NAME": "RESOLUTIONS 5",
+      "DESCRIPTION": "Description for RESOLUTIONS 5",
+      "ESCALATION_157_ATTR_0": "2025-12-16",
+      "ESCALATION_157_ATTR_1": "Sample ESCALATION_157_ATTR_1 5",
+      "INTERACTION_157_ATTR_2": "Sample INTERACTION_157_ATTR_2 5",
+      "SURVEY_157_ATTR_3": true
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:49.909Z"
+}

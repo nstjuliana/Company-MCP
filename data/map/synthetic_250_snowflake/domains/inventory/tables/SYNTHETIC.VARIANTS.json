@@ -1,0 +1,147 @@
+{
+  "table": "VARIANTS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The table \"SYNTHETIC.VARIANTS\" represents a data model for product variants cataloging, as indicated by columns like \"NAME,\" \"DESCRIPTION,\" and \"STATUS,\" with \"VARIANT_ID\" serving as the primary key. Notably, the table stands independently with no defined relationships to or from other tables, suggesting its use as a standalone resource or lookup table. The columns such as \"CHECKOUT_200_ATTR_0,\" \"REVIEW_200_ATTR_3,\" and timestamp fields like \"UPDATED_AT\" imply a focus on product attributes and tracking updates within a transactional or review-related context.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "VARIANT_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each variant in the dataset. Each number sequentially differentiates one variant from another within the collection.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column represents a sequential identification label for different variants in a dataset, as indicated by the incrementing numbers following the word \"VARIANTS.\" Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains textual descriptions associated with different variants. The purpose of the descriptions is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "CHECKOUT_200_ATTR_0",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "REVIEW_200_ATTR_1",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column appears to represent a numeric code associated with a review attribute, which could correlate with a specific characteristic or category of a review. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CHECKOUT_200_ATTR_2",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "REVIEW_200_ATTR_3",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "This column indicates whether a specific variant has passed a certain review process. Purpose unclear from available data.",
+      "default": "FALSE"
+    },
+    {
+      "name": "CART_200_ATTR_4",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column records specific dates and times, likely representing scheduled events or milestones in a business process, as evidenced by the sequential daily timestamps provided in the sample. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "UPDATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column indicates the date and time when a particular entry in the table was last updated. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "STATUS",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column likely indicates the operational state or availability of a variant, with all observed instances being currently operational. Purpose unclear from available data.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "VARIANT_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "VARIANT_ID": 1,
+      "NAME": "VARIANTS 1",
+      "DESCRIPTION": "Description for VARIANTS 1",
+      "CHECKOUT_200_ATTR_0": "Sample CHECKOUT_200_ATTR_0 1",
+      "REVIEW_200_ATTR_1": null,
+      "CHECKOUT_200_ATTR_2": null,
+      "REVIEW_200_ATTR_3": true,
+      "CART_200_ATTR_4": "2025-12-12 00:00:00.000",
+      "UPDATED_AT": "2026-01-11 00:00:00.000",
+      "STATUS": "ACTIVE"
+    },
+    {
+      "VARIANT_ID": 2,
+      "NAME": "VARIANTS 2",
+      "DESCRIPTION": "Description for VARIANTS 2",
+      "CHECKOUT_200_ATTR_0": "Sample CHECKOUT_200_ATTR_0 2",
+      "REVIEW_200_ATTR_1": 101,
+      "CHECKOUT_200_ATTR_2": 101,
+      "REVIEW_200_ATTR_3": false,
+      "CART_200_ATTR_4": "2025-12-13 00:00:00.000",
+      "UPDATED_AT": "2026-01-12 00:00:00.000",
+      "STATUS": "ACTIVE"
+    },
+    {
+      "VARIANT_ID": 3,
+      "NAME": "VARIANTS 3",
+      "DESCRIPTION": "Description for VARIANTS 3",
+      "CHECKOUT_200_ATTR_0": "Sample CHECKOUT_200_ATTR_0 3",
+      "REVIEW_200_ATTR_1": 102,
+      "CHECKOUT_200_ATTR_2": 102,
+      "REVIEW_200_ATTR_3": true,
+      "CART_200_ATTR_4": "2025-12-14 00:00:00.000",
+      "UPDATED_AT": "2026-01-13 00:00:00.000",
+      "STATUS": "ACTIVE"
+    },
+    {
+      "VARIANT_ID": 4,
+      "NAME": "VARIANTS 4",
+      "DESCRIPTION": "Description for VARIANTS 4",
+      "CHECKOUT_200_ATTR_0": "Sample CHECKOUT_200_ATTR_0 4",
+      "REVIEW_200_ATTR_1": null,
+      "CHECKOUT_200_ATTR_2": null,
+      "REVIEW_200_ATTR_3": false,
+      "CART_200_ATTR_4": "2025-12-15 00:00:00.000",
+      "UPDATED_AT": "2026-01-14 00:00:00.000",
+      "STATUS": "ACTIVE"
+    },
+    {
+      "VARIANT_ID": 5,
+      "NAME": "VARIANTS 5",
+      "DESCRIPTION": "Description for VARIANTS 5",
+      "CHECKOUT_200_ATTR_0": "Sample CHECKOUT_200_ATTR_0 5",
+      "REVIEW_200_ATTR_1": 104,
+      "CHECKOUT_200_ATTR_2": 104,
+      "REVIEW_200_ATTR_3": true,
+      "CART_200_ATTR_4": "2025-12-16 00:00:00.000",
+      "UPDATED_AT": "2026-01-15 00:00:00.000",
+      "STATUS": "ACTIVE"
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:55.856Z"
+}

@@ -1,0 +1,99 @@
+{
+  "table": "QUERIES",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.QUERIES table represents a collection of queries in the synthetic database, uniquely identified by QUERIE_ID, each with an associated name and description. The table contains attributes related to reports, such as REPORT_176_ATTR_1 and REPORT_176_ATTR_2, which could represent additional metadata or categorization details, like dates or identifiers. This standalone table does not reference or is referenced by other tables, suggesting it functions independently within the data model to catalog and describe queries, likely for organizational or reporting purposes.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "QUERIE_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents a unique identifier assigned sequentially to each query entry within the database. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column represents a sequence of query identifiers, each incremented numerically. The purpose is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains textual descriptions corresponding to query entries in the table, offering brief identifiers or summaries for each query.",
+      "default": null
+    },
+    {
+      "name": "QUERY_176_ATTR_0",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "Purpose unclear from available data, but it appears to be a sequence or identifier based on the numeric sample values provided.",
+      "default": null
+    },
+    {
+      "name": "REPORT_176_ATTR_1",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "REPORT_176_ATTR_2",
+      "type": "DATE",
+      "nullable": false,
+      "description": "This column likely signifies specific dates that are important for the execution or consideration of certain business processes, with entries occurring sequentially over continuous days. The precise context or event these dates relate to is unclear from the available data.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "QUERIE_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "QUERIE_ID": 1,
+      "NAME": "QUERIES 1",
+      "DESCRIPTION": "Description for QUERIES 1",
+      "QUERY_176_ATTR_0": null,
+      "REPORT_176_ATTR_1": "Sample REPORT_176_ATTR_1 1",
+      "REPORT_176_ATTR_2": "2025-12-12"
+    },
+    {
+      "QUERIE_ID": 2,
+      "NAME": "QUERIES 2",
+      "DESCRIPTION": "Description for QUERIES 2",
+      "QUERY_176_ATTR_0": 101,
+      "REPORT_176_ATTR_1": "Sample REPORT_176_ATTR_1 2",
+      "REPORT_176_ATTR_2": "2025-12-13"
+    },
+    {
+      "QUERIE_ID": 3,
+      "NAME": "QUERIES 3",
+      "DESCRIPTION": "Description for QUERIES 3",
+      "QUERY_176_ATTR_0": 102,
+      "REPORT_176_ATTR_1": "Sample REPORT_176_ATTR_1 3",
+      "REPORT_176_ATTR_2": "2025-12-14"
+    },
+    {
+      "QUERIE_ID": 4,
+      "NAME": "QUERIES 4",
+      "DESCRIPTION": "Description for QUERIES 4",
+      "QUERY_176_ATTR_0": null,
+      "REPORT_176_ATTR_1": "Sample REPORT_176_ATTR_1 4",
+      "REPORT_176_ATTR_2": "2025-12-15"
+    },
+    {
+      "QUERIE_ID": 5,
+      "NAME": "QUERIES 5",
+      "DESCRIPTION": "Description for QUERIES 5",
+      "QUERY_176_ATTR_0": 104,
+      "REPORT_176_ATTR_1": "Sample REPORT_176_ATTR_1 5",
+      "REPORT_176_ATTR_2": "2025-12-16"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:49.864Z"
+}

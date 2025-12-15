@@ -1,0 +1,163 @@
+{
+  "table": "sales_order_lines",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.sales_order_lines` table represents individual line items within sales orders, capturing each item’s specifics such as product, quantity, unit price, and discounts applied, as indicated by columns like `product_id`, `quantity`, and `unit_price`. It references another table for sales order details through the `sales_order_id` column, indicating its role in detailing each component of a multi-item sales transaction. The table is designed to enable tracking of the specifics of each sale line, as seen in the sample values like product names and the financial calculations involved in discounts and totals.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "so_line_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each line item within a sales order. Each value is a sequential identifier starting from one.",
+      "default": "nextval('synthetic.sales_order_lines_so_line_id_seq'::regclass)"
+    },
+    {
+      "name": "sales_order_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier assigned to each sales order line to track individual transactions within the synthetic sales order system. The purpose is to ensure each sales order line can be distinctly recognized and referenced.",
+      "default": null
+    },
+    {
+      "name": "product_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents identifiers for different products associated with sales order lines. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "product_name",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely represents descriptions or notes related to various products in sales order lines, capturing contextual or promotional information about each item. The specific purpose of these entries is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "quantity",
+      "type": "numeric",
+      "nullable": false,
+      "description": "This column represents the quantity of items associated with each line in a sales order, expressed in numerical values. The specific unit of measurement for these quantities is not specified within the available data.",
+      "default": null
+    },
+    {
+      "name": "unit_price",
+      "type": "numeric",
+      "nullable": false,
+      "description": "This column represents the price charged per individual unit of a product or service associated with a sales order line item. The sample values suggest relatively high-priced items, possibly indicating a business dealing in luxury or high-value products.",
+      "default": null
+    },
+    {
+      "name": "discount",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the monetary value deducted from the total sales order amount as a discount for each order line. It accounts for the reduction in price granted to enhance sales or accommodate customer agreements.",
+      "default": "0"
+    },
+    {
+      "name": "line_total",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the monetary total amount of an individual sales order line, reflecting the total cost associated with a particular order item. The values denote the accumulated cost in a currency format within a sales transaction, contributing to the overall order value.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when each sales order line was created. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a sales order line was last updated. The consistent sample values suggest it may be used to track changes or modifications to the order details.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "so_line_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_sales_order_lines_sales_order_id",
+      "column_name": "sales_order_id",
+      "referenced_table": "synthetic.sales_orders",
+      "referenced_column": "sales_order_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "sales_order_lines_pkey",
+      "index_definition": "CREATE UNIQUE INDEX sales_order_lines_pkey ON synthetic.sales_order_lines USING btree (so_line_id)",
+      "columns": [
+        "so_line_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "so_line_id": 1,
+      "sales_order_id": 44,
+      "product_id": 32,
+      "product_name": "Evidence new line could. Board movie sister book movie important.",
+      "quantity": "241.94",
+      "unit_price": "4892.98",
+      "discount": "446.10",
+      "line_total": "960.52",
+      "created_at": "2025-12-13T09:18:34.897Z",
+      "updated_at": "2025-12-13T09:18:34.897Z"
+    },
+    {
+      "so_line_id": 2,
+      "sales_order_id": 31,
+      "product_id": 601,
+      "product_name": "Upon ask environment. Financial sense section. Result maintain event student week focus.",
+      "quantity": "551.33",
+      "unit_price": "3449.05",
+      "discount": "837.65",
+      "line_total": "258.66",
+      "created_at": "2025-12-13T09:18:34.897Z",
+      "updated_at": "2025-12-13T09:18:34.897Z"
+    },
+    {
+      "so_line_id": 3,
+      "sales_order_id": 45,
+      "product_id": 93,
+      "product_name": "Market career simple score.",
+      "quantity": "285.07",
+      "unit_price": "3871.79",
+      "discount": "162.91",
+      "line_total": "572.26",
+      "created_at": "2025-12-13T09:18:34.897Z",
+      "updated_at": "2025-12-13T09:18:34.897Z"
+    },
+    {
+      "so_line_id": 4,
+      "sales_order_id": 14,
+      "product_id": 878,
+      "product_name": "Garden according agent partner show pay ball.",
+      "quantity": "221.35",
+      "unit_price": "2258.87",
+      "discount": "206.73",
+      "line_total": "651.59",
+      "created_at": "2025-12-13T09:18:34.897Z",
+      "updated_at": "2025-12-13T09:18:34.897Z"
+    },
+    {
+      "so_line_id": 5,
+      "sales_order_id": 33,
+      "product_id": 21,
+      "product_name": "Actually issue stage in. Practice as cell surface. American southern possible as still.",
+      "quantity": "864.63",
+      "unit_price": "9671.71",
+      "discount": "682.20",
+      "line_total": "474.10",
+      "created_at": "2025-12-13T09:18:34.897Z",
+      "updated_at": "2025-12-13T09:18:34.897Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:42:01.208Z"
+}

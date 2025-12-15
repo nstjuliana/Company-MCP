@@ -1,0 +1,111 @@
+{
+  "table": "VISUALIZATIONS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.VISUALIZATIONS table represents an entity that stores information about different visual representations or charts within a business intelligence context, identifiable by a unique VISUALIZATION_ID. Each visualization has associated metadata such as a NAME, DESCRIPTION, and attributes like KPI_177_ATTR_0, KPI_177_ATTR_1, and DASHBOARD_177_ATTR_2, which might relate to specific performance indicators or dashboard features. The table functions independently within the data model, as indicated by the lack of foreign key relationships, and includes a CREATED_AT timestamp marking the creation date and time of each visualization record.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "VISUALIZATION_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column assigns a unique identifier to each visualization record in the table, ensuring each entry is distinct for tracking and management purposes. The purpose beyond identity assignment is unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column represents the sequential naming of visualization items, likely indicating a straightforward or generic naming pattern for a series of visual elements or reports. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains textual descriptions of various visualization entities. Each entry appears to be a sequentially numbered label associated with a distinct visualization.",
+      "default": null
+    },
+    {
+      "name": "KPI_177_ATTR_0",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column contains a series of labeled sample values that appear to be generic placeholders or indicators, possibly for testing or demonstration purposes within visualizations. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "KPI_177_ATTR_1",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values suggest a generic or placeholder text potentially meant for testing or illustrative purposes.",
+      "default": null
+    },
+    {
+      "name": "DASHBOARD_177_ATTR_2",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The column contains sample textual entries labelled sequentially, suggesting it might hold descriptions or identifiers related to visualizations, but specific context is not evident.",
+      "default": null
+    },
+    {
+      "name": "CREATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column records the date and time when each entry in the visualizations table was created. It captures timestamps in the Central Standard Time zone and is not intended to be null.",
+      "default": "CURRENT_TIMESTAMP()"
+    }
+  ],
+  "primary_key": [
+    "VISUALIZATION_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "VISUALIZATION_ID": 1,
+      "NAME": "VISUALIZATIONS 1",
+      "DESCRIPTION": "Description for VISUALIZATIONS 1",
+      "KPI_177_ATTR_0": "Sample KPI_177_ATTR_0 1",
+      "KPI_177_ATTR_1": "Sample KPI_177_ATTR_1 1",
+      "DASHBOARD_177_ATTR_2": "Sample DASHBOARD_177_ATTR_2 1",
+      "CREATED_AT": "2025-12-12 17:27:46.785"
+    },
+    {
+      "VISUALIZATION_ID": 2,
+      "NAME": "VISUALIZATIONS 2",
+      "DESCRIPTION": "Description for VISUALIZATIONS 2",
+      "KPI_177_ATTR_0": "Sample KPI_177_ATTR_0 2",
+      "KPI_177_ATTR_1": "Sample KPI_177_ATTR_1 2",
+      "DASHBOARD_177_ATTR_2": "Sample DASHBOARD_177_ATTR_2 2",
+      "CREATED_AT": "2025-12-12 17:27:46.785"
+    },
+    {
+      "VISUALIZATION_ID": 3,
+      "NAME": "VISUALIZATIONS 3",
+      "DESCRIPTION": "Description for VISUALIZATIONS 3",
+      "KPI_177_ATTR_0": "Sample KPI_177_ATTR_0 3",
+      "KPI_177_ATTR_1": "Sample KPI_177_ATTR_1 3",
+      "DASHBOARD_177_ATTR_2": "Sample DASHBOARD_177_ATTR_2 3",
+      "CREATED_AT": "2025-12-12 17:27:46.785"
+    },
+    {
+      "VISUALIZATION_ID": 4,
+      "NAME": "VISUALIZATIONS 4",
+      "DESCRIPTION": "Description for VISUALIZATIONS 4",
+      "KPI_177_ATTR_0": "Sample KPI_177_ATTR_0 4",
+      "KPI_177_ATTR_1": "Sample KPI_177_ATTR_1 4",
+      "DASHBOARD_177_ATTR_2": "Sample DASHBOARD_177_ATTR_2 4",
+      "CREATED_AT": "2025-12-12 17:27:46.785"
+    },
+    {
+      "VISUALIZATION_ID": 5,
+      "NAME": "VISUALIZATIONS 5",
+      "DESCRIPTION": "Description for VISUALIZATIONS 5",
+      "KPI_177_ATTR_0": "Sample KPI_177_ATTR_0 5",
+      "KPI_177_ATTR_1": "Sample KPI_177_ATTR_1 5",
+      "DASHBOARD_177_ATTR_2": "Sample DASHBOARD_177_ATTR_2 5",
+      "CREATED_AT": "2025-12-12 17:27:46.785"
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:18.006Z"
+}

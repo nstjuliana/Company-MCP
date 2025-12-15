@@ -1,0 +1,115 @@
+{
+  "table": "app_server_map",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.app_server_map` table likely represents the association between applications and servers, detailing which application is hosted on which server within certain environments. Through the primary key `map_id`, it relates application identifiers (`app_id`) and server identifiers (`server_id`) alongside metadata such as `environment`, `created_at`, and `updated_at` timestamps, though it is unclear which specific table provides source references due to undefined foreign keys. Despite containing no data currently, it serves as a mapping table crucial for understanding the deployment of applications across various servers in different environments.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "map_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column assigns a unique identifier to each entry in the relational mapping between applications and servers, ensuring that each mapping can be distinctly referenced. The values are auto-incremented, indicating a sequential assignment for new mappings within the dataset.",
+      "default": "nextval('synthetic.app_server_map_map_id_seq'::regclass)"
+    },
+    {
+      "name": "app_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for different applications mapped to servers. It ensures distinct tracking and management of applications within the server environment.",
+      "default": null
+    },
+    {
+      "name": "server_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column likely represents a unique identifier for servers within a specified application server mapping context. The repeating values suggest a limited set of servers mapped to entries in the table.",
+      "default": null
+    },
+    {
+      "name": "environment",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The column appears to contain random sentences or phrases not indicative of a specific business context.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an entry in the application server map was created. It defaults to the present time when the record is inserted, but its specific purpose is unclear from the available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "The column records the date and time when each entry in the table was last modified, defaulting to the current timestamp if no other value is provided. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "map_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_app_server_map_app_id",
+      "column_name": "app_id",
+      "referenced_table": "synthetic.applications",
+      "referenced_column": "app_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "app_server_map_pkey",
+      "index_definition": "CREATE UNIQUE INDEX app_server_map_pkey ON synthetic.app_server_map USING btree (map_id)",
+      "columns": [
+        "map_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "map_id": 1,
+      "app_id": 42,
+      "server_id": 2,
+      "environment": "Such night check station message window.",
+      "created_at": "2025-12-13T09:15:50.127Z",
+      "updated_at": "2025-12-13T09:15:50.127Z"
+    },
+    {
+      "map_id": 2,
+      "app_id": 44,
+      "server_id": 2,
+      "environment": "Remain son center media shake.",
+      "created_at": "2025-12-13T09:15:50.127Z",
+      "updated_at": "2025-12-13T09:15:50.127Z"
+    },
+    {
+      "map_id": 3,
+      "app_id": 2,
+      "server_id": 1,
+      "environment": "Away phone coach term.",
+      "created_at": "2025-12-13T09:15:50.127Z",
+      "updated_at": "2025-12-13T09:15:50.127Z"
+    },
+    {
+      "map_id": 4,
+      "app_id": 17,
+      "server_id": 1,
+      "environment": "Special tend hour serve five white.",
+      "created_at": "2025-12-13T09:15:50.127Z",
+      "updated_at": "2025-12-13T09:15:50.127Z"
+    },
+    {
+      "map_id": 5,
+      "app_id": 38,
+      "server_id": 2,
+      "environment": "Minute something reach program.",
+      "created_at": "2025-12-13T09:15:50.127Z",
+      "updated_at": "2025-12-13T09:15:50.127Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:10.603Z"
+}

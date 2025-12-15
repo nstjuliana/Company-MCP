@@ -33,7 +33,12 @@ mcp = FastMCP("Database Context Server")
 
 BASE_DIR = Path(__file__).resolve().parent
 DATA_MAP_PATH = BASE_DIR / "data" / "map"
+SFTP_DATA_PATH = BASE_DIR / "data" / "sftp-markdown-files"
 DB_PATH = BASE_DIR / "data" / "index" / "index.db"
+
+# Configuration: Only use synthetic databases from SFTP
+# The system ONLY uses synthetic_250_snowflake and synthetic_250_postgres
+USE_SFTP_DATABASES = True  # Always use SFTP for synthetic databases
 
 # OpenAI embedding configuration
 EMBEDDING_MODEL = "text-embedding-3-small"
@@ -56,15 +61,34 @@ def _load_json(path: Path) -> Any:
 def _db_path_to_file_path(db_path: str) -> Path:
     """
     Translate a database file_path to an actual filesystem path.
+    Supports both data/map and data/sftp-markdown-files structures.
+    
     DB stores: databases/postgres_production/domains/...
     Actual:    data/map/postgres_production/domains/...
+    OR:        data/sftp-markdown-files/{database}/domains/...
+    OR:        data/sftp-markdown-files/domains/... (for top-level domains)
     """
-    # Remove 'databases/' prefix and prepend actual data/map path
+    # Remove 'databases/' prefix if present
     if db_path.startswith("databases/"):
         relative = db_path[len("databases/"):]
     else:
         relative = db_path
-    return DATA_MAP_PATH / relative
+    
+    # Only use SFTP synthetic databases
+    # SFTP structure: {database}/domains/...
+    # Supported databases: synthetic_250_snowflake, synthetic_250_postgres
+    parts = relative.split("/")
+    if len(parts) > 0 and parts[0] in ["synthetic_250_snowflake", "synthetic_250_postgres"]:
+        # Synthetic database structure: synthetic_250_*/domains/...
+        return SFTP_DATA_PATH / relative
+    else:
+        # Try SFTP first for synthetic databases
+        sftp_path = SFTP_DATA_PATH / relative
+        if sftp_path.exists():
+            return sftp_path
+        # Fallback: try to construct path for synthetic databases
+        # If relative doesn't start with database name, assume it's a synthetic database path
+        return SFTP_DATA_PATH / relative
 
 
 def _load_map_file(db_path: str) -> Optional[Dict[str, Any]]:
@@ -858,12 +882,21 @@ def search_tables(
             continue
         seg_tokens = _segment_tokens(seg)
         overlap = len(q_tokens & seg_tokens)
-        # Light boost for substring matches in id/title/summary.
-        text_blob = " ".join(
-            [seg.get("id", ""), seg.get("title", ""), seg.get("summary", "")]
-        ).lower()
-        if any(tok in text_blob for tok in q_tokens):
-            overlap += 0.5
+        
+        # Only apply substring boost if there's at least one exact token match
+        # This prevents false positives from substring-only matches (e.g., "test" matching "testing")
+        if overlap > 0:
+            # Light boost for whole-word substring matches in id/title/summary
+            text_blob = " ".join(
+                [seg.get("id", ""), seg.get("title", ""), seg.get("summary", "")]
+            ).lower()
+            # Use word boundary matching to avoid matching substrings within words
+            for tok in q_tokens:
+                # Check if token appears as a whole word (word boundary match)
+                if re.search(r'\b' + re.escape(tok) + r'\b', text_blob):
+                    overlap += 0.3  # Smaller boost for whole-word matches
+                    break
+        
         scored.append(
             {
                 "name": seg["id"],
@@ -876,6 +909,8 @@ def search_tables(
         )
 
     scored.sort(key=lambda x: x["relevance_score"], reverse=True)
+    # Filter out results with very low relevance (< 0.1) to avoid noise
+    scored = [s for s in scored if s["relevance_score"] >= 0.1]
     results = scored[:limit]
     return {
         "tables": results,

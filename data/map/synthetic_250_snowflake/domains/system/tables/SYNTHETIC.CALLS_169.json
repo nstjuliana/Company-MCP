@@ -1,0 +1,147 @@
+{
+  "table": "CALLS_169",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The table 'SYNTHETIC.CALLS_169' represents a collection of call records within the synthetic_250_snowflake database. Each row corresponds to a unique call identified by 'CALL_ID', and includes details such as name, description, and associated dates, without any foreign key relationships to other tables. Although it stands alone in terms of relationships, the table plays a key role in tracking call activities, capturing metadata like creation time and version, important for managing and analyzing call records over time.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "CALL_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents a unique identifier assigned to each call record in the dataset. It ensures that every call entry is distinct and easily referenceable within the system.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column appears to contain sequentially labeled descriptions for entries related to calls in the dataset. The purpose of these descriptions is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "CASE_189_ATTR_0",
+      "type": "DATE",
+      "nullable": true,
+      "description": "This column likely records the date corresponding to an event or action related to cases, potentially reflecting a scheduled or logged timestamp. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "ESCALATION_189_ATTR_1",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column represents a categorical identifier associated with escalation events in a business process. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "TICKET_189_ATTR_2",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column likely represents the scheduled date and time for events or actions related to the tickets in the system, as indicated by the sample values. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CASE_189_ATTR_3",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "Represents sequential identifiers for cases or records, suggesting a unique index or reference number due to their consecutive nature. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "KNOWLEDGE_189_ATTR_4",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column appears to represent an identifier or code associated with a specific knowledge category or attribute within the context of the dataset. Its exact purpose is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "CREATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column records the date and time at which each entry in the table is created, capturing the moment of creation in the Central Standard Time zone. The data suggests it is used to track when records are added to the system.",
+      "default": "CURRENT_TIMESTAMP()"
+    },
+    {
+      "name": "VERSION",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents the sequential numbering or versioning of a particular item or event, possibly indicating iterations or updates. The numbering starts at a default value of 1 and increases incrementally with no gaps in the sample values provided.",
+      "default": "1"
+    }
+  ],
+  "primary_key": [
+    "CALL_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "CALL_ID": 1,
+      "NAME": "CALLS_169 1",
+      "DESCRIPTION": "Description for CALLS_169 1",
+      "CASE_189_ATTR_0": "2025-12-12",
+      "ESCALATION_189_ATTR_1": null,
+      "TICKET_189_ATTR_2": "2025-12-12 00:00:00.000",
+      "CASE_189_ATTR_3": 100,
+      "KNOWLEDGE_189_ATTR_4": null,
+      "CREATED_AT": "2025-12-12 17:25:45.326",
+      "VERSION": 100
+    },
+    {
+      "CALL_ID": 2,
+      "NAME": "CALLS_169 2",
+      "DESCRIPTION": "Description for CALLS_169 2",
+      "CASE_189_ATTR_0": "2025-12-13",
+      "ESCALATION_189_ATTR_1": 101,
+      "TICKET_189_ATTR_2": "2025-12-13 00:00:00.000",
+      "CASE_189_ATTR_3": 101,
+      "KNOWLEDGE_189_ATTR_4": 101,
+      "CREATED_AT": "2025-12-12 17:25:45.326",
+      "VERSION": 101
+    },
+    {
+      "CALL_ID": 3,
+      "NAME": "CALLS_169 3",
+      "DESCRIPTION": "Description for CALLS_169 3",
+      "CASE_189_ATTR_0": "2025-12-14",
+      "ESCALATION_189_ATTR_1": 102,
+      "TICKET_189_ATTR_2": "2025-12-14 00:00:00.000",
+      "CASE_189_ATTR_3": 102,
+      "KNOWLEDGE_189_ATTR_4": 102,
+      "CREATED_AT": "2025-12-12 17:25:45.326",
+      "VERSION": 102
+    },
+    {
+      "CALL_ID": 4,
+      "NAME": "CALLS_169 4",
+      "DESCRIPTION": "Description for CALLS_169 4",
+      "CASE_189_ATTR_0": "2025-12-15",
+      "ESCALATION_189_ATTR_1": null,
+      "TICKET_189_ATTR_2": "2025-12-15 00:00:00.000",
+      "CASE_189_ATTR_3": 103,
+      "KNOWLEDGE_189_ATTR_4": null,
+      "CREATED_AT": "2025-12-12 17:25:45.326",
+      "VERSION": 103
+    },
+    {
+      "CALL_ID": 5,
+      "NAME": "CALLS_169 5",
+      "DESCRIPTION": "Description for CALLS_169 5",
+      "CASE_189_ATTR_0": "2025-12-16",
+      "ESCALATION_189_ATTR_1": 104,
+      "TICKET_189_ATTR_2": "2025-12-16 00:00:00.000",
+      "CASE_189_ATTR_3": 104,
+      "KNOWLEDGE_189_ATTR_4": 104,
+      "CREATED_AT": "2025-12-12 17:25:45.326",
+      "VERSION": 104
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:38.734Z"
+}

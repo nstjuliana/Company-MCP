@@ -1,0 +1,163 @@
+{
+  "table": "emergency_contacts",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"emergency_contacts\" table in the \"synthetic\" schema appears to represent the contact details for emergency contacts associated with employees, identified by the \"employee_id\" column. It features essential information such as the contact's name, relationship to the employee, primary and secondary phone numbers, and email, serving as a crucial data point in employee emergency management, with relationships inferred to worker or employee tables potentially via the \"employee_id.\" This table's role in the data model allows for organizing and referencing emergency contacts effectively, though it currently does not explicitly relate to other tables.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "contact_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier assigned sequentially to each emergency contact entry, ensuring distinction between individual records.",
+      "default": "nextval('synthetic.emergency_contacts_contact_id_seq'::regclass)"
+    },
+    {
+      "name": "employee_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents an identifier uniquely assigned to an employee, used to associate them with emergency contact information. The repeated occurrence of certain values suggests that some employees may have multiple emergency contacts listed.",
+      "default": null
+    },
+    {
+      "name": "contact_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column represents the names of individuals who serve as emergency contacts for others, typically to be used in situations requiring prompt communication or assistance. The names reflect a diverse range of common first and last names, suggesting no specific demographic focus.",
+      "default": null
+    },
+    {
+      "name": "relationship",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "phone_primary",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column contains the primary contact phone numbers for emergency contacts, reflecting a variety of formats including extensions and international dialing codes. The purpose is to maintain a key communication channel for reaching emergency contacts.",
+      "default": null
+    },
+    {
+      "name": "phone_secondary",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column contains secondary phone numbers for emergency contacts, which can include a variety of formats such as international dialing codes, extensions, and different delimiter styles. The numbers appear to be used for contacting individuals during emergencies if the primary phone number is unavailable.",
+      "default": null
+    },
+    {
+      "name": "email",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column contains the email addresses of individuals listed as emergency contacts. These email addresses are used for contacting specific persons associated with emergency situations related to the main entity in question.",
+      "default": null
+    },
+    {
+      "name": "is_primary",
+      "type": "boolean",
+      "nullable": true,
+      "description": "This column indicates whether an emergency contact is designated as the main point of contact for a person. A value of \"true\" suggests the contact is primary, while \"false\" indicates they are not.",
+      "default": "false"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a specific emergency contact record was created. It defaults to capturing the current timestamp at the moment of record creation.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when the emergency contact information was last modified or confirmed. It helps track changes or updates to the contact details for accountability and accuracy.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "contact_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_emergency_contacts_employee_id",
+      "column_name": "employee_id",
+      "referenced_table": "synthetic.employees",
+      "referenced_column": "employee_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "emergency_contacts_pkey",
+      "index_definition": "CREATE UNIQUE INDEX emergency_contacts_pkey ON synthetic.emergency_contacts USING btree (contact_id)",
+      "columns": [
+        "contact_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "contact_id": 1,
+      "employee_id": 21,
+      "contact_name": "Anthony Rodgers",
+      "relationship": "Agent play myself bag east work miss officer.",
+      "phone_primary": "267-367-7619x52496",
+      "phone_secondary": "409.421.7645x1770",
+      "email": "angelaking@example.com",
+      "is_primary": false,
+      "created_at": "2025-12-13T09:20:37.362Z",
+      "updated_at": "2025-12-13T09:20:37.362Z"
+    },
+    {
+      "contact_id": 2,
+      "employee_id": 7,
+      "contact_name": "Elizabeth Wagner",
+      "relationship": "Key price follow couple.",
+      "phone_primary": "(984)489-8735",
+      "phone_secondary": "529.893.3570x240",
+      "email": "mgonzalez@example.net",
+      "is_primary": true,
+      "created_at": "2025-12-13T09:20:37.362Z",
+      "updated_at": "2025-12-13T09:20:37.362Z"
+    },
+    {
+      "contact_id": 3,
+      "employee_id": 1,
+      "contact_name": "James Ferguson",
+      "relationship": "Career lawyer one discussion reveal.",
+      "phone_primary": "+1-276-322-7353x3406",
+      "phone_secondary": "(763)434-0142x15634",
+      "email": "klewis@example.net",
+      "is_primary": false,
+      "created_at": "2025-12-13T09:20:37.362Z",
+      "updated_at": "2025-12-13T09:20:37.362Z"
+    },
+    {
+      "contact_id": 4,
+      "employee_id": 29,
+      "contact_name": "Catherine Robinson",
+      "relationship": "Least exist entire guy respond science.",
+      "phone_primary": "449-644-9574x21884",
+      "phone_secondary": "(438)615-1291x1647",
+      "email": "lroberts@example.net",
+      "is_primary": false,
+      "created_at": "2025-12-13T09:20:37.362Z",
+      "updated_at": "2025-12-13T09:20:37.362Z"
+    },
+    {
+      "contact_id": 5,
+      "employee_id": 49,
+      "contact_name": "Wanda Thompson",
+      "relationship": "Rock follow prepare perform month many.",
+      "phone_primary": "+1-418-634-7923x0578",
+      "phone_secondary": "431-608-1246x43786",
+      "email": "juliehuerta@example.net",
+      "is_primary": false,
+      "created_at": "2025-12-13T09:20:37.362Z",
+      "updated_at": "2025-12-13T09:20:37.362Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:41:40.767Z"
+}

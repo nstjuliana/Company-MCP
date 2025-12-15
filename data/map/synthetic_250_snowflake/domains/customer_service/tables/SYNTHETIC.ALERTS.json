@@ -1,0 +1,147 @@
+{
+  "table": "ALERTS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.ALERTS table represents a collection of alert records, each uniquely identified by the ALERT_ID as the primary key, detailing attributes like NAME and DESCRIPTION that define the alert's purpose and context. The table seemingly tracks various metrics and KPIs, indicated by columns like KPI_181_ATTR_1 and KPI_181_ATTR_3, which relate to dashboard, KPI, and report attributes, though it currently has no direct foreign key relationships with other tables, suggesting standalone functionality. It serves a role in storing and managing alert information within the data model, with potential insights for performance tracking or reporting, as evidenced by the sample data including dashboard and KPI attributes, along with a report-related date.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "ALERT_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each alert within the alerts table, ensuring each alert can be distinctly referenced. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column represents a sequential naming convention used to identify or label individual alert instances or categories. Each entry systematically increases by numeric suffixes, indicating the order or version of alerts.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column appears to contain descriptions or summaries related to specific alert entries, providing context or details for each alert record. The purpose of these descriptions is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "DASHBOARD_181_ATTR_0",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values do not provide sufficient context to determine the business meaning.",
+      "default": null
+    },
+    {
+      "name": "KPI_181_ATTR_1",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "Purpose unclear from available data. The column contains text data with sample values that follow a generic sequential pattern.",
+      "default": null
+    },
+    {
+      "name": "METRIC_181_ATTR_2",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column likely represents identifiers or codes associated with specific metrics or events related to alerts. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "KPI_181_ATTR_3",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "REPORT_181_ATTR_4",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column likely represents a sequential identifier or code associated with specific alerts in the system, indicating a unique attribute of each alert. However, its exact purpose is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "KPI_181_ATTR_5",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "REPORT_181_ATTR_6",
+      "type": "DATE",
+      "nullable": true,
+      "description": "This column likely records scheduled alert dates for events in December 2025, capturing when alerts are to occur. Purpose unclear from available data without further context on what these alerts pertain to.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "ALERT_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "ALERT_ID": 1,
+      "NAME": "ALERTS 1",
+      "DESCRIPTION": "Description for ALERTS 1",
+      "DASHBOARD_181_ATTR_0": "Sample DASHBOARD_181_ATTR_0 1",
+      "KPI_181_ATTR_1": "Sample KPI_181_ATTR_1 1",
+      "METRIC_181_ATTR_2": null,
+      "KPI_181_ATTR_3": "Sample KPI_181_ATTR_3 1",
+      "REPORT_181_ATTR_4": 100,
+      "KPI_181_ATTR_5": null,
+      "REPORT_181_ATTR_6": "2025-12-12"
+    },
+    {
+      "ALERT_ID": 2,
+      "NAME": "ALERTS 2",
+      "DESCRIPTION": "Description for ALERTS 2",
+      "DASHBOARD_181_ATTR_0": "Sample DASHBOARD_181_ATTR_0 2",
+      "KPI_181_ATTR_1": "Sample KPI_181_ATTR_1 2",
+      "METRIC_181_ATTR_2": 101,
+      "KPI_181_ATTR_3": "Sample KPI_181_ATTR_3 2",
+      "REPORT_181_ATTR_4": 101,
+      "KPI_181_ATTR_5": 101,
+      "REPORT_181_ATTR_6": "2025-12-13"
+    },
+    {
+      "ALERT_ID": 3,
+      "NAME": "ALERTS 3",
+      "DESCRIPTION": "Description for ALERTS 3",
+      "DASHBOARD_181_ATTR_0": "Sample DASHBOARD_181_ATTR_0 3",
+      "KPI_181_ATTR_1": "Sample KPI_181_ATTR_1 3",
+      "METRIC_181_ATTR_2": 102,
+      "KPI_181_ATTR_3": "Sample KPI_181_ATTR_3 3",
+      "REPORT_181_ATTR_4": 102,
+      "KPI_181_ATTR_5": 102,
+      "REPORT_181_ATTR_6": "2025-12-14"
+    },
+    {
+      "ALERT_ID": 4,
+      "NAME": "ALERTS 4",
+      "DESCRIPTION": "Description for ALERTS 4",
+      "DASHBOARD_181_ATTR_0": "Sample DASHBOARD_181_ATTR_0 4",
+      "KPI_181_ATTR_1": "Sample KPI_181_ATTR_1 4",
+      "METRIC_181_ATTR_2": null,
+      "KPI_181_ATTR_3": "Sample KPI_181_ATTR_3 4",
+      "REPORT_181_ATTR_4": 103,
+      "KPI_181_ATTR_5": null,
+      "REPORT_181_ATTR_6": "2025-12-15"
+    },
+    {
+      "ALERT_ID": 5,
+      "NAME": "ALERTS 5",
+      "DESCRIPTION": "Description for ALERTS 5",
+      "DASHBOARD_181_ATTR_0": "Sample DASHBOARD_181_ATTR_0 5",
+      "KPI_181_ATTR_1": "Sample KPI_181_ATTR_1 5",
+      "METRIC_181_ATTR_2": 104,
+      "KPI_181_ATTR_3": "Sample KPI_181_ATTR_3 5",
+      "REPORT_181_ATTR_4": 104,
+      "KPI_181_ATTR_5": 104,
+      "REPORT_181_ATTR_6": "2025-12-16"
+    }
+  ],
+  "generated_at": "2025-12-14T23:42:56.349Z"
+}

@@ -1,0 +1,102 @@
+{
+  "table": "bank_reconciliations",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.bank_reconciliations\" table is designed to store records of bank reconciliation transactions, each uniquely identified by the primary key \"reconciliation_id.\" Although there is no sample data or column information, the table is likely intended to record details necessary for matching bank statements with company records, a common function of reconciliation tables in financial databases. Currently, it does not have defined foreign key relationships to other tables nor is it referenced by others, suggesting it may serve a standalone or preliminary role in the data model awaiting further integration.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "reconciliation_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each record in the bank reconciliations table, serving as a sequential identifier for managing and referencing reconciliation records.",
+      "default": "nextval('synthetic.bank_reconciliations_reconciliation_id_seq'::regclass)"
+    },
+    {
+      "name": "bank_account_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Identifier for a specific bank account associated with reconciliation activities. Each value uniquely corresponds to a particular account involved in financial reconciliations.",
+      "default": null
+    },
+    {
+      "name": "statement_date",
+      "type": "date",
+      "nullable": false,
+      "description": "The date on which a financial statement is issued for reconciliation purposes, indicating the reference period for financial activity review.",
+      "default": null
+    },
+    {
+      "name": "statement_balance",
+      "type": "numeric",
+      "nullable": false,
+      "description": "The column likely represents the financial figure appearing on a bank statement, indicating the total amount in an account at the end of a specific period. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "book_balance",
+      "type": "numeric",
+      "nullable": true,
+      "description": "Represents the ending balance of a company's book records used to match against actual bank statements. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "difference",
+      "type": "numeric",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This field likely indicates the current state of a bank reconciliation process, with the default state being 'in_progress'. Purpose unclear from available data.",
+      "default": "'in_progress'::character varying"
+    },
+    {
+      "name": "completed_date",
+      "type": "date",
+      "nullable": true,
+      "description": "The column likely indicates the date on which a bank reconciliation process was completed. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column indicates the date and time when a bank reconciliation entry was initially recorded in the system. It allows tracking of when entries were created, aiding in the monitoring and auditing of reconciliation processes.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column likely tracks the most recent date and time a bank reconciliation record was updated. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "reconciliation_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_bank_reconciliations_bank_account_id",
+      "column_name": "bank_account_id",
+      "referenced_table": "synthetic.bank_accounts",
+      "referenced_column": "bank_account_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "bank_reconciliations_pkey",
+      "index_definition": "CREATE UNIQUE INDEX bank_reconciliations_pkey ON synthetic.bank_reconciliations USING btree (reconciliation_id)",
+      "columns": [
+        "reconciliation_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:40:02.586Z"
+}

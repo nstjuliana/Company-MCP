@@ -1,0 +1,135 @@
+{
+  "table": "FORMS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.FORMS table represents a collection of forms within the synthetic_250_snowflake database, where each entry includes identifiers, descriptive information, timestamps, and various attributes that appear to be configurable or relevant to different contexts (e.g., social, advertisement, event). The primary key, FORM_ID, uniquely identifies each form, underpinning its purpose as a singular form entry within this database. Without foreign key relationships, this table operates independently, likely serving as a standalone source of form data without direct connections to other tables.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "FORM_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column uniquely identifies each form within the system, serving as a sequential identifier for record-keeping purposes.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column represents distinct identifiers for forms in a sequenced format, suggesting each entry denotes a separate form labeled with a numerical suffix. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column provides textual descriptions associated with each form in the FORMS table. It contains summaries or explanations pertinent to the individual forms, with the potential to include unique or identifying details specific to each form.",
+      "default": null
+    },
+    {
+      "name": "SOCIAL_145_ATTR_0",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column likely represents sequential identifiers or codes associated with specific social entities or activities, but its exact application is purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "AD_145_ATTR_1",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The column stores numeric values with a default of 11, but the sample lacks context for a precise business interpretation.",
+      "default": "11"
+    },
+    {
+      "name": "EVENT_145_ATTR_2",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "The column appears to represent a categorical identifier or code possibly associated with specific types of events or actions. The context or purpose of these identifiers is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "AD_145_ATTR_3",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The column contains timestamp values without additional context.",
+      "default": null
+    },
+    {
+      "name": "AD_145_ATTR_4",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "UPDATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column records the specific date and time when an entry in the forms table was last updated. The purpose of tracking this timestamp is unclear from the available data.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "FORM_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "FORM_ID": 1,
+      "NAME": "FORMS 1",
+      "DESCRIPTION": "Description for FORMS 1",
+      "SOCIAL_145_ATTR_0": 100,
+      "AD_145_ATTR_1": null,
+      "EVENT_145_ATTR_2": null,
+      "AD_145_ATTR_3": "2025-12-12 00:00:00.000",
+      "AD_145_ATTR_4": true,
+      "UPDATED_AT": "2026-01-11 00:00:00.000"
+    },
+    {
+      "FORM_ID": 2,
+      "NAME": "FORMS 2",
+      "DESCRIPTION": "Description for FORMS 2",
+      "SOCIAL_145_ATTR_0": 101,
+      "AD_145_ATTR_1": 101,
+      "EVENT_145_ATTR_2": 101,
+      "AD_145_ATTR_3": "2025-12-13 00:00:00.000",
+      "AD_145_ATTR_4": false,
+      "UPDATED_AT": "2026-01-12 00:00:00.000"
+    },
+    {
+      "FORM_ID": 3,
+      "NAME": "FORMS 3",
+      "DESCRIPTION": "Description for FORMS 3",
+      "SOCIAL_145_ATTR_0": 102,
+      "AD_145_ATTR_1": 102,
+      "EVENT_145_ATTR_2": 102,
+      "AD_145_ATTR_3": "2025-12-14 00:00:00.000",
+      "AD_145_ATTR_4": true,
+      "UPDATED_AT": "2026-01-13 00:00:00.000"
+    },
+    {
+      "FORM_ID": 4,
+      "NAME": "FORMS 4",
+      "DESCRIPTION": "Description for FORMS 4",
+      "SOCIAL_145_ATTR_0": 103,
+      "AD_145_ATTR_1": null,
+      "EVENT_145_ATTR_2": null,
+      "AD_145_ATTR_3": "2025-12-15 00:00:00.000",
+      "AD_145_ATTR_4": false,
+      "UPDATED_AT": "2026-01-14 00:00:00.000"
+    },
+    {
+      "FORM_ID": 5,
+      "NAME": "FORMS 5",
+      "DESCRIPTION": "Description for FORMS 5",
+      "SOCIAL_145_ATTR_0": 104,
+      "AD_145_ATTR_1": 104,
+      "EVENT_145_ATTR_2": 104,
+      "AD_145_ATTR_3": "2025-12-16 00:00:00.000",
+      "AD_145_ATTR_4": true,
+      "UPDATED_AT": "2026-01-15 00:00:00.000"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:43.953Z"
+}

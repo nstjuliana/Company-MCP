@@ -1,0 +1,108 @@
+{
+  "table": "enrollments",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.enrollments\" table represents enrollment records, uniquely identified by the primary key \"enrollment_id,\" in a database setting. It is designed to store details about enrollments, potentially connecting students or members to courses or programs, as indicated by its key relationships to undefined entities. However, due to the absence of column names, sample data, and specific foreign key connections, further details about its precise business context remain indeterminate.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "enrollment_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each enrollment record, automatically generated to maintain distinctness. It ensures that every participant's registration in a course, program, or event can be individually tracked without duplication.",
+      "default": "nextval('synthetic.enrollments_enrollment_id_seq'::regclass)"
+    },
+    {
+      "name": "student_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each student within the enrollment records, ensuring that student information is properly associated with their respective courses.",
+      "default": null
+    },
+    {
+      "name": "section_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "enrollment_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column likely records the date on which an individual or entity officially joins a program or course. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "The column represents the current status of a participant in an enrollment process. The default status indicates that individuals are typically marked as \"enrolled\".",
+      "default": "'enrolled'::character varying"
+    },
+    {
+      "name": "grade",
+      "type": "character varying",
+      "nullable": true,
+      "description": "The column indicates the academic performance assessment for enrollments within the educational context, recorded as text. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "grade_points",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column likely represents the grade points attributed to a student's performance or achievements in their enrolled course. Purpose unclear from available data due to lack of sample values.",
+      "default": null
+    },
+    {
+      "name": "credits_earned",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents the number of educational credits a student has earned as part of their enrollment record. Purpose unclear from available data due to absence of sample values.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when each enrollment record was created, indicating the beginning of each enrollment period. The timestamp is automatically set to the current date and time at the moment of record creation.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Represents the date and time when a record in the enrollment table was last updated. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "enrollment_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_enrollments_section_id",
+      "column_name": "section_id",
+      "referenced_table": "synthetic.course_sections",
+      "referenced_column": "section_id"
+    },
+    {
+      "constraint_name": "fk_enrollments_student_id",
+      "column_name": "student_id",
+      "referenced_table": "synthetic.students",
+      "referenced_column": "student_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "enrollments_pkey",
+      "index_definition": "CREATE UNIQUE INDEX enrollments_pkey ON synthetic.enrollments USING btree (enrollment_id)",
+      "columns": [
+        "enrollment_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:40:55.388Z"
+}

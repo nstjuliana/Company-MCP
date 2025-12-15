@@ -1,0 +1,147 @@
+{
+  "table": "ADVERTISEMENTS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.ADVERTISEMENTS table represents a business entity modeling advertisement details, uniquely identified by the ADVERTISEMENT_ID primary key. It includes attributes such as names, descriptions, and metadata like email and event dates, but it lacks defined relationships with other tables. This table serves as an isolated component in the data model, focusing on storing and detailing advertisement-specific information.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "ADVERTISEMENT_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents a unique identifier assigned to each advertisement record in the database, ensuring each advertisement can be individually referenced and managed. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column likely represents unique identifiers for different advertisements, designated with a sequential numbering system. Purpose unclear from available data beyond enumeration of advertisements.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains brief textual descriptions associated with individual advertisement records. Each description provides a unique identifier for advertisements, as demonstrated by the sample values.",
+      "default": null
+    },
+    {
+      "name": "AD_132_ATTR_0",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column likely represents a numeric identifier or code associated with different types of advertisements. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "EMAIL_132_ATTR_1",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column stores email addresses associated with advertisements. These emails likely belong to users involved in the advertisement process, possibly as contacts or recipients.",
+      "default": null
+    },
+    {
+      "name": "EVENT_132_ATTR_2",
+      "type": "DATE",
+      "nullable": false,
+      "description": "This column represents specific dates associated with events in the advertisement data. Each date indicates a point in time relevant to the occurrence or scheduling of an advertisement event.",
+      "default": null
+    },
+    {
+      "name": "EMAIL_132_ATTR_3",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column likely represents a sequential identifier or code associated with email-related attributes or events in the advertisements context. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "EVENT_132_ATTR_4",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "Indicates whether a specific condition or event related to advertisements has occurred. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CAMPAIGN_132_ATTR_5",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column likely represents an attribute or identifier associated with a specific campaign within the advertisement database, as indicated by the sequential sample numeric values. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CREATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column records the exact date and time when an advertisement entry is created in the system. It captures the creation timestamp automatically, ensuring the record reflects its initiation moment.",
+      "default": "CURRENT_TIMESTAMP()"
+    }
+  ],
+  "primary_key": [
+    "ADVERTISEMENT_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "ADVERTISEMENT_ID": 1,
+      "NAME": "ADVERTISEMENTS 1",
+      "DESCRIPTION": "Description for ADVERTISEMENTS 1",
+      "AD_132_ATTR_0": null,
+      "EMAIL_132_ATTR_1": "user1@example.com",
+      "EVENT_132_ATTR_2": "2025-12-12",
+      "EMAIL_132_ATTR_3": 100,
+      "EVENT_132_ATTR_4": true,
+      "CAMPAIGN_132_ATTR_5": null,
+      "CREATED_AT": "2025-12-12 17:25:17.891"
+    },
+    {
+      "ADVERTISEMENT_ID": 2,
+      "NAME": "ADVERTISEMENTS 2",
+      "DESCRIPTION": "Description for ADVERTISEMENTS 2",
+      "AD_132_ATTR_0": 101,
+      "EMAIL_132_ATTR_1": "user2@example.com",
+      "EVENT_132_ATTR_2": "2025-12-13",
+      "EMAIL_132_ATTR_3": 101,
+      "EVENT_132_ATTR_4": false,
+      "CAMPAIGN_132_ATTR_5": 101,
+      "CREATED_AT": "2025-12-12 17:25:17.891"
+    },
+    {
+      "ADVERTISEMENT_ID": 3,
+      "NAME": "ADVERTISEMENTS 3",
+      "DESCRIPTION": "Description for ADVERTISEMENTS 3",
+      "AD_132_ATTR_0": 102,
+      "EMAIL_132_ATTR_1": "user3@example.com",
+      "EVENT_132_ATTR_2": "2025-12-14",
+      "EMAIL_132_ATTR_3": 102,
+      "EVENT_132_ATTR_4": true,
+      "CAMPAIGN_132_ATTR_5": 102,
+      "CREATED_AT": "2025-12-12 17:25:17.891"
+    },
+    {
+      "ADVERTISEMENT_ID": 4,
+      "NAME": "ADVERTISEMENTS 4",
+      "DESCRIPTION": "Description for ADVERTISEMENTS 4",
+      "AD_132_ATTR_0": null,
+      "EMAIL_132_ATTR_1": "user4@example.com",
+      "EVENT_132_ATTR_2": "2025-12-15",
+      "EMAIL_132_ATTR_3": 103,
+      "EVENT_132_ATTR_4": false,
+      "CAMPAIGN_132_ATTR_5": null,
+      "CREATED_AT": "2025-12-12 17:25:17.891"
+    },
+    {
+      "ADVERTISEMENT_ID": 5,
+      "NAME": "ADVERTISEMENTS 5",
+      "DESCRIPTION": "Description for ADVERTISEMENTS 5",
+      "AD_132_ATTR_0": 104,
+      "EMAIL_132_ATTR_1": "user5@example.com",
+      "EVENT_132_ATTR_2": "2025-12-16",
+      "EMAIL_132_ATTR_3": 104,
+      "EVENT_132_ATTR_4": true,
+      "CAMPAIGN_132_ATTR_5": 104,
+      "CREATED_AT": "2025-12-12 17:25:17.891"
+    }
+  ],
+  "generated_at": "2025-12-14T23:42:34.683Z"
+}

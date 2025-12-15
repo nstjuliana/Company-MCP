@@ -1,0 +1,159 @@
+{
+  "table": "COLLECTIONS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.COLLECTIONS table represents a collection entity in the synthetic_250_snowflake database, capturing details such as the name, description, and various attributes related to processes like checkout, cart, and shipping, evidenced by columns like NAME, DESCRIPTION, and attributes prefixed with CHECKOUT_203, CART_203, and SHIPPING_203. As it stands alone with no foreign key relationships, this table appears to function as an independent aggregation of collection-specific data, possibly serving a descriptive role in the data model with a unique identification provided by the primary key COLLECTION_ID. The table contains metadata such as dates and flags for logistic processes and versioning of collection records, indicated by columns like CART_203_ATTR_1 and VERSION.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "COLLECTION_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents unique identifiers assigned sequentially to individual records within a collection. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column represents a sequential naming convention for different collections within an entity. Each entry denotes a unique collection identified by a numeric suffix.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains textual summaries or labels for different collections, each uniquely identified by a number. The purpose or specific details of the collections are unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "CHECKOUT_203_ATTR_0",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column appears to represent a specific attribute associated with collections, potentially indicating a sequential or identification number tied to the checkout process. Its exact purpose is unclear from the available data.",
+      "default": "2"
+    },
+    {
+      "name": "CART_203_ATTR_1",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column represents a series of timestamps, each indicating a specific date and time, likely related to events or actions occurring in the Central Standard Time Zone. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CART_203_ATTR_2",
+      "type": "BOOLEAN",
+      "nullable": false,
+      "description": "This column indicates whether a certain attribute related to a collection within the system is present or active (true) or absent or inactive (false). Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "SHIPPING_203_ATTR_3",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column represents a non-nullable timestamp indicating a specific date and time, occurring daily at 6:00 PM Central Standard Time. The purpose is unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CHECKOUT_203_ATTR_4",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "WISHLIST_203_ATTR_5",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column likely represents specific attributes or identifiers linked to a user's wishlist within a collection system. However, the exact purpose is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "SHIPPING_203_ATTR_6",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "VERSION",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column likely represents a sequential identifier for versions or iterations of a collection record, reflecting its historical changes or updates. The purpose beyond tracking sequential version numbers is unclear from the available data.",
+      "default": "1"
+    }
+  ],
+  "primary_key": [
+    "COLLECTION_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "COLLECTION_ID": 1,
+      "NAME": "COLLECTIONS 1",
+      "DESCRIPTION": "Description for COLLECTIONS 1",
+      "CHECKOUT_203_ATTR_0": null,
+      "CART_203_ATTR_1": "2025-12-12 00:00:00.000",
+      "CART_203_ATTR_2": true,
+      "SHIPPING_203_ATTR_3": "2025-12-12 00:00:00.000",
+      "CHECKOUT_203_ATTR_4": "Sample CHECKOUT_203_ATTR_4 1",
+      "WISHLIST_203_ATTR_5": null,
+      "SHIPPING_203_ATTR_6": null,
+      "VERSION": 100
+    },
+    {
+      "COLLECTION_ID": 2,
+      "NAME": "COLLECTIONS 2",
+      "DESCRIPTION": "Description for COLLECTIONS 2",
+      "CHECKOUT_203_ATTR_0": 101,
+      "CART_203_ATTR_1": "2025-12-13 00:00:00.000",
+      "CART_203_ATTR_2": false,
+      "SHIPPING_203_ATTR_3": "2025-12-13 00:00:00.000",
+      "CHECKOUT_203_ATTR_4": "Sample CHECKOUT_203_ATTR_4 2",
+      "WISHLIST_203_ATTR_5": 101,
+      "SHIPPING_203_ATTR_6": 101,
+      "VERSION": 101
+    },
+    {
+      "COLLECTION_ID": 3,
+      "NAME": "COLLECTIONS 3",
+      "DESCRIPTION": "Description for COLLECTIONS 3",
+      "CHECKOUT_203_ATTR_0": 102,
+      "CART_203_ATTR_1": "2025-12-14 00:00:00.000",
+      "CART_203_ATTR_2": true,
+      "SHIPPING_203_ATTR_3": "2025-12-14 00:00:00.000",
+      "CHECKOUT_203_ATTR_4": "Sample CHECKOUT_203_ATTR_4 3",
+      "WISHLIST_203_ATTR_5": 102,
+      "SHIPPING_203_ATTR_6": 102,
+      "VERSION": 102
+    },
+    {
+      "COLLECTION_ID": 4,
+      "NAME": "COLLECTIONS 4",
+      "DESCRIPTION": "Description for COLLECTIONS 4",
+      "CHECKOUT_203_ATTR_0": null,
+      "CART_203_ATTR_1": "2025-12-15 00:00:00.000",
+      "CART_203_ATTR_2": false,
+      "SHIPPING_203_ATTR_3": "2025-12-15 00:00:00.000",
+      "CHECKOUT_203_ATTR_4": "Sample CHECKOUT_203_ATTR_4 4",
+      "WISHLIST_203_ATTR_5": null,
+      "SHIPPING_203_ATTR_6": null,
+      "VERSION": 103
+    },
+    {
+      "COLLECTION_ID": 5,
+      "NAME": "COLLECTIONS 5",
+      "DESCRIPTION": "Description for COLLECTIONS 5",
+      "CHECKOUT_203_ATTR_0": 104,
+      "CART_203_ATTR_1": "2025-12-16 00:00:00.000",
+      "CART_203_ATTR_2": true,
+      "SHIPPING_203_ATTR_3": "2025-12-16 00:00:00.000",
+      "CHECKOUT_203_ATTR_4": "Sample CHECKOUT_203_ATTR_4 5",
+      "WISHLIST_203_ATTR_5": 104,
+      "SHIPPING_203_ATTR_6": 104,
+      "VERSION": 104
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:39.968Z"
+}

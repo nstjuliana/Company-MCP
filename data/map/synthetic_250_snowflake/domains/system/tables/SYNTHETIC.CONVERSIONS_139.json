@@ -1,0 +1,135 @@
+{
+  "table": "CONVERSIONS_139",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.CONVERSIONS_139 table represents a business entity capturing conversion events, characterized by various attributes such as the conversion's name, descriptive details, associated campaign, and user email integration. It serves as a standalone dataset within the database, as it neither references nor is referenced by other tables, indicating an independent role in the data model for handling conversion-specific data. The table primarily facilitates tracking and recording of conversion events along with their creation timestamps, as evidenced by columns like \"CONVERSION_ID,\" \"NAME,\" \"DESCRIPTION,\" and \"CREATED_AT.\"",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "CONVERSION_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column uniquely identifies individual conversion records in the database, where each number represents a distinct conversion event. The purpose of these conversions is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column appears to store sequentially numbered identifiers or labels related to conversion entries within the dataset. Each value is prefixed by a consistent naming pattern followed by an incrementing number.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains textual identifiers or summaries for entries in the CONVERSIONS_139 table, numbered sequentially. The descriptions provide basic differentiation for each record, but the specific purpose of these descriptions is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "EVENT_159_ATTR_0",
+      "type": "DATE",
+      "nullable": true,
+      "description": "This column likely records the date associated with specific events in a business process, as indicated by the sequential daily values. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CAMPAIGN_159_ATTR_1",
+      "type": "DATE",
+      "nullable": false,
+      "description": "This column likely records specific dates associated with campaign attributes for tracking or analysis purposes. Each date is precisely logged, suggesting it is significant for campaign-related events or milestones.",
+      "default": null
+    },
+    {
+      "name": "EMAIL_159_ATTR_2",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column likely serves as a categorical identifier or code associated with email-related attributes for a business conversion process. The exact purpose or meaning of these identifiers is unclear from the provided data.",
+      "default": null
+    },
+    {
+      "name": "EMAIL_159_ATTR_3",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column likely stores email addresses associated with conversion records, serving as a point of contact or identifier for users involved in these transactions. The purpose of collecting this information is not explicitly clear from the available data.",
+      "default": null
+    },
+    {
+      "name": "EVENT_159_ATTR_4",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CREATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column records the date and time when each entry in the table was created, reflecting the point of time at which a conversion action was captured. The timestamp is automatically set to the current date and time at the moment of entry creation, ensuring accurate chronological tracking of conversions.",
+      "default": "CURRENT_TIMESTAMP()"
+    }
+  ],
+  "primary_key": [
+    "CONVERSION_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "CONVERSION_ID": 1,
+      "NAME": "CONVERSIONS_139 1",
+      "DESCRIPTION": "Description for CONVERSIONS_139 1",
+      "EVENT_159_ATTR_0": "2025-12-12",
+      "CAMPAIGN_159_ATTR_1": "2025-12-12",
+      "EMAIL_159_ATTR_2": null,
+      "EMAIL_159_ATTR_3": "user1@example.com",
+      "EVENT_159_ATTR_4": "Sample EVENT_159_ATTR_4 1",
+      "CREATED_AT": "2025-12-12 17:26:02.675"
+    },
+    {
+      "CONVERSION_ID": 2,
+      "NAME": "CONVERSIONS_139 2",
+      "DESCRIPTION": "Description for CONVERSIONS_139 2",
+      "EVENT_159_ATTR_0": "2025-12-13",
+      "CAMPAIGN_159_ATTR_1": "2025-12-13",
+      "EMAIL_159_ATTR_2": 101,
+      "EMAIL_159_ATTR_3": "user2@example.com",
+      "EVENT_159_ATTR_4": "Sample EVENT_159_ATTR_4 2",
+      "CREATED_AT": "2025-12-12 17:26:02.675"
+    },
+    {
+      "CONVERSION_ID": 3,
+      "NAME": "CONVERSIONS_139 3",
+      "DESCRIPTION": "Description for CONVERSIONS_139 3",
+      "EVENT_159_ATTR_0": "2025-12-14",
+      "CAMPAIGN_159_ATTR_1": "2025-12-14",
+      "EMAIL_159_ATTR_2": 102,
+      "EMAIL_159_ATTR_3": "user3@example.com",
+      "EVENT_159_ATTR_4": "Sample EVENT_159_ATTR_4 3",
+      "CREATED_AT": "2025-12-12 17:26:02.675"
+    },
+    {
+      "CONVERSION_ID": 4,
+      "NAME": "CONVERSIONS_139 4",
+      "DESCRIPTION": "Description for CONVERSIONS_139 4",
+      "EVENT_159_ATTR_0": "2025-12-15",
+      "CAMPAIGN_159_ATTR_1": "2025-12-15",
+      "EMAIL_159_ATTR_2": null,
+      "EMAIL_159_ATTR_3": "user4@example.com",
+      "EVENT_159_ATTR_4": "Sample EVENT_159_ATTR_4 4",
+      "CREATED_AT": "2025-12-12 17:26:02.675"
+    },
+    {
+      "CONVERSION_ID": 5,
+      "NAME": "CONVERSIONS_139 5",
+      "DESCRIPTION": "Description for CONVERSIONS_139 5",
+      "EVENT_159_ATTR_0": "2025-12-16",
+      "CAMPAIGN_159_ATTR_1": "2025-12-16",
+      "EMAIL_159_ATTR_2": 104,
+      "EMAIL_159_ATTR_3": "user5@example.com",
+      "EVENT_159_ATTR_4": "Sample EVENT_159_ATTR_4 5",
+      "CREATED_AT": "2025-12-12 17:26:02.675"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:44.187Z"
+}

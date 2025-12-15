@@ -1,0 +1,127 @@
+{
+  "table": "intercompany_accounts",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.intercompany_accounts` table captures details of intercompany transactions between entities, identified by the `ic_account_id` primary key. It records the originating entity (`entity_from`), the receiving entity (`entity_to`), associated general ledger account (`gl_account_id`), and timestamps for record maintenance (`created_at`, `updated_at`), with a boolean flag `is_active` indicating current activity status. Despite no explicit foreign key relationships defined, the table likely integrates with other financial records through `gl_account_id`, facilitating analysis of intercompany dealings within the synthetic business framework.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "ic_account_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column serves as a unique identifier for entries in the intercompany accounts table, sequentially allocating numbers to each new entry. It ensures distinct identification for organizational purposes in intercompany financial records.",
+      "default": "nextval('synthetic.intercompany_accounts_ic_account_id_seq'::regclass)"
+    },
+    {
+      "name": "entity_from",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column appears to represent descriptions or notes pertaining to various transactions or interactions within intercompany accounts, possibly including actions or decisions made by entity managers. The purpose remains unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "entity_to",
+      "type": "character varying",
+      "nullable": false,
+      "description": "The column appears to capture descriptive text or narrative related to transactions or activities involving multiple entities, possibly within an organization. Purpose unclear from available data, as the text is varied and lacks a consistent pattern indicative of specific business terms.",
+      "default": null
+    },
+    {
+      "name": "gl_account_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "Represents the identifier for a general ledger account used in recording intercompany transactions. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "is_active",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether intercompany accounts are currently active or inactive. The default status is active, suggesting that new entries typically start as active unless specified otherwise.",
+      "default": "true"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an intercompany account entry was created, reflecting when an event or transaction was captured in the system. The purpose of this information is to track the timeline of account activities or updates.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when the intercompany account information was last updated. It automatically defaults to the current timestamp but can be nullable, indicating updates may not always occur.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "ic_account_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_intercompany_accounts_gl_account_id",
+      "column_name": "gl_account_id",
+      "referenced_table": "synthetic.chart_of_accounts",
+      "referenced_column": "account_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "intercompany_accounts_pkey",
+      "index_definition": "CREATE UNIQUE INDEX intercompany_accounts_pkey ON synthetic.intercompany_accounts USING btree (ic_account_id)",
+      "columns": [
+        "ic_account_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "ic_account_id": 1,
+      "entity_from": "Key simply look important entire. Performance piece begin accept only.",
+      "entity_to": "Early side billion once thousand.\nCan sense billion answer day.",
+      "gl_account_id": 4,
+      "is_active": false,
+      "created_at": "2025-12-13T08:55:23.689Z",
+      "updated_at": "2025-12-13T08:55:23.689Z"
+    },
+    {
+      "ic_account_id": 2,
+      "entity_from": "Manager throughout address movement ability. Organization staff decade role.",
+      "entity_to": "Region institution region ago. Leave cultural project hope.",
+      "gl_account_id": 42,
+      "is_active": true,
+      "created_at": "2025-12-13T08:55:23.689Z",
+      "updated_at": "2025-12-13T08:55:23.689Z"
+    },
+    {
+      "ic_account_id": 3,
+      "entity_from": "Type team exist ground owner practice. Read full whose you question degree.",
+      "entity_to": "Sit care support while will. Produce three fish go. Join government will.",
+      "gl_account_id": 19,
+      "is_active": true,
+      "created_at": "2025-12-13T08:55:23.689Z",
+      "updated_at": "2025-12-13T08:55:23.689Z"
+    },
+    {
+      "ic_account_id": 4,
+      "entity_from": "Film say five executive over. Remember hour almost hospital coach list arm.",
+      "entity_to": "Adult professor and green person everybody.",
+      "gl_account_id": 17,
+      "is_active": true,
+      "created_at": "2025-12-13T08:55:23.689Z",
+      "updated_at": "2025-12-13T08:55:23.689Z"
+    },
+    {
+      "ic_account_id": 5,
+      "entity_from": "Agent teach so on buy no. Third week industry from already whose none assume.",
+      "entity_to": "Charge choice million thing two relationship. Subject go skin sport environmental identify.",
+      "gl_account_id": 13,
+      "is_active": false,
+      "created_at": "2025-12-13T08:55:23.689Z",
+      "updated_at": "2025-12-13T08:55:23.689Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:13.624Z"
+}

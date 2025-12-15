@@ -1,0 +1,135 @@
+{
+  "table": "MODELS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.MODELS table represents a collection of models characterized by their unique identifiers (MODEL_ID) along with their names and descriptions. It includes various metrics and attributes related to the models, such as timestamps and boolean indicators, but it does not participate in any relationships with other tables, either as a foreign key or being referenced by others. Thus, this table likely serves as a standalone entity for storing and managing detailed model information within the data warehouse.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "MODEL_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column likely represents a unique identifier assigned to each model record in the system. These identifiers distinguish between various models within the dataset.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column represents a sequential naming convention used to identify distinct models. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains text descriptions providing specific details or attributes related to individual models within the records. Each entry supplements the corresponding model with contextual or identifying information.",
+      "default": null
+    },
+    {
+      "name": "METRIC_184_ATTR_0",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column records specific date and time entries that occur consecutively on a daily basis, each at 6:00 PM Central Standard Time. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "METRIC_184_ATTR_1",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "Purpose unclear from available data. Sample values suggest it may represent some form of coded metric or identifier, but further context is required for accurate interpretation.",
+      "default": null
+    },
+    {
+      "name": "METRIC_184_ATTR_2",
+      "type": "DATE",
+      "nullable": true,
+      "description": "This column appears to represent specific dates related to events or records within the context of a model's lifecycle or activities. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "DASHBOARD_184_ATTR_3",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column appears to represent a specific attribute or identifier related to a dashboard model, potentially used for categorization or classification, but its exact purpose is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "REPORT_184_ATTR_4",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "The column appears to indicate a binary status or condition associated with a report, where the status can be either true or false. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "KPI_184_ATTR_5",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column captures specific dates and times in December 2025, potentially related to scheduled or recurring events or milestones. The pattern of consecutive daily timestamps suggests it may track daily occurrences or checkpoints.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "MODEL_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "MODEL_ID": 1,
+      "NAME": "MODELS 1",
+      "DESCRIPTION": "Description for MODELS 1",
+      "METRIC_184_ATTR_0": "2025-12-12 00:00:00.000",
+      "METRIC_184_ATTR_1": null,
+      "METRIC_184_ATTR_2": "2025-12-12",
+      "DASHBOARD_184_ATTR_3": null,
+      "REPORT_184_ATTR_4": true,
+      "KPI_184_ATTR_5": "2025-12-12 00:00:00.000"
+    },
+    {
+      "MODEL_ID": 2,
+      "NAME": "MODELS 2",
+      "DESCRIPTION": "Description for MODELS 2",
+      "METRIC_184_ATTR_0": "2025-12-13 00:00:00.000",
+      "METRIC_184_ATTR_1": 101,
+      "METRIC_184_ATTR_2": "2025-12-13",
+      "DASHBOARD_184_ATTR_3": 101,
+      "REPORT_184_ATTR_4": false,
+      "KPI_184_ATTR_5": "2025-12-13 00:00:00.000"
+    },
+    {
+      "MODEL_ID": 3,
+      "NAME": "MODELS 3",
+      "DESCRIPTION": "Description for MODELS 3",
+      "METRIC_184_ATTR_0": "2025-12-14 00:00:00.000",
+      "METRIC_184_ATTR_1": 102,
+      "METRIC_184_ATTR_2": "2025-12-14",
+      "DASHBOARD_184_ATTR_3": 102,
+      "REPORT_184_ATTR_4": true,
+      "KPI_184_ATTR_5": "2025-12-14 00:00:00.000"
+    },
+    {
+      "MODEL_ID": 4,
+      "NAME": "MODELS 4",
+      "DESCRIPTION": "Description for MODELS 4",
+      "METRIC_184_ATTR_0": "2025-12-15 00:00:00.000",
+      "METRIC_184_ATTR_1": null,
+      "METRIC_184_ATTR_2": "2025-12-15",
+      "DASHBOARD_184_ATTR_3": null,
+      "REPORT_184_ATTR_4": false,
+      "KPI_184_ATTR_5": "2025-12-15 00:00:00.000"
+    },
+    {
+      "MODEL_ID": 5,
+      "NAME": "MODELS 5",
+      "DESCRIPTION": "Description for MODELS 5",
+      "METRIC_184_ATTR_0": "2025-12-16 00:00:00.000",
+      "METRIC_184_ATTR_1": 104,
+      "METRIC_184_ATTR_2": "2025-12-16",
+      "DASHBOARD_184_ATTR_3": 104,
+      "REPORT_184_ATTR_4": true,
+      "KPI_184_ATTR_5": "2025-12-16 00:00:00.000"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:48.993Z"
+}

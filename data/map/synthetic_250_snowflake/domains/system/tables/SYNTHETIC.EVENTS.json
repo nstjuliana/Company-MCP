@@ -1,0 +1,171 @@
+{
+  "table": "EVENTS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.EVENTS table represents a collection of event records, uniquely identified by the primary key EVENT_ID, containing metadata such as the event's name, description, and specific attributes related to marketing campaigns, advertisements, social elements, webinars, emails, and other event-specific metrics. With no foreign key relationships, it operates independently within the data model, primarily focusing on storing and tracking information about individual events and their attributes, creation, and update timestamps. The sample row indicates a versatile framework for capturing diverse aspects of events, including various engagement channels and scheduling details.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "EVENT_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each event within the synthetic events dataset, ensuring each entry can be distinctly recognized. The sequential numbering suggests it tracks the order of event entries.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column represents identifiers for a sequence of events, with each entry corresponding to a specific event number. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column likely contains text descriptions associated with each event, providing additional details or context for the events listed in the table. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CAMPAIGN_135_ATTR_0",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "AD_135_ATTR_1",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "SOCIAL_135_ATTR_2",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column represents a categorical attribute relating to a specific aspect of social events, potentially indicating different types or categories within that context. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "WEBINAR_135_ATTR_3",
+      "type": "BOOLEAN",
+      "nullable": false,
+      "description": "This column indicates whether a specific condition related to the event has been met. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "EMAIL_135_ATTR_4",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column appears to represent a numerical attribute associated with an email event, possibly indicating different categories or priorities related to the event. Purpose unclear from available data.",
+      "default": "74"
+    },
+    {
+      "name": "EVENT_135_ATTR_5",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents a sequential or categorical attribute of an event, with values ranging from 100 to 109. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "EVENT_135_ATTR_6",
+      "type": "DATE",
+      "nullable": true,
+      "description": "This column records the date associated with specific events, likely representing scheduled or planned occurrences, given the sequential and consistent nature of the dates. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CREATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column records the exact moment when each event entry is created, automatically capturing the current timestamp. It ensures events have a precise creation time for tracking and chronological ordering.",
+      "default": "CURRENT_TIMESTAMP()"
+    },
+    {
+      "name": "UPDATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column likely represents the date and time when each event entry was last updated. It records timestamps in Central Standard Time, suggesting updates occur in a consistent time zone.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "EVENT_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "EVENT_ID": 1,
+      "NAME": "EVENTS 1",
+      "DESCRIPTION": "Description for EVENTS 1",
+      "CAMPAIGN_135_ATTR_0": "Sample CAMPAIGN_135_ATTR_0 1",
+      "AD_135_ATTR_1": null,
+      "SOCIAL_135_ATTR_2": null,
+      "WEBINAR_135_ATTR_3": true,
+      "EMAIL_135_ATTR_4": null,
+      "EVENT_135_ATTR_5": 100,
+      "EVENT_135_ATTR_6": "2025-12-12",
+      "CREATED_AT": "2025-12-12 17:26:19.080",
+      "UPDATED_AT": "2026-01-11 00:00:00.000"
+    },
+    {
+      "EVENT_ID": 2,
+      "NAME": "EVENTS 2",
+      "DESCRIPTION": "Description for EVENTS 2",
+      "CAMPAIGN_135_ATTR_0": "Sample CAMPAIGN_135_ATTR_0 2",
+      "AD_135_ATTR_1": 101,
+      "SOCIAL_135_ATTR_2": 101,
+      "WEBINAR_135_ATTR_3": false,
+      "EMAIL_135_ATTR_4": 101,
+      "EVENT_135_ATTR_5": 101,
+      "EVENT_135_ATTR_6": "2025-12-13",
+      "CREATED_AT": "2025-12-12 17:26:19.080",
+      "UPDATED_AT": "2026-01-12 00:00:00.000"
+    },
+    {
+      "EVENT_ID": 3,
+      "NAME": "EVENTS 3",
+      "DESCRIPTION": "Description for EVENTS 3",
+      "CAMPAIGN_135_ATTR_0": "Sample CAMPAIGN_135_ATTR_0 3",
+      "AD_135_ATTR_1": 102,
+      "SOCIAL_135_ATTR_2": 102,
+      "WEBINAR_135_ATTR_3": true,
+      "EMAIL_135_ATTR_4": 102,
+      "EVENT_135_ATTR_5": 102,
+      "EVENT_135_ATTR_6": "2025-12-14",
+      "CREATED_AT": "2025-12-12 17:26:19.080",
+      "UPDATED_AT": "2026-01-13 00:00:00.000"
+    },
+    {
+      "EVENT_ID": 4,
+      "NAME": "EVENTS 4",
+      "DESCRIPTION": "Description for EVENTS 4",
+      "CAMPAIGN_135_ATTR_0": "Sample CAMPAIGN_135_ATTR_0 4",
+      "AD_135_ATTR_1": null,
+      "SOCIAL_135_ATTR_2": null,
+      "WEBINAR_135_ATTR_3": false,
+      "EMAIL_135_ATTR_4": null,
+      "EVENT_135_ATTR_5": 103,
+      "EVENT_135_ATTR_6": "2025-12-15",
+      "CREATED_AT": "2025-12-12 17:26:19.080",
+      "UPDATED_AT": "2026-01-14 00:00:00.000"
+    },
+    {
+      "EVENT_ID": 5,
+      "NAME": "EVENTS 5",
+      "DESCRIPTION": "Description for EVENTS 5",
+      "CAMPAIGN_135_ATTR_0": "Sample CAMPAIGN_135_ATTR_0 5",
+      "AD_135_ATTR_1": 104,
+      "SOCIAL_135_ATTR_2": 104,
+      "WEBINAR_135_ATTR_3": true,
+      "EMAIL_135_ATTR_4": 104,
+      "EVENT_135_ATTR_5": 104,
+      "EVENT_135_ATTR_6": "2025-12-16",
+      "CREATED_AT": "2025-12-12 17:26:19.080",
+      "UPDATED_AT": "2026-01-15 00:00:00.000"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:45.076Z"
+}

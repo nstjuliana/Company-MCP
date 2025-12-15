@@ -1,0 +1,151 @@
+{
+  "table": "web_analytics_pageviews",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.web_analytics_pageviews` table represents pageview records for a web analytics system, capturing individual page view events within user sessions. The table is uniquely identified by `pageview_id` and includes details such as `session_id`, `page_url`, `page_title`, `timestamp`, `time_on_page_seconds`, and `referrer`, allowing analysis of how users interact with web content. While this table lacks defined foreign key relationships, its role is likely central to tracking user engagement per session on web pages.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "pageview_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each individual pageview event within the web analytics system. It is used to track and differentiate user interactions with web pages consistently.",
+      "default": "nextval('synthetic.web_analytics_pageviews_pageview_id_seq'::regclass)"
+    },
+    {
+      "name": "session_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each user session on the website, ensuring that page views within the same session can be tracked together. Each number corresponds to a different session, allowing for analysis of user engagement patterns.",
+      "default": null
+    },
+    {
+      "name": "page_url",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column represents the URLs of web pages that have been viewed by users. It includes a mix of domain names and protocols, indicating the use of both secure (HTTPS) and non-secure (HTTP) connections to various websites.",
+      "default": null
+    },
+    {
+      "name": "page_title",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely represents the titles assigned to web pages that are visited and recorded in analytics, reflecting a variety of contexts, such as events, relationships, and environmental themes. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "timestamp",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a pageview occurs on a website, adjusted for Central Daylight Time. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "time_on_page_seconds",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents the duration in seconds that a user spent on a webpage during a single visit. These values can help assess user engagement with online content.",
+      "default": null
+    },
+    {
+      "name": "referrer",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The column appears to store fragmented phrases or sentences with no evident pattern or meaning.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column captures the date and time when a web page view event was recorded in the system. It defaults to the current timestamp at the moment of record creation, indicating when the view occurred.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column captures the precise moment when each record on webpage views was most recently updated or modified. Purpose unclear from available data regarding the nature or source of these updates.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "pageview_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_web_analytics_pageviews_session_id",
+      "column_name": "session_id",
+      "referenced_table": "synthetic.web_analytics_sessions",
+      "referenced_column": "session_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "web_analytics_pageviews_pkey",
+      "index_definition": "CREATE UNIQUE INDEX web_analytics_pageviews_pkey ON synthetic.web_analytics_pageviews USING btree (pageview_id)",
+      "columns": [
+        "pageview_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "pageview_id": 1,
+      "session_id": 38,
+      "page_url": "http://www.rodriguez-reeves.com/",
+      "page_title": "Effort trip relationship.",
+      "timestamp": "2025-07-30T13:33:28.645Z",
+      "time_on_page_seconds": 147,
+      "referrer": "Dream break hour individual low future station positive. Mouth foreign out.",
+      "created_at": "2025-12-13T09:14:26.236Z",
+      "updated_at": "2025-12-13T09:14:26.236Z"
+    },
+    {
+      "pageview_id": 2,
+      "session_id": 15,
+      "page_url": "https://cruz.com/",
+      "page_title": "Area fast environmental.",
+      "timestamp": "2025-10-24T05:46:40.691Z",
+      "time_on_page_seconds": 473,
+      "referrer": "Image politics push cut about cut. Moment create very because speak.\nSize skill middle truth fire.",
+      "created_at": "2025-12-13T09:14:26.236Z",
+      "updated_at": "2025-12-13T09:14:26.236Z"
+    },
+    {
+      "pageview_id": 3,
+      "session_id": 41,
+      "page_url": "https://adams.org/",
+      "page_title": "Garden same.",
+      "timestamp": "2025-10-06T00:41:18.093Z",
+      "time_on_page_seconds": 261,
+      "referrer": "Which option over car. Short record soldier knowledge.",
+      "created_at": "2025-12-13T09:14:26.236Z",
+      "updated_at": "2025-12-13T09:14:26.236Z"
+    },
+    {
+      "pageview_id": 4,
+      "session_id": 30,
+      "page_url": "https://soto.com/",
+      "page_title": "Always rock tonight soldier.",
+      "timestamp": "2024-08-10T02:59:31.773Z",
+      "time_on_page_seconds": 262,
+      "referrer": "Establish build support child concern.",
+      "created_at": "2025-12-13T09:14:26.236Z",
+      "updated_at": "2025-12-13T09:14:26.236Z"
+    },
+    {
+      "pageview_id": 5,
+      "session_id": 43,
+      "page_url": "https://www.alvarado.com/",
+      "page_title": "Husband sometimes force shake.",
+      "timestamp": "2025-09-24T05:13:13.426Z",
+      "time_on_page_seconds": 10,
+      "referrer": "Huge once argue ahead she pull history.",
+      "created_at": "2025-12-13T09:14:26.236Z",
+      "updated_at": "2025-12-13T09:14:26.236Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:44:08.176Z"
+}

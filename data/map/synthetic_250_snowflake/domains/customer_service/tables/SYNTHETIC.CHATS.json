@@ -1,0 +1,159 @@
+{
+  "table": "CHATS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.CHATS table represents a record of chat interactions, each uniquely identified by the primary key CHAT_ID. The columns suggest storage of metadata about each chat, including a descriptive name, attributes related to surveys and cases, a timestamp indicating creation, and a version number. This table appears to function independently within the database schema as it does not have relationships with other tables.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "CHAT_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each chat entry in the dataset. Purpose unclear from available data beyond its role as an identifier.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column represents a sequential identifier or name for a set of chat sessions or threads, each differentiated by a unique number. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains brief textual descriptions related to individual chat entries within the dataset. Each entry provides a unique identifier for chats, aiding in distinguishing between different chat records.",
+      "default": null
+    },
+    {
+      "name": "CASE_168_ATTR_0",
+      "type": "BOOLEAN",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "SURVEY_168_ATTR_1",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The column contains placeholder text that does not provide insight into its business relevance.",
+      "default": null
+    },
+    {
+      "name": "SURVEY_168_ATTR_2",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "Purpose unclear from available data. The sample values appear to be placeholders and do not provide enough context to ascertain the business meaning.",
+      "default": null
+    },
+    {
+      "name": "SURVEY_168_ATTR_3",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "This column likely indicates a binary response or status related to a survey associated with a chat session, possibly reflecting whether a certain condition or attribute was met. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CASE_168_ATTR_4",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "TICKET_168_ATTR_5",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The column contains a series of numerical values, possibly representing codes or identifiers.",
+      "default": null
+    },
+    {
+      "name": "CREATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column records the exact date and time when each chat interaction is initiated, capturing the moment in the Central Standard Time zone. It ensures that every chat entry includes a non-nullable timestamp, reflecting when it was added to the database.",
+      "default": "CURRENT_TIMESTAMP()"
+    },
+    {
+      "name": "VERSION",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents the version number of chat records, indicating each iteration or update associated with the chat entries in a sequential manner.",
+      "default": "1"
+    }
+  ],
+  "primary_key": [
+    "CHAT_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "CHAT_ID": 1,
+      "NAME": "CHATS 1",
+      "DESCRIPTION": "Description for CHATS 1",
+      "CASE_168_ATTR_0": true,
+      "SURVEY_168_ATTR_1": "Sample SURVEY_168_ATTR_1 1",
+      "SURVEY_168_ATTR_2": "Sample SURVEY_168_ATTR_2 1",
+      "SURVEY_168_ATTR_3": true,
+      "CASE_168_ATTR_4": "Sample CASE_168_ATTR_4 1",
+      "TICKET_168_ATTR_5": null,
+      "CREATED_AT": "2025-12-12 17:25:56.005",
+      "VERSION": 100
+    },
+    {
+      "CHAT_ID": 2,
+      "NAME": "CHATS 2",
+      "DESCRIPTION": "Description for CHATS 2",
+      "CASE_168_ATTR_0": false,
+      "SURVEY_168_ATTR_1": "Sample SURVEY_168_ATTR_1 2",
+      "SURVEY_168_ATTR_2": "Sample SURVEY_168_ATTR_2 2",
+      "SURVEY_168_ATTR_3": false,
+      "CASE_168_ATTR_4": "Sample CASE_168_ATTR_4 2",
+      "TICKET_168_ATTR_5": 101,
+      "CREATED_AT": "2025-12-12 17:25:56.005",
+      "VERSION": 101
+    },
+    {
+      "CHAT_ID": 3,
+      "NAME": "CHATS 3",
+      "DESCRIPTION": "Description for CHATS 3",
+      "CASE_168_ATTR_0": true,
+      "SURVEY_168_ATTR_1": "Sample SURVEY_168_ATTR_1 3",
+      "SURVEY_168_ATTR_2": "Sample SURVEY_168_ATTR_2 3",
+      "SURVEY_168_ATTR_3": true,
+      "CASE_168_ATTR_4": "Sample CASE_168_ATTR_4 3",
+      "TICKET_168_ATTR_5": 102,
+      "CREATED_AT": "2025-12-12 17:25:56.005",
+      "VERSION": 102
+    },
+    {
+      "CHAT_ID": 4,
+      "NAME": "CHATS 4",
+      "DESCRIPTION": "Description for CHATS 4",
+      "CASE_168_ATTR_0": false,
+      "SURVEY_168_ATTR_1": "Sample SURVEY_168_ATTR_1 4",
+      "SURVEY_168_ATTR_2": "Sample SURVEY_168_ATTR_2 4",
+      "SURVEY_168_ATTR_3": false,
+      "CASE_168_ATTR_4": "Sample CASE_168_ATTR_4 4",
+      "TICKET_168_ATTR_5": null,
+      "CREATED_AT": "2025-12-12 17:25:56.005",
+      "VERSION": 103
+    },
+    {
+      "CHAT_ID": 5,
+      "NAME": "CHATS 5",
+      "DESCRIPTION": "Description for CHATS 5",
+      "CASE_168_ATTR_0": true,
+      "SURVEY_168_ATTR_1": "Sample SURVEY_168_ATTR_1 5",
+      "SURVEY_168_ATTR_2": "Sample SURVEY_168_ATTR_2 5",
+      "SURVEY_168_ATTR_3": true,
+      "CASE_168_ATTR_4": "Sample CASE_168_ATTR_4 5",
+      "TICKET_168_ATTR_5": 104,
+      "CREATED_AT": "2025-12-12 17:25:56.005",
+      "VERSION": 104
+    }
+  ],
+  "generated_at": "2025-12-14T23:42:57.667Z"
+}

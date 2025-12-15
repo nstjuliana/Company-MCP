@@ -11,13 +11,13 @@ flowchart TD
     SessionManager --> AIAgent[🤖 AI Agent<br/>OpenRouter/Claude]
     AIAgent -->|Process with history| ToolDecision{🤔 Which MCP<br/>Tool?}
 
-    %% MCP Tools
-    ToolDecision -->|Data Questions| AnswerQuestion[🔍 answer_question<br/>Tool]
+    %% Tool Execution
+    ToolDecision -->|Data Questions| DataProcessing[🔍 Data Question<br/>Processing<br/>ai_agent internally]
     ToolDecision -->|Schema Questions| SchemaTools[📋 Schema Tools<br/>list_databases,<br/>search_tables,<br/>get_table_schema]
     ToolDecision -->|List/Overview| ListTools[📊 List Tools<br/>list_domains,<br/>list_tables]
 
     %% SQL Execution Path
-    AnswerQuestion --> SqlService[🗄️ SQL Service<br/>generate_and_execute_sql]
+    DataProcessing --> SqlService[🗄️ SQL Service<br/>generate_and_execute_sql]
     SqlService -->|1. Generate SQL| SqlGenerator[🧠 SQL Generator<br/>OpenRouter API<br/>GPT-4o-mini]
     SqlGenerator -->|2. Execute SQL| DatabaseLayer[🏗️ Database Layer]
 
@@ -54,6 +54,6 @@ flowchart TD
     class User userClass
     class AIAgent,SqlGenerator aiClass
     class Postgres,Snowflake,DataFiles dbClass
-    class AnswerQuestion,SchemaTools,ListTools,SqlService,MCPServer toolClass
+    class DataProcessing,SchemaTools,ListTools,SqlService,MCPServer toolClass
     class Response responseClass
 

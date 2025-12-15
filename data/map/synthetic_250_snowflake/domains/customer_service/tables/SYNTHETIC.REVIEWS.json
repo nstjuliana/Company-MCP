@@ -1,0 +1,135 @@
+{
+  "table": "REVIEWS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.REVIEWS table records review information, indicating a system to manage customer feedback or evaluations associated with some product or service. The table captures a unique REVIEW_ID, alongside attributes possibly related to customer interaction events like shipping or checkout, as seen in columns like DESCRIPTION, RATING_191_ATTR_1, and REVIEW_191_ATTR_4. With no defined relationships to other tables, this table seems to function independently in the data model, focusing solely on capturing each review's unique details.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "REVIEW_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column uniquely identifies each review within the table, ensuring that every entry can be individually referenced and tracked. Each value is distinct and sequentially assigned, serving as a primary identifier for reviews.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column represents unique identifiers for individual reviews, incrementing numerically to distinguish each record in the reviews table. The purpose of this column is likely organizational, serving as a label or reference point for each entry.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column likely contains brief textual descriptions or summaries of individual reviews within the synthetic reviews dataset. The specific nature of each review description is not detailed in the sample values provided.",
+      "default": null
+    },
+    {
+      "name": "SHIPPING_191_ATTR_0",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column likely represents a coded identifier linked to different shipping attributes or options in customer reviews. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "RATING_191_ATTR_1",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents a numerical rating system where each value increments sequentially by one, suggesting a potential scale of evaluation or ranking. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CART_191_ATTR_2",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "This column likely indicates whether a certain condition or feature related to reviews is met or active. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CHECKOUT_191_ATTR_3",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column records specific checkout timestamps, capturing the exact date and time when an event or transaction occurs. The sample values suggest these timestamps are standardized to Central Standard Time.",
+      "default": null
+    },
+    {
+      "name": "REVIEW_191_ATTR_4",
+      "type": "DATE",
+      "nullable": false,
+      "description": "The column represents the specific dates on which reviews were made, indicating an ongoing series of daily review timestamps. The pattern of consecutive daily entries suggests tracking of routine review submissions.",
+      "default": null
+    },
+    {
+      "name": "WISHLIST_191_ATTR_5",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "REVIEW_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "REVIEW_ID": 1,
+      "NAME": "REVIEWS 1",
+      "DESCRIPTION": "Description for REVIEWS 1",
+      "SHIPPING_191_ATTR_0": null,
+      "RATING_191_ATTR_1": 100,
+      "CART_191_ATTR_2": true,
+      "CHECKOUT_191_ATTR_3": "2025-12-12 00:00:00.000",
+      "REVIEW_191_ATTR_4": "2025-12-12",
+      "WISHLIST_191_ATTR_5": null
+    },
+    {
+      "REVIEW_ID": 2,
+      "NAME": "REVIEWS 2",
+      "DESCRIPTION": "Description for REVIEWS 2",
+      "SHIPPING_191_ATTR_0": 101,
+      "RATING_191_ATTR_1": 101,
+      "CART_191_ATTR_2": false,
+      "CHECKOUT_191_ATTR_3": "2025-12-13 00:00:00.000",
+      "REVIEW_191_ATTR_4": "2025-12-13",
+      "WISHLIST_191_ATTR_5": 101
+    },
+    {
+      "REVIEW_ID": 3,
+      "NAME": "REVIEWS 3",
+      "DESCRIPTION": "Description for REVIEWS 3",
+      "SHIPPING_191_ATTR_0": 102,
+      "RATING_191_ATTR_1": 102,
+      "CART_191_ATTR_2": true,
+      "CHECKOUT_191_ATTR_3": "2025-12-14 00:00:00.000",
+      "REVIEW_191_ATTR_4": "2025-12-14",
+      "WISHLIST_191_ATTR_5": 102
+    },
+    {
+      "REVIEW_ID": 4,
+      "NAME": "REVIEWS 4",
+      "DESCRIPTION": "Description for REVIEWS 4",
+      "SHIPPING_191_ATTR_0": null,
+      "RATING_191_ATTR_1": 103,
+      "CART_191_ATTR_2": false,
+      "CHECKOUT_191_ATTR_3": "2025-12-15 00:00:00.000",
+      "REVIEW_191_ATTR_4": "2025-12-15",
+      "WISHLIST_191_ATTR_5": null
+    },
+    {
+      "REVIEW_ID": 5,
+      "NAME": "REVIEWS 5",
+      "DESCRIPTION": "Description for REVIEWS 5",
+      "SHIPPING_191_ATTR_0": 104,
+      "RATING_191_ATTR_1": 104,
+      "CART_191_ATTR_2": true,
+      "CHECKOUT_191_ATTR_3": "2025-12-16 00:00:00.000",
+      "REVIEW_191_ATTR_4": "2025-12-16",
+      "WISHLIST_191_ATTR_5": 104
+    }
+  ],
+  "generated_at": "2025-12-14T23:42:57.351Z"
+}

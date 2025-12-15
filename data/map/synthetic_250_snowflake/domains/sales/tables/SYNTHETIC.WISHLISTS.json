@@ -1,0 +1,147 @@
+{
+  "table": "WISHLISTS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.WISHLISTS table represents a business entity associated with storing information about individual wishlists, potentially for an e-commerce context, with each entry uniquely identified by a WISHLIST_ID. The table records details such as names, descriptions, significant dates, amounts, and possibly shipping-related attributes. With no defined relationships to other tables, it appears to function independently within the data model, likely serving as a standalone repository for wishlist information without direct ties to other entities.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "WISHLIST_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column likely serves as a unique identifier for individual wishlists within the system. Each value corresponds to a distinct wishlist, ensuring differentiation between records.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column represents the names assigned to different wishlists, sequentially numbered. The naming pattern suggests these are generic or placeholder names for organizing wishlist entries.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "The column contains descriptions detailing various wishlists, each seemingly tagged with a unique identifier or sequence, such as \"1\" or \"2.\" Purpose unclear from available data beyond distinguishing different wishlist entries.",
+      "default": null
+    },
+    {
+      "name": "SHIPPING_193_ATTR_0",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values suggest a placeholder or a non-descriptive entry rather than a meaningful business term.",
+      "default": null
+    },
+    {
+      "name": "WISHLIST_193_ATTR_1",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column likely represents a series of dates and times associated with specific events or actions related to wishlists. Each entry is a non-null timestamp indicating when these events or actions are scheduled or recorded.",
+      "default": null
+    },
+    {
+      "name": "CHECKOUT_193_ATTR_2",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column likely records the timestamp of a specific event or action associated with customer wishlists, capturing when a certain aspect of the checkout process occurred, such as an update or a completed action. The purpose is unclear beyond this timeframe.",
+      "default": null
+    },
+    {
+      "name": "WISHLIST_193_ATTR_3",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "The column likely indicates a sequentially assigned identifier or code related to individual wishlists. The specific purpose of the numeric values is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "CHECKOUT_193_ATTR_4",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column likely represents a categorical attribute related to the checkout process in a wishlist context, with sample values suggesting a sequential or categorial identifier. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "RATING_193_ATTR_5",
+      "type": "DATE",
+      "nullable": true,
+      "description": "This column appears to store dates associated with specific ratings in customer wishlists. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "REVIEW_193_ATTR_6",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "WISHLIST_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "WISHLIST_ID": 1,
+      "NAME": "WISHLISTS 1",
+      "DESCRIPTION": "Description for WISHLISTS 1",
+      "SHIPPING_193_ATTR_0": "Sample SHIPPING_193_ATTR_0 1",
+      "WISHLIST_193_ATTR_1": "2025-12-12 00:00:00.000",
+      "CHECKOUT_193_ATTR_2": "2025-12-12 00:00:00.000",
+      "WISHLIST_193_ATTR_3": 100,
+      "CHECKOUT_193_ATTR_4": null,
+      "RATING_193_ATTR_5": "2025-12-12",
+      "REVIEW_193_ATTR_6": null
+    },
+    {
+      "WISHLIST_ID": 2,
+      "NAME": "WISHLISTS 2",
+      "DESCRIPTION": "Description for WISHLISTS 2",
+      "SHIPPING_193_ATTR_0": "Sample SHIPPING_193_ATTR_0 2",
+      "WISHLIST_193_ATTR_1": "2025-12-13 00:00:00.000",
+      "CHECKOUT_193_ATTR_2": "2025-12-13 00:00:00.000",
+      "WISHLIST_193_ATTR_3": 101,
+      "CHECKOUT_193_ATTR_4": 101,
+      "RATING_193_ATTR_5": "2025-12-13",
+      "REVIEW_193_ATTR_6": 101
+    },
+    {
+      "WISHLIST_ID": 3,
+      "NAME": "WISHLISTS 3",
+      "DESCRIPTION": "Description for WISHLISTS 3",
+      "SHIPPING_193_ATTR_0": "Sample SHIPPING_193_ATTR_0 3",
+      "WISHLIST_193_ATTR_1": "2025-12-14 00:00:00.000",
+      "CHECKOUT_193_ATTR_2": "2025-12-14 00:00:00.000",
+      "WISHLIST_193_ATTR_3": 102,
+      "CHECKOUT_193_ATTR_4": 102,
+      "RATING_193_ATTR_5": "2025-12-14",
+      "REVIEW_193_ATTR_6": 102
+    },
+    {
+      "WISHLIST_ID": 4,
+      "NAME": "WISHLISTS 4",
+      "DESCRIPTION": "Description for WISHLISTS 4",
+      "SHIPPING_193_ATTR_0": "Sample SHIPPING_193_ATTR_0 4",
+      "WISHLIST_193_ATTR_1": "2025-12-15 00:00:00.000",
+      "CHECKOUT_193_ATTR_2": "2025-12-15 00:00:00.000",
+      "WISHLIST_193_ATTR_3": 103,
+      "CHECKOUT_193_ATTR_4": null,
+      "RATING_193_ATTR_5": "2025-12-15",
+      "REVIEW_193_ATTR_6": null
+    },
+    {
+      "WISHLIST_ID": 5,
+      "NAME": "WISHLISTS 5",
+      "DESCRIPTION": "Description for WISHLISTS 5",
+      "SHIPPING_193_ATTR_0": "Sample SHIPPING_193_ATTR_0 5",
+      "WISHLIST_193_ATTR_1": "2025-12-16 00:00:00.000",
+      "CHECKOUT_193_ATTR_2": "2025-12-16 00:00:00.000",
+      "WISHLIST_193_ATTR_3": 104,
+      "CHECKOUT_193_ATTR_4": 104,
+      "RATING_193_ATTR_5": "2025-12-16",
+      "REVIEW_193_ATTR_6": 104
+    }
+  ],
+  "generated_at": "2025-12-14T23:44:02.455Z"
+}

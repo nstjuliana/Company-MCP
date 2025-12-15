@@ -1,0 +1,94 @@
+{
+  "table": "club_memberships",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.club_memberships` table represents a business entity focused on managing memberships within a club. Despite having no specific column names or sample data available, it plays a role in the data model by maintaining unique memberships, as inferred from the `membership_id` primary key. The table's undefined foreign key relationships suggest it may reference other tables to associate memberships with broader data structures, but specific connections cannot be detailed due to the absence of explicit table and column names.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "membership_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier assigned to each club membership record. It ensures that every membership can be distinctly identified within the club's database.",
+      "default": "nextval('synthetic.club_memberships_membership_id_seq'::regclass)"
+    },
+    {
+      "name": "club_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "student_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Unique identifier for each student who is a member of a club. Used to associate students with their respective club memberships.",
+      "default": null
+    },
+    {
+      "name": "role",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "join_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This field records the date on which a person becomes a member of a club. The specific business purpose of this data is not clear from the information provided.",
+      "default": null
+    },
+    {
+      "name": "end_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column indicates the date on which a club membership terminates. It may be left empty if the membership is ongoing or the end date is yet to be determined.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Indicates the date and time when a membership record was first created, capturing historical information for the club memberships. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a club membership record was last modified. It helps track changes to membership details over time.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "membership_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_club_memberships_club_id",
+      "column_name": "club_id",
+      "referenced_table": "synthetic.student_clubs",
+      "referenced_column": "club_id"
+    },
+    {
+      "constraint_name": "fk_club_memberships_student_id",
+      "column_name": "student_id",
+      "referenced_table": "synthetic.students",
+      "referenced_column": "student_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "club_memberships_pkey",
+      "index_definition": "CREATE UNIQUE INDEX club_memberships_pkey ON synthetic.club_memberships USING btree (membership_id)",
+      "columns": [
+        "membership_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:40:50.312Z"
+}

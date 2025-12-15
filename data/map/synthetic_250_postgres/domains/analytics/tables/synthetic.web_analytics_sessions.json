@@ -1,0 +1,228 @@
+{
+  "table": "web_analytics_sessions",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.web_analytics_sessions` table captures data related to web analytics sessions, representing user visits to a website. With a primary key of `session_id`, it includes details such as the visitor's identification, session duration, page views, traffic source, and device information, which can be used to analyze user interactions and behavior on the website over time. As there are no relationships with other tables, this table seems to function independently within the database for comprehensive session analysis.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "session_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each distinct user interaction or visit recorded in the web analytics system. It ensures that each session is tracked individually for analysis purposes.",
+      "default": "nextval('synthetic.web_analytics_sessions_session_id_seq'::regclass)"
+    },
+    {
+      "name": "visitor_id",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "session_start",
+      "type": "timestamp without time zone",
+      "nullable": false,
+      "description": "This column records the date and time when a user's online session begins on a website, as part of tracking web analytics. It captures timestamps in the Central Time Zone, distinguishing between standard and daylight saving time.",
+      "default": null
+    },
+    {
+      "name": "session_end",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the end time of web analytics sessions, indicating when a user's interaction with a website session concluded in the Central Time Zone. The purpose beyond marking session completion times is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "duration_seconds",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents the duration, in seconds, that a user spends during a web session. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "page_views",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column indicates the number of times a particular webpage was viewed during a session, with values frequently ranging in the hundreds. The count may be adjusted for unrecorded data, as sessions with no page views default to zero entries.",
+      "default": "0"
+    },
+    {
+      "name": "source",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values do not provide sufficient context to determine a clear business meaning.",
+      "default": null
+    },
+    {
+      "name": "medium",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "campaign",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column appears to contain fragmented text most likely intended to track different marketing campaigns associated with web analytics sessions. The purpose or specific context of these fragments is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "landing_page",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. Sample values suggest a random assortment of phrases without a cohesive theme.",
+      "default": null
+    },
+    {
+      "name": "exit_page",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column appears to capture descriptive text that may relate to a session's final interaction or activity on a website, possibly summarizing a visitor's concluding engagement or outcome. Purpose unclear from available data due to nonspecific and varied sample values.",
+      "default": null
+    },
+    {
+      "name": "device_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values do not provide a recognizable context for interpretation.",
+      "default": null
+    },
+    {
+      "name": "browser",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "country",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column represents the country from which a user accessed a web service, with values indicating various nations around the world. The purpose of capturing this geographical information is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when each web analytics session was created. The purpose of tracking session creation time is to understand when user interactions begin on a website.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column indicates the date and time when a particular web analytics session record was last updated. It reflects the most recent change made to the session data, if any.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "session_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "web_analytics_sessions_pkey",
+      "index_definition": "CREATE UNIQUE INDEX web_analytics_sessions_pkey ON synthetic.web_analytics_sessions USING btree (session_id)",
+      "columns": [
+        "session_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "session_id": 1,
+      "visitor_id": "Born sport man same. Use important become her throughout them media.",
+      "session_start": "2024-01-14T11:11:52.150Z",
+      "session_end": "2025-02-27T14:39:09.343Z",
+      "duration_seconds": 130,
+      "page_views": 515,
+      "source": "Sell remain certain glass leader trip develop. Animal customer green pull.",
+      "medium": "Teach decade young attack Congress education. Be green stock store same.",
+      "campaign": "Until pressure interview call minute personal. Listen long foreign a difference voice likely.",
+      "landing_page": "War rock life significant.",
+      "exit_page": "Stuff idea assume major. Usually suddenly doctor month manager as. Recognize wonder town.",
+      "device_type": "Conference less wind picture.",
+      "browser": "Serve development kid economy especially. Long the series who generation.",
+      "country": "Germany",
+      "created_at": "2025-12-13T09:14:22.872Z",
+      "updated_at": "2025-12-13T09:14:22.872Z"
+    },
+    {
+      "session_id": 2,
+      "visitor_id": "Cultural hundred fast give write talk which. During truth section whom spring.",
+      "session_start": "2025-08-24T20:17:34.264Z",
+      "session_end": "2025-06-22T22:38:08.693Z",
+      "duration_seconds": 989,
+      "page_views": 605,
+      "source": "May dog plan strategy work find. Today meet bring product us.",
+      "medium": "Family pattern tell series become stop entire enjoy. Politics social game issue professional.",
+      "campaign": "Truth indicate trouble management cultural. Save blue travel general.",
+      "landing_page": "Training step within. My daughter huge too wrong.",
+      "exit_page": "Manage call able on almost bring cultural cut. Worker social grow condition side whole seat until.",
+      "device_type": "Between treatment not hard note.",
+      "browser": "Add arm author big report. Avoid these able why method group.",
+      "country": "Belgium",
+      "created_at": "2025-12-13T09:14:22.872Z",
+      "updated_at": "2025-12-13T09:14:22.872Z"
+    },
+    {
+      "session_id": 3,
+      "visitor_id": "Big choice which shake single. My article treat around course can four.",
+      "session_start": "2025-05-05T00:34:58.167Z",
+      "session_end": "2024-03-12T03:25:29.801Z",
+      "duration_seconds": 340,
+      "page_views": 891,
+      "source": "On trouble tree scientist toward occur.",
+      "medium": "Dinner despite this exactly assume administration. Both at interest strategy.",
+      "campaign": "Performance later red religious couple north media watch. Both black tell material answer we.",
+      "landing_page": "Defense image with avoid world. They likely question treat including main maintain born.",
+      "exit_page": "Someone Mrs woman represent scientist surface. Attorney example positive market ten mind age.",
+      "device_type": "Bring Mrs away attack collection majority key.",
+      "browser": "Record leg dog write politics policy. Stop tough bit indeed force expect standard.",
+      "country": "Angola",
+      "created_at": "2025-12-13T09:14:22.872Z",
+      "updated_at": "2025-12-13T09:14:22.872Z"
+    },
+    {
+      "session_id": 4,
+      "visitor_id": "Cultural simply energy character common goal compare. Offer never high real.",
+      "session_start": "2024-10-03T09:38:30.614Z",
+      "session_end": "2025-10-10T04:50:31.761Z",
+      "duration_seconds": 103,
+      "page_views": 896,
+      "source": "Just child season site age. Anything authority industry toward.",
+      "medium": "Same garden result wrong. Smile arrive run institution girl.",
+      "campaign": "Government ball establish someone establish concern. Manager another expert. So and lay collection.",
+      "landing_page": "Late degree me themselves arm billion southern. Present common various. War morning hair whole.",
+      "exit_page": "Everything body various. Individual how season foot. Candidate one cultural onto light.",
+      "device_type": "Enjoy bar security serious enter majority.",
+      "browser": "Action focus sing story down later.",
+      "country": "Antigua and Barbuda",
+      "created_at": "2025-12-13T09:14:22.872Z",
+      "updated_at": "2025-12-13T09:14:22.872Z"
+    },
+    {
+      "session_id": 5,
+      "visitor_id": "Center give national audience kitchen so long up. Majority hear machine civil.",
+      "session_start": "2024-11-22T08:55:11.485Z",
+      "session_end": "2024-05-20T23:03:51.592Z",
+      "duration_seconds": 866,
+      "page_views": 451,
+      "source": "Street office system increase image popular. My against open.",
+      "medium": "Radio democratic line last. Material notice official piece.",
+      "campaign": "Ready represent machine continue. Big firm give certainly.\nHot tend could them.",
+      "landing_page": "Simple visit item. Future town as her think thank possible. Great peace sell away when here.",
+      "exit_page": "Life shake remain event Congress better control. Capital population special soldier success.",
+      "device_type": "Save dog listen agency finish save follow.",
+      "browser": "Recent white painting white. Throw herself upon crime.",
+      "country": "Montenegro",
+      "created_at": "2025-12-13T09:14:22.872Z",
+      "updated_at": "2025-12-13T09:14:22.872Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:44:10.248Z"
+}

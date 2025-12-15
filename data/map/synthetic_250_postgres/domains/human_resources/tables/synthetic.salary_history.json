@@ -1,0 +1,169 @@
+{
+  "table": "salary_history",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `salary_history` table records changes in salary for employees over time, identified uniquely by `salary_history_id`, with details such as the salary amount and currency, effective and end dates, and reasons for changes. It includes an `employee_id` to associate salary records with specific employees and has foreign key relationships to undefined entities, indicating possible links with other employee or salary management tables. This table plays a role in tracking historical compensation data for audit purposes and payroll adjustments.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "salary_history_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each entry in the salary history, ensuring each record is distinct. It is auto-incremented sequentially to differentiate between individual historical salary records.",
+      "default": "nextval('synthetic.salary_history_salary_history_id_seq'::regclass)"
+    },
+    {
+      "name": "employee_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents unique identifiers for employees in the salary history record. It is used to associate salary data with specific employees.",
+      "default": null
+    },
+    {
+      "name": "effective_date",
+      "type": "date",
+      "nullable": false,
+      "description": "This column represents the date when a particular salary arrangement becomes active. It ensures historical accuracy by marking the start of each salary record's validity period.",
+      "default": null
+    },
+    {
+      "name": "end_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column represents the date when an individual's salary arrangement or employment contract is scheduled to end within the company. The purpose is to track the conclusion of salary commitments, but the exact context of usage is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "salary_amount",
+      "type": "numeric",
+      "nullable": false,
+      "description": "This column represents monetary amounts associated with employee salaries. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "currency",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column indicates the currency in which salaries have been recorded, reflecting international monetary units such as Euros, US dollars, and British pounds. It suggests that the salary history data can involve multiple currencies, predominantly EUR, USD, and GBP.",
+      "default": "'USD'::character varying"
+    },
+    {
+      "name": "change_reason",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values appear to be random, fragmented phrases lacking a clear thematic connection or context.",
+      "default": null
+    },
+    {
+      "name": "approved_by",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents the unique identifier of a person or entity responsible for approving salary changes. The specific role or capacity of this approver is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a salary history entry was created, using the current timestamp by default. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a salary history entry was last updated. The default value ensures that it captures the current timestamp when an update is made, though it may not always be populated.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "salary_history_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_salary_history_approved_by",
+      "column_name": "approved_by",
+      "referenced_table": "synthetic.employees",
+      "referenced_column": "employee_id"
+    },
+    {
+      "constraint_name": "fk_salary_history_employee_id",
+      "column_name": "employee_id",
+      "referenced_table": "synthetic.employees",
+      "referenced_column": "employee_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "salary_history_pkey",
+      "index_definition": "CREATE UNIQUE INDEX salary_history_pkey ON synthetic.salary_history USING btree (salary_history_id)",
+      "columns": [
+        "salary_history_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "salary_history_id": 1,
+      "employee_id": 48,
+      "effective_date": "2025-11-22T06:00:00.000Z",
+      "end_date": "2024-12-11T06:00:00.000Z",
+      "salary_amount": "8109.39",
+      "currency": "EUR",
+      "change_reason": "Send born college include fund tree somebody decide. Form really leader remember.",
+      "approved_by": 11,
+      "created_at": "2025-12-13T09:19:41.645Z",
+      "updated_at": "2025-12-13T09:19:41.645Z"
+    },
+    {
+      "salary_history_id": 2,
+      "employee_id": 45,
+      "effective_date": "2024-09-08T05:00:00.000Z",
+      "end_date": "2024-09-02T05:00:00.000Z",
+      "salary_amount": "1089.88",
+      "currency": "USD",
+      "change_reason": "War citizen plant little key. Child source campaign parent teacher.",
+      "approved_by": 31,
+      "created_at": "2025-12-13T09:19:41.645Z",
+      "updated_at": "2025-12-13T09:19:41.645Z"
+    },
+    {
+      "salary_history_id": 3,
+      "employee_id": 15,
+      "effective_date": "2025-08-26T05:00:00.000Z",
+      "end_date": "2024-07-28T05:00:00.000Z",
+      "salary_amount": "2003.73",
+      "currency": "EUR",
+      "change_reason": "Garden reach state cover board discussion. Maybe floor most bill feel.",
+      "approved_by": 23,
+      "created_at": "2025-12-13T09:19:41.645Z",
+      "updated_at": "2025-12-13T09:19:41.645Z"
+    },
+    {
+      "salary_history_id": 4,
+      "employee_id": 20,
+      "effective_date": "2023-12-16T06:00:00.000Z",
+      "end_date": "2025-10-29T05:00:00.000Z",
+      "salary_amount": "8207.16",
+      "currency": "USD",
+      "change_reason": "Government south window short affect region. Product eight strategy age into.",
+      "approved_by": 15,
+      "created_at": "2025-12-13T09:19:41.645Z",
+      "updated_at": "2025-12-13T09:19:41.645Z"
+    },
+    {
+      "salary_history_id": 5,
+      "employee_id": 2,
+      "effective_date": "2025-12-02T06:00:00.000Z",
+      "end_date": "2025-02-12T06:00:00.000Z",
+      "salary_amount": "6603.73",
+      "currency": "EUR",
+      "change_reason": "Argue garden Mrs just. Book care seek foot simple.",
+      "approved_by": 22,
+      "created_at": "2025-12-13T09:19:41.645Z",
+      "updated_at": "2025-12-13T09:19:41.645Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:41:04.605Z"
+}

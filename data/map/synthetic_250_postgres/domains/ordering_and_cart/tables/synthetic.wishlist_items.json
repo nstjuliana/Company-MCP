@@ -1,0 +1,151 @@
+{
+  "table": "wishlist_items",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.wishlist_items` table represents individual items added to a user's wishlist, including a unique `wishlist_item_id`, associated with `wishlist_id`, `product_id`, and optionally `variant_id`. Each entry records when the item was `added_at` and includes `notes`, with timestamps for `created_at` and `updated_at` to track changes. Although specific foreign key relationships are undefined, the table plays a crucial role in linking product selections within wishlists to user interactions or preferences.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "wishlist_item_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier assigned sequentially to each item added to a user's wishlist. Its values ensure that each entry in the wishlist is distinct and can be individually referenced.",
+      "default": "nextval('synthetic.wishlist_items_wishlist_item_id_seq'::regclass)"
+    },
+    {
+      "name": "wishlist_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents the unique identifier for individual entries within a user's wishlist, ensuring each item can be distinctly associated with a specific wishlist.",
+      "default": null
+    },
+    {
+      "name": "product_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents unique identifiers for products that users have added to their wishlists. Each value corresponds to a specific product selected by a user for future reference or purchase.",
+      "default": null
+    },
+    {
+      "name": "variant_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents unique identifiers for product variants that customers have added to their wishlist. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "added_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column indicates when an item was added to a user's wishlist. It records the date and time of addition, defaulting to the current moment if no other value is provided.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "notes",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column contains text notes or comments associated with wishlist items, capturing diverse thoughts or additional details that users might apply to each listing. The purpose or context of these notes is unclear from the sample data provided.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This timestamp records the date and time when an item was added to the wishlist. It defaults to the current time when no value is provided.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a wishlist item was last modified or updated. It defaults to the current timestamp if not otherwise specified.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "wishlist_item_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_wishlist_items_product_id",
+      "column_name": "product_id",
+      "referenced_table": "synthetic.products",
+      "referenced_column": "product_id"
+    },
+    {
+      "constraint_name": "fk_wishlist_items_variant_id",
+      "column_name": "variant_id",
+      "referenced_table": "synthetic.product_variants",
+      "referenced_column": "variant_id"
+    },
+    {
+      "constraint_name": "fk_wishlist_items_wishlist_id",
+      "column_name": "wishlist_id",
+      "referenced_table": "synthetic.wishlists",
+      "referenced_column": "wishlist_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "wishlist_items_pkey",
+      "index_definition": "CREATE UNIQUE INDEX wishlist_items_pkey ON synthetic.wishlist_items USING btree (wishlist_item_id)",
+      "columns": [
+        "wishlist_item_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "wishlist_item_id": 1,
+      "wishlist_id": 17,
+      "product_id": 16,
+      "variant_id": 40,
+      "added_at": "2025-06-09T09:13:40.455Z",
+      "notes": "Right that short friend together bill range. Of method white. Five southern man subject science happ...",
+      "created_at": "2025-12-13T08:56:34.228Z",
+      "updated_at": "2025-12-13T08:56:34.228Z"
+    },
+    {
+      "wishlist_item_id": 2,
+      "wishlist_id": 29,
+      "product_id": 16,
+      "variant_id": 24,
+      "added_at": "2024-12-21T21:33:47.069Z",
+      "notes": "Daughter own this economy one. Store left song with. Mr site newspaper arrive improve sea road sit.",
+      "created_at": "2025-12-13T08:56:34.228Z",
+      "updated_at": "2025-12-13T08:56:34.228Z"
+    },
+    {
+      "wishlist_item_id": 3,
+      "wishlist_id": 38,
+      "product_id": 44,
+      "variant_id": 42,
+      "added_at": "2025-07-19T07:56:17.047Z",
+      "notes": "Military national without newspaper want for. Per recent for left hard cut avoid.",
+      "created_at": "2025-12-13T08:56:34.228Z",
+      "updated_at": "2025-12-13T08:56:34.228Z"
+    },
+    {
+      "wishlist_item_id": 4,
+      "wishlist_id": 30,
+      "product_id": 6,
+      "variant_id": 1,
+      "added_at": "2024-07-17T20:16:53.905Z",
+      "notes": "Hold itself scene summer appear participant miss. Hospital avoid purpose product police wonder. Case...",
+      "created_at": "2025-12-13T08:56:34.228Z",
+      "updated_at": "2025-12-13T08:56:34.228Z"
+    },
+    {
+      "wishlist_item_id": 5,
+      "wishlist_id": 31,
+      "product_id": 9,
+      "variant_id": 21,
+      "added_at": "2025-11-08T15:22:59.714Z",
+      "notes": "Theory team training different TV evening. Capital former focus well along situation.",
+      "created_at": "2025-12-13T08:56:34.228Z",
+      "updated_at": "2025-12-13T08:56:34.228Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:44:58.991Z"
+}

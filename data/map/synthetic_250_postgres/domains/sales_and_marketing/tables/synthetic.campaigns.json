@@ -1,0 +1,228 @@
+{
+  "table": "campaigns",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.campaigns\" table represents marketing or promotional campaigns, detailing various attributes such as campaign name, type, status, date range, financials, and performance metrics. It focuses on tracking budgeted versus actual costs and response metrics (e.g., number sent and responses), with no external table relationships indicating standalone operation within the database. This table serves to manage and analyze the efficiency and effectiveness of campaigns over time.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "campaign_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each marketing campaign within the database, providing a sequential number for organizational purposes. It ensures that each campaign is distinct and can be individually referenced.",
+      "default": "nextval('synthetic.campaigns_campaign_id_seq'::regclass)"
+    },
+    {
+      "name": "campaign_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column likely represents descriptive titles or themes of specific campaigns, capturing the key focus or narrative elements used in each campaign for brand messaging or marketing strategies. The purpose is to encapsulate the overall theme or appeal meant to attract or engage a target audience.",
+      "default": null
+    },
+    {
+      "name": "campaign_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column categorizes various types of campaigns the organization is engaged in. Common themes include initiatives related to innovation, availability, financial matters, and growth activities.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column indicates the current stage or condition of a campaign, with possible statuses such as inactive, active, pending, and completed. Purpose unclear from available data.",
+      "default": "'planned'::character varying"
+    },
+    {
+      "name": "start_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column represents the scheduled start date for marketing campaigns, which can occur at various times of the year. The specific initiation date is flexible, allowing for future dates and occasionally encompassing widely recognized time zones adjustments such as daylight savings.",
+      "default": null
+    },
+    {
+      "name": "end_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column records the date on which a campaign is scheduled to conclude. If a campaign does not have an assigned end date yet, the entry will be left blank.",
+      "default": null
+    },
+    {
+      "name": "budgeted_cost",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the projected or intended expenditure for various marketing initiatives or promotional efforts. The values indicate monetary amounts allocated for these campaigns, allowing for financial planning and resource allocation.",
+      "default": null
+    },
+    {
+      "name": "actual_cost",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the financial expenditure incurred in the execution of specific marketing or advertising activities. The values indicate the actual costs associated with various campaigns, reflecting monetary amounts.",
+      "default": "0"
+    },
+    {
+      "name": "expected_revenue",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column likely represents the projected monetary gains in a campaign, expressed in numeric values. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "expected_response",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents the projected number of positive responses or engagements expected from a marketing campaign. Purpose unclear from available data beyond numerical projection.",
+      "default": null
+    },
+    {
+      "name": "num_sent",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents the number of communications or messages sent during marketing or promotional campaigns. The values indicate a wide range of activity levels across different campaigns.",
+      "default": "0"
+    },
+    {
+      "name": "num_responses",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents the number of responses received from a campaign, allowing for tracking and analysis of engagement levels. Purpose unclear from available data.",
+      "default": "0"
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "nullable": true,
+      "description": "This column contains narrative or promotional content related to individual campaigns, using varied phrases and concepts likely designed to engage or inform an audience. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "owner_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "Represents a unique identifier for the individual or entity responsible for managing or owning a campaign. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the exact date and time when each campaign entry was created in the system. The timestamps are set to Central Standard Time, indicating local time zone relevance.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a campaign entry was last modified. It defaults to the current timestamp if no value is provided, indicating when changes are made in the absence of explicit input.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "campaign_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "campaigns_pkey",
+      "index_definition": "CREATE UNIQUE INDEX campaigns_pkey ON synthetic.campaigns USING btree (campaign_id)",
+      "columns": [
+        "campaign_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "campaign_id": 1,
+      "campaign_name": "Total force record his. Create program rest black information right authority. Position TV internati...",
+      "campaign_type": "miss",
+      "status": "inactive",
+      "start_date": "2024-04-10T05:00:00.000Z",
+      "end_date": "2025-03-17T05:00:00.000Z",
+      "budgeted_cost": "53010.71",
+      "actual_cost": "34175.61",
+      "expected_revenue": "373.35",
+      "expected_response": 2100,
+      "num_sent": 6055,
+      "num_responses": 9263,
+      "description": "Especially against reason watch compare election office.",
+      "owner_id": 7759,
+      "created_at": "2025-12-13T08:58:54.560Z",
+      "updated_at": "2025-12-13T08:58:54.560Z"
+    },
+    {
+      "campaign_id": 2,
+      "campaign_name": "Describe tough bag work father. Find time just prevent. Certainly protect six early particularly adm...",
+      "campaign_type": "idea",
+      "status": "active",
+      "start_date": "2025-07-21T05:00:00.000Z",
+      "end_date": "2025-03-18T05:00:00.000Z",
+      "budgeted_cost": "1869.21",
+      "actual_cost": "37063.85",
+      "expected_revenue": "246.11",
+      "expected_response": 5345,
+      "num_sent": 3825,
+      "num_responses": 5121,
+      "description": "Plan bag company audience series car call. Off happy thought drop. Recent police rich later show pre...",
+      "owner_id": 7802,
+      "created_at": "2025-12-13T08:58:54.560Z",
+      "updated_at": "2025-12-13T08:58:54.560Z"
+    },
+    {
+      "campaign_id": 3,
+      "campaign_name": "War at buy watch bit. Center finish professor early common.\nReach measure war necessary effort parti...",
+      "campaign_type": "firm",
+      "status": "pending",
+      "start_date": "2025-04-16T05:00:00.000Z",
+      "end_date": "2025-10-28T05:00:00.000Z",
+      "budgeted_cost": "55544.08",
+      "actual_cost": "57764.26",
+      "expected_revenue": "331.06",
+      "expected_response": 3185,
+      "num_sent": 2083,
+      "num_responses": 5273,
+      "description": "Rich owner newspaper direction successful story someone large. Recently its water minute each attorn...",
+      "owner_id": 9377,
+      "created_at": "2025-12-13T08:58:54.560Z",
+      "updated_at": "2025-12-13T08:58:54.560Z"
+    },
+    {
+      "campaign_id": 4,
+      "campaign_name": "Fear bed radio. Doctor do actually staff.\nMany eat lose campaign why benefit hit.",
+      "campaign_type": "available",
+      "status": "inactive",
+      "start_date": "2025-04-08T05:00:00.000Z",
+      "end_date": "2024-11-12T06:00:00.000Z",
+      "budgeted_cost": "70839.68",
+      "actual_cost": "60977.77",
+      "expected_revenue": "813.32",
+      "expected_response": 4082,
+      "num_sent": 8006,
+      "num_responses": 9230,
+      "description": "Air change image level door loss. Join each require ball might with peace. She you return baby custo...",
+      "owner_id": 7697,
+      "created_at": "2025-12-13T08:58:54.560Z",
+      "updated_at": "2025-12-13T08:58:54.560Z"
+    },
+    {
+      "campaign_id": 5,
+      "campaign_name": "Year value maybe idea might ready certainly. Performance level some around forward dark.\nDesign tria...",
+      "campaign_type": "ten",
+      "status": "active",
+      "start_date": "2023-12-15T06:00:00.000Z",
+      "end_date": "2025-01-26T06:00:00.000Z",
+      "budgeted_cost": "31414.66",
+      "actual_cost": "88084.74",
+      "expected_revenue": "384.14",
+      "expected_response": 2431,
+      "num_sent": 5270,
+      "num_responses": 1333,
+      "description": "Third weight area outside. Prevent few president wind. Republican defense into admit television girl...",
+      "owner_id": 8671,
+      "created_at": "2025-12-13T08:58:54.560Z",
+      "updated_at": "2025-12-13T08:58:54.560Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:40:31.063Z"
+}

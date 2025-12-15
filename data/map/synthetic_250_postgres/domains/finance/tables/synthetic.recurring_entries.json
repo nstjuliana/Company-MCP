@@ -1,0 +1,163 @@
+{
+  "table": "recurring_entries",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.recurring_entries` table captures details of recurring entries, which appear to represent scheduled events or tasks within the dataset. The columns suggest it records metadata about these events such as their frequency, next occurrence date, and active status. The table's primary key, `recurring_id`, along with a foreign key `template_entry_id`, implies that it might be related to a separate table containing templates or details for these recurring tasks, yet lacking a defined relationship suggests this connection remains unexplored.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "recurring_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each entry in the recurring entries table, ensuring distinct records for recurring transactions or events. Purpose unclear from available data.",
+      "default": "nextval('synthetic.recurring_entries_recurring_id_seq'::regclass)"
+    },
+    {
+      "name": "entry_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This field represents the names or descriptions of recurring entries, which likely document ongoing activities or events, as suggested by phrases like \"Perform crime large\" and \"Mention risk central operation career.\" Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "frequency",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "next_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column represents the future scheduled date for recurring entries within the system, capturing a variety of dates in 2024 and 2025 as potential upcoming instances. It allows for the possibility of unassigned dates, as indicated by the allowance of null values.",
+      "default": null
+    },
+    {
+      "name": "end_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column represents the final date for which a recurring entry will remain active, indicating until when certain recurring processes or events are valid. It is optional, as some entries may not have a specified end date.",
+      "default": null
+    },
+    {
+      "name": "template_entry_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents the identifier for a template associated with recurring entries, indicating which predefined template each entry follows. The purpose and meaning beyond identification are unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "is_active",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether a recurring entry is currently considered active within the system. Most entries appear to be inactive based on the sample values.",
+      "default": "true"
+    },
+    {
+      "name": "last_generated",
+      "type": "date",
+      "nullable": true,
+      "description": "This column records the most recent date a recurring entry was automatically generated or processed. Purpose unclear from available data regarding what specific entries are being referenced.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when each entry was created in the system. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column captures the date and time when an entry in the recurring entries table was last modified. Its purpose appears to track updates to records, but the exact business context is unclear from the available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "recurring_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_recurring_entries_template_entry_id",
+      "column_name": "template_entry_id",
+      "referenced_table": "synthetic.journal_entries",
+      "referenced_column": "entry_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "recurring_entries_pkey",
+      "index_definition": "CREATE UNIQUE INDEX recurring_entries_pkey ON synthetic.recurring_entries USING btree (recurring_id)",
+      "columns": [
+        "recurring_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "recurring_id": 1,
+      "entry_name": "Soon light pass. Give street organization third blood by stand alone.\nRight benefit decision hair co...",
+      "frequency": "Owner assume PM.",
+      "next_date": "2024-12-08T06:00:00.000Z",
+      "end_date": "2024-01-25T06:00:00.000Z",
+      "template_entry_id": 5,
+      "is_active": true,
+      "last_generated": "2024-04-08T05:00:00.000Z",
+      "created_at": "2025-12-13T08:55:36.413Z",
+      "updated_at": "2025-12-13T08:55:36.413Z"
+    },
+    {
+      "recurring_id": 2,
+      "entry_name": "Page make foreign indeed. Perform crime large. Me figure mission when.\nSave kitchen author conferenc...",
+      "frequency": "Your break front.",
+      "next_date": "2024-12-12T06:00:00.000Z",
+      "end_date": "2025-09-22T05:00:00.000Z",
+      "template_entry_id": 11,
+      "is_active": false,
+      "last_generated": "2025-06-13T05:00:00.000Z",
+      "created_at": "2025-12-13T08:55:36.413Z",
+      "updated_at": "2025-12-13T08:55:36.413Z"
+    },
+    {
+      "recurring_id": 3,
+      "entry_name": "Thing control example century staff. Strong interest three executive. Eat maintain create join heavy...",
+      "frequency": "Vote police kind.",
+      "next_date": "2025-03-25T05:00:00.000Z",
+      "end_date": "2024-10-09T05:00:00.000Z",
+      "template_entry_id": 15,
+      "is_active": false,
+      "last_generated": "2024-02-29T06:00:00.000Z",
+      "created_at": "2025-12-13T08:55:36.413Z",
+      "updated_at": "2025-12-13T08:55:36.413Z"
+    },
+    {
+      "recurring_id": 4,
+      "entry_name": "Factor method certainly child likely hand environment big. Official drive white.\nChild late that bui...",
+      "frequency": "Study group early.",
+      "next_date": "2025-07-15T05:00:00.000Z",
+      "end_date": "2024-06-21T05:00:00.000Z",
+      "template_entry_id": 21,
+      "is_active": false,
+      "last_generated": "2024-03-30T05:00:00.000Z",
+      "created_at": "2025-12-13T08:55:36.413Z",
+      "updated_at": "2025-12-13T08:55:36.413Z"
+    },
+    {
+      "recurring_id": 5,
+      "entry_name": "Quickly pattern body source firm. Painting last base growth yeah them us election.\nInformation peace...",
+      "frequency": "Resource music step.",
+      "next_date": "2024-11-04T06:00:00.000Z",
+      "end_date": "2025-08-06T05:00:00.000Z",
+      "template_entry_id": 46,
+      "is_active": false,
+      "last_generated": "2024-04-23T05:00:00.000Z",
+      "created_at": "2025-12-13T08:55:36.413Z",
+      "updated_at": "2025-12-13T08:55:36.413Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:40:22.934Z"
+}

@@ -1,0 +1,187 @@
+{
+  "table": "referrals",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.referrals` table represents a record of medical referrals, tracking information about referrals from one physician to another, including but not limited to the patient involved, the referral dates, reasons, urgency, and status. The `referral_id` serves as the primary key, with potential references to other tables through undefined foreign keys implying connections to patient and physician details. The table's role in the data model is to facilitate the management and historical tracking of referral interactions within a healthcare setting, evident from columns like `referral_date`, `reason`, and `status`.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "referral_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents the unique identifier assigned to each referral record in the database, ensuring each entry is distinct and can be individually referenced. Purpose unclear from available data.",
+      "default": "nextval('synthetic.referrals_referral_id_seq'::regclass)"
+    },
+    {
+      "name": "patient_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier assigned to each patient within the referrals context. Based on the sample values, it serves to link or track patient-specific referral data.",
+      "default": null
+    },
+    {
+      "name": "referring_physician_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents the unique identifier associated with a physician who has referred a patient for a particular service or consultation. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "referred_to_physician_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "referral_date",
+      "type": "date",
+      "nullable": false,
+      "description": "This column records the dates on which referrals occurred, indicating the specific days when referral actions were logged in the system. The dates suggest transactions were captured across various months and years.",
+      "default": null
+    },
+    {
+      "name": "reason",
+      "type": "text",
+      "nullable": true,
+      "description": "The column records brief descriptive notes or statements related to the context or circumstances surrounding a referral. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "urgency",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column indicates the current state or progress of a referral, with potential stages being 'active', 'inactive', and 'pending'. It suggests the transition of a referral through different phases, likely relating to its completion or approval status.",
+      "default": "'pending'::character varying"
+    },
+    {
+      "name": "authorization_number",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column contains a unique identifier associated with each referral, likely used to track or authorize specific actions or processes. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when each referral record was initially created. The timestamp reflects the exact moment a new referral entry is added to the system, defaulting to the current system time upon creation.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a referral record was last modified, with each entry defaulting to the current timestamp upon any updates. Purpose unclear from available data beyond tracking modification times.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "referral_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_referrals_patient_id",
+      "column_name": "patient_id",
+      "referenced_table": "synthetic.patients",
+      "referenced_column": "patient_id"
+    },
+    {
+      "constraint_name": "fk_referrals_referred_to_physician_id",
+      "column_name": "referred_to_physician_id",
+      "referenced_table": "synthetic.physicians",
+      "referenced_column": "physician_id"
+    },
+    {
+      "constraint_name": "fk_referrals_referring_physician_id",
+      "column_name": "referring_physician_id",
+      "referenced_table": "synthetic.physicians",
+      "referenced_column": "physician_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "referrals_pkey",
+      "index_definition": "CREATE UNIQUE INDEX referrals_pkey ON synthetic.referrals USING btree (referral_id)",
+      "columns": [
+        "referral_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "referral_id": 1,
+      "patient_id": 49,
+      "referring_physician_id": null,
+      "referred_to_physician_id": null,
+      "referral_date": "2025-07-02T05:00:00.000Z",
+      "reason": "Foot national raise there order effort. Picture and role American.",
+      "urgency": "Operation media difficult adult last know away.",
+      "status": "inactive",
+      "authorization_number": "734996321553397",
+      "created_at": "2025-12-13T09:22:44.285Z",
+      "updated_at": "2025-12-13T09:22:44.285Z"
+    },
+    {
+      "referral_id": 2,
+      "patient_id": 47,
+      "referring_physician_id": null,
+      "referred_to_physician_id": null,
+      "referral_date": "2025-09-03T05:00:00.000Z",
+      "reason": "Big word capital worker stay. Beyond continue produce effort age today. Allow fine culture.",
+      "urgency": "Task base direction although and certainly.",
+      "status": "pending",
+      "authorization_number": "842351802642149",
+      "created_at": "2025-12-13T09:22:44.285Z",
+      "updated_at": "2025-12-13T09:22:44.285Z"
+    },
+    {
+      "referral_id": 3,
+      "patient_id": 48,
+      "referring_physician_id": null,
+      "referred_to_physician_id": null,
+      "referral_date": "2024-03-22T05:00:00.000Z",
+      "reason": "Father hold discussion through everything experience life. Upon machine perform partner style season...",
+      "urgency": "Scientist let so spend test country.",
+      "status": "inactive",
+      "authorization_number": "988268744337314",
+      "created_at": "2025-12-13T09:22:44.285Z",
+      "updated_at": "2025-12-13T09:22:44.285Z"
+    },
+    {
+      "referral_id": 4,
+      "patient_id": 30,
+      "referring_physician_id": null,
+      "referred_to_physician_id": null,
+      "referral_date": "2025-03-17T05:00:00.000Z",
+      "reason": "Participant dinner after nation.",
+      "urgency": "Develop before break.",
+      "status": "active",
+      "authorization_number": "216348443053447",
+      "created_at": "2025-12-13T09:22:44.285Z",
+      "updated_at": "2025-12-13T09:22:44.285Z"
+    },
+    {
+      "referral_id": 5,
+      "patient_id": 47,
+      "referring_physician_id": null,
+      "referred_to_physician_id": null,
+      "referral_date": "2025-11-21T06:00:00.000Z",
+      "reason": "Society challenge director. Month mouth best hour. Way president ok force middle.",
+      "urgency": "Make social stand.",
+      "status": "inactive",
+      "authorization_number": "638720323832270",
+      "created_at": "2025-12-13T09:22:44.285Z",
+      "updated_at": "2025-12-13T09:22:44.285Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:41:56.617Z"
+}

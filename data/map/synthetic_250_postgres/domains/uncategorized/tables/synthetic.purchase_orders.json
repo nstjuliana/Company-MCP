@@ -1,0 +1,158 @@
+{
+  "table": "purchase_orders",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.purchase_orders` table in the `synthetic_250_postgres` database represents a collection of purchase order records, likely to store details about orders made by a business for supplies or products. It holds primary significance as denoted by the primary key `po_id`, though the absence of column data limits precise identification of specific order attributes or transaction details. Despite having undefined foreign key relationships, it suggests intended dependencies on other tables, hinting at integration within a broader purchasing or procurement system, yet further information is needed for definitive detailing.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "po_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each purchase order within the system. It automatically increments to ensure distinct identifiers for new entries.",
+      "default": "nextval('synthetic.purchase_orders_po_id_seq'::regclass)"
+    },
+    {
+      "name": "po_number",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column likely holds unique identifiers for purchase orders within a business context. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "supplier_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "A unique identifier for suppliers associated with purchase orders. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "warehouse_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely references the identifier for a physical storage location where purchase orders are fulfilled. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "order_date",
+      "type": "date",
+      "nullable": false,
+      "description": "This column records the date on which each purchase order was placed, serving as a key indicator for tracking order timelines and managing inventory and supply chain operations.",
+      "default": null
+    },
+    {
+      "name": "expected_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column likely represents the anticipated date for the completion or delivery of purchase orders within the business process, allowing for tracking and scheduling purposes. Purpose unclear from available data due to the absence of sample values.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This field likely indicates the current state or progression of a purchase order, with the default starting state being 'draft'. Purpose unclear from available data.",
+      "default": "'draft'::character varying"
+    },
+    {
+      "name": "subtotal",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column likely represents the total cost of items before any discounts or additional charges are applied in a purchase order. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "tax_amount",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the monetary value of taxes associated with purchase orders. The amount can vary or be absent, indicating that taxes may not always apply.",
+      "default": "0"
+    },
+    {
+      "name": "shipping_cost",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column typically represents the cost associated with shipping a purchase order; it can be left empty to indicate that no shipping cost is applicable. The default value suggests that an order may not incur additional shipping expenses unless specified.",
+      "default": "0"
+    },
+    {
+      "name": "total_amount",
+      "type": "numeric",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "currency",
+      "type": "character varying",
+      "nullable": true,
+      "description": "The column represents the type of currency used in financial transactions related to purchase orders. If not specified, the default currency is US Dollars.",
+      "default": "'USD'::character varying"
+    },
+    {
+      "name": "notes",
+      "type": "text",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "approved_by",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely identifies the individual or entity responsible for approving purchase orders, represented by an integer ID. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an entry in the purchase orders table was created. It may serve to track the timing of purchase order generation but lacks specific details or context.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column indicates the most recent date and time when a purchase order record was modified. It is used to track updates for order management purposes.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "po_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_purchase_orders_supplier_id",
+      "column_name": "supplier_id",
+      "referenced_table": "synthetic.suppliers",
+      "referenced_column": "supplier_id"
+    },
+    {
+      "constraint_name": "fk_purchase_orders_warehouse_id",
+      "column_name": "warehouse_id",
+      "referenced_table": "synthetic.warehouses",
+      "referenced_column": "warehouse_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "purchase_orders_pkey",
+      "index_definition": "CREATE UNIQUE INDEX purchase_orders_pkey ON synthetic.purchase_orders USING btree (po_id)",
+      "columns": [
+        "po_id"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "purchase_orders_po_number_key",
+      "index_definition": "CREATE UNIQUE INDEX purchase_orders_po_number_key ON synthetic.purchase_orders USING btree (po_number)",
+      "columns": [
+        "po_number"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:41:20.951Z"
+}

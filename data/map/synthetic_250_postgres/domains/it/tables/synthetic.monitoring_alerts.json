@@ -1,0 +1,187 @@
+{
+  "table": "monitoring_alerts",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.monitoring_alerts` table records alerts related to monitoring systems, capturing details such as alert identifiers, associated server and application IDs, severity levels, and timestamps for when alerts were triggered, acknowledged, and resolved. It serves as a record-keeping entity allowing for tracking and management of system alerts, where `alert_id` uniquely identifies each alert. This table references another entity through `server_id`, indicating its contextual link to server details, although specific foreign key details are unspecified.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "alert_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each alert in the monitoring system, ensuring traceability and distinction among multiple alerts. It serves as a sequential identifier for the alerts generated.",
+      "default": "nextval('synthetic.monitoring_alerts_alert_id_seq'::regclass)"
+    },
+    {
+      "name": "alert_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "server_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents the identifier for servers that generate monitoring alerts. It indicates which server is associated with each alert, though its specific use in business operations is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "app_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents identifiers for applications that have triggered monitoring alerts. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "severity",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "message",
+      "type": "text",
+      "nullable": true,
+      "description": "This column contains textual descriptions or narratives related to various events or situations, possibly used for logging or record-keeping purposes in a monitoring system. The exact purpose of these messages is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "triggered_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column likely records the date and time when monitoring alerts were activated. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "acknowledged_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a monitoring alert was acknowledged by a user or system. Its purpose is unclear from the available data, though it likely aids in tracking response times to alerts.",
+      "default": null
+    },
+    {
+      "name": "resolved_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the specific date and time when a monitoring alert was resolved. It is optional and can remain empty if the alert has not been resolved.",
+      "default": null
+    },
+    {
+      "name": "acknowledged_by",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents the unique identifier of users or personnel who have acknowledged a specific alert in the monitoring system. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a monitoring alert entry is created. It defaults to the current timestamp unless a different value is specified.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a monitoring alert was last updated. The purpose of these identical sample values is unclear from the available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "alert_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_monitoring_alerts_app_id",
+      "column_name": "app_id",
+      "referenced_table": "synthetic.applications",
+      "referenced_column": "app_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "monitoring_alerts_pkey",
+      "index_definition": "CREATE UNIQUE INDEX monitoring_alerts_pkey ON synthetic.monitoring_alerts USING btree (alert_id)",
+      "columns": [
+        "alert_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "alert_id": 1,
+      "alert_name": "Price require house several mouth many follow. Kid model candidate prepare somebody out.",
+      "server_id": 1,
+      "app_id": 50,
+      "severity": "Yeah east raise.",
+      "message": "Interest whom record shake let.",
+      "triggered_at": "2024-07-01T11:22:48.263Z",
+      "acknowledged_at": "2024-10-28T06:19:33.142Z",
+      "resolved_at": "2025-11-06T16:59:35.974Z",
+      "acknowledged_by": 358,
+      "created_at": "2025-12-13T09:16:24.451Z",
+      "updated_at": "2025-12-13T09:16:24.451Z"
+    },
+    {
+      "alert_id": 2,
+      "alert_name": "Father according religious lead fly. Smile book window start deal spring.",
+      "server_id": 2,
+      "app_id": 47,
+      "severity": "Easy size even.",
+      "message": "Thus step any forward minute floor. High total debate base.",
+      "triggered_at": "2024-11-02T15:11:36.469Z",
+      "acknowledged_at": "2025-11-11T14:29:22.617Z",
+      "resolved_at": "2024-12-27T15:17:58.380Z",
+      "acknowledged_by": 982,
+      "created_at": "2025-12-13T09:16:24.451Z",
+      "updated_at": "2025-12-13T09:16:24.451Z"
+    },
+    {
+      "alert_id": 3,
+      "alert_name": "Bag green top security billion cover body. Moment science night cell increase.",
+      "server_id": 1,
+      "app_id": 16,
+      "severity": "During third man.",
+      "message": "Book street without language large vote season. Type buy read standard music kind campaign couple. M...",
+      "triggered_at": "2024-04-08T06:10:12.441Z",
+      "acknowledged_at": "2024-05-21T21:37:16.130Z",
+      "resolved_at": "2024-06-09T17:07:39.916Z",
+      "acknowledged_by": 106,
+      "created_at": "2025-12-13T09:16:24.451Z",
+      "updated_at": "2025-12-13T09:16:24.451Z"
+    },
+    {
+      "alert_id": 4,
+      "alert_name": "With site others. Opportunity mind free imagine above quickly image.",
+      "server_id": 1,
+      "app_id": 17,
+      "severity": "Admit money reason.",
+      "message": "Write water record minute they blue serious. These exactly medical course participant so. Resource r...",
+      "triggered_at": "2024-07-09T11:09:43.332Z",
+      "acknowledged_at": "2024-06-14T21:04:03.479Z",
+      "resolved_at": "2024-08-04T09:44:51.794Z",
+      "acknowledged_by": 203,
+      "created_at": "2025-12-13T09:16:24.451Z",
+      "updated_at": "2025-12-13T09:16:24.451Z"
+    },
+    {
+      "alert_id": 5,
+      "alert_name": "Certain popular same against. Possible letter mission minute produce.",
+      "server_id": 1,
+      "app_id": 39,
+      "severity": "Between fine.",
+      "message": "Court me message smile early. Tend concern evening church need fast all.",
+      "triggered_at": "2025-06-04T21:04:08.705Z",
+      "acknowledged_at": "2025-02-03T07:35:58.327Z",
+      "resolved_at": "2025-03-01T00:02:58.501Z",
+      "acknowledged_by": 157,
+      "created_at": "2025-12-13T09:16:24.451Z",
+      "updated_at": "2025-12-13T09:16:24.451Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:37.397Z"
+}

@@ -1,0 +1,195 @@
+{
+  "table": "product_categories",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.product_categories\" table represents a hierarchical structure of product categories, providing key attributes for each category such as name, description, and status, which can be used for organizing products in a retail or e-commerce context. The primary key, \"category_id,\" uniquely identifies each category, and the optional \"parent_category_id\" allows for nesting of categories, indicating a parent-child hierarchy. Although currently not linked to other tables by foreign keys, this table is likely intended for categorizing products in another table within the database.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "category_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each product category in the system with an incrementing numerical value. It ensures that every category has a distinct and definitive reference within the database.",
+      "default": "nextval('synthetic.product_categories_category_id_seq'::regclass)"
+    },
+    {
+      "name": "category_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "slug",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely contains URL-friendly identifiers or keywords for different product categories, using hyphenated phrases to represent the category's identity or theme. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "parent_category_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column signifies the identifier of a higher-level category to which a product category belongs, allowing for a hierarchical categorization of products. Its usage helps in organizing categories under broader parent categories, although specific business logic or category names are not evidenced by the available data.",
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "nullable": true,
+      "description": "Provides narrative or promotional text related to specific product categories, potentially utilized for marketing or descriptive purposes. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "image_url",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column stores URLs linking to images associated with product categories, likely used for marketing or organizational purposes. The presence of domain names suggests a variety of potential sources for these images.",
+      "default": null
+    },
+    {
+      "name": "sort_order",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents the sequence in which product categories are displayed or processed, with higher values possibly indicating later positioning in a list or hierarchy. Purpose unclear from available data.",
+      "default": "0"
+    },
+    {
+      "name": "is_active",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether a product category is currently visible or usable within the system. A lack of consistent values suggests that both active and inactive statuses are common.",
+      "default": "true"
+    },
+    {
+      "name": "meta_title",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column appears to contain brief descriptive phrases or slogans that may relate to or categorize products. The phrases are abstract and general, suggesting they might serve as meta descriptions or tags for different product categories.",
+      "default": null
+    },
+    {
+      "name": "meta_description",
+      "type": "text",
+      "nullable": true,
+      "description": "This column likely contains succinct promotional or descriptive text for different product categories, intended to provide additional context or attract potential customers. The exact purpose remains unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a product category was created within the database system. It captures this information by default at the time a new entry is made.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when the information related to product categories was last updated. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "category_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_product_categories_parent_category_id",
+      "column_name": "parent_category_id",
+      "referenced_table": "synthetic.product_categories",
+      "referenced_column": "category_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "product_categories_pkey",
+      "index_definition": "CREATE UNIQUE INDEX product_categories_pkey ON synthetic.product_categories USING btree (category_id)",
+      "columns": [
+        "category_id"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "product_categories_slug_key",
+      "index_definition": "CREATE UNIQUE INDEX product_categories_slug_key ON synthetic.product_categories USING btree (slug)",
+      "columns": [
+        "slug"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "category_id": 1,
+      "category_name": "Simply anything mention collection. Mouth use detail explain.\nPretty room star return. Well better o...",
+      "slug": "base-firm-law-much",
+      "parent_category_id": null,
+      "description": "Nature forget treatment general wall dark whose. Reveal present consider many pay. North on decision...",
+      "image_url": "https://www.rogers-smith.com/",
+      "sort_order": 226,
+      "is_active": false,
+      "meta_title": "Price state nature reality range.",
+      "meta_description": "Bed bar religious camera direction. Never relate fall most. Pm ground election behind into. Indeed b...",
+      "created_at": "2025-12-13T08:55:45.997Z",
+      "updated_at": "2025-12-13T08:55:45.997Z"
+    },
+    {
+      "category_id": 2,
+      "category_name": "Or assume care garden sort. Challenge current break several about before.\nBusiness executive total l...",
+      "slug": "security-for-watch",
+      "parent_category_id": 1,
+      "description": "From the individual decade subject girl over discover. Here either site star place. Exist physical e...",
+      "image_url": "https://norman-woods.com/",
+      "sort_order": 5000,
+      "is_active": false,
+      "meta_title": "Laugh tax throughout.",
+      "meta_description": "Top model property other. Meeting people security well painting quality option. Hospital right feder...",
+      "created_at": "2025-12-13T08:55:45.997Z",
+      "updated_at": "2025-12-13T08:55:45.997Z"
+    },
+    {
+      "category_id": 3,
+      "category_name": "List budget reflect recently so choose. Assume whom want customer.\nPartner possible cost customer mo...",
+      "slug": "enough-give-size",
+      "parent_category_id": 2,
+      "description": "Person television commercial month clear leave opportunity. Wall side car drug of gas. At author bor...",
+      "image_url": "http://www.sims.net/",
+      "sort_order": 373,
+      "is_active": false,
+      "meta_title": "Leg ability certain.",
+      "meta_description": "Us beautiful loss environment. Structure institution policy test enter financial.",
+      "created_at": "2025-12-13T08:55:45.997Z",
+      "updated_at": "2025-12-13T08:55:45.997Z"
+    },
+    {
+      "category_id": 4,
+      "category_name": "Material sport whom get different start. Discuss consider full compare term.\nMain meet work action. ...",
+      "slug": "may-city-present",
+      "parent_category_id": 1,
+      "description": "Another this lose bit just when many. Building part probably size human.",
+      "image_url": "https://www.sanchez-cannon.com/",
+      "sort_order": 8815,
+      "is_active": true,
+      "meta_title": "Thank scene fast TV even.",
+      "meta_description": "Buy moment with quite summer. Media deal necessary. Production teacher capital however.",
+      "created_at": "2025-12-13T08:55:45.997Z",
+      "updated_at": "2025-12-13T08:55:45.997Z"
+    },
+    {
+      "category_id": 5,
+      "category_name": "Ago training treatment enjoy every still top. How his similar. Finally memory outside second challen...",
+      "slug": "right-store-i",
+      "parent_category_id": 2,
+      "description": "If scene car if office order usually camera. Ground computer test or member wait doctor or. Scientis...",
+      "image_url": "https://www.glass-turner.com/",
+      "sort_order": 8953,
+      "is_active": false,
+      "meta_title": "Worry often third.",
+      "meta_description": "Some feeling science.",
+      "created_at": "2025-12-13T08:55:45.997Z",
+      "updated_at": "2025-12-13T08:55:45.997Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:38:57.877Z"
+}

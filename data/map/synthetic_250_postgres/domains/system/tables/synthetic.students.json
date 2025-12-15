@@ -1,0 +1,159 @@
+{
+  "table": "students",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.students\" table is designed to represent student entities within a broader educational or organizational database, yet currently does not contain any data nor specified columns to detail its attributes. The primary key \"student_id\" uniquely identifies each student, and the table has undefined foreign key relationships indicating possible connections to other entities within the database. Without sample data or column information, the table's specific role and attributes in the data model remain indeterminate at this time.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "student_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each student within the database, ensuring each entry is distinct and can be individually referenced. Purpose unclear from available data.",
+      "default": "nextval('synthetic.students_student_id_seq'::regclass)"
+    },
+    {
+      "name": "student_number",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "first_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "Represents part of the personal identity of each student, specifically their given name. Essential for identifying individual records and necessary for any personalized interaction or communication.",
+      "default": null
+    },
+    {
+      "name": "last_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column stores the family names of students, which are essential for identification and administrative purposes within the educational institution.",
+      "default": null
+    },
+    {
+      "name": "email",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely contains email addresses for individuals in the students table, which could be used for communication or identification purposes. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "date_of_birth",
+      "type": "date",
+      "nullable": true,
+      "description": "This column records the birthdate of students, which can be used to determine their age or calculate age-related statistics. As the field is optional, not all student records may include this information.",
+      "default": null
+    },
+    {
+      "name": "gender",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely captures the student's gender identity or classification. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "enrollment_date",
+      "type": "date",
+      "nullable": true,
+      "description": "Represents the date on which a student officially begins their academic participation. Purpose unclear from available data due to lack of sample values.",
+      "default": null
+    },
+    {
+      "name": "graduation_date",
+      "type": "date",
+      "nullable": true,
+      "description": "The date on which a student is expected or has completed their academic program and is eligible to graduate. This information is not always provided, as indicated by its nullable nature.",
+      "default": null
+    },
+    {
+      "name": "program_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "advisor_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely holds identifiers for assigned advisors linked to students, indicating who oversees or guides the student academically. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Indicates the current enrollment status of a student, with a default setting of being enrolled and active.",
+      "default": "'active'::character varying"
+    },
+    {
+      "name": "gpa",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column stores the academic performance measure for students, commonly known as Grade Point Average, which is potentially absent if not yet assigned.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column represents the date and time when a student's record was initially created in the system. It allows for tracking the enrollment or registration timeline for students.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the most recent date and time when a student's data entry was modified in the system. It automatically updates to the current date and time when any change is made.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "student_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_students_advisor_id",
+      "column_name": "advisor_id",
+      "referenced_table": "synthetic.instructors",
+      "referenced_column": "instructor_id"
+    },
+    {
+      "constraint_name": "fk_students_program_id",
+      "column_name": "program_id",
+      "referenced_table": "synthetic.programs",
+      "referenced_column": "program_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "students_email_key",
+      "index_definition": "CREATE UNIQUE INDEX students_email_key ON synthetic.students USING btree (email)",
+      "columns": [
+        "email"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "students_pkey",
+      "index_definition": "CREATE UNIQUE INDEX students_pkey ON synthetic.students USING btree (student_id)",
+      "columns": [
+        "student_id"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "students_student_number_key",
+      "index_definition": "CREATE UNIQUE INDEX students_student_number_key ON synthetic.students USING btree (student_number)",
+      "columns": [
+        "student_number"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:39:31.299Z"
+}

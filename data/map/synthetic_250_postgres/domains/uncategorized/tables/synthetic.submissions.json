@@ -1,0 +1,115 @@
+{
+  "table": "submissions",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.submissions\" table is designed to manage submission records within the synthetic_250_postgres database, identified uniquely by the primary key \"submission_id.\" It establishes undefined relationships with other tables through foreign key references, suggesting it plays a role in tracking interactions or transactional data relevant to submissions. The absence of additional column information and sample data limits the ability to further outline its specific business context within the database schema.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "submission_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents the unique identifier for each record within the submissions table, ensuring each entry can be distinctly identified. Purpose beyond indexing submissions is unclear from available data.",
+      "default": "nextval('synthetic.submissions_submission_id_seq'::regclass)"
+    },
+    {
+      "name": "assignment_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "student_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each student associated with a submission record in the database, ensuring accurate tracking and management of student submissions. Purpose unclear from available data beyond identification.",
+      "default": null
+    },
+    {
+      "name": "submitted_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column likely records the date and time when a submission was made. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "file_path",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "score",
+      "type": "numeric",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "feedback",
+      "type": "text",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "graded_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Timestamp indicating when the submission was graded. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "graded_by",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column indicates when a submission was created, aligning it with the current date and time upon entry. Its purpose is to track the submission's creation timestamp for potential auditing or historical reference.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column indicates the last recorded time a submission was modified. The exact purpose or nature of these submissions is not clear from the available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "submission_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_submissions_assignment_id",
+      "column_name": "assignment_id",
+      "referenced_table": "synthetic.assignments",
+      "referenced_column": "assignment_id"
+    },
+    {
+      "constraint_name": "fk_submissions_student_id",
+      "column_name": "student_id",
+      "referenced_table": "synthetic.students",
+      "referenced_column": "student_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "submissions_pkey",
+      "index_definition": "CREATE UNIQUE INDEX submissions_pkey ON synthetic.submissions USING btree (submission_id)",
+      "columns": [
+        "submission_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:41:26.420Z"
+}

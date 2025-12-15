@@ -1,0 +1,111 @@
+{
+  "table": "TREATMENTS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.TREATMENTS table represents a catalog of treatment options, identified by a unique TREATMENT_ID for each entry. It captures essential details such as the treatment name, description, associated billing attributes, patient attributes, and timestamps for record and update actions. This standalone table contains no explicit relationships with other tables, indicating its role as a potentially independent entity for treatment-related information within the database.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "TREATMENT_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column uniquely identifies each treatment record in the dataset, ensuring that each entry can be distinctly referenced. The purpose is to provide a sequential identifier for treatment entries.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column represents unique identifiers for different treatment options or categories within the dataset. The patterns in sample values suggest a sequential labeling system for treatments.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains textual descriptions corresponding to various treatment entries within the database. Each description provides an identifier for the respective treatment entry, but the exact nature of each treatment is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "BILLING_215_ATTR_0",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "Purpose unclear from available data. The sample values do not provide enough context to determine a specific business meaning.",
+      "default": null
+    },
+    {
+      "name": "PATIENT_215_ATTR_1",
+      "type": "DATE",
+      "nullable": true,
+      "description": "The column appears to represent dates associated with patient-related events or records, possibly treatment dates or scheduled appointments, as indicated by sequential daily entries. Purpose remains unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "RECORD_215_ATTR_2",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column appears to represent a series of consecutive daily timestamps for a specified period, potentially indicating scheduled events or activities, although specific details about their nature are not clear. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "UPDATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column contains timestamps indicating when treatment records were last updated. The consistently sequential sample dates suggest entries are updated daily.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "TREATMENT_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "TREATMENT_ID": 1,
+      "NAME": "TREATMENTS 1",
+      "DESCRIPTION": "Description for TREATMENTS 1",
+      "BILLING_215_ATTR_0": "Sample BILLING_215_ATTR_0 1",
+      "PATIENT_215_ATTR_1": "2025-12-12",
+      "RECORD_215_ATTR_2": "2025-12-12 00:00:00.000",
+      "UPDATED_AT": "2026-01-11 00:00:00.000"
+    },
+    {
+      "TREATMENT_ID": 2,
+      "NAME": "TREATMENTS 2",
+      "DESCRIPTION": "Description for TREATMENTS 2",
+      "BILLING_215_ATTR_0": "Sample BILLING_215_ATTR_0 2",
+      "PATIENT_215_ATTR_1": "2025-12-13",
+      "RECORD_215_ATTR_2": "2025-12-13 00:00:00.000",
+      "UPDATED_AT": "2026-01-12 00:00:00.000"
+    },
+    {
+      "TREATMENT_ID": 3,
+      "NAME": "TREATMENTS 3",
+      "DESCRIPTION": "Description for TREATMENTS 3",
+      "BILLING_215_ATTR_0": "Sample BILLING_215_ATTR_0 3",
+      "PATIENT_215_ATTR_1": "2025-12-14",
+      "RECORD_215_ATTR_2": "2025-12-14 00:00:00.000",
+      "UPDATED_AT": "2026-01-13 00:00:00.000"
+    },
+    {
+      "TREATMENT_ID": 4,
+      "NAME": "TREATMENTS 4",
+      "DESCRIPTION": "Description for TREATMENTS 4",
+      "BILLING_215_ATTR_0": "Sample BILLING_215_ATTR_0 4",
+      "PATIENT_215_ATTR_1": "2025-12-15",
+      "RECORD_215_ATTR_2": "2025-12-15 00:00:00.000",
+      "UPDATED_AT": "2026-01-14 00:00:00.000"
+    },
+    {
+      "TREATMENT_ID": 5,
+      "NAME": "TREATMENTS 5",
+      "DESCRIPTION": "Description for TREATMENTS 5",
+      "BILLING_215_ATTR_0": "Sample BILLING_215_ATTR_0 5",
+      "PATIENT_215_ATTR_1": "2025-12-16",
+      "RECORD_215_ATTR_2": "2025-12-16 00:00:00.000",
+      "UPDATED_AT": "2026-01-15 00:00:00.000"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:54.231Z"
+}

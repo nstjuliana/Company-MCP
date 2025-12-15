@@ -1,0 +1,224 @@
+{
+  "table": "it_assets",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.it_assets` table represents a collection of IT assets within an organization, capturing detailed information about each asset, including its type, manufacturer, model, serial number, purchase date, price, warranty, and current status. It serves as a standalone entity with no direct foreign key relationships, suggesting its primary role is to store and manage data about IT assets independently. Key columns such as `asset_id`, `asset_name`, `asset_type`, `manufacturer`, `purchase_date`, and `status` facilitate tracking the lifecycle and allocation of IT assets within the organization.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "asset_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies individual records of information technology assets within the organization's database. Each number represents a specific asset in a sequence that incrementally assigns a new numeric identifier as assets are added.",
+      "default": "nextval('synthetic.it_assets_asset_id_seq'::regclass)"
+    },
+    {
+      "name": "asset_tag",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The values seem to be phrases or sentences, which do not clearly indicate the business use or context.",
+      "default": null
+    },
+    {
+      "name": "asset_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column represents descriptive identifiers or names assigned to various IT assets, which may include phrases or keywords narrating the nature or function of each asset. These names appear to be creative or metaphorical rather than strictly technical.",
+      "default": null
+    },
+    {
+      "name": "asset_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "manufacturer",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values provided do not give insight into the business meaning of the content in this column.",
+      "default": null
+    },
+    {
+      "name": "model",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The values appear to be nonsensical strings that do not provide a coherent business context.",
+      "default": null
+    },
+    {
+      "name": "serial_number",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely contains unique identifiers for individual IT assets, denoted by a sequence of numeric characters. These identifiers are used to track and manage items within an inventory system.",
+      "default": null
+    },
+    {
+      "name": "purchase_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column records the date on which an IT asset was purchased. The date entries are specific to the central U.S. time zones, reflecting when each purchase was made.",
+      "default": null
+    },
+    {
+      "name": "purchase_price",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the monetary cost at which specific IT assets were acquired. The values suggest it tracks expenses ranging from low-cost items to those with significant purchase prices within an organization's asset management system.",
+      "default": null
+    },
+    {
+      "name": "warranty_expiry",
+      "type": "date",
+      "nullable": true,
+      "description": "This column records the date when the warranty coverage for IT assets expires. It helps in identifying up to which point the assets are eligible for warranty services.",
+      "default": null
+    },
+    {
+      "name": "assigned_to",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents the unique identifier for employees or users to whom IT assets are allocated, as suggested by the numerical values corresponding to different individuals within an organization. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "location",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column indicates the current operational state of IT assets, which can be \"active,\" \"pending,\" or \"inactive.\" Purpose unclear from available data.",
+      "default": "'active'::character varying"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Indicates the date and time when an IT asset record was created within the system. This timestamp is automatically assigned upon creation but can be null if not specified.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column tracks the date and time when each IT asset record was last updated. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "asset_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "it_assets_asset_tag_key",
+      "index_definition": "CREATE UNIQUE INDEX it_assets_asset_tag_key ON synthetic.it_assets USING btree (asset_tag)",
+      "columns": [
+        "asset_tag"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "it_assets_pkey",
+      "index_definition": "CREATE UNIQUE INDEX it_assets_pkey ON synthetic.it_assets USING btree (asset_id)",
+      "columns": [
+        "asset_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "asset_id": 1,
+      "asset_tag": "Agent every development say.",
+      "asset_name": "Stop peace technology officer relate. Product significant world. Term herself law street class.",
+      "asset_type": "Tree note responsibility defense material.",
+      "manufacturer": "Seem shoulder future fall citizen about reveal. Will seven medical blood personal.",
+      "model": "She campaign little near enter their institution. Up sense ready require human.",
+      "serial_number": "311656670106513",
+      "purchase_date": "2024-04-30T05:00:00.000Z",
+      "purchase_price": "6397.87",
+      "warranty_expiry": "2025-01-07T06:00:00.000Z",
+      "assigned_to": 26,
+      "location": "Contain leg themselves away space task. Anything yourself structure why.",
+      "status": "pending",
+      "created_at": "2025-12-13T09:15:37.371Z",
+      "updated_at": "2025-12-13T09:15:37.371Z"
+    },
+    {
+      "asset_id": 2,
+      "asset_tag": "Expect recent room situation product main couple.",
+      "asset_name": "Enough threat score choice. Painting response data plant enough.",
+      "asset_type": "War real chance along.",
+      "manufacturer": "Decide economic bill sister this image.",
+      "model": "Never court professor here security. Past feeling nature a. Decision size parent focus kid.",
+      "serial_number": "037917693676320",
+      "purchase_date": "2025-09-24T05:00:00.000Z",
+      "purchase_price": "2757.54",
+      "warranty_expiry": "2025-08-31T05:00:00.000Z",
+      "assigned_to": 229,
+      "location": "Despite sound receive let newspaper true. Lead soon property write.",
+      "status": "active",
+      "created_at": "2025-12-13T09:15:37.371Z",
+      "updated_at": "2025-12-13T09:15:37.371Z"
+    },
+    {
+      "asset_id": 3,
+      "asset_tag": "Increase former letter artist.",
+      "asset_name": "Wall fear hope. Mrs same son today major event. Ahead from quickly identify close level camera.",
+      "asset_type": "Practice sit prepare senior wear.",
+      "manufacturer": "Record short cold parent security boy standard. Blue agent find quality when.",
+      "model": "Something future they red everybody act. Beat result major serve real.",
+      "serial_number": "749894134352408",
+      "purchase_date": "2024-03-13T05:00:00.000Z",
+      "purchase_price": "7367.35",
+      "warranty_expiry": "2024-01-14T06:00:00.000Z",
+      "assigned_to": 693,
+      "location": "Factor want point sell bill activity expect.",
+      "status": "pending",
+      "created_at": "2025-12-13T09:15:37.371Z",
+      "updated_at": "2025-12-13T09:15:37.371Z"
+    },
+    {
+      "asset_id": 4,
+      "asset_tag": "Way debate decision produce.",
+      "asset_name": "Water positive child usually factor relate indeed. Woman during necessary himself two meet these.",
+      "asset_type": "Tend land machine forward several help usually.",
+      "manufacturer": "Relate specific history professional star wonder manager. Call whole forward. Them key moment lead.",
+      "model": "Most not society color bad. People drive tree central leave effect.",
+      "serial_number": "436713695944064",
+      "purchase_date": "2023-12-17T06:00:00.000Z",
+      "purchase_price": "8922.87",
+      "warranty_expiry": "2025-09-04T05:00:00.000Z",
+      "assigned_to": 90,
+      "location": "Seat strategy total simply discover soon despite couple.",
+      "status": "pending",
+      "created_at": "2025-12-13T09:15:37.371Z",
+      "updated_at": "2025-12-13T09:15:37.371Z"
+    },
+    {
+      "asset_id": 5,
+      "asset_tag": "Car much will most tree.",
+      "asset_name": "Life away senior difficult. Whose source hand so add Mr. Happy see energy herself police he push.",
+      "asset_type": "Provide sea watch industry score choice.",
+      "manufacturer": "Know door guy wonder happen top. Art every why we station begin.",
+      "model": "Economy company produce ago address so draw. Administration enter camera inside box as.",
+      "serial_number": "856984789611836",
+      "purchase_date": "2024-11-06T06:00:00.000Z",
+      "purchase_price": "4225.00",
+      "warranty_expiry": "2024-05-27T05:00:00.000Z",
+      "assigned_to": 31,
+      "location": "Outside goal official defense prevent.",
+      "status": "active",
+      "created_at": "2025-12-13T09:15:37.371Z",
+      "updated_at": "2025-12-13T09:15:37.371Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:37.902Z"
+}

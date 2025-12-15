@@ -1,0 +1,159 @@
+{
+  "table": "MEDICATIONS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.MEDICATIONS table represents a dataset that stores information about medications, including unique identifiers (MEDICATION_ID), names, and descriptions. The columns with the prefix \"PATIENT_216_ATTR\" and \"APPOINTMENT_216_ATTR\" suggest linkage to patient and appointment metadata, though no explicit relationships to other tables are defined. This table serves as a standalone repository within the data model, potentially used to manage or catalog medication records in a synthetic dataset environment.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "MEDICATION_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents a unique identifier assigned to each medication entry in the dataset, ensuring that each medication can be distinctly recognized. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column likely represents a list or sequence of medication identifiers or names used within a specific context. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column details individual descriptions for different medications within the database, likely summarizing their attributes or uses. However, the specific purposes or contents of these descriptions are unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "PATIENT_216_ATTR_0",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column appears to represent a series of timestamps, possibly indicating specific times related to patient activities, events, or medication scheduling. However, the exact purpose is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "APPOINTMENT_216_ATTR_1",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "APPOINTMENT_216_ATTR_2",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "APPOINTMENT_216_ATTR_3",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The values suggest a binary attribute related to appointments, possibly indicating the presence or absence of a specific aspect.",
+      "default": null
+    },
+    {
+      "name": "APPOINTMENT_216_ATTR_4",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column likely represents a categorical code associated with different types of medical appointments or treatments. The specific purpose of each code is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "PATIENT_216_ATTR_5",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "PATIENT_216_ATTR_6",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column likely represents a categorical identifier linked to a specific attribute or characteristic of patients in a medication context. The purpose is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "CREATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column records the exact date and time when each medication entry was created in the system, ensuring a reliable timeline of when records were added. The inclusion of real-time timestamps is critical for maintaining the integrity and traceability of the database's medication information.",
+      "default": "CURRENT_TIMESTAMP()"
+    }
+  ],
+  "primary_key": [
+    "MEDICATION_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "MEDICATION_ID": 1,
+      "NAME": "MEDICATIONS 1",
+      "DESCRIPTION": "Description for MEDICATIONS 1",
+      "PATIENT_216_ATTR_0": "2025-12-12 00:00:00.000",
+      "APPOINTMENT_216_ATTR_1": "Sample APPOINTMENT_216_ATTR_1 1",
+      "APPOINTMENT_216_ATTR_2": null,
+      "APPOINTMENT_216_ATTR_3": true,
+      "APPOINTMENT_216_ATTR_4": null,
+      "PATIENT_216_ATTR_5": null,
+      "PATIENT_216_ATTR_6": null,
+      "CREATED_AT": "2025-12-12 17:26:43.915"
+    },
+    {
+      "MEDICATION_ID": 2,
+      "NAME": "MEDICATIONS 2",
+      "DESCRIPTION": "Description for MEDICATIONS 2",
+      "PATIENT_216_ATTR_0": "2025-12-13 00:00:00.000",
+      "APPOINTMENT_216_ATTR_1": "Sample APPOINTMENT_216_ATTR_1 2",
+      "APPOINTMENT_216_ATTR_2": 101,
+      "APPOINTMENT_216_ATTR_3": false,
+      "APPOINTMENT_216_ATTR_4": 101,
+      "PATIENT_216_ATTR_5": 101,
+      "PATIENT_216_ATTR_6": 101,
+      "CREATED_AT": "2025-12-12 17:26:43.915"
+    },
+    {
+      "MEDICATION_ID": 3,
+      "NAME": "MEDICATIONS 3",
+      "DESCRIPTION": "Description for MEDICATIONS 3",
+      "PATIENT_216_ATTR_0": "2025-12-14 00:00:00.000",
+      "APPOINTMENT_216_ATTR_1": "Sample APPOINTMENT_216_ATTR_1 3",
+      "APPOINTMENT_216_ATTR_2": 102,
+      "APPOINTMENT_216_ATTR_3": true,
+      "APPOINTMENT_216_ATTR_4": 102,
+      "PATIENT_216_ATTR_5": 102,
+      "PATIENT_216_ATTR_6": 102,
+      "CREATED_AT": "2025-12-12 17:26:43.915"
+    },
+    {
+      "MEDICATION_ID": 4,
+      "NAME": "MEDICATIONS 4",
+      "DESCRIPTION": "Description for MEDICATIONS 4",
+      "PATIENT_216_ATTR_0": "2025-12-15 00:00:00.000",
+      "APPOINTMENT_216_ATTR_1": "Sample APPOINTMENT_216_ATTR_1 4",
+      "APPOINTMENT_216_ATTR_2": null,
+      "APPOINTMENT_216_ATTR_3": false,
+      "APPOINTMENT_216_ATTR_4": null,
+      "PATIENT_216_ATTR_5": null,
+      "PATIENT_216_ATTR_6": null,
+      "CREATED_AT": "2025-12-12 17:26:43.915"
+    },
+    {
+      "MEDICATION_ID": 5,
+      "NAME": "MEDICATIONS 5",
+      "DESCRIPTION": "Description for MEDICATIONS 5",
+      "PATIENT_216_ATTR_0": "2025-12-16 00:00:00.000",
+      "APPOINTMENT_216_ATTR_1": "Sample APPOINTMENT_216_ATTR_1 5",
+      "APPOINTMENT_216_ATTR_2": 104,
+      "APPOINTMENT_216_ATTR_3": true,
+      "APPOINTMENT_216_ATTR_4": 104,
+      "PATIENT_216_ATTR_5": 104,
+      "PATIENT_216_ATTR_6": 104,
+      "CREATED_AT": "2025-12-12 17:26:43.915"
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:04.260Z"
+}

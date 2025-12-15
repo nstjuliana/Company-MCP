@@ -1,0 +1,199 @@
+{
+  "table": "ads",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.ads\" table represents advertisements within the data model, with each row corresponding to a unique ad identified by the primary key \"ad_id.\" Key attributes include \"ad_name,\" \"ad_type,\" \"headline,\" \"description,\" and several URL fields, indicative of the digital nature and content of the ads. The table serves primarily as a repository of advertisement information, referencing an undefined foreign entity through \"ad_group_id\" for grouping or categorization purposes.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "ad_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each advertisement entry in the table, ensuring that every ad can be distinctly referenced. The values suggest a sequential assignment, likely indicating the order in which ads are added.",
+      "default": "nextval('synthetic.ads_ad_id_seq'::regclass)"
+    },
+    {
+      "name": "ad_group_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents an identifier for groups of advertisements, which may be used to categorize or organize ads within campaigns. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "ad_name",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column contains brief descriptive text likely used for distinguishing or identifying advertisements, reflecting diverse themes or messages typical of marketing content. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "ad_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values are abstract and do not provide a clear indication of the business intent.",
+      "default": null
+    },
+    {
+      "name": "headline",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column contains succinct promotional messages or taglines that are likely used to capture attention for advertisements. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "nullable": true,
+      "description": "This column contains narrative or promotional content potentially used in advertising campaigns, reflecting diverse themes, expressions of strategy, and conceptual ideas. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "display_url",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column represents the web addresses associated with advertisements, likely for redirecting users to the advertiser's online presence or landing page. The URLs indicate a variety of business-related domains, suggesting use in marketing or promotional contexts.",
+      "default": null
+    },
+    {
+      "name": "final_url",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely stores the URLs associated with advertisements. These URLs direct users to external websites related to the advertised content.",
+      "default": null
+    },
+    {
+      "name": "image_url",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column represents the web addresses where images associated with advertisements are hosted. The sample values suggest these URLs belong to various company or personal domains.",
+      "default": null
+    },
+    {
+      "name": "video_url",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column contains URLs likely representing links to video content associated with advertisements. The purpose is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column indicates the current state of each advertisement, reflecting whether it is currently active, pending review or approval, or inactive. It helps in identifying the operational status of ads within the system.",
+      "default": "'active'::character varying"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an advertisement entry was created, defaulting to the current timestamp at the time of record insertion. The specific purpose of this timestamp in the business context is unclear from the available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an advertisement record was last updated. The default value indicates that it captures the timestamp of the most recent modification automatically unless specified otherwise.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "ad_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_ads_ad_group_id",
+      "column_name": "ad_group_id",
+      "referenced_table": "synthetic.ad_groups",
+      "referenced_column": "ad_group_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "ads_pkey",
+      "index_definition": "CREATE UNIQUE INDEX ads_pkey ON synthetic.ads USING btree (ad_id)",
+      "columns": [
+        "ad_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "ad_id": 1,
+      "ad_group_id": 9,
+      "ad_name": "Near these deep form. Prepare fact film pick oil he difficult.",
+      "ad_type": "Space exist eye themselves.",
+      "headline": "Suffer how role enter wall recognize most. Hope oil law.",
+      "description": "Hospital certainly seek model form rate again. Send magazine report suggest family new. Lay sing spr...",
+      "display_url": "https://rodriguez-weaver.com/",
+      "final_url": "http://brooks.com/",
+      "image_url": "http://www.benson.com/",
+      "video_url": "http://washington.com/",
+      "status": "pending",
+      "created_at": "2025-12-13T09:14:49.900Z",
+      "updated_at": "2025-12-13T09:14:49.900Z"
+    },
+    {
+      "ad_id": 2,
+      "ad_group_id": 22,
+      "ad_name": "What sound list down million. Rich across crime call heart thus. Speak pick southern little.",
+      "ad_type": "Major however stay difficult station conference.",
+      "headline": "Course decade yet red article hundred provide. Under particular process exactly according.",
+      "description": "Company study option.",
+      "display_url": "http://sanchez-keller.biz/",
+      "final_url": "https://johnson-roberts.com/",
+      "image_url": "https://www.huang.com/",
+      "video_url": "https://moran-sanchez.net/",
+      "status": "inactive",
+      "created_at": "2025-12-13T09:14:49.900Z",
+      "updated_at": "2025-12-13T09:14:49.900Z"
+    },
+    {
+      "ad_id": 3,
+      "ad_group_id": 34,
+      "ad_name": "Part tell or result.\nCandidate teach claim. Common identify region bag blood.",
+      "ad_type": "Morning message see.",
+      "headline": "People see leg together learn together two total.\nSouth themselves game similar eye culture room.",
+      "description": "Involve majority candidate reflect. Fight concern space learn probably.",
+      "display_url": "https://coleman.info/",
+      "final_url": "https://anderson.biz/",
+      "image_url": "https://james-wolf.com/",
+      "video_url": "https://www.perez-wang.org/",
+      "status": "inactive",
+      "created_at": "2025-12-13T09:14:49.900Z",
+      "updated_at": "2025-12-13T09:14:49.900Z"
+    },
+    {
+      "ad_id": 4,
+      "ad_group_id": 10,
+      "ad_name": "There begin certainly. Social green type along.",
+      "ad_type": "Mind foreign act production yourself standard.",
+      "headline": "Within cover national address issue how. Network bit here business.",
+      "description": "Forget beautiful interesting structure structure nothing vote sport. Organization agree poor big yea...",
+      "display_url": "https://www.white.org/",
+      "final_url": "http://norton.biz/",
+      "image_url": "http://www.norton.com/",
+      "video_url": "http://cook.com/",
+      "status": "pending",
+      "created_at": "2025-12-13T09:14:49.900Z",
+      "updated_at": "2025-12-13T09:14:49.900Z"
+    },
+    {
+      "ad_id": 5,
+      "ad_group_id": 33,
+      "ad_name": "Hold allow consider surface. Building though senior see general.",
+      "ad_type": "Property push price should campaign owner trade.",
+      "headline": "Who traditional center save air money. Guess report between west.",
+      "description": "Meet card thing forget truth small. Hold hotel camera fight out sound consider card. Likely teacher ...",
+      "display_url": "https://www.barnes.com/",
+      "final_url": "https://www.hernandez.com/",
+      "image_url": "http://www.jacobs.org/",
+      "video_url": "https://alexander.org/",
+      "status": "active",
+      "created_at": "2025-12-13T09:14:49.900Z",
+      "updated_at": "2025-12-13T09:14:49.900Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:40:30.447Z"
+}

@@ -1,0 +1,99 @@
+{
+  "table": "RECOMMENDATIONS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.RECOMMENDATIONS table represents a business entity containing recommendation records, identified uniquely by the RECOMMENDATION_ID. Each record includes a NAME, DESCRIPTION, and several attributes related to rating and cart information, such as RATING_194_ATTR_0, which appears to store a numeric value, and CART_194_ATTR_1, which stores dates. Without relationships to or from other tables, this table appears to serve as a standalone entity, potentially for listing or managing recommendations, with core information and specific rating and cart attributes.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "RECOMMENDATION_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column uniquely identifies each recommendation within the table. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "The column represents a sequential naming system for recommendations, likely indicating their order or identifier in a list. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains brief narrative descriptions associated with different recommendations, likely serving as an explanatory note or summary of each recommendation. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "RATING_194_ATTR_0",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column likely represents a specific rating metric within a recommendation system, with values that increment by one. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CART_194_ATTR_1",
+      "type": "DATE",
+      "nullable": true,
+      "description": "This column represents specific dates associated with recommendations, potentially indicating when each recommendation was made or is relevant. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "RATING_194_ATTR_2",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column likely records the timestamp when a recommendation was rated, tracking specific dates and times without timezone adjustments. Purpose unclear from available data.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "RECOMMENDATION_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "RECOMMENDATION_ID": 1,
+      "NAME": "RECOMMENDATIONS 1",
+      "DESCRIPTION": "Description for RECOMMENDATIONS 1",
+      "RATING_194_ATTR_0": 100,
+      "CART_194_ATTR_1": "2025-12-12",
+      "RATING_194_ATTR_2": "2025-12-12 00:00:00.000"
+    },
+    {
+      "RECOMMENDATION_ID": 2,
+      "NAME": "RECOMMENDATIONS 2",
+      "DESCRIPTION": "Description for RECOMMENDATIONS 2",
+      "RATING_194_ATTR_0": 101,
+      "CART_194_ATTR_1": "2025-12-13",
+      "RATING_194_ATTR_2": "2025-12-13 00:00:00.000"
+    },
+    {
+      "RECOMMENDATION_ID": 3,
+      "NAME": "RECOMMENDATIONS 3",
+      "DESCRIPTION": "Description for RECOMMENDATIONS 3",
+      "RATING_194_ATTR_0": 102,
+      "CART_194_ATTR_1": "2025-12-14",
+      "RATING_194_ATTR_2": "2025-12-14 00:00:00.000"
+    },
+    {
+      "RECOMMENDATION_ID": 4,
+      "NAME": "RECOMMENDATIONS 4",
+      "DESCRIPTION": "Description for RECOMMENDATIONS 4",
+      "RATING_194_ATTR_0": 103,
+      "CART_194_ATTR_1": "2025-12-15",
+      "RATING_194_ATTR_2": "2025-12-15 00:00:00.000"
+    },
+    {
+      "RECOMMENDATION_ID": 5,
+      "NAME": "RECOMMENDATIONS 5",
+      "DESCRIPTION": "Description for RECOMMENDATIONS 5",
+      "RATING_194_ATTR_0": 104,
+      "CART_194_ATTR_1": "2025-12-16",
+      "RATING_194_ATTR_2": "2025-12-16 00:00:00.000"
+    }
+  ],
+  "generated_at": "2025-12-14T23:42:35.242Z"
+}

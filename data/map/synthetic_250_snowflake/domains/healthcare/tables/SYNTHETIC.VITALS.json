@@ -1,0 +1,123 @@
+{
+  "table": "VITALS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.VITALS table represents a business entity focused on tracking various vital signs, described through general attributes and timestamped records, possibly for patient monitoring or medical analyses. With a primary key of VITAL_ID, it stands alone with no direct relationships to other tables in the database, suggesting its role as an isolated entity for storing descriptive and potentially aggregated information related to vital signs. The sample row indicates the use of attributes to store data that might pertain to billing, patient identification, and prescription details, hinting at a comprehensive view of patient vitals within a broader healthcare context.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "VITAL_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each entry in the vitals table, ensuring distinct tracking of records related to vital statistics.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column represents a sequence of identifiers for different entries in the VITALS table. The specific purpose of these identifiers is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains textual descriptions associated with each entry in the VITALS table, potentially providing additional context or details relevant to specific vital records. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "BILLING_218_ATTR_0",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values are generic placeholders and do not provide specific insights into the business meaning of this column.",
+      "default": null
+    },
+    {
+      "name": "BILLING_218_ATTR_1",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "PATIENT_218_ATTR_2",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The column contains placeholder text samples that do not indicate a specific business context or meaning.",
+      "default": null
+    },
+    {
+      "name": "RECORD_218_ATTR_3",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "PRESCRIPTION_218_ATTR_4",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column likely records the scheduled date and time for prescription-related activities or deadlines. Purpose unclear from available data.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "VITAL_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "VITAL_ID": 1,
+      "NAME": "VITALS 1",
+      "DESCRIPTION": "Description for VITALS 1",
+      "BILLING_218_ATTR_0": "Sample BILLING_218_ATTR_0 1",
+      "BILLING_218_ATTR_1": "Sample BILLING_218_ATTR_1 1",
+      "PATIENT_218_ATTR_2": "Sample PATIENT_218_ATTR_2 1",
+      "RECORD_218_ATTR_3": null,
+      "PRESCRIPTION_218_ATTR_4": "2025-12-12 00:00:00.000"
+    },
+    {
+      "VITAL_ID": 2,
+      "NAME": "VITALS 2",
+      "DESCRIPTION": "Description for VITALS 2",
+      "BILLING_218_ATTR_0": "Sample BILLING_218_ATTR_0 2",
+      "BILLING_218_ATTR_1": "Sample BILLING_218_ATTR_1 2",
+      "PATIENT_218_ATTR_2": "Sample PATIENT_218_ATTR_2 2",
+      "RECORD_218_ATTR_3": 101,
+      "PRESCRIPTION_218_ATTR_4": "2025-12-13 00:00:00.000"
+    },
+    {
+      "VITAL_ID": 3,
+      "NAME": "VITALS 3",
+      "DESCRIPTION": "Description for VITALS 3",
+      "BILLING_218_ATTR_0": "Sample BILLING_218_ATTR_0 3",
+      "BILLING_218_ATTR_1": "Sample BILLING_218_ATTR_1 3",
+      "PATIENT_218_ATTR_2": "Sample PATIENT_218_ATTR_2 3",
+      "RECORD_218_ATTR_3": 102,
+      "PRESCRIPTION_218_ATTR_4": "2025-12-14 00:00:00.000"
+    },
+    {
+      "VITAL_ID": 4,
+      "NAME": "VITALS 4",
+      "DESCRIPTION": "Description for VITALS 4",
+      "BILLING_218_ATTR_0": "Sample BILLING_218_ATTR_0 4",
+      "BILLING_218_ATTR_1": "Sample BILLING_218_ATTR_1 4",
+      "PATIENT_218_ATTR_2": "Sample PATIENT_218_ATTR_2 4",
+      "RECORD_218_ATTR_3": null,
+      "PRESCRIPTION_218_ATTR_4": "2025-12-15 00:00:00.000"
+    },
+    {
+      "VITAL_ID": 5,
+      "NAME": "VITALS 5",
+      "DESCRIPTION": "Description for VITALS 5",
+      "BILLING_218_ATTR_0": "Sample BILLING_218_ATTR_0 5",
+      "BILLING_218_ATTR_1": "Sample BILLING_218_ATTR_1 5",
+      "PATIENT_218_ATTR_2": "Sample PATIENT_218_ATTR_2 5",
+      "RECORD_218_ATTR_3": 104,
+      "PRESCRIPTION_218_ATTR_4": "2025-12-16 00:00:00.000"
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:02.378Z"
+}

@@ -1,0 +1,155 @@
+{
+  "table": "prescriptions",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.prescriptions\" table appears to represent prescription records within the synthetic_250_postgres database, identified uniquely by the primary key “prescription_id.” It likely serves as a central entity in the data model for managing prescription details, although the absence of column names and sample data limits further specification. While foreign key relationships are noted, specific referenced tables are undefined, indicating that this table is meant to interact with other undefined tables within the database schema.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "prescription_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Unique identifier for each entry in the table, used to track and differentiate individual prescription records.",
+      "default": "nextval('synthetic.prescriptions_prescription_id_seq'::regclass)"
+    },
+    {
+      "name": "patient_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each patient associated with a prescription. It ensures that each record in the prescriptions table is linked to a specific patient entity.",
+      "default": null
+    },
+    {
+      "name": "physician_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "The column uniquely identifies the prescribing physician associated with each prescription. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "encounter_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This field potentially links a prescription to a specific patient visit or medical event. Further information is needed to clarify its exact purpose.",
+      "default": null
+    },
+    {
+      "name": "medication_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "dosage",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "frequency",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "quantity",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "refills",
+      "type": "integer",
+      "nullable": true,
+      "description": "The column indicates the number of additional authorized prescription renewals for a given medication order. The absence of specific sample values suggests its usage can vary or be optional.",
+      "default": "0"
+    },
+    {
+      "name": "start_date",
+      "type": "date",
+      "nullable": true,
+      "description": "The date when a prescription begins or is intended to take effect. This information helps track the commencement of a prescribed medication regimen for a patient.",
+      "default": null
+    },
+    {
+      "name": "end_date",
+      "type": "date",
+      "nullable": true,
+      "description": "Indicates the date when a prescription is expected or has been set to conclude. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "instructions",
+      "type": "text",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column indicates the current condition or state of a prescription, signaling if it is 'active' or another status. Purpose unclear from available data.",
+      "default": "'active'::character varying"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column likely records the date and time when a prescription record was first entered or generated in the system. It offers a point of reference for when the data becomes relevant or effective within the operational workflow.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column likely captures the exact moment a prescription record was last modified, helping track changes over time. Its purpose is to ensure accurate record-keeping and transparency in prescription updates.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "prescription_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_prescriptions_encounter_id",
+      "column_name": "encounter_id",
+      "referenced_table": "synthetic.encounters",
+      "referenced_column": "encounter_id"
+    },
+    {
+      "constraint_name": "fk_prescriptions_medication_id",
+      "column_name": "medication_id",
+      "referenced_table": "synthetic.medications",
+      "referenced_column": "medication_id"
+    },
+    {
+      "constraint_name": "fk_prescriptions_patient_id",
+      "column_name": "patient_id",
+      "referenced_table": "synthetic.patients",
+      "referenced_column": "patient_id"
+    },
+    {
+      "constraint_name": "fk_prescriptions_physician_id",
+      "column_name": "physician_id",
+      "referenced_table": "synthetic.physicians",
+      "referenced_column": "physician_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "prescriptions_pkey",
+      "index_definition": "CREATE UNIQUE INDEX prescriptions_pkey ON synthetic.prescriptions USING btree (prescription_id)",
+      "columns": [
+        "prescription_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:41:49.312Z"
+}

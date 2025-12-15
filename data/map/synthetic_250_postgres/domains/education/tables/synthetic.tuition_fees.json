@@ -1,0 +1,139 @@
+{
+  "table": "tuition_fees",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.tuition_fees\" table represents the financial metadata regarding tuition charges within an educational institution, with each record uniquely identified by a \"fee_id\". The table captures details such as the fee name, type, amount, and associated term, allowing for the distinction between required and optional fees, as indicated by the \"is_required\" boolean column. Although the exact relationships with other tables are undefined, the presence of \"term_id\" suggests a potential linkage to another table that maintains term-related information.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "fee_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This is a unique identifier assigned to each record in the tuition fees table, incrementing sequentially to ensure every entry is distinct.",
+      "default": "nextval('synthetic.tuition_fees_fee_id_seq'::regclass)"
+    },
+    {
+      "name": "fee_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "The column contains ambiguous or randomly generated phrases that could represent various types of educational fee names or categories. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "fee_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values do not provide a clear indicator of the role or categorization represented by this column.",
+      "default": null
+    },
+    {
+      "name": "amount",
+      "type": "numeric",
+      "nullable": false,
+      "description": "This column represents the monetary amounts categorized under tuition fees within a specified context. It contains numeric values that likely denote the cost of tuition, as exemplified by the provided amounts.",
+      "default": null
+    },
+    {
+      "name": "term_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely identifies specific academic terms or periods within which tuition fees are applicable. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "is_required",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether tuition fee payments are mandatory for enrollment, with \"true\" signifying a requirement and \"false\" indicating they are optional.",
+      "default": "true"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when each record in the tuition fees table is created. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a record in the tuition fees table was last updated. Each timestamp reflects the last modification made, helping track changes over time.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "fee_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_tuition_fees_term_id",
+      "column_name": "term_id",
+      "referenced_table": "synthetic.academic_terms",
+      "referenced_column": "term_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "tuition_fees_pkey",
+      "index_definition": "CREATE UNIQUE INDEX tuition_fees_pkey ON synthetic.tuition_fees USING btree (fee_id)",
+      "columns": [
+        "fee_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "fee_id": 1,
+      "fee_name": "Firm board operation term yet. Chair manage security employee nature institution above its.",
+      "fee_type": "Serve view explain owner court.",
+      "amount": "2436.16",
+      "term_id": 14,
+      "is_required": false,
+      "created_at": "2025-12-13T09:17:02.901Z",
+      "updated_at": "2025-12-13T09:17:02.901Z"
+    },
+    {
+      "fee_id": 2,
+      "fee_name": "Find old be. Get produce perform attention likely hard. Discuss interview way wall.",
+      "fee_type": "Art explain possible human front what situation.",
+      "amount": "6470.59",
+      "term_id": 29,
+      "is_required": false,
+      "created_at": "2025-12-13T09:17:02.901Z",
+      "updated_at": "2025-12-13T09:17:02.901Z"
+    },
+    {
+      "fee_id": 3,
+      "fee_name": "Parent certainly sign. Watch responsibility major list.",
+      "fee_type": "More new none author great the.",
+      "amount": "933.72",
+      "term_id": 47,
+      "is_required": true,
+      "created_at": "2025-12-13T09:17:02.901Z",
+      "updated_at": "2025-12-13T09:17:02.901Z"
+    },
+    {
+      "fee_id": 4,
+      "fee_name": "Ten agency position drive. Others century teach ground. Film I magazine. Miss director read.",
+      "fee_type": "Ahead before hard.",
+      "amount": "524.85",
+      "term_id": 25,
+      "is_required": true,
+      "created_at": "2025-12-13T09:17:02.901Z",
+      "updated_at": "2025-12-13T09:17:02.901Z"
+    },
+    {
+      "fee_id": 5,
+      "fee_name": "Whose group cold attorney. Section operation population argue number. Pick them of.",
+      "fee_type": "Six left water discover. Never despite like play.",
+      "amount": "8737.47",
+      "term_id": 13,
+      "is_required": true,
+      "created_at": "2025-12-13T09:17:02.901Z",
+      "updated_at": "2025-12-13T09:17:02.901Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:31.555Z"
+}

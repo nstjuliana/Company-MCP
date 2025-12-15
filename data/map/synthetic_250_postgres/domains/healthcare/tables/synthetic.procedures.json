@@ -1,0 +1,187 @@
+{
+  "table": "procedures",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.procedures` table represents medical procedures with detailed information including the procedure ID, related patient and physician, encounter, CPT code, procedure name, date, notes, and status, which are all associated with a specific timeframe. It is a central entity in the data model, capturing essential details about healthcare interventions, but does not currently have explicit relationships defined in the schema to other entities, although it logically could relate to patient and physician tables. This table tracks the status and timing of procedures, which suggests its use in monitoring medical interventions over time.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "procedure_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each procedure record in the system, ensuring that each procedure has a distinct number for tracking and management purposes. It is an essential part of maintaining the integrity of the procedural records.",
+      "default": "nextval('synthetic.procedures_procedure_id_seq'::regclass)"
+    },
+    {
+      "name": "patient_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies individual patients associated with medical procedures, as indicated by distinct integer values for each patient. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "physician_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents the unique identifier for a physician associated with a procedure. The specific role or significance of this identifier in the procedures table is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "encounter_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "cpt_code",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "procedure_name",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column appears to store fragmented descriptions or summaries of procedures, which are likely brief or abstract expressions related to events, actions, or situations. Purpose unclear from available data due to the lack of consistent or specific information in the sample values.",
+      "default": null
+    },
+    {
+      "name": "procedure_date",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when procedures are scheduled or occurred, reflecting adjustments for Central Time, either Standard or Daylight. The purpose of storing this information is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "notes",
+      "type": "text",
+      "nullable": true,
+      "description": "This column contains descriptive textual entries likely related to procedural or operational insights or observations. The entries vary widely, indicating a flexible use for capturing relevant, possibly situational, notes about procedures.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column indicates the current state of a procedure, with possible values including \"pending,\" \"active,\" and \"inactive.\" These states likely reflect different stages in a process lifecycle.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a procedure was created, capturing the specific moment an entry was added to the system. Its value is automatically set to the current timestamp when a new record is inserted, indicating the initial logging time for each procedure.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when each procedure entry was last modified. The purpose of tracking these updates is unclear from the available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "procedure_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_procedures_encounter_id",
+      "column_name": "encounter_id",
+      "referenced_table": "synthetic.encounters",
+      "referenced_column": "encounter_id"
+    },
+    {
+      "constraint_name": "fk_procedures_patient_id",
+      "column_name": "patient_id",
+      "referenced_table": "synthetic.patients",
+      "referenced_column": "patient_id"
+    },
+    {
+      "constraint_name": "fk_procedures_physician_id",
+      "column_name": "physician_id",
+      "referenced_table": "synthetic.physicians",
+      "referenced_column": "physician_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "procedures_pkey",
+      "index_definition": "CREATE UNIQUE INDEX procedures_pkey ON synthetic.procedures USING btree (procedure_id)",
+      "columns": [
+        "procedure_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "procedure_id": 1,
+      "patient_id": 27,
+      "physician_id": null,
+      "encounter_id": null,
+      "cpt_code": "ZUKSWVRN",
+      "procedure_name": "Whatever send beautiful. Mouth return myself worry inside stand.",
+      "procedure_date": "2024-12-28T22:08:15.699Z",
+      "notes": "South partner our thus perhaps rise hit provide. Brother day hour hope figure build. Because smile t...",
+      "status": "pending",
+      "created_at": "2025-12-13T09:22:40.913Z",
+      "updated_at": "2025-12-13T09:22:40.913Z"
+    },
+    {
+      "procedure_id": 2,
+      "patient_id": 34,
+      "physician_id": null,
+      "encounter_id": null,
+      "cpt_code": "ASFKIDHG",
+      "procedure_name": "Easy clearly event even city girl.",
+      "procedure_date": "2024-10-01T07:50:24.407Z",
+      "notes": "Throughout together especially. Research move organization agreement yet pay any another. Almost acc...",
+      "status": "active",
+      "created_at": "2025-12-13T09:22:40.913Z",
+      "updated_at": "2025-12-13T09:22:40.913Z"
+    },
+    {
+      "procedure_id": 3,
+      "patient_id": 25,
+      "physician_id": null,
+      "encounter_id": null,
+      "cpt_code": "IFMISNMM",
+      "procedure_name": "Like where collection son explain several. Remain land able nor off.",
+      "procedure_date": "2025-03-13T07:50:45.005Z",
+      "notes": "Adult source for class. Music foreign right. Often government group mouth order.",
+      "status": "active",
+      "created_at": "2025-12-13T09:22:40.913Z",
+      "updated_at": "2025-12-13T09:22:40.913Z"
+    },
+    {
+      "procedure_id": 4,
+      "patient_id": 17,
+      "physician_id": null,
+      "encounter_id": null,
+      "cpt_code": "FHXUBYUT",
+      "procedure_name": "This who eight left member. Shoulder improve nature rule. Light two picture.",
+      "procedure_date": "2024-03-07T15:18:00.545Z",
+      "notes": "Industry third surface nation last me entire. Enjoy life situation someone. Article thank wall.",
+      "status": "active",
+      "created_at": "2025-12-13T09:22:40.913Z",
+      "updated_at": "2025-12-13T09:22:40.913Z"
+    },
+    {
+      "procedure_id": 5,
+      "patient_id": 22,
+      "physician_id": null,
+      "encounter_id": null,
+      "cpt_code": "ZWMCAUFF",
+      "procedure_name": "Either themselves nation something key professor. Because hospital effect take past wife.",
+      "procedure_date": "2025-08-09T15:25:55.058Z",
+      "notes": "East tough past stage week science. Wish soldier pull leader idea sea magazine reduce. Popular consi...",
+      "status": "pending",
+      "created_at": "2025-12-13T09:22:40.913Z",
+      "updated_at": "2025-12-13T09:22:40.913Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:41:49.068Z"
+}

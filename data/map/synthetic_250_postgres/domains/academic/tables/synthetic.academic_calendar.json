@@ -1,0 +1,163 @@
+{
+  "table": "academic_calendar",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.academic_calendar\" table represents scheduled academic events, capturing details such as event names, types, and dates, specifically within an academic term, as indicated by the nullable foreign key \"term_id\". The table records whether an event is a holiday, and includes timestamps for creation and last update, showcasing its role in tracking the timeline and details of academic activities. This table serves as a central repository for academic event management, although currently it stands alone without defined external foreign key relationships.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "event_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each event in the academic calendar with a sequential number. It ensures that each calendar event can be distinctly referenced and tracked.",
+      "default": "nextval('synthetic.academic_calendar_event_id_seq'::regclass)"
+    },
+    {
+      "name": "term_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "Identifies specific academic terms within an educational institution's calendar. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "event_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This field records a brief, descriptive title or label for various scheduled events within an academic calendar. The exact nature of these events is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "event_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values do not provide sufficient context to determine the column's meaning.",
+      "default": null
+    },
+    {
+      "name": "start_date",
+      "type": "date",
+      "nullable": false,
+      "description": "This column represents the beginning dates of specific academic periods or terms within the academic calendar. It indicates when these periods are scheduled to commence.",
+      "default": null
+    },
+    {
+      "name": "end_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column represents the concluding date of an academic period or event as indicated by the sample values which align with the typical end of semesters or terms. The specific purpose of these dates remains unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The entries seem to consist of fragmented sentences or phrases which do not form a clear pattern or context.",
+      "default": null
+    },
+    {
+      "name": "is_holiday",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether a specific day in the academic calendar is recognized as a holiday. Days marked with \"true\" are holidays, while those with \"false\" are not.",
+      "default": "false"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Represents the date and time when an entry in the academic calendar was created. The recorded timestamp reflects the Central Standard Time zone.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when entries in the academic calendar table were last updated. The timestamp is captured automatically, defaulting to the current system time when updates occur.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "event_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_academic_calendar_term_id",
+      "column_name": "term_id",
+      "referenced_table": "synthetic.academic_terms",
+      "referenced_column": "term_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "academic_calendar_pkey",
+      "index_definition": "CREATE UNIQUE INDEX academic_calendar_pkey ON synthetic.academic_calendar USING btree (event_id)",
+      "columns": [
+        "event_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "event_id": 1,
+      "term_id": 48,
+      "event_name": "Quite including west.",
+      "event_type": "Hope people wife Democrat individual.",
+      "start_date": "2025-11-14T06:00:00.000Z",
+      "end_date": "2025-07-03T05:00:00.000Z",
+      "description": "A choice necessary might under structure end. Sometimes shoulder operation person leave second near....",
+      "is_holiday": true,
+      "created_at": "2025-12-13T09:17:15.622Z",
+      "updated_at": "2025-12-13T09:17:15.622Z"
+    },
+    {
+      "event_id": 2,
+      "term_id": 20,
+      "event_name": "Mrs share direction scene. Prove always mouth buy to. Maintain probably sport magazine.",
+      "event_type": "Everyone today machine turn dinner environmental.",
+      "start_date": "2025-11-07T06:00:00.000Z",
+      "end_date": "2024-07-18T05:00:00.000Z",
+      "description": "Manage interest force deep skill politics team.",
+      "is_holiday": true,
+      "created_at": "2025-12-13T09:17:15.622Z",
+      "updated_at": "2025-12-13T09:17:15.622Z"
+    },
+    {
+      "event_id": 3,
+      "term_id": 29,
+      "event_name": "Movement speak finish system total small. Listen weight affect perhaps if every.",
+      "event_type": "Answer country yard later should government trip.",
+      "start_date": "2024-06-13T05:00:00.000Z",
+      "end_date": "2025-01-03T06:00:00.000Z",
+      "description": "Vote system group down improve note trade risk. Really class significant fear not. Top statement dec...",
+      "is_holiday": false,
+      "created_at": "2025-12-13T09:17:15.622Z",
+      "updated_at": "2025-12-13T09:17:15.622Z"
+    },
+    {
+      "event_id": 4,
+      "term_id": 23,
+      "event_name": "Cold mother space I sign everyone church. People once none film.",
+      "event_type": "Bank travel ball camera benefit deep accept city.",
+      "start_date": "2025-09-22T05:00:00.000Z",
+      "end_date": "2024-12-16T06:00:00.000Z",
+      "description": "Land gas finally agent. Minute common some born tree yet billion international.",
+      "is_holiday": true,
+      "created_at": "2025-12-13T09:17:15.622Z",
+      "updated_at": "2025-12-13T09:17:15.622Z"
+    },
+    {
+      "event_id": 5,
+      "term_id": 29,
+      "event_name": "Cultural little system score ahead. Key accept along party provide event threat.",
+      "event_type": "Cover kind his series left.",
+      "start_date": "2025-03-18T05:00:00.000Z",
+      "end_date": "2025-02-06T06:00:00.000Z",
+      "description": "Dog peace center instead. Write small certain eight bed whatever raise.",
+      "is_holiday": true,
+      "created_at": "2025-12-13T09:17:15.622Z",
+      "updated_at": "2025-12-13T09:17:15.622Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:40:51.302Z"
+}

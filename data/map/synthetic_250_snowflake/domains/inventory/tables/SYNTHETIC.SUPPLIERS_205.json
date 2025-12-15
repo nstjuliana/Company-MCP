@@ -1,0 +1,159 @@
+{
+  "table": "SUPPLIERS_205",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.SUPPLIERS_205 table represents supplier entities within a synthetic database designed to simulate a business environment. It captures essential attributes of suppliers, including their unique identifier (SUPPLIER_ID), name, description, and several customizable attributes related to e-commerce activities such as shipping, rating, and checkout. With no explicit relationships to other tables, this table likely serves as an isolated dataset, detailing supplier information for analytical or simulation purposes.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "SUPPLIER_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column uniquely identifies each supplier within the system. It ensures that each supplier can be distinctly referenced.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column seems to store identifiers or labels for suppliers, possibly in a sequential format. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column contains generic descriptions for supplier entries in the SUPPLIERS_205 table. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CART_225_ATTR_0",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "SHIPPING_225_ATTR_1",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "RATING_225_ATTR_2",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column likely represents a qualitative assessment or feedback rating associated with suppliers, expressed using a series of predefined categorical text labels. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CHECKOUT_225_ATTR_3",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "WISHLIST_225_ATTR_4",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column likely represents a distinct classification or categorization code for suppliers, as indicated by numerical values that suggest different categories or identifiers. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CART_225_ATTR_5",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column likely represents a categorical or identifier attribute related to suppliers, with values that may correspond to specific categories or codes assigned to them. Purpose unclear from available data.",
+      "default": "3"
+    },
+    {
+      "name": "CREATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column records the exact date and time when a supplier entry was created. It defaults to the current time at the moment of entry creation and is not intended to be left empty.",
+      "default": "CURRENT_TIMESTAMP()"
+    },
+    {
+      "name": "UPDATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column records the date and time when a supplier's information was last updated. The timestamps indicate updates typically occur daily around 6:00 PM Central Standard Time.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "SUPPLIER_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "SUPPLIER_ID": 1,
+      "NAME": "SUPPLIERS_205 1",
+      "DESCRIPTION": "Description for SUPPLIERS_205 1",
+      "CART_225_ATTR_0": null,
+      "SHIPPING_225_ATTR_1": true,
+      "RATING_225_ATTR_2": "Sample RATING_225_ATTR_2 1",
+      "CHECKOUT_225_ATTR_3": "Sample CHECKOUT_225_ATTR_3 1",
+      "WISHLIST_225_ATTR_4": null,
+      "CART_225_ATTR_5": null,
+      "CREATED_AT": "2025-12-12 17:27:33.677",
+      "UPDATED_AT": "2026-01-11 00:00:00.000"
+    },
+    {
+      "SUPPLIER_ID": 2,
+      "NAME": "SUPPLIERS_205 2",
+      "DESCRIPTION": "Description for SUPPLIERS_205 2",
+      "CART_225_ATTR_0": 101,
+      "SHIPPING_225_ATTR_1": false,
+      "RATING_225_ATTR_2": "Sample RATING_225_ATTR_2 2",
+      "CHECKOUT_225_ATTR_3": "Sample CHECKOUT_225_ATTR_3 2",
+      "WISHLIST_225_ATTR_4": 101,
+      "CART_225_ATTR_5": 101,
+      "CREATED_AT": "2025-12-12 17:27:33.677",
+      "UPDATED_AT": "2026-01-12 00:00:00.000"
+    },
+    {
+      "SUPPLIER_ID": 3,
+      "NAME": "SUPPLIERS_205 3",
+      "DESCRIPTION": "Description for SUPPLIERS_205 3",
+      "CART_225_ATTR_0": 102,
+      "SHIPPING_225_ATTR_1": true,
+      "RATING_225_ATTR_2": "Sample RATING_225_ATTR_2 3",
+      "CHECKOUT_225_ATTR_3": "Sample CHECKOUT_225_ATTR_3 3",
+      "WISHLIST_225_ATTR_4": 102,
+      "CART_225_ATTR_5": 102,
+      "CREATED_AT": "2025-12-12 17:27:33.677",
+      "UPDATED_AT": "2026-01-13 00:00:00.000"
+    },
+    {
+      "SUPPLIER_ID": 4,
+      "NAME": "SUPPLIERS_205 4",
+      "DESCRIPTION": "Description for SUPPLIERS_205 4",
+      "CART_225_ATTR_0": null,
+      "SHIPPING_225_ATTR_1": false,
+      "RATING_225_ATTR_2": "Sample RATING_225_ATTR_2 4",
+      "CHECKOUT_225_ATTR_3": "Sample CHECKOUT_225_ATTR_3 4",
+      "WISHLIST_225_ATTR_4": null,
+      "CART_225_ATTR_5": null,
+      "CREATED_AT": "2025-12-12 17:27:33.677",
+      "UPDATED_AT": "2026-01-14 00:00:00.000"
+    },
+    {
+      "SUPPLIER_ID": 5,
+      "NAME": "SUPPLIERS_205 5",
+      "DESCRIPTION": "Description for SUPPLIERS_205 5",
+      "CART_225_ATTR_0": 104,
+      "SHIPPING_225_ATTR_1": true,
+      "RATING_225_ATTR_2": "Sample RATING_225_ATTR_2 5",
+      "CHECKOUT_225_ATTR_3": "Sample CHECKOUT_225_ATTR_3 5",
+      "WISHLIST_225_ATTR_4": 104,
+      "CART_225_ATTR_5": 104,
+      "CREATED_AT": "2025-12-12 17:27:33.677",
+      "UPDATED_AT": "2026-01-15 00:00:00.000"
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:56.088Z"
+}

@@ -1,0 +1,195 @@
+{
+  "table": "promotions",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.promotions` table represents promotional activities or campaigns within a business, explicitly detailing their attributes such as the promotion name, type, discount specifications, conditions, timeline, and status. It independently maintains information relevant to marketing efforts, as there are no direct foreign key relationships connecting it to other tables. Serving as a key component in the data model, it manages promotional details and allows for the prioritization and life cycle tracking of individual promotions through its various attributes.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "promotion_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each promotion in a sequential order. Purpose unclear from available data.",
+      "default": "nextval('synthetic.promotions_promotion_id_seq'::regclass)"
+    },
+    {
+      "name": "promotion_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "Purpose unclear from available data. The values appear to be sentence fragments related to various actions or themes, but their specific business context or significance is not evident.",
+      "default": null
+    },
+    {
+      "name": "promotion_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "discount_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "discount_value",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the monetary value of the discount applied in a promotional offer. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "conditions",
+      "type": "jsonb",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "start_date",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column represents the date and time when a promotion begins. It serves as the starting point for promotional events, allowing for tracking or scheduling purposes.",
+      "default": null
+    },
+    {
+      "name": "end_date",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column indicates the date and time a particular promotion is set to end. The values suggest it records the termination of promotions, possibly aligning with Central Time, but the exact purpose is not fully clear from the available data.",
+      "default": null
+    },
+    {
+      "name": "is_active",
+      "type": "boolean",
+      "nullable": true,
+      "description": "This column indicates whether a promotion is currently considered valid or in effect. The default setting suggests promotions are typically active unless specified otherwise.",
+      "default": "true"
+    },
+    {
+      "name": "priority",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely indicates the importance or precedence of a promotion on a scale where higher values denote higher priority, with a default setting of zero for unspecified entries.",
+      "default": "0"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "The column records the date and time when a promotion was initially created, capturing this information automatically at the time the record is entered. This helps track when promotions are added to the system.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a promotion entry was last updated. The default value suggests it records the current timestamp when a record is inserted or modified.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "promotion_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "promotions_pkey",
+      "index_definition": "CREATE UNIQUE INDEX promotions_pkey ON synthetic.promotions USING btree (promotion_id)",
+      "columns": [
+        "promotion_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "promotion_id": 1,
+      "promotion_name": "Toward with people I perform music. Stop although capital maintain.\nLevel hit understand kind around...",
+      "promotion_type": "test",
+      "discount_type": "alone",
+      "discount_value": "220.10",
+      "conditions": {
+        "key": "inside",
+        "value": "when"
+      },
+      "start_date": "2025-11-25T15:29:43.950Z",
+      "end_date": "2025-05-13T09:04:23.223Z",
+      "is_active": false,
+      "priority": 5,
+      "created_at": "2025-12-13T08:57:05.872Z",
+      "updated_at": "2025-12-13T08:57:05.872Z"
+    },
+    {
+      "promotion_id": 2,
+      "promotion_name": "Wind well pattern behind assume material. Thousand because seem land section.\nGeneration future mark...",
+      "promotion_type": "class",
+      "discount_type": "green",
+      "discount_value": "368.98",
+      "conditions": {
+        "key": "sea",
+        "value": "my"
+      },
+      "start_date": "2024-03-22T20:26:50.731Z",
+      "end_date": "2025-05-25T15:05:43.471Z",
+      "is_active": true,
+      "priority": 2,
+      "created_at": "2025-12-13T08:57:05.872Z",
+      "updated_at": "2025-12-13T08:57:05.872Z"
+    },
+    {
+      "promotion_id": 3,
+      "promotion_name": "We drive others difference suddenly side. Letter thing magazine. Same bill network according.\nSit po...",
+      "promotion_type": "large",
+      "discount_type": "agent",
+      "discount_value": "411.10",
+      "conditions": {
+        "key": "energy",
+        "value": "of"
+      },
+      "start_date": "2025-08-22T04:26:01.171Z",
+      "end_date": "2024-02-15T14:20:11.454Z",
+      "is_active": false,
+      "priority": 1,
+      "created_at": "2025-12-13T08:57:05.872Z",
+      "updated_at": "2025-12-13T08:57:05.872Z"
+    },
+    {
+      "promotion_id": 4,
+      "promotion_name": "Think wait necessary cost cost wonder attention. Field similar someone give send unit television.\nTe...",
+      "promotion_type": "brother",
+      "discount_type": "energy",
+      "discount_value": "712.53",
+      "conditions": {
+        "key": "race",
+        "value": "dog"
+      },
+      "start_date": "2025-11-16T19:54:03.828Z",
+      "end_date": "2024-07-09T04:30:27.597Z",
+      "is_active": true,
+      "priority": 3,
+      "created_at": "2025-12-13T08:57:05.872Z",
+      "updated_at": "2025-12-13T08:57:05.872Z"
+    },
+    {
+      "promotion_id": 5,
+      "promotion_name": "Total world with number myself others. Hot carry health matter son these. Company to pressure troubl...",
+      "promotion_type": "military",
+      "discount_type": "someone",
+      "discount_value": "959.03",
+      "conditions": {
+        "key": "wish",
+        "value": "take"
+      },
+      "start_date": "2024-05-11T23:21:24.734Z",
+      "end_date": "2024-03-25T20:18:50.746Z",
+      "is_active": false,
+      "priority": 4,
+      "created_at": "2025-12-13T08:57:05.872Z",
+      "updated_at": "2025-12-13T08:57:05.872Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:24.935Z"
+}

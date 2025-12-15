@@ -1,0 +1,111 @@
+{
+  "table": "PERFORMANCE_METRICS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The PERFORMANCE_METRICS table in the synthetic_250_snowflake database represents a collection of metrics related to various performance attributes such as campaign, social, and webinar activities. Each row uniquely identified by the PERFORMANCE_METRIC_ID holds descriptive and specific attributes, indicating specific interactions or results from these activities. As there are no foreign keys or references to other tables, this table functions as a standalone entity within the data model, providing detailed insights into performance metrics for different channels.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "PERFORMANCE_METRIC_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column likely serves as a unique identifier for individual performance metrics within the table. The purpose is to distinguish and reference specific metrics in the dataset.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column represents a sequence of identifiers for different performance metrics, where each identifier is distinguished by a numeric suffix. These identifiers likely serve as labels for categorizing or referencing specific set metrics within performance data sets.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains text descriptions associated with specific performance metrics, providing additional context or details for each metric. Each entry corresponds to a numbered performance metric for identification.",
+      "default": null
+    },
+    {
+      "name": "CAMPAIGN_149_ATTR_0",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "The column indicates whether a specific attribute within campaign 149 is active or relevant. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "SOCIAL_149_ATTR_1",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "WEBINAR_149_ATTR_2",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "SOCIAL_149_ATTR_3",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "PERFORMANCE_METRIC_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "PERFORMANCE_METRIC_ID": 1,
+      "NAME": "PERFORMANCE_METRICS 1",
+      "DESCRIPTION": "Description for PERFORMANCE_METRICS 1",
+      "CAMPAIGN_149_ATTR_0": true,
+      "SOCIAL_149_ATTR_1": "Sample SOCIAL_149_ATTR_1 1",
+      "WEBINAR_149_ATTR_2": "Sample WEBINAR_149_ATTR_2 1",
+      "SOCIAL_149_ATTR_3": "Sample SOCIAL_149_ATTR_3 1"
+    },
+    {
+      "PERFORMANCE_METRIC_ID": 2,
+      "NAME": "PERFORMANCE_METRICS 2",
+      "DESCRIPTION": "Description for PERFORMANCE_METRICS 2",
+      "CAMPAIGN_149_ATTR_0": false,
+      "SOCIAL_149_ATTR_1": "Sample SOCIAL_149_ATTR_1 2",
+      "WEBINAR_149_ATTR_2": "Sample WEBINAR_149_ATTR_2 2",
+      "SOCIAL_149_ATTR_3": "Sample SOCIAL_149_ATTR_3 2"
+    },
+    {
+      "PERFORMANCE_METRIC_ID": 3,
+      "NAME": "PERFORMANCE_METRICS 3",
+      "DESCRIPTION": "Description for PERFORMANCE_METRICS 3",
+      "CAMPAIGN_149_ATTR_0": true,
+      "SOCIAL_149_ATTR_1": "Sample SOCIAL_149_ATTR_1 3",
+      "WEBINAR_149_ATTR_2": "Sample WEBINAR_149_ATTR_2 3",
+      "SOCIAL_149_ATTR_3": "Sample SOCIAL_149_ATTR_3 3"
+    },
+    {
+      "PERFORMANCE_METRIC_ID": 4,
+      "NAME": "PERFORMANCE_METRICS 4",
+      "DESCRIPTION": "Description for PERFORMANCE_METRICS 4",
+      "CAMPAIGN_149_ATTR_0": false,
+      "SOCIAL_149_ATTR_1": "Sample SOCIAL_149_ATTR_1 4",
+      "WEBINAR_149_ATTR_2": "Sample WEBINAR_149_ATTR_2 4",
+      "SOCIAL_149_ATTR_3": "Sample SOCIAL_149_ATTR_3 4"
+    },
+    {
+      "PERFORMANCE_METRIC_ID": 5,
+      "NAME": "PERFORMANCE_METRICS 5",
+      "DESCRIPTION": "Description for PERFORMANCE_METRICS 5",
+      "CAMPAIGN_149_ATTR_0": true,
+      "SOCIAL_149_ATTR_1": "Sample SOCIAL_149_ATTR_1 5",
+      "WEBINAR_149_ATTR_2": "Sample WEBINAR_149_ATTR_2 5",
+      "SOCIAL_149_ATTR_3": "Sample SOCIAL_149_ATTR_3 5"
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:16.402Z"
+}

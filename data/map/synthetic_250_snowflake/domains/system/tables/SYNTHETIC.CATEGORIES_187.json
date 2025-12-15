@@ -1,0 +1,123 @@
+{
+  "table": "CATEGORIES_187",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.CATEGORIES_187 table represents a category entity, identified by the primary key CATEGORIE_ID, which includes descriptive information such as name and description. It appears to capture metadata about categories, including attributes like ratings and shipping dates, which may be pertinent for analytical or descriptive purposes. The table operates independently within the database as there are no relational constraints with other tables, indicating its use as a standalone reference or classification entity.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "CATEGORIE_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents unique identifiers assigned to different categories within the system, ensuring each category can be distinctly referenced. The numbers appear to sequentially identify each category item.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column likely categorizes entries numerically, as suggested by sequential labeling in sample values. Its specific business purpose is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column contains descriptive text entries detailing different categories within the synthetic dataset. Each entry uniquely identifies and provides information about a category in the CATEGORIES_187 table.",
+      "default": null
+    },
+    {
+      "name": "REVIEW_207_ATTR_0",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column likely records the date and time when a particular event or review related to categories occurs. The exact purpose of these timestamps is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "RATING_207_ATTR_1",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column appears to represent a rating attribute for categories, utilizing a text format to list rating values from 1 to 10. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "RATING_207_ATTR_2",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column likely represents a categorical or sequential series of ratings or identifiers within a certain category context, incrementing in value. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "SHIPPING_207_ATTR_3",
+      "type": "DATE",
+      "nullable": false,
+      "description": "This column likely represents scheduled shipping dates, indicating when items are expected to be shipped. The dates are consecutive, suggesting a daily schedule in a standard time zone.",
+      "default": null
+    },
+    {
+      "name": "CREATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column records the exact date and time when a category entry was created. It reflects the moment of entry creation in the Central Standard Time zone.",
+      "default": "CURRENT_TIMESTAMP()"
+    }
+  ],
+  "primary_key": [
+    "CATEGORIE_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "CATEGORIE_ID": 1,
+      "NAME": "CATEGORIES_187 1",
+      "DESCRIPTION": "Description for CATEGORIES_187 1",
+      "REVIEW_207_ATTR_0": "2025-12-12 00:00:00.000",
+      "RATING_207_ATTR_1": "Sample RATING_207_ATTR_1 1",
+      "RATING_207_ATTR_2": 100,
+      "SHIPPING_207_ATTR_3": "2025-12-12",
+      "CREATED_AT": "2025-12-12 17:25:53.979"
+    },
+    {
+      "CATEGORIE_ID": 2,
+      "NAME": "CATEGORIES_187 2",
+      "DESCRIPTION": "Description for CATEGORIES_187 2",
+      "REVIEW_207_ATTR_0": "2025-12-13 00:00:00.000",
+      "RATING_207_ATTR_1": "Sample RATING_207_ATTR_1 2",
+      "RATING_207_ATTR_2": 101,
+      "SHIPPING_207_ATTR_3": "2025-12-13",
+      "CREATED_AT": "2025-12-12 17:25:53.979"
+    },
+    {
+      "CATEGORIE_ID": 3,
+      "NAME": "CATEGORIES_187 3",
+      "DESCRIPTION": "Description for CATEGORIES_187 3",
+      "REVIEW_207_ATTR_0": "2025-12-14 00:00:00.000",
+      "RATING_207_ATTR_1": "Sample RATING_207_ATTR_1 3",
+      "RATING_207_ATTR_2": 102,
+      "SHIPPING_207_ATTR_3": "2025-12-14",
+      "CREATED_AT": "2025-12-12 17:25:53.979"
+    },
+    {
+      "CATEGORIE_ID": 4,
+      "NAME": "CATEGORIES_187 4",
+      "DESCRIPTION": "Description for CATEGORIES_187 4",
+      "REVIEW_207_ATTR_0": "2025-12-15 00:00:00.000",
+      "RATING_207_ATTR_1": "Sample RATING_207_ATTR_1 4",
+      "RATING_207_ATTR_2": 103,
+      "SHIPPING_207_ATTR_3": "2025-12-15",
+      "CREATED_AT": "2025-12-12 17:25:53.979"
+    },
+    {
+      "CATEGORIE_ID": 5,
+      "NAME": "CATEGORIES_187 5",
+      "DESCRIPTION": "Description for CATEGORIES_187 5",
+      "REVIEW_207_ATTR_0": "2025-12-16 00:00:00.000",
+      "RATING_207_ATTR_1": "Sample RATING_207_ATTR_1 5",
+      "RATING_207_ATTR_2": 104,
+      "SHIPPING_207_ATTR_3": "2025-12-16",
+      "CREATED_AT": "2025-12-12 17:25:53.979"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:38.246Z"
+}

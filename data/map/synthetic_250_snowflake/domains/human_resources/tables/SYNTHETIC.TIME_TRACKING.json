@@ -1,0 +1,147 @@
+{
+  "table": "TIME_TRACKING",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.TIME_TRACKING table captures details of time tracking activities, with each entry uniquely identified by the TIME_TRACKIN_ID primary key. Columns such as NAME, DESCRIPTION, and various ATTR fields suggest the table logs descriptive and attribute-specific details related to interactions, surveys, tickets, cases, and knowledge, though their exact nature remains undefined due to missing column metadata. The absence of foreign keys and external references implies that this table functions independently within the database, providing standalone records of time tracking, potentially for reporting or historical purposes.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "TIME_TRACKIN_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column serves as a unique identifier for records in the time tracking system, distinguishing each time entry with a sequential value.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column represents identifiers for different time tracking instances, each differentiated by a sequential number. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Contains textual descriptions or notes related to individual entries in the time tracking system. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "INTERACTION_166_ATTR_0",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "INTERACTION_166_ATTR_1",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "This field likely indicates a binary interaction or event status, where 'true' represents the occurrence or presence of a specific condition or event, and 'false' represents its absence. The default value suggests that, unless specified, the interaction is assumed to be present.",
+      "default": "TRUE"
+    },
+    {
+      "name": "SURVEY_166_ATTR_2",
+      "type": "DATE",
+      "nullable": true,
+      "description": "This column records specific dates associated with a survey activity, typically indicating when the activity took place or is scheduled. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "TICKET_166_ATTR_3",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "This column indicates a binary status or condition related to time tracking tickets, defaulting to true when unspecified. The specific purpose is unclear from the available data.",
+      "default": "TRUE"
+    },
+    {
+      "name": "SURVEY_166_ATTR_4",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The column contains numerical values, starting from a default of 84, but their specific significance or business context is not evident from the sample values or other provided details.",
+      "default": "84"
+    },
+    {
+      "name": "CASE_166_ATTR_5",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "KNOWLEDGE_166_ATTR_6",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "TIME_TRACKIN_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "TIME_TRACKIN_ID": 1,
+      "NAME": "TIME_TRACKING 1",
+      "DESCRIPTION": "Description for TIME_TRACKING 1",
+      "INTERACTION_166_ATTR_0": null,
+      "INTERACTION_166_ATTR_1": true,
+      "SURVEY_166_ATTR_2": "2025-12-12",
+      "TICKET_166_ATTR_3": true,
+      "SURVEY_166_ATTR_4": null,
+      "CASE_166_ATTR_5": "Sample CASE_166_ATTR_5 1",
+      "KNOWLEDGE_166_ATTR_6": "Sample KNOWLEDGE_166_ATTR_6 1"
+    },
+    {
+      "TIME_TRACKIN_ID": 2,
+      "NAME": "TIME_TRACKING 2",
+      "DESCRIPTION": "Description for TIME_TRACKING 2",
+      "INTERACTION_166_ATTR_0": 101,
+      "INTERACTION_166_ATTR_1": false,
+      "SURVEY_166_ATTR_2": "2025-12-13",
+      "TICKET_166_ATTR_3": false,
+      "SURVEY_166_ATTR_4": 101,
+      "CASE_166_ATTR_5": "Sample CASE_166_ATTR_5 2",
+      "KNOWLEDGE_166_ATTR_6": "Sample KNOWLEDGE_166_ATTR_6 2"
+    },
+    {
+      "TIME_TRACKIN_ID": 3,
+      "NAME": "TIME_TRACKING 3",
+      "DESCRIPTION": "Description for TIME_TRACKING 3",
+      "INTERACTION_166_ATTR_0": 102,
+      "INTERACTION_166_ATTR_1": true,
+      "SURVEY_166_ATTR_2": "2025-12-14",
+      "TICKET_166_ATTR_3": true,
+      "SURVEY_166_ATTR_4": 102,
+      "CASE_166_ATTR_5": "Sample CASE_166_ATTR_5 3",
+      "KNOWLEDGE_166_ATTR_6": "Sample KNOWLEDGE_166_ATTR_6 3"
+    },
+    {
+      "TIME_TRACKIN_ID": 4,
+      "NAME": "TIME_TRACKING 4",
+      "DESCRIPTION": "Description for TIME_TRACKING 4",
+      "INTERACTION_166_ATTR_0": null,
+      "INTERACTION_166_ATTR_1": false,
+      "SURVEY_166_ATTR_2": "2025-12-15",
+      "TICKET_166_ATTR_3": false,
+      "SURVEY_166_ATTR_4": null,
+      "CASE_166_ATTR_5": "Sample CASE_166_ATTR_5 4",
+      "KNOWLEDGE_166_ATTR_6": "Sample KNOWLEDGE_166_ATTR_6 4"
+    },
+    {
+      "TIME_TRACKIN_ID": 5,
+      "NAME": "TIME_TRACKING 5",
+      "DESCRIPTION": "Description for TIME_TRACKING 5",
+      "INTERACTION_166_ATTR_0": 104,
+      "INTERACTION_166_ATTR_1": true,
+      "SURVEY_166_ATTR_2": "2025-12-16",
+      "TICKET_166_ATTR_3": true,
+      "SURVEY_166_ATTR_4": 104,
+      "CASE_166_ATTR_5": "Sample CASE_166_ATTR_5 5",
+      "KNOWLEDGE_166_ATTR_6": "Sample KNOWLEDGE_166_ATTR_6 5"
+    }
+  ],
+  "generated_at": "2025-12-14T23:44:26.780Z"
+}

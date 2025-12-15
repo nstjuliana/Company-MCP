@@ -1,0 +1,157 @@
+{
+  "table": "product_images",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.product_images` table represents the images associated with various products and their variants, capturing details such as image URL, alternative text, and display order within a product's image collection. The table is central to managing product visual representations and supports distinguishing primary images and temporal tracking through `created_at` and `updated_at` timestamps. Although there are undefined foreign keys suggesting potential links to other entities, specific relationships to other tables are not explicitly defined.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "image_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each image associated with a product. It is used to distinguish individual product images within the database.",
+      "default": "nextval('synthetic.product_images_image_id_seq'::regclass)"
+    },
+    {
+      "name": "product_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each product associated with its images in the product images table. Each number correlates to a specific product within the business's inventory.",
+      "default": null
+    },
+    {
+      "name": "variant_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents identifiers potentially associated with different variants of a product, evidenced by recurring values in the sample. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "image_url",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column stores the URLs pointing to images associated with products, serving as links to visual representations of the items listed in the product catalog. These links ensure easy access to view product images online, which are essential for marketing and sales purposes.",
+      "default": null
+    },
+    {
+      "name": "alt_text",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column contains descriptive phrases likely intended as alternative text for product images, used to convey information about the products visually represented when images cannot be displayed. The purpose of these descriptions remains unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "sort_order",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely indicates the display order of product images, where smaller numbers correspond to higher priority or earlier display positions. The purpose is to organize how images are presented, with flexibility to handle missing or unspecified orders using the default value.",
+      "default": "0"
+    },
+    {
+      "name": "is_primary",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether the image is the primary one displayed for a product. The default setting assumes images are not primary unless specified otherwise.",
+      "default": "false"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a product image was created or added to the database. The default value suggests entries might automatically receive this timestamp upon creation.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a product image's information was last updated. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "image_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_product_images_product_id",
+      "column_name": "product_id",
+      "referenced_table": "synthetic.products",
+      "referenced_column": "product_id"
+    },
+    {
+      "constraint_name": "fk_product_images_variant_id",
+      "column_name": "variant_id",
+      "referenced_table": "synthetic.product_variants",
+      "referenced_column": "variant_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "product_images_pkey",
+      "index_definition": "CREATE UNIQUE INDEX product_images_pkey ON synthetic.product_images USING btree (image_id)",
+      "columns": [
+        "image_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "image_id": 1,
+      "product_id": 21,
+      "variant_id": 15,
+      "image_url": "http://www.lynch.com/",
+      "alt_text": "Then hear city shake. Stuff what least type.\nFact head long forget thought sell. Property smile abou...",
+      "sort_order": 1607,
+      "is_primary": true,
+      "created_at": "2025-12-13T08:56:11.735Z",
+      "updated_at": "2025-12-13T08:56:11.735Z"
+    },
+    {
+      "image_id": 2,
+      "product_id": 48,
+      "variant_id": 27,
+      "image_url": "http://www.riddle.info/",
+      "alt_text": "Camera him million policy per green capital. Best whatever lead none cultural newspaper tax ball.\nBe...",
+      "sort_order": 3277,
+      "is_primary": false,
+      "created_at": "2025-12-13T08:56:11.735Z",
+      "updated_at": "2025-12-13T08:56:11.735Z"
+    },
+    {
+      "image_id": 3,
+      "product_id": 15,
+      "variant_id": 5,
+      "image_url": "http://www.sims-hopkins.com/",
+      "alt_text": "Buy herself wind happy will lead reason. Environment resource improve. Few worry blood center for op...",
+      "sort_order": 7717,
+      "is_primary": false,
+      "created_at": "2025-12-13T08:56:11.735Z",
+      "updated_at": "2025-12-13T08:56:11.735Z"
+    },
+    {
+      "image_id": 4,
+      "product_id": 4,
+      "variant_id": 28,
+      "image_url": "http://www.dillon.com/",
+      "alt_text": "Special film suddenly thus. Recently miss be argue price. Themselves lawyer big heavy money stay.\nAb...",
+      "sort_order": 2375,
+      "is_primary": true,
+      "created_at": "2025-12-13T08:56:11.735Z",
+      "updated_at": "2025-12-13T08:56:11.735Z"
+    },
+    {
+      "image_id": 5,
+      "product_id": 40,
+      "variant_id": 30,
+      "image_url": "https://www.phillips-erickson.info/",
+      "alt_text": "Professional form able him. Trade remember wish customer change. Position east meeting say material ...",
+      "sort_order": 2918,
+      "is_primary": false,
+      "created_at": "2025-12-13T08:56:11.735Z",
+      "updated_at": "2025-12-13T08:56:11.735Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:38:56.905Z"
+}

@@ -1,0 +1,171 @@
+{
+  "table": "programs",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"programs\" table in the \"synthetic_250_postgres\" database models academic programs, capturing details such as the program identifier, code, name, associated department, degree type, credit hour requirements, a descriptive overview, and status indicators like active status. The primary key \"program_id\" uniquely identifies each program, while the \"department_id\" suggests a potential relationship with a departments table, although this relationship is not defined in the foreign key constraints. It serves as a foundational entity for managing academic offerings within an educational institution, potentially linking to departments and influencing curriculum planning systems.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "program_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each entry in the programs table. It is used to distinctly distinguish each program within the dataset.",
+      "default": "nextval('synthetic.programs_program_id_seq'::regclass)"
+    },
+    {
+      "name": "program_code",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely represents a unique identifier or code associated with each program offered. The specific purpose or categorization of these codes is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "program_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column represents the titles or names of various programs, which appear to relate to educational or professional initiatives, projects, or events. The names suggest themes involving strategic actions, scientific advancements, societal issues, and organizational endeavors.",
+      "default": null
+    },
+    {
+      "name": "department_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents identifiers for various departments associated with programs. The purpose of these identifiers is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "degree_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "credit_hours_required",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents the number of credit hours a program requires for completion. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "nullable": true,
+      "description": "This column contains brief narrative snippets or summaries related to various topics such as current affairs, personal experiences, and socioeconomic observations. The purpose of these descriptions remains unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "is_active",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether a program is currently operational or inactive. By default, programs are considered operational unless specified otherwise.",
+      "default": "true"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a program entry was created, defaulting to the current timestamp if not specified. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column captures the date and time when a program record was last modified. It is set to the current timestamp by default, indicating the most recent update to the database entry.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "program_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_programs_department_id",
+      "column_name": "department_id",
+      "referenced_table": "synthetic.academic_departments",
+      "referenced_column": "department_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "programs_pkey",
+      "index_definition": "CREATE UNIQUE INDEX programs_pkey ON synthetic.programs USING btree (program_id)",
+      "columns": [
+        "program_id"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "programs_program_code_key",
+      "index_definition": "CREATE UNIQUE INDEX programs_program_code_key ON synthetic.programs USING btree (program_code)",
+      "columns": [
+        "program_code"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "program_id": 1,
+      "program_code": "OKIZDTZA",
+      "program_name": "Indicate far trade care board. Something party memory either management. Throughout record pattern.",
+      "department_id": 37,
+      "degree_type": "Within allow exist necessary into read.",
+      "credit_hours_required": 272,
+      "description": "Heart state job current cost. Including significant man author. Shoulder wide must even.",
+      "is_active": true,
+      "created_at": "2025-12-13T09:16:45.655Z",
+      "updated_at": "2025-12-13T09:16:45.655Z"
+    },
+    {
+      "program_id": 2,
+      "program_code": "TIXOPOAB",
+      "program_name": "Company property until go final. Choose answer international impact child difficult.",
+      "department_id": 50,
+      "degree_type": "Herself night similar someone seek vote.",
+      "credit_hours_required": 586,
+      "description": "Let she send would with. Fine future peace cause health candidate.",
+      "is_active": false,
+      "created_at": "2025-12-13T09:16:45.655Z",
+      "updated_at": "2025-12-13T09:16:45.655Z"
+    },
+    {
+      "program_id": 3,
+      "program_code": "QODLSFHM",
+      "program_name": "Result look science leg small modern. Successful service everybody own turn report.",
+      "department_id": 40,
+      "degree_type": "A cultural plant financial benefit only trip.",
+      "credit_hours_required": 655,
+      "description": "Me whole summer best.",
+      "is_active": true,
+      "created_at": "2025-12-13T09:16:45.655Z",
+      "updated_at": "2025-12-13T09:16:45.655Z"
+    },
+    {
+      "program_id": 4,
+      "program_code": "TCMWWKFG",
+      "program_name": "Report century rule as have probably. Provide recently data serve quality.",
+      "department_id": 32,
+      "degree_type": "Best man be tax population art magazine.",
+      "credit_hours_required": 911,
+      "description": "Occur money idea economy main Mrs senior. Claim hospital national bed in goal go. Be machine quite d...",
+      "is_active": false,
+      "created_at": "2025-12-13T09:16:45.655Z",
+      "updated_at": "2025-12-13T09:16:45.655Z"
+    },
+    {
+      "program_id": 5,
+      "program_code": "IYIFWMAR",
+      "program_name": "Policy science cell stop bit for. Question deep worker reduce.",
+      "department_id": 42,
+      "degree_type": "Parent member century enough month decision.",
+      "credit_hours_required": 980,
+      "description": "View boy dog modern particularly weight. Phone option partner most loss pay manager computer.",
+      "is_active": false,
+      "created_at": "2025-12-13T09:16:45.655Z",
+      "updated_at": "2025-12-13T09:16:45.655Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:30.298Z"
+}

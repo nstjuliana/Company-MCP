@@ -1,0 +1,171 @@
+{
+  "table": "FEEDBACK_170",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The table \"SYNTHETIC.FEEDBACK_170\" represents a feedback mechanism, likely capturing feedback-related metadata given columns such as \"DESCRIPTION\", \"STATUS\", and various attributes associated with \"CASE\", \"SURVEY\", and \"INTERACTION\". It does not have any explicit foreign key relationships to other tables, suggesting it may function as an isolated or standalone entity within the database. The presence of timestamps like \"UPDATED_AT\" and fields with dates indicates it may also track temporal aspects of feedback data.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "FEEDBAC_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents a unique identifier assigned sequentially to each feedback entry in the table, ensuring each record is distinctly identifiable. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column contains sequential identifiers presumably assigned to feedback entries. Purpose unclear from available data as the identifiers do not provide specific descriptive information.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column likely contains brief textual summaries or identifiers related to individual entries in the FEEDBACK_170 table. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CASE_190_ATTR_0",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "Purpose unclear from available data. The sample values do not provide enough context to determine the business meaning of this column.",
+      "default": null
+    },
+    {
+      "name": "SURVEY_190_ATTR_1",
+      "type": "DATE",
+      "nullable": false,
+      "description": "The column records survey attribute dates associated with feedback, occurring consecutively from December 2025. Each date seems to represent a daily entry, likely documenting the timing for certain survey-related activities.",
+      "default": null
+    },
+    {
+      "name": "ESCALATION_190_ATTR_2",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column appears to represent specific codes or identifiers related to escalation events or records, possibly denoting varying types or categories of escalation. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CASE_190_ATTR_3",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CASE_190_ATTR_4",
+      "type": "DATE",
+      "nullable": false,
+      "description": "This column represents a series of consecutive dates in December 2025, likely related to scheduled feedback activities or events. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "INTERACTION_190_ATTR_5",
+      "type": "DATE",
+      "nullable": true,
+      "description": "This column likely records the dates of specific interactions or events related to feedback within a system. The purpose of these interactions is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "KNOWLEDGE_190_ATTR_6",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "UPDATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column captures the date and time when feedback entries were last updated, indicating periodic revisions occurring around 6 PM Central Standard Time. Purpose unclear from available data as to why updates occur precisely at this time.",
+      "default": null
+    },
+    {
+      "name": "STATUS",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column represents the current ongoing state related to feedback, indicating that entries are typically in an \"ACTIVE\" status. Purpose unclear from available data, as only one status is observed.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "FEEDBAC_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "FEEDBAC_ID": 1,
+      "NAME": "FEEDBACK_170 1",
+      "DESCRIPTION": "Description for FEEDBACK_170 1",
+      "CASE_190_ATTR_0": "Sample CASE_190_ATTR_0 1",
+      "SURVEY_190_ATTR_1": "2025-12-12",
+      "ESCALATION_190_ATTR_2": null,
+      "CASE_190_ATTR_3": "Sample CASE_190_ATTR_3 1",
+      "CASE_190_ATTR_4": "2025-12-12",
+      "INTERACTION_190_ATTR_5": "2025-12-12",
+      "KNOWLEDGE_190_ATTR_6": "Sample KNOWLEDGE_190_ATTR_6 1",
+      "UPDATED_AT": "2026-01-11 00:00:00.000",
+      "STATUS": "ACTIVE"
+    },
+    {
+      "FEEDBAC_ID": 2,
+      "NAME": "FEEDBACK_170 2",
+      "DESCRIPTION": "Description for FEEDBACK_170 2",
+      "CASE_190_ATTR_0": "Sample CASE_190_ATTR_0 2",
+      "SURVEY_190_ATTR_1": "2025-12-13",
+      "ESCALATION_190_ATTR_2": 101,
+      "CASE_190_ATTR_3": "Sample CASE_190_ATTR_3 2",
+      "CASE_190_ATTR_4": "2025-12-13",
+      "INTERACTION_190_ATTR_5": "2025-12-13",
+      "KNOWLEDGE_190_ATTR_6": "Sample KNOWLEDGE_190_ATTR_6 2",
+      "UPDATED_AT": "2026-01-12 00:00:00.000",
+      "STATUS": "ACTIVE"
+    },
+    {
+      "FEEDBAC_ID": 3,
+      "NAME": "FEEDBACK_170 3",
+      "DESCRIPTION": "Description for FEEDBACK_170 3",
+      "CASE_190_ATTR_0": "Sample CASE_190_ATTR_0 3",
+      "SURVEY_190_ATTR_1": "2025-12-14",
+      "ESCALATION_190_ATTR_2": 102,
+      "CASE_190_ATTR_3": "Sample CASE_190_ATTR_3 3",
+      "CASE_190_ATTR_4": "2025-12-14",
+      "INTERACTION_190_ATTR_5": "2025-12-14",
+      "KNOWLEDGE_190_ATTR_6": "Sample KNOWLEDGE_190_ATTR_6 3",
+      "UPDATED_AT": "2026-01-13 00:00:00.000",
+      "STATUS": "ACTIVE"
+    },
+    {
+      "FEEDBAC_ID": 4,
+      "NAME": "FEEDBACK_170 4",
+      "DESCRIPTION": "Description for FEEDBACK_170 4",
+      "CASE_190_ATTR_0": "Sample CASE_190_ATTR_0 4",
+      "SURVEY_190_ATTR_1": "2025-12-15",
+      "ESCALATION_190_ATTR_2": null,
+      "CASE_190_ATTR_3": "Sample CASE_190_ATTR_3 4",
+      "CASE_190_ATTR_4": "2025-12-15",
+      "INTERACTION_190_ATTR_5": "2025-12-15",
+      "KNOWLEDGE_190_ATTR_6": "Sample KNOWLEDGE_190_ATTR_6 4",
+      "UPDATED_AT": "2026-01-14 00:00:00.000",
+      "STATUS": "ACTIVE"
+    },
+    {
+      "FEEDBAC_ID": 5,
+      "NAME": "FEEDBACK_170 5",
+      "DESCRIPTION": "Description for FEEDBACK_170 5",
+      "CASE_190_ATTR_0": "Sample CASE_190_ATTR_0 5",
+      "SURVEY_190_ATTR_1": "2025-12-16",
+      "ESCALATION_190_ATTR_2": 104,
+      "CASE_190_ATTR_3": "Sample CASE_190_ATTR_3 5",
+      "CASE_190_ATTR_4": "2025-12-16",
+      "INTERACTION_190_ATTR_5": "2025-12-16",
+      "KNOWLEDGE_190_ATTR_6": "Sample KNOWLEDGE_190_ATTR_6 5",
+      "UPDATED_AT": "2026-01-15 00:00:00.000",
+      "STATUS": "ACTIVE"
+    }
+  ],
+  "generated_at": "2025-12-14T23:42:56.074Z"
+}

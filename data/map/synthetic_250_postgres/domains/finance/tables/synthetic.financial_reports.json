@@ -1,0 +1,178 @@
+{
+  "table": "financial_reports",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.financial_reports` table stores detailed records of financial reports, each uniquely identified by the primary key `report_id`, including attributes such as the report’s name, type, and associated time period. It references an unspecified external table through a yet undefined relationship, and it logs metadata like creation and update timestamps alongside generating user data. The table's role in the data model is to serve as a repository for financial document information, likely utilized for reporting and auditing purposes, though it is not directly linked or referenced by any other table.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "report_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each financial report within the dataset, ensuring each entry can be distinctly referenced and retrieved.",
+      "default": "nextval('synthetic.financial_reports_report_id_seq'::regclass)"
+    },
+    {
+      "name": "report_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column contains descriptive titles for various financial reports, likely used to identify or categorize the contents of the reports in the context of financial decision-making or policy discussion. Specific details of the reports' topics or their intended audience are unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "report_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "period_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents an identifier for specific reporting periods within financial reports, helping to distinguish between different time frames or cycles. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "generated_date",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when the financial report was created, reflecting various dates primarily in Central Time. The purpose of capturing these timestamps is not explicit from the available data.",
+      "default": null
+    },
+    {
+      "name": "generated_by",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely identifies the user or system responsible for creating or submitting the financial report. The specific identification is represented by unique integer IDs, but further context is needed to determine their exact meaning.",
+      "default": null
+    },
+    {
+      "name": "parameters",
+      "type": "jsonb",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "file_path",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values appear to contain fragmented text strings with no evident consistent pattern or identifiable business context.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a financial report entry is created or logged in the system. The default value suggests it captures the moment a report is recorded unless otherwise specified.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when the financial report data was last updated. Purpose is unclear from available data as all sample values show the same timestamp.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "report_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_financial_reports_period_id",
+      "column_name": "period_id",
+      "referenced_table": "synthetic.fiscal_periods",
+      "referenced_column": "period_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "financial_reports_pkey",
+      "index_definition": "CREATE UNIQUE INDEX financial_reports_pkey ON synthetic.financial_reports USING btree (report_id)",
+      "columns": [
+        "report_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "report_id": 1,
+      "report_name": "Per son son radio factor seven. Tax policy particular type leg agency it. Rock where approach should...",
+      "report_type": "I",
+      "period_id": 44,
+      "generated_date": "2024-06-18T18:03:18.273Z",
+      "generated_by": 6951,
+      "parameters": {
+        "key": "place",
+        "value": "education"
+      },
+      "file_path": "Wear why his. Radio see those not table involve positive final. Face make term bank partner. Of what...",
+      "created_at": "2025-12-13T08:55:20.471Z",
+      "updated_at": "2025-12-13T08:55:20.471Z"
+    },
+    {
+      "report_id": 2,
+      "report_name": "Name significant city seem answer nation today. Television while personal however million.",
+      "report_type": "test",
+      "period_id": 7,
+      "generated_date": "2025-05-13T14:22:07.016Z",
+      "generated_by": 3369,
+      "parameters": {
+        "key": "factor",
+        "value": "property"
+      },
+      "file_path": "Firm main mean money nothing project.\nSpace early word huge list. Popular leave garden answer availa...",
+      "created_at": "2025-12-13T08:55:20.471Z",
+      "updated_at": "2025-12-13T08:55:20.471Z"
+    },
+    {
+      "report_id": 3,
+      "report_name": "Land movement decision leader nice account. Meeting investment although. Charge pressure force to ce...",
+      "report_type": "while",
+      "period_id": 35,
+      "generated_date": "2025-10-06T18:29:48.365Z",
+      "generated_by": 7131,
+      "parameters": {
+        "key": "else",
+        "value": "nearly"
+      },
+      "file_path": "Hit green prove whether. Organization song research participant year decision black.\nPositive sure b...",
+      "created_at": "2025-12-13T08:55:20.471Z",
+      "updated_at": "2025-12-13T08:55:20.471Z"
+    },
+    {
+      "report_id": 4,
+      "report_name": "Return child station only number guy you.\nLand commercial remember between newspaper oil. Picture ha...",
+      "report_type": "care",
+      "period_id": 42,
+      "generated_date": "2024-01-19T15:09:06.917Z",
+      "generated_by": 1182,
+      "parameters": {
+        "key": "class",
+        "value": "no"
+      },
+      "file_path": "Card meet help program simply high. Line possible have south risk by.\nSomething pass high newspaper ...",
+      "created_at": "2025-12-13T08:55:20.471Z",
+      "updated_at": "2025-12-13T08:55:20.471Z"
+    },
+    {
+      "report_id": 5,
+      "report_name": "Skill at young. Four hotel example never become. Under support ever year. Member perform design disc...",
+      "report_type": "including",
+      "period_id": 48,
+      "generated_date": "2024-11-09T22:30:41.533Z",
+      "generated_by": 2520,
+      "parameters": {
+        "key": "yes",
+        "value": "personal"
+      },
+      "file_path": "History ago individual a main almost of want. Decade say radio when high. Condition threat set weigh...",
+      "created_at": "2025-12-13T08:55:20.471Z",
+      "updated_at": "2025-12-13T08:55:20.471Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:40:14.439Z"
+}

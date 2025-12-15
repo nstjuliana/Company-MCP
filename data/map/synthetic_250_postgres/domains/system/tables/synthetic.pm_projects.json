@@ -1,0 +1,243 @@
+{
+  "table": "pm_projects",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.pm_projects` table represents project management data, capturing essential details such as project identification (`project_id`), timeline (including `start_date`, `target_end_date`, and `actual_end_date`), and financials (`budget` and `actual_cost`). Although the table references another entity, the specific foreign key relationship is undefined, suggesting it may relate to a broader portfolio or resource management context. As a core table in the data model for managing projects, it tracks project performance indicators like status, priority, and percentage completion along with metadata timestamps for creation and updates.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "project_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier assigned to each project within the synthetic project management system. It ensures each project can be distinctly referenced.",
+      "default": "nextval('synthetic.pm_projects_project_id_seq'::regclass)"
+    },
+    {
+      "name": "project_code",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely holds unique identifiers for projects, represented as sequences of uppercase letters. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "project_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "The column represents descriptive and varied names or titles associated with different projects, often involving multiple concepts or themes. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "portfolio_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely identifies the portfolio associated with a project, with each integer representing a distinct portfolio's identifier. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "nullable": true,
+      "description": "This column contains narrative summaries or explanations related to various projects, possibly describing objectives, status, or contextual background. The exact purpose of these descriptions is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "start_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column records the initiation date of a project, indicating when it is scheduled to begin or actually commenced. Dates are expressed in Central Time, reflecting whether they occur during Daylight Saving Time or Standard Time.",
+      "default": null
+    },
+    {
+      "name": "target_end_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column represents the projected completion date for projects within the project management system. The specific dates indicate when each project is expected to be finished, with flexibility for this date to be unspecified if not yet determined.",
+      "default": null
+    },
+    {
+      "name": "actual_end_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column records the actual completion dates of various projects, capturing when the project tasks were finished. The values indicate dates in both Central Standard and Central Daylight time zones, reflecting project end dates throughout different times of the year.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column indicates the current phase or condition of a project, which could be in the planning, currently active, completed, inactive, or cancelled state. The default value suggests most projects initially start in the planning phase.",
+      "default": "'planning'::character varying"
+    },
+    {
+      "name": "priority",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data; sample values suggest a mix of abstract phrases, making it difficult to ascertain a concrete business meaning.",
+      "default": null
+    },
+    {
+      "name": "project_manager_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely identifies individuals designated as project managers, each associated with unique numeric identifiers. The purpose of these identifiers is to link specific projects with their respective managers.",
+      "default": null
+    },
+    {
+      "name": "budget",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the financial allocation assigned for various projects, denoted in monetary units. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "actual_cost",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the real financial expenditure incurred on various projects. The amounts reflect monetary values that vary significantly, indicating varying project scopes or expenses.",
+      "default": "0"
+    },
+    {
+      "name": "percent_complete",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column indicates the extent to which a project has been completed, expressed as a percentage. A value of 0 signifies no progress, while a value of 100 denotes full completion.",
+      "default": "0"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a project was initially created within the system. It automatically defaults to the current timestamp upon project creation, indicating the origin time of projects.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the timestamp of when each project was last updated. The purpose of the data captured here is to track the most recent changes or modifications made to project details.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "project_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_pm_projects_portfolio_id",
+      "column_name": "portfolio_id",
+      "referenced_table": "synthetic.project_portfolio",
+      "referenced_column": "portfolio_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "pm_projects_pkey",
+      "index_definition": "CREATE UNIQUE INDEX pm_projects_pkey ON synthetic.pm_projects USING btree (project_id)",
+      "columns": [
+        "project_id"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "pm_projects_project_code_key",
+      "index_definition": "CREATE UNIQUE INDEX pm_projects_project_code_key ON synthetic.pm_projects USING btree (project_code)",
+      "columns": [
+        "project_code"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "project_id": 1,
+      "project_code": "SSDRFWWLCK",
+      "project_name": "Finish official relationship feeling benefit national build. Continue receive sing fear firm. Letter...",
+      "portfolio_id": 50,
+      "description": "Quality prove trial rich family.",
+      "start_date": "2024-04-26T05:00:00.000Z",
+      "target_end_date": "2024-07-10T05:00:00.000Z",
+      "actual_end_date": "2025-09-12T05:00:00.000Z",
+      "status": "inactive",
+      "priority": "Return million yet.",
+      "project_manager_id": 4824,
+      "budget": "78074.76",
+      "actual_cost": "77649.25",
+      "percent_complete": 55,
+      "created_at": "2025-12-13T08:59:52.190Z",
+      "updated_at": "2025-12-13T08:59:52.190Z"
+    },
+    {
+      "project_id": 2,
+      "project_code": "VZSQCHBADB",
+      "project_name": "Detail yourself election.\nHour role top among.\nHair collection industry whether door successful posi...",
+      "portfolio_id": 26,
+      "description": "Newspaper too woman sit floor. Unit own front production magazine data son himself.",
+      "start_date": "2025-10-30T05:00:00.000Z",
+      "target_end_date": "2024-03-12T05:00:00.000Z",
+      "actual_end_date": "2025-08-24T05:00:00.000Z",
+      "status": "cancelled",
+      "priority": "Trial finally.",
+      "project_manager_id": 9173,
+      "budget": "96066.74",
+      "actual_cost": "5571.77",
+      "percent_complete": 79,
+      "created_at": "2025-12-13T08:59:52.190Z",
+      "updated_at": "2025-12-13T08:59:52.190Z"
+    },
+    {
+      "project_id": 3,
+      "project_code": "XUTZZXYZSD",
+      "project_name": "Major image recently challenge to tough foreign. Offer effect write chair.\nOnto college cultural Dem...",
+      "portfolio_id": 45,
+      "description": "Door something culture everything measure clear find. Should change ask project career important.",
+      "start_date": "2023-12-15T06:00:00.000Z",
+      "target_end_date": "2024-05-10T05:00:00.000Z",
+      "actual_end_date": "2024-12-15T06:00:00.000Z",
+      "status": "active",
+      "priority": "Western ok.",
+      "project_manager_id": 9141,
+      "budget": "47350.46",
+      "actual_cost": "39859.58",
+      "percent_complete": 15,
+      "created_at": "2025-12-13T08:59:52.190Z",
+      "updated_at": "2025-12-13T08:59:52.190Z"
+    },
+    {
+      "project_id": 4,
+      "project_code": "ZJLPLHQDHG",
+      "project_name": "Event answer easy scene close current. Value special camera should nice.\nResponsibility team foot ra...",
+      "portfolio_id": 30,
+      "description": "So buy fill now medical respond. Drop wide oil word sort home.",
+      "start_date": "2025-10-04T05:00:00.000Z",
+      "target_end_date": "2024-08-03T05:00:00.000Z",
+      "actual_end_date": "2024-03-08T06:00:00.000Z",
+      "status": "completed",
+      "priority": "Day condition short.",
+      "project_manager_id": 501,
+      "budget": "64229.40",
+      "actual_cost": "17474.07",
+      "percent_complete": 27,
+      "created_at": "2025-12-13T08:59:52.190Z",
+      "updated_at": "2025-12-13T08:59:52.190Z"
+    },
+    {
+      "project_id": 5,
+      "project_code": "BMQTPZHPKG",
+      "project_name": "National eat response might catch term. Blood why marriage. Follow inside trip brother.\nRather happy...",
+      "portfolio_id": 20,
+      "description": "Condition audience push push something church. Sister even sing least field him. Several dinner brot...",
+      "start_date": "2024-11-04T06:00:00.000Z",
+      "target_end_date": "2024-11-26T06:00:00.000Z",
+      "actual_end_date": "2024-03-04T06:00:00.000Z",
+      "status": "cancelled",
+      "priority": "Involve business.",
+      "project_manager_id": 3738,
+      "budget": "52047.38",
+      "actual_cost": "22117.70",
+      "percent_complete": 85,
+      "created_at": "2025-12-13T08:59:52.190Z",
+      "updated_at": "2025-12-13T08:59:52.190Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:23.380Z"
+}

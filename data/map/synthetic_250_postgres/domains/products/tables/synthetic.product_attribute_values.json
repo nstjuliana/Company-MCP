@@ -1,0 +1,121 @@
+{
+  "table": "product_attribute_values",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The table \"synthetic.product_attribute_values\" captures specific attribute values associated with products, identified by unique \"value_id\" keys. Each entry links a \"product_id\" to an \"attribute_id\" with a corresponding \"attribute_value,\" while tracking its creation and last update timestamps. Although it references undefined foreign keys suggesting relationships to unspecified tables, it primarily serves as a detail-oriented table providing expanded descriptive data for products in the broader synthetic database.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "value_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each record within the product attribute values table, ensuring each entry is distinct and can be referenced individually. It is essential for maintaining data integrity and tracking specific attribute values linked to products.",
+      "default": "nextval('synthetic.product_attribute_values_value_id_seq'::regclass)"
+    },
+    {
+      "name": "product_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column likely contains identifiers corresponding to different products, serving as a reference to associate each product with its specific attributes within the data set. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "attribute_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents identifiers for specific attributes associated with products. It serves as a reference to link each attribute value to a particular attribute definition within the product system.",
+      "default": null
+    },
+    {
+      "name": "attribute_value",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column contains detailed textual descriptions or narratives related to various product attributes, likely serving as marketing copy or descriptions for different product aspects. The entries appear to be verbose and diverse, highlighting different features or qualities.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the timestamp for when a product attribute value was created or logged in the system. It is initialized with the current system time upon creation, but its purpose in the broader business context is unclear from the available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a product attribute's information was last updated. It reflects the most recent modification timestamp, indicating potentially when changes were made to the product attribute details.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "value_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_product_attribute_values_attribute_id",
+      "column_name": "attribute_id",
+      "referenced_table": "synthetic.product_attributes",
+      "referenced_column": "attribute_id"
+    },
+    {
+      "constraint_name": "fk_product_attribute_values_product_id",
+      "column_name": "product_id",
+      "referenced_table": "synthetic.products",
+      "referenced_column": "product_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "product_attribute_values_pkey",
+      "index_definition": "CREATE UNIQUE INDEX product_attribute_values_pkey ON synthetic.product_attribute_values USING btree (value_id)",
+      "columns": [
+        "value_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "value_id": 1,
+      "product_id": 6,
+      "attribute_id": 46,
+      "attribute_value": "Beautiful sport lead power identify. Available condition question region present.\nMessage bag hand s...",
+      "created_at": "2025-12-13T08:56:07.443Z",
+      "updated_at": "2025-12-13T08:56:07.443Z"
+    },
+    {
+      "value_id": 2,
+      "product_id": 42,
+      "attribute_id": 38,
+      "attribute_value": "Hospital resource any series note board often. Newspaper something improve and important.\nCare scene...",
+      "created_at": "2025-12-13T08:56:07.443Z",
+      "updated_at": "2025-12-13T08:56:07.443Z"
+    },
+    {
+      "value_id": 3,
+      "product_id": 19,
+      "attribute_id": 27,
+      "attribute_value": "Simply would change nice back every. To so cost understand consider. Town dinner somebody resource r...",
+      "created_at": "2025-12-13T08:56:07.443Z",
+      "updated_at": "2025-12-13T08:56:07.443Z"
+    },
+    {
+      "value_id": 4,
+      "product_id": 45,
+      "attribute_id": 50,
+      "attribute_value": "Might activity more. Try person while say anyone.\nOil production our top see evening thank.\nAbout lo...",
+      "created_at": "2025-12-13T08:56:07.443Z",
+      "updated_at": "2025-12-13T08:56:07.443Z"
+    },
+    {
+      "value_id": 5,
+      "product_id": 31,
+      "attribute_id": 45,
+      "attribute_value": "Stage certain road staff.\nWest value gas push give line thousand. Process new cup century market cam...",
+      "created_at": "2025-12-13T08:56:07.443Z",
+      "updated_at": "2025-12-13T08:56:07.443Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:38:56.835Z"
+}

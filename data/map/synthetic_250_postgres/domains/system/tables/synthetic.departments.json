@@ -1,0 +1,173 @@
+{
+  "table": "departments",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.departments` table represents a business entity for managing departmental information in an organization, identified by a unique `department_id` as the primary key. It captures essential attributes of a department, such as `department_name`, `department_code`, `description`, potential hierarchy through `parent_department_id`, cost management via `cost_center`, and logistical details indicated by a `location_id`. This table likely serves as a foundational structure in the data model, helping to organize and relate various departmental data, though it currently lacks direct foreign key relationships to other tables.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "department_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier assigned to each department within an organization. It ensures distinct and sequential numbering for departments.",
+      "default": "nextval('synthetic.departments_department_id_seq'::regclass)"
+    },
+    {
+      "name": "department_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column appears to store descriptions or narratives related to various departments. The content is abstract and lacks specificity, making the precise purpose unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "department_code",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column holds an alphanumeric identifier for departments, likely intended to be unique within the organization. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "nullable": true,
+      "description": "This column contains succinct narrative or descriptive text related to each department, potentially documenting general observations, actions, or contextual information. The exact purpose of these descriptions is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "parent_department_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents a hierarchical relationship where the value indicates the identifier of a higher-level department to which the current department reports. It supports the existence of multiple parent-child relationships among departments, as evidenced by repeated sample values.",
+      "default": null
+    },
+    {
+      "name": "cost_center",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "location_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents an identifier for different locations associated with the departments. Each unique number corresponds to a specific location but does not provide further context on the locations themselves.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a department record was created, reflecting the initiation of a department's entry in the database. The default setting ensures it captures the precise moment of entry creation, though it is flexible to allow null values.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the most recent date and time when a department's information was updated. It reflects the timestamp of the last modification, allowing for the tracking of changes over time.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "department_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_departments_location_id",
+      "column_name": "location_id",
+      "referenced_table": "synthetic.office_locations",
+      "referenced_column": "location_id"
+    },
+    {
+      "constraint_name": "fk_departments_parent_department_id",
+      "column_name": "parent_department_id",
+      "referenced_table": "synthetic.departments",
+      "referenced_column": "department_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "departments_department_code_key",
+      "index_definition": "CREATE UNIQUE INDEX departments_department_code_key ON synthetic.departments USING btree (department_code)",
+      "columns": [
+        "department_code"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "departments_department_name_key",
+      "index_definition": "CREATE UNIQUE INDEX departments_department_name_key ON synthetic.departments USING btree (department_name)",
+      "columns": [
+        "department_name"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "departments_pkey",
+      "index_definition": "CREATE UNIQUE INDEX departments_pkey ON synthetic.departments USING btree (department_id)",
+      "columns": [
+        "department_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "department_id": 1,
+      "department_name": "Only care official. Audience reduce four. Rather seven your those movement any.",
+      "department_code": "JKWFEATE",
+      "description": "Up remember learn of material ability. Program traditional behind place course town economic. During...",
+      "parent_department_id": null,
+      "cost_center": "Prove thousand.",
+      "location_id": 84,
+      "created_at": "2025-12-13T09:17:19.974Z",
+      "updated_at": "2025-12-13T09:17:19.974Z"
+    },
+    {
+      "department_id": 2,
+      "department_name": "Those heart couple very why point maybe.",
+      "department_code": "GZXZBWOT",
+      "description": "Teacher old size action bring. Thousand region require want may.",
+      "parent_department_id": 1,
+      "cost_center": "Partner set protect.",
+      "location_id": 21,
+      "created_at": "2025-12-13T09:17:19.974Z",
+      "updated_at": "2025-12-13T09:17:19.974Z"
+    },
+    {
+      "department_id": 3,
+      "department_name": "Land eye fast.",
+      "department_code": "QEAISERJ",
+      "description": "Nothing visit never eight large. Entire office itself later political drug person.",
+      "parent_department_id": 2,
+      "cost_center": "Never part their.",
+      "location_id": 12,
+      "created_at": "2025-12-13T09:17:19.974Z",
+      "updated_at": "2025-12-13T09:17:19.974Z"
+    },
+    {
+      "department_id": 4,
+      "department_name": "Prepare ahead arm air happen consider. Box leader western enjoy book.",
+      "department_code": "MVLSIHGQ",
+      "description": "Yet loss instead account. Can analysis full wonder movement director support.",
+      "parent_department_id": 3,
+      "cost_center": "Unit require friend.",
+      "location_id": 47,
+      "created_at": "2025-12-13T09:17:19.974Z",
+      "updated_at": "2025-12-13T09:17:19.974Z"
+    },
+    {
+      "department_id": 5,
+      "department_name": "Education explain true sell myself base term. Across star difference worry.",
+      "department_code": "AOIBIZTW",
+      "description": "Talk wind compare fast surface study fall.",
+      "parent_department_id": 3,
+      "cost_center": "Phone plan truth.",
+      "location_id": 11,
+      "created_at": "2025-12-13T09:17:19.974Z",
+      "updated_at": "2025-12-13T09:17:19.974Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:05.421Z"
+}

@@ -1,0 +1,237 @@
+{
+  "table": "cases",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.cases` table represents individual cases or issues associated with accounts, presumably for tracking their lifecycle and resolution status. Each case, uniquely identified by `case_id`, includes details such as `subject`, `description`, `status`, and `priority`, and is associated with `account_id` and optionally `contact_id`, highlighting its role in managing case-specific information within an organizational context. Although there are undefined foreign key relationships, these suggest potential associations with other entities in the database yet remain unspecified in the dataset provided.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "case_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each individual case record within the dataset, ensuring that every case can be distinctly recognized and referenced.",
+      "default": "nextval('synthetic.cases_case_id_seq'::regclass)"
+    },
+    {
+      "name": "case_number",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column represents a unique identifier assigned to each case within a system, appearing as a sequence of numeric characters. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "account_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents identifiers for different user accounts associated with case records in the system. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "contact_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "subject",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column contains verbose text entries representing extensive and varied phases or situations related to cases, possibly involving narratives or scenarios described in detail. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "nullable": true,
+      "description": "This column appears to record brief narrative or descriptive entries that may pertain to various events, observations, or opinions involving societal, political, and individual themes. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column indicates the current state or progress of a case, such as whether it is \"pending,\" \"completed,\" \"inactive,\" or \"cancelled.\" It helps track the workflow or processing stage of cases within the system.",
+      "default": "'new'::character varying"
+    },
+    {
+      "name": "priority",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values suggest diverse and abstract thematic categories or phrases without an apparent cohesive context.",
+      "default": null
+    },
+    {
+      "name": "type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "reason",
+      "type": "character varying",
+      "nullable": true,
+      "description": "The column appears to store narrative descriptions or justifications linked to cases. These entries vary widely in subject matter, indicating they might be intended for capturing general remarks or reasons related to individual case records.",
+      "default": null
+    },
+    {
+      "name": "origin",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The column contains diverse and lengthy textual entries that do not reveal a specific business context.",
+      "default": null
+    },
+    {
+      "name": "owner_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents a unique identifier for individuals or entities who own or are responsible for the cases, as suggested by the numeric pattern of values. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "closed_date",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a case was concluded or resolved. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a case was created. It helps track the timeline of each case's initiation.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column represents the date and time when a case record was last updated. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "case_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_cases_account_id",
+      "column_name": "account_id",
+      "referenced_table": "synthetic.accounts",
+      "referenced_column": "account_id"
+    },
+    {
+      "constraint_name": "fk_cases_contact_id",
+      "column_name": "contact_id",
+      "referenced_table": "synthetic.contacts",
+      "referenced_column": "contact_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "cases_case_number_key",
+      "index_definition": "CREATE UNIQUE INDEX cases_case_number_key ON synthetic.cases USING btree (case_number)",
+      "columns": [
+        "case_number"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "cases_pkey",
+      "index_definition": "CREATE UNIQUE INDEX cases_pkey ON synthetic.cases USING btree (case_id)",
+      "columns": [
+        "case_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "case_id": 1,
+      "case_number": "54174168851593247782",
+      "account_id": 5,
+      "contact_id": null,
+      "subject": "Left during product public situation Republican wrong claim. Part they even win.\nMy identify attorne...",
+      "description": "Now worry raise happen. Deal technology series week type voice item pay.",
+      "status": "cancelled",
+      "priority": "Politics fact.",
+      "type": "white",
+      "reason": "Of meeting another scene. Church example say they popular.\nPractice true strong issue still sound. D...",
+      "origin": "Region ready analysis source two. Up wide paper time region discover civil.",
+      "owner_id": 7446,
+      "closed_date": "2025-06-18T18:57:55.683Z",
+      "created_at": "2025-12-13T08:59:26.629Z",
+      "updated_at": "2025-12-13T08:59:26.629Z"
+    },
+    {
+      "case_id": 2,
+      "case_number": "70783596577045434453",
+      "account_id": 23,
+      "contact_id": null,
+      "subject": "Late bit hear shoulder figure or age fire. Ok any week.\nAllow drive approach left without argue time...",
+      "description": "Simple politics account military police. Evening record impact learn institution. Model everything s...",
+      "status": "pending",
+      "priority": "Religious dark sign.",
+      "type": "star",
+      "reason": "Miss leg offer leave bill force hard up. Compare remain impact loss make.\nRange animal perhaps lead ...",
+      "origin": "Almost stand success care usually central company. Character old general us.",
+      "owner_id": 3676,
+      "closed_date": "2025-01-28T07:32:33.066Z",
+      "created_at": "2025-12-13T08:59:26.629Z",
+      "updated_at": "2025-12-13T08:59:26.629Z"
+    },
+    {
+      "case_id": 3,
+      "case_number": "20226568883856409913",
+      "account_id": 29,
+      "contact_id": null,
+      "subject": "Continue itself situation physical agreement. Throughout change only use religious foreign. Situatio...",
+      "description": "Believe hundred onto girl appear. Threat decide tend media front bank. Share responsibility feel mon...",
+      "status": "inactive",
+      "priority": "Shake option.",
+      "type": "decade",
+      "reason": "Crime up prove bed example least.\nQuickly main company poor staff small almost. Mouth full arm model...",
+      "origin": "Tonight choose office site. Instead week network these health training.",
+      "owner_id": 4516,
+      "closed_date": "2024-02-21T05:16:37.951Z",
+      "created_at": "2025-12-13T08:59:26.629Z",
+      "updated_at": "2025-12-13T08:59:26.629Z"
+    },
+    {
+      "case_id": 4,
+      "case_number": "08064574647532465449",
+      "account_id": 31,
+      "contact_id": null,
+      "subject": "Century fine war market. Great must development almost save. Least source hot any.\nOrder peace prett...",
+      "description": "Glass employee reason someone hit sit. World reflect listen treat.",
+      "status": "completed",
+      "priority": "Energy point son.",
+      "type": "theory",
+      "reason": "Begin for foreign seat help inside national worry. Play speak last they its.",
+      "origin": "Another wall major effort section order by. Price western health stuff.",
+      "owner_id": 4418,
+      "closed_date": "2024-02-08T22:59:29.963Z",
+      "created_at": "2025-12-13T08:59:26.629Z",
+      "updated_at": "2025-12-13T08:59:26.629Z"
+    },
+    {
+      "case_id": 5,
+      "case_number": "65692873108935885105",
+      "account_id": 11,
+      "contact_id": null,
+      "subject": "International figure bed yard defense light bag.\nTotal action traditional and. Hot ten player spring...",
+      "description": "Apply people political without such dark. Training out whom education religious. Race involve bank. ...",
+      "status": "completed",
+      "priority": "Until make.",
+      "type": "back",
+      "reason": "Couple country character blue miss list into.",
+      "origin": "Land affect day economic become quite position. Language certain theory contain similar war hour.",
+      "owner_id": 3614,
+      "closed_date": "2025-10-24T05:57:43.782Z",
+      "created_at": "2025-12-13T08:59:26.629Z",
+      "updated_at": "2025-12-13T08:59:26.629Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:44:20.922Z"
+}

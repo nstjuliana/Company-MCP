@@ -1,0 +1,94 @@
+{
+  "table": "course_waitlist",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.course_waitlist` table likely represents a system to manage waitlists for courses, tracking individuals who wish to enroll once spots become available. It is identified by the primary key `waitlist_id` and maintains undefined foreign key relationships, suggesting it references other tables to link waitlisted entries to specific courses and possibly individuals, although the precise foreign keys are not specified. As the table holds no data (row count: 0) and lacks visible column definitions, it is assumed to serve as an integral yet currently unused part of a broader course enrollment management system.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "waitlist_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each entry in the course waitlist. It automatically assigns a sequential numeric identifier to new entries, ensuring each one has a distinct reference.",
+      "default": "nextval('synthetic.course_waitlist_waitlist_id_seq'::regclass)"
+    },
+    {
+      "name": "section_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "The column identifies the specific section of a course for students who are on the waitlist. Purpose unclear from available data due to the absence of sample values.",
+      "default": null
+    },
+    {
+      "name": "student_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "A unique identifier assigned to each student on the course waitlist to track their position or inclusion within the list. Each entry is mandatory and must correspond to an actual student wanting to enroll in a course when space becomes available.",
+      "default": null
+    },
+    {
+      "name": "position",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "added_date",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "The date and time a person was added to the waitlist for a course. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "The field indicates the current progression state of an individual's request to enroll in a course, with a default status of \"waiting.\" The specific stages of this progression beyond \"waiting\" are uncertain from the provided information.",
+      "default": "'waiting'::character varying"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an entry on the course waitlist was created. It helps in tracking when a student was added to the waitlist.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an entry on the course waitlist was last modified. It helps track updates to waitlist information over time.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "waitlist_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_course_waitlist_section_id",
+      "column_name": "section_id",
+      "referenced_table": "synthetic.course_sections",
+      "referenced_column": "section_id"
+    },
+    {
+      "constraint_name": "fk_course_waitlist_student_id",
+      "column_name": "student_id",
+      "referenced_table": "synthetic.students",
+      "referenced_column": "student_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "course_waitlist_pkey",
+      "index_definition": "CREATE UNIQUE INDEX course_waitlist_pkey ON synthetic.course_waitlist USING btree (waitlist_id)",
+      "columns": [
+        "waitlist_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:40:55.614Z"
+}

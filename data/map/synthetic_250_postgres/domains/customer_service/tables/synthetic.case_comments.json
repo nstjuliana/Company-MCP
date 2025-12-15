@@ -1,0 +1,127 @@
+{
+  "table": "case_comments",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The table \"synthetic.case_comments\" represents comments associated with specific cases, identifiable by the primary key \"comment_id.\" Each comment is linked to a case via \"case_id\" and includes details such as the content (\"comment_body\"), visibility (\"is_public\"), the author (\"author_id\"), and timestamps of when it was created and last updated. Although there are no explicit foreign key relationships defined, the \"case_id\" suggests an implicit connection to a corresponding \"cases\" table, reflecting this table's role in documenting and managing discussions or updates pertinent to individual cases.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "comment_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This represents unique identifiers for comments related to specific cases, ensuring each comment can be distinctly referenced.",
+      "default": "nextval('synthetic.case_comments_comment_id_seq'::regclass)"
+    },
+    {
+      "name": "case_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each case comment within the system, linking comments to their respective cases. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "comment_body",
+      "type": "text",
+      "nullable": false,
+      "description": "This column contains narrative entries or notes related to cases, likely providing updates, observations, or actions taken. These written comments aim to capture detailed information or insights about case activities and decisions.",
+      "default": null
+    },
+    {
+      "name": "is_public",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether a case comment is visible to the public or restricted. Purpose unclear from available data.",
+      "default": "false"
+    },
+    {
+      "name": "author_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely identifies the individuals who added comments to a case, with each integer representing a unique author. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column captures the date and time when a comment related to a case is initially recorded. The recorded timestamp reflects the moment of entry without specifying the time zone.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a comment associated with a case was last updated. It provides a timestamp to track comment modifications or updates.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "comment_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_case_comments_case_id",
+      "column_name": "case_id",
+      "referenced_table": "synthetic.cases",
+      "referenced_column": "case_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "case_comments_pkey",
+      "index_definition": "CREATE UNIQUE INDEX case_comments_pkey ON synthetic.case_comments USING btree (comment_id)",
+      "columns": [
+        "comment_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "comment_id": 1,
+      "case_id": 14,
+      "comment_body": "Project with page find.",
+      "is_public": false,
+      "author_id": 5419,
+      "created_at": "2025-12-13T08:59:29.828Z",
+      "updated_at": "2025-12-13T08:59:29.828Z"
+    },
+    {
+      "comment_id": 2,
+      "case_id": 7,
+      "comment_body": "Offer fund trip. Ever amount window. Do letter could interesting like house.",
+      "is_public": true,
+      "author_id": 8253,
+      "created_at": "2025-12-13T08:59:29.828Z",
+      "updated_at": "2025-12-13T08:59:29.828Z"
+    },
+    {
+      "comment_id": 3,
+      "case_id": 38,
+      "comment_body": "Rule suffer partner decision top already. Structure explain decade thought happen cell.",
+      "is_public": true,
+      "author_id": 9432,
+      "created_at": "2025-12-13T08:59:29.828Z",
+      "updated_at": "2025-12-13T08:59:29.828Z"
+    },
+    {
+      "comment_id": 4,
+      "case_id": 18,
+      "comment_body": "Avoid interest teacher agree action discussion Republican. Before good after low.",
+      "is_public": true,
+      "author_id": 6998,
+      "created_at": "2025-12-13T08:59:29.828Z",
+      "updated_at": "2025-12-13T08:59:29.828Z"
+    },
+    {
+      "comment_id": 5,
+      "case_id": 45,
+      "comment_body": "Yourself usually party people. Once provide nice smile late radio bar any.",
+      "is_public": false,
+      "author_id": 5848,
+      "created_at": "2025-12-13T08:59:29.828Z",
+      "updated_at": "2025-12-13T08:59:29.828Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:44:19.512Z"
+}

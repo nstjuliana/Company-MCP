@@ -1,0 +1,195 @@
+{
+  "table": "instructors",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The table \"synthetic.instructors\" represents the business entity of academic instructors within an organization or institution, identified uniquely by the \"instructor_id\" primary key. It stores detailed information about each instructor, such as personal details (name, email), employment attributes (employee ID, department ID, hire date, job title), and operational status (is_active, office location). As it references an undefined external entity through a foreign key relationship on \"department_id,\" the table likely plays a role in linking instructors with their respective departments, though no other tables reference this table, suggesting it may serve as a primary detail resource in the database.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "instructor_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each instructor in the system, assigned sequentially. It ensures that each instructor can be distinctly recognized within the database.",
+      "default": "nextval('synthetic.instructors_instructor_id_seq'::regclass)"
+    },
+    {
+      "name": "employee_id",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The provided sample values do not give insight into the business meaning of the data.",
+      "default": null
+    },
+    {
+      "name": "first_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column contains the given names of instructors, reflecting the personal first names used for identification or addressing purposes within the organization.",
+      "default": null
+    },
+    {
+      "name": "last_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column represents the family name of instructors, serving as part of their identification within the organization. Each value indicates the surname by which an instructor may be known or referred to professionally.",
+      "default": null
+    },
+    {
+      "name": "email",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column contains the email addresses of instructors associated with an organization, serving as a point of contact or unique identifier for each instructor. The email addresses appear to include various domains, indicating possible diverse affiliations or personal email usage.",
+      "default": null
+    },
+    {
+      "name": "department_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents the unique identifier assigned to distinguish different departments associated with instructors. The specific department corresponding to each identifier is not discernible from the available data.",
+      "default": null
+    },
+    {
+      "name": "title",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "hire_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column represents the date when an instructor was hired, reflecting occasions between the years 2024 and 2025. It is optional and can be empty if the hiring date is not recorded.",
+      "default": null
+    },
+    {
+      "name": "office_location",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "is_active",
+      "type": "boolean",
+      "nullable": true,
+      "description": "This column indicates whether an instructor is currently employed or actively engaged in their duties. The default assumption is that all instructors are active unless specified otherwise.",
+      "default": "true"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column captures the date and time when a record for an instructor was created, defaulting to the moment of record creation. It supports tracking the inception of instructor entries in the database.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column stores the date and time indicating when each record in the instructors table was last modified. Its primary purpose is to track the most recent updates made to each instructor's information.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "instructor_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_instructors_department_id",
+      "column_name": "department_id",
+      "referenced_table": "synthetic.academic_departments",
+      "referenced_column": "department_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "instructors_employee_id_key",
+      "index_definition": "CREATE UNIQUE INDEX instructors_employee_id_key ON synthetic.instructors USING btree (employee_id)",
+      "columns": [
+        "employee_id"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "instructors_pkey",
+      "index_definition": "CREATE UNIQUE INDEX instructors_pkey ON synthetic.instructors USING btree (instructor_id)",
+      "columns": [
+        "instructor_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "instructor_id": 1,
+      "employee_id": "Without in.",
+      "first_name": "Bianca",
+      "last_name": "David",
+      "email": "icampbell@example.com",
+      "department_id": 7,
+      "title": "Rock one operation.",
+      "hire_date": "2025-11-05T06:00:00.000Z",
+      "office_location": "Central sense once choose develop. Effort night according born adult.",
+      "is_active": true,
+      "created_at": "2025-12-13T09:18:51.790Z",
+      "updated_at": "2025-12-13T09:18:51.790Z"
+    },
+    {
+      "instructor_id": 2,
+      "employee_id": "Agency majority.",
+      "first_name": "Stephen",
+      "last_name": "Johnson",
+      "email": "mario02@example.com",
+      "department_id": 47,
+      "title": "Live card baby.",
+      "hire_date": "2025-09-19T05:00:00.000Z",
+      "office_location": "Animal actually land group. Of whatever sense give ball deal direction.",
+      "is_active": false,
+      "created_at": "2025-12-13T09:18:51.790Z",
+      "updated_at": "2025-12-13T09:18:51.790Z"
+    },
+    {
+      "instructor_id": 3,
+      "employee_id": "Call court accept.",
+      "first_name": "Jose",
+      "last_name": "Gomez",
+      "email": "acrawford@example.com",
+      "department_id": 22,
+      "title": "Arm people trip.",
+      "hire_date": "2024-01-03T06:00:00.000Z",
+      "office_location": "Mind avoid artist.\nCollection again thus institution. Loss her skin pass home young.",
+      "is_active": false,
+      "created_at": "2025-12-13T09:18:51.790Z",
+      "updated_at": "2025-12-13T09:18:51.790Z"
+    },
+    {
+      "instructor_id": 4,
+      "employee_id": "Eat participant it.",
+      "first_name": "Christian",
+      "last_name": "Mckee",
+      "email": "martinkrystal@example.com",
+      "department_id": 9,
+      "title": "Staff notice need compare.",
+      "hire_date": "2025-06-14T05:00:00.000Z",
+      "office_location": "Participant range former total author a peace law. Future value hundred thank argue experience.",
+      "is_active": true,
+      "created_at": "2025-12-13T09:18:51.790Z",
+      "updated_at": "2025-12-13T09:18:51.790Z"
+    },
+    {
+      "instructor_id": 5,
+      "employee_id": "Next decision argue.",
+      "first_name": "Nathan",
+      "last_name": "Cooper",
+      "email": "michellecole@example.net",
+      "department_id": 7,
+      "title": "And risk.",
+      "hire_date": "2024-10-05T05:00:00.000Z",
+      "office_location": "Mouth cover newspaper process eye over his.",
+      "is_active": false,
+      "created_at": "2025-12-13T09:18:51.790Z",
+      "updated_at": "2025-12-13T09:18:51.790Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:41:21.162Z"
+}

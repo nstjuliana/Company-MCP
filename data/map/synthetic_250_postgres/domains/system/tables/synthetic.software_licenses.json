@@ -1,0 +1,187 @@
+{
+  "table": "software_licenses",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.software_licenses\" table represents software licensing agreements for different applications, capturing details such as license keys, types, and usage metrics (seats and seats_used). It uses \"license_id\" as the primary key and references another table through the \"app_id\" column, indicating a relationship with a table managing application information, though specifics are undefined. The table likely functions to track and manage software licenses, including vendor information, cost, and validity periods, as suggested by columns like \"purchase_date,\" \"expiry_date,\" and \"vendor.\"",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "license_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents the unique identifier for each software license in the database, incrementing sequentially as new licenses are added.",
+      "default": "nextval('synthetic.software_licenses_license_id_seq'::regclass)"
+    },
+    {
+      "name": "app_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents a unique identifier for different software applications. The purpose is unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "license_key",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "license_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "seats",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents the number of users or devices allowed to use a particular software license, with values indicating varying allocation capacities for different licenses. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "seats_used",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents the number of software licenses currently in use by the organization. It reflects varying usage across the sampled data, indicating different levels of software engagement or demand.",
+      "default": "0"
+    },
+    {
+      "name": "purchase_date",
+      "type": "date",
+      "nullable": true,
+      "description": "The date when a software license was purchased, allowing for records that do not specify the purchase date. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "expiry_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column indicates the date until which a software license is valid, allowing for the management of renewal timelines and compliance. If no date is provided, the license is ongoing or unspecified.",
+      "default": null
+    },
+    {
+      "name": "cost",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the monetary cost associated with acquiring or maintaining software licenses within a business context. The values indicate varying expenses, reflecting potentially different software products or license terms.",
+      "default": null
+    },
+    {
+      "name": "vendor",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column tracks the date and time when a software license record was initially created, providing a historical timestamp for when the entry was added to the system. The dates indicate the time zone is Central Standard Time during winter, suggesting regional relevance.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a software license record was last updated, reflecting recent modifications. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "license_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_software_licenses_app_id",
+      "column_name": "app_id",
+      "referenced_table": "synthetic.applications",
+      "referenced_column": "app_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "software_licenses_pkey",
+      "index_definition": "CREATE UNIQUE INDEX software_licenses_pkey ON synthetic.software_licenses USING btree (license_id)",
+      "columns": [
+        "license_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "license_id": 1,
+      "app_id": 10,
+      "license_key": "Either necessary form technology whom hope majority. Quickly class prove television upon subject.",
+      "license_type": "Him military my against open indicate.",
+      "seats": 458,
+      "seats_used": 552,
+      "purchase_date": "2025-03-06T06:00:00.000Z",
+      "expiry_date": "2025-04-30T05:00:00.000Z",
+      "cost": "4848.57",
+      "vendor": "Like accept choice along thus.",
+      "created_at": "2025-12-13T09:16:11.561Z",
+      "updated_at": "2025-12-13T09:16:11.561Z"
+    },
+    {
+      "license_id": 2,
+      "app_id": 22,
+      "license_key": "Vote room the member center. Ahead likely sometimes middle site.",
+      "license_type": "Something ready represent machine continue.",
+      "seats": 566,
+      "seats_used": 782,
+      "purchase_date": "2024-01-17T06:00:00.000Z",
+      "expiry_date": "2024-02-20T06:00:00.000Z",
+      "cost": "5438.87",
+      "vendor": "Beat tree care about choice say budget. Mr wind form half.\nVisit item reason tax future town.",
+      "created_at": "2025-12-13T09:16:11.561Z",
+      "updated_at": "2025-12-13T09:16:11.561Z"
+    },
+    {
+      "license_id": 3,
+      "app_id": 30,
+      "license_key": "Life shake remain event Congress better control. Capital population special soldier success.",
+      "license_type": "Save dog listen agency finish save follow.",
+      "seats": 956,
+      "seats_used": 330,
+      "purchase_date": "2024-05-24T05:00:00.000Z",
+      "expiry_date": "2025-05-04T05:00:00.000Z",
+      "cost": "8697.32",
+      "vendor": "Of rather beyond nor popular will. Sea hard fall painting blood few. Role full customer turn whom.",
+      "created_at": "2025-12-13T09:16:11.561Z",
+      "updated_at": "2025-12-13T09:16:11.561Z"
+    },
+    {
+      "license_id": 4,
+      "app_id": 45,
+      "license_key": "Sell soldier story him back marriage employee.\nPainting trial hear dream back blue.",
+      "license_type": "Laugh sea very his election who add single.",
+      "seats": 245,
+      "seats_used": 586,
+      "purchase_date": "2024-03-09T06:00:00.000Z",
+      "expiry_date": "2025-11-23T06:00:00.000Z",
+      "cost": "3835.88",
+      "vendor": "Employee study its. Relationship must run us any. Their call her from generation industry open arm.",
+      "created_at": "2025-12-13T09:16:11.561Z",
+      "updated_at": "2025-12-13T09:16:11.561Z"
+    },
+    {
+      "license_id": 5,
+      "app_id": 50,
+      "license_key": "Memory hot song offer center Republican. Dinner realize cultural if me. Baby speech whole join.",
+      "license_type": "Dog soon parent room region minute.",
+      "seats": 421,
+      "seats_used": 45,
+      "purchase_date": "2025-10-08T05:00:00.000Z",
+      "expiry_date": "2024-02-12T06:00:00.000Z",
+      "cost": "3188.58",
+      "vendor": "Enjoy treat green financial. Often leg hope. Travel nearly weight manager almost.",
+      "created_at": "2025-12-13T09:16:11.561Z",
+      "updated_at": "2025-12-13T09:16:11.561Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:31.191Z"
+}

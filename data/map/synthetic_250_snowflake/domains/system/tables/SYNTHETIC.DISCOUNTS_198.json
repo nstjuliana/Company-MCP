@@ -1,0 +1,111 @@
+{
+  "table": "DISCOUNTS_198",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The \"DISCOUNTS_198\" table in the \"synthetic_250_snowflake\" database represents a collection of discount records, uniquely identified by the \"DISCOUNT_ID\" primary key. Each record includes descriptive details such as \"NAME\" and \"DESCRIPTION\", along with additional attributes for shipping and cart/wishlist dates and references. The table operates independently within the data model, as it neither references nor is referenced by other tables.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "DISCOUNT_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "A unique identifier assigned to each discount record, ensuring distinct tracking and reference of discounts within the dataset. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column identifies discount categories or entries with sequential numbering, indicating they are part of a series within the dataset. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column contains sequentially numbered descriptions for records in the DISCOUNTS_198 table, likely serving as placeholder text without conveying specific discount details. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "SHIPPING_218_ATTR_0",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CART_218_ATTR_1",
+      "type": "DATE",
+      "nullable": true,
+      "description": "This column appears to represent a date associated with specific transactions or events in a shopping cart, likely indicating when these occurred or are scheduled to occur. Purpose unclear from available data beyond representing dates.",
+      "default": null
+    },
+    {
+      "name": "WISHLIST_218_ATTR_2",
+      "type": "DATE",
+      "nullable": false,
+      "description": "This column represents the specific date for an event or action related to a wishlist, occurring sequentially from December 11, 2025. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "WISHLIST_218_ATTR_3",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "DISCOUNT_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "DISCOUNT_ID": 1,
+      "NAME": "DISCOUNTS_198 1",
+      "DESCRIPTION": "Description for DISCOUNTS_198 1",
+      "SHIPPING_218_ATTR_0": "Sample SHIPPING_218_ATTR_0 1",
+      "CART_218_ATTR_1": "2025-12-12",
+      "WISHLIST_218_ATTR_2": "2025-12-12",
+      "WISHLIST_218_ATTR_3": "Sample WISHLIST_218_ATTR_3 1"
+    },
+    {
+      "DISCOUNT_ID": 2,
+      "NAME": "DISCOUNTS_198 2",
+      "DESCRIPTION": "Description for DISCOUNTS_198 2",
+      "SHIPPING_218_ATTR_0": "Sample SHIPPING_218_ATTR_0 2",
+      "CART_218_ATTR_1": "2025-12-13",
+      "WISHLIST_218_ATTR_2": "2025-12-13",
+      "WISHLIST_218_ATTR_3": "Sample WISHLIST_218_ATTR_3 2"
+    },
+    {
+      "DISCOUNT_ID": 3,
+      "NAME": "DISCOUNTS_198 3",
+      "DESCRIPTION": "Description for DISCOUNTS_198 3",
+      "SHIPPING_218_ATTR_0": "Sample SHIPPING_218_ATTR_0 3",
+      "CART_218_ATTR_1": "2025-12-14",
+      "WISHLIST_218_ATTR_2": "2025-12-14",
+      "WISHLIST_218_ATTR_3": "Sample WISHLIST_218_ATTR_3 3"
+    },
+    {
+      "DISCOUNT_ID": 4,
+      "NAME": "DISCOUNTS_198 4",
+      "DESCRIPTION": "Description for DISCOUNTS_198 4",
+      "SHIPPING_218_ATTR_0": "Sample SHIPPING_218_ATTR_0 4",
+      "CART_218_ATTR_1": "2025-12-15",
+      "WISHLIST_218_ATTR_2": "2025-12-15",
+      "WISHLIST_218_ATTR_3": "Sample WISHLIST_218_ATTR_3 4"
+    },
+    {
+      "DISCOUNT_ID": 5,
+      "NAME": "DISCOUNTS_198 5",
+      "DESCRIPTION": "Description for DISCOUNTS_198 5",
+      "SHIPPING_218_ATTR_0": "Sample SHIPPING_218_ATTR_0 5",
+      "CART_218_ATTR_1": "2025-12-16",
+      "WISHLIST_218_ATTR_2": "2025-12-16",
+      "WISHLIST_218_ATTR_3": "Sample WISHLIST_218_ATTR_3 5"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:43.481Z"
+}

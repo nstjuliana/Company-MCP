@@ -1,0 +1,180 @@
+{
+  "table": "office_locations",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.office_locations` table maintains detailed information about office locations, likely for a business or organization, identified uniquely by the `location_id`. It includes various attributes such as the physical address (with `address_line1`, `address_line2`, `city`, `state_province`, `postal_code`, `country_code`), the name of each location (`location_name`), time zone (`timezone`), and whether it serves as the headquarters (`is_headquarters`), along with timestamps for record creation and updates (`created_at`, `updated_at`). With no foreign key relationships, this table functions in isolation within the data model, providing essential locational data without referencing or being referenced by other tables.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "location_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Unique identifier assigned sequentially to each office location for differentiation and referencing purposes.",
+      "default": "nextval('synthetic.office_locations_location_id_seq'::regclass)"
+    },
+    {
+      "name": "location_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "Purpose unclear from available data. The sample values suggest a storage of abstract, sentence-like text but do not reveal a specific business context or purpose.",
+      "default": null
+    },
+    {
+      "name": "address_line1",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column stores the primary address detail for various office locations, typically including street number, street name, and possibly suite or apartment information. It helps in identifying the specific geographic site of offices within the organization.",
+      "default": null
+    },
+    {
+      "name": "address_line2",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column represents additional address information for office locations, commonly specifying suite or apartment numbers. It helps to precisely identify the location within a building or complex.",
+      "default": null
+    },
+    {
+      "name": "city",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column captures the names of cities where office locations are situated, reflecting a variety of fictional geographic areas. Each entry represents a distinct city contributing to the company's operational landscape.",
+      "default": null
+    },
+    {
+      "name": "state_province",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column lists the state or province where an office location is situated, reflecting various regions across the United States. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "postal_code",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column represents the postal codes associated with office locations. The values appear to be numeric strings, potentially used for identifying geographical areas or mail delivery regions.",
+      "default": null
+    },
+    {
+      "name": "country_code",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column indicates the ISO country codes representing the location of various offices. Each value corresponds to the country in which an office is located.",
+      "default": null
+    },
+    {
+      "name": "timezone",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "is_headquarters",
+      "type": "boolean",
+      "nullable": true,
+      "description": "This column indicates whether an office location serves as the company's main administrative center, with possible values of true for headquarters and false for other locations. The purpose is to distinguish between the primary headquarters and subsidiary office locations.",
+      "default": "false"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when each office location entry was initially created. The timestamps suggest that entries are added at coinciding moments, possibly indicating batch creation.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the timestamp for when the office location information was last updated. Its default value indicates updates occur automatically to reflect the current time when no other value is provided.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "location_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "office_locations_pkey",
+      "index_definition": "CREATE UNIQUE INDEX office_locations_pkey ON synthetic.office_locations USING btree (location_id)",
+      "columns": [
+        "location_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "location_id": 1,
+      "location_name": "Occur red course. Finish charge real improve simple turn.",
+      "address_line1": "733 Grant Fork Suite 437",
+      "address_line2": "Suite 758",
+      "city": "Keithshire",
+      "state_province": "Utah",
+      "postal_code": "71698",
+      "country_code": "MU",
+      "timezone": "Stand west source fact explain research.",
+      "is_headquarters": false,
+      "created_at": "2025-12-13T08:53:53.925Z",
+      "updated_at": "2025-12-13T08:53:53.925Z"
+    },
+    {
+      "location_id": 2,
+      "location_name": "Experience arrive shoulder present discussion school. Tree company think.",
+      "address_line1": "8872 Nelson Valleys Apt. 527",
+      "address_line2": "Suite 205",
+      "city": "Ashleyborough",
+      "state_province": "Idaho",
+      "postal_code": "80580",
+      "country_code": "DZ",
+      "timezone": "Still middle beautiful protect continue cell.",
+      "is_headquarters": true,
+      "created_at": "2025-12-13T08:53:53.925Z",
+      "updated_at": "2025-12-13T08:53:53.925Z"
+    },
+    {
+      "location_id": 3,
+      "location_name": "How staff second. Authority interest red must art thus worry line.",
+      "address_line1": "512 Rice Stream",
+      "address_line2": "Apt. 004",
+      "city": "Nunezside",
+      "state_province": "Nevada",
+      "postal_code": "70222",
+      "country_code": "MU",
+      "timezone": "Easy get every visit right.",
+      "is_headquarters": false,
+      "created_at": "2025-12-13T08:53:53.925Z",
+      "updated_at": "2025-12-13T08:53:53.925Z"
+    },
+    {
+      "location_id": 4,
+      "location_name": "Deal beyond almost our reflect.\nScientist I doctor describe tell.",
+      "address_line1": "4408 Connie Meadow",
+      "address_line2": "Suite 056",
+      "city": "Heatherchester",
+      "state_province": "Georgia",
+      "postal_code": "39807",
+      "country_code": "MT",
+      "timezone": "Senior list support feeling.",
+      "is_headquarters": false,
+      "created_at": "2025-12-13T08:53:53.925Z",
+      "updated_at": "2025-12-13T08:53:53.925Z"
+    },
+    {
+      "location_id": 5,
+      "location_name": "Trial receive region however dream focus executive. Move grow end mention market better wonder.",
+      "address_line1": "7725 Donald Plains Suite 280",
+      "address_line2": null,
+      "city": "Port Melanieton",
+      "state_province": "Wisconsin",
+      "postal_code": "01337",
+      "country_code": "NG",
+      "timezone": "Successful discuss religious across.",
+      "is_headquarters": false,
+      "created_at": "2025-12-13T08:53:53.925Z",
+      "updated_at": "2025-12-13T08:53:53.925Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:15.335Z"
+}

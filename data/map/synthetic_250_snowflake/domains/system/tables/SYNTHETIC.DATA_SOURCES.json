@@ -1,0 +1,135 @@
+{
+  "table": "DATA_SOURCES",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The \"SYNTHETIC.DATA_SOURCES\" table represents a collection of data sources, each uniquely identified by the primary key column \"DATA_SOURCE_ID\". It includes metadata such as name, description, and attributes related to metrics, visualizations, queries, and key performance indicators, with timestamps to track updates and versions. The table operates independently within the data model, as it does not have foreign key relationships to or from other tables.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "DATA_SOURCE_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column uniquely identifies each entry in the data sources table, serving as a primary identifier. The purpose of these identifiers is to distinguish different data sources within the dataset.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column likely represents identifiers or labels for individual data sources within a larger dataset. Each value sequentially names a data source, denoting its position or version in a series.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains brief textual descriptions associated with various data sources, likely explaining their purpose or characteristics. The purpose of each description remains generic as reflected in the sample values provided.",
+      "default": null
+    },
+    {
+      "name": "METRIC_175_ATTR_0",
+      "type": "DATE",
+      "nullable": false,
+      "description": "This column represents a sequence of consecutive dates likely associated with a timeline or schedule-driven metric in the data source. The precise business purpose of these dates is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "VISUALIZATION_175_ATTR_1",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This field appears to store numerical identifiers related to visualization attributes, possibly indicating different visualization types or configurations. The specific purpose of these identifiers is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "QUERY_175_ATTR_2",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "KPI_175_ATTR_3",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column likely records the timestamp associated with a specific event or action occurring at 6:00 PM over consecutive days. The purpose of these timestamps in the business context is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "UPDATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column records the date and time when entries in the data source are last updated. The timestamps reflect updates occurring consistently around the same time each day.",
+      "default": null
+    },
+    {
+      "name": "VERSION",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents the sequential iteration or release level of data sources, starting at a default version of 1 and increasing incrementally. The values indicate different stages or updates to the data source over time.",
+      "default": "1"
+    }
+  ],
+  "primary_key": [
+    "DATA_SOURCE_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "DATA_SOURCE_ID": 1,
+      "NAME": "DATA_SOURCES 1",
+      "DESCRIPTION": "Description for DATA_SOURCES 1",
+      "METRIC_175_ATTR_0": "2025-12-12",
+      "VISUALIZATION_175_ATTR_1": null,
+      "QUERY_175_ATTR_2": true,
+      "KPI_175_ATTR_3": "2025-12-12 00:00:00.000",
+      "UPDATED_AT": "2026-01-11 00:00:00.000",
+      "VERSION": 100
+    },
+    {
+      "DATA_SOURCE_ID": 2,
+      "NAME": "DATA_SOURCES 2",
+      "DESCRIPTION": "Description for DATA_SOURCES 2",
+      "METRIC_175_ATTR_0": "2025-12-13",
+      "VISUALIZATION_175_ATTR_1": 101,
+      "QUERY_175_ATTR_2": false,
+      "KPI_175_ATTR_3": "2025-12-13 00:00:00.000",
+      "UPDATED_AT": "2026-01-12 00:00:00.000",
+      "VERSION": 101
+    },
+    {
+      "DATA_SOURCE_ID": 3,
+      "NAME": "DATA_SOURCES 3",
+      "DESCRIPTION": "Description for DATA_SOURCES 3",
+      "METRIC_175_ATTR_0": "2025-12-14",
+      "VISUALIZATION_175_ATTR_1": 102,
+      "QUERY_175_ATTR_2": true,
+      "KPI_175_ATTR_3": "2025-12-14 00:00:00.000",
+      "UPDATED_AT": "2026-01-13 00:00:00.000",
+      "VERSION": 102
+    },
+    {
+      "DATA_SOURCE_ID": 4,
+      "NAME": "DATA_SOURCES 4",
+      "DESCRIPTION": "Description for DATA_SOURCES 4",
+      "METRIC_175_ATTR_0": "2025-12-15",
+      "VISUALIZATION_175_ATTR_1": null,
+      "QUERY_175_ATTR_2": false,
+      "KPI_175_ATTR_3": "2025-12-15 00:00:00.000",
+      "UPDATED_AT": "2026-01-14 00:00:00.000",
+      "VERSION": 103
+    },
+    {
+      "DATA_SOURCE_ID": 5,
+      "NAME": "DATA_SOURCES 5",
+      "DESCRIPTION": "Description for DATA_SOURCES 5",
+      "METRIC_175_ATTR_0": "2025-12-16",
+      "VISUALIZATION_175_ATTR_1": 104,
+      "QUERY_175_ATTR_2": true,
+      "KPI_175_ATTR_3": "2025-12-16 00:00:00.000",
+      "UPDATED_AT": "2026-01-15 00:00:00.000",
+      "VERSION": 104
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:44.263Z"
+}

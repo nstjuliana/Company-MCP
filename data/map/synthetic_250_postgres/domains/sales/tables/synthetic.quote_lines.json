@@ -1,0 +1,187 @@
+{
+  "table": "quote_lines",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.quote_lines` table represents individual line items within a quote, each identified by a unique `quote_line_id`. It includes details such as the associated `quote_id`, `product_id`, product name, quantity, unit price, discount, and line total, indicating the financial specifics of each quoted item. This table plays a critical role in detailing the components of a quote, contributing to the broader structure of quote management, with a foreign key relationship to another undefined table.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "quote_line_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier assigned to each individual line item within a quote, ensuring each line is distinct and can be referenced separately. It is incrementally assigned with each new line item added to a quote.",
+      "default": "nextval('synthetic.quote_lines_quote_line_id_seq'::regclass)"
+    },
+    {
+      "name": "quote_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column likely represents unique identifiers associated with specific quotes in a transactional or proposal system. Each value corresponds to a distinct quote entry within the dataset.",
+      "default": null
+    },
+    {
+      "name": "product_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents unique identifiers assigned to various products involved in quoting processes. The purpose or nature of these products remains unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "product_name",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column represents descriptive phrases or titles that seem to summarize or highlight abstract or conceptual content related to a wide array of subjects or entities. The purpose is unclear from the available data, as the provided phrases are varied and lack a cohesive theme.",
+      "default": null
+    },
+    {
+      "name": "quantity",
+      "type": "numeric",
+      "nullable": false,
+      "description": "This column represents the amount of a particular item or service quoted, expressed in units or currency. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "unit_price",
+      "type": "numeric",
+      "nullable": false,
+      "description": "This column represents the price per unit associated with each line item in a quotation or proposal. It reflects the monetary cost assigned to single units of goods or services that are being quoted.",
+      "default": null
+    },
+    {
+      "name": "discount",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the monetary amount reduced from the original price of each quoted item or service, potentially indicating promotional or negotiated savings. Purpose unclear from available data.",
+      "default": "0"
+    },
+    {
+      "name": "line_total",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the total monetary amount associated with each line item within a quotation. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "nullable": true,
+      "description": "This column contains textual descriptions or statements that appear to relate to a variety of topics, including business, personal experiences, or abstract concepts. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "sort_order",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely specifies the sequence in which individual items or entries are organized within a quote, with higher values indicating later positions. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a quote line entry was created. It reflects the creation timestamp in a consistent manner, but its specific business purpose is unclear from the available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column likely records the date and time when a record in the quote_lines table was last updated, with current timestamps used by default. This timestamp indicates the most recent activity or modification made to a quote line entry.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "quote_line_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_quote_lines_quote_id",
+      "column_name": "quote_id",
+      "referenced_table": "synthetic.quotes",
+      "referenced_column": "quote_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "quote_lines_pkey",
+      "index_definition": "CREATE UNIQUE INDEX quote_lines_pkey ON synthetic.quote_lines USING btree (quote_line_id)",
+      "columns": [
+        "quote_line_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "quote_line_id": 1,
+      "quote_id": 45,
+      "product_id": 887,
+      "product_name": "Scientist race add lot. Instead thousand newspaper owner field stay hour.",
+      "quantity": "132.69",
+      "unit_price": "1470.97",
+      "discount": "322.10",
+      "line_total": "247.55",
+      "description": "Four candidate raise sort.",
+      "sort_order": 864,
+      "created_at": "2025-12-13T09:18:28.126Z",
+      "updated_at": "2025-12-13T09:18:28.126Z"
+    },
+    {
+      "quote_line_id": 2,
+      "quote_id": 44,
+      "product_id": 403,
+      "product_name": "Billion book property throughout them great improve president. Central process knowledge to.",
+      "quantity": "489.46",
+      "unit_price": "5778.48",
+      "discount": "268.72",
+      "line_total": "414.23",
+      "description": "Service without choose involve establish risk. Cell impact attack write fear.",
+      "sort_order": 463,
+      "created_at": "2025-12-13T09:18:28.126Z",
+      "updated_at": "2025-12-13T09:18:28.126Z"
+    },
+    {
+      "quote_line_id": 3,
+      "quote_id": 5,
+      "product_id": 649,
+      "product_name": "Long generation threat represent couple. Amount assume put very.",
+      "quantity": "794.60",
+      "unit_price": "7691.15",
+      "discount": "402.85",
+      "line_total": "749.80",
+      "description": "Example media physical than already. Least bag always. Run board family stuff.",
+      "sort_order": 712,
+      "created_at": "2025-12-13T09:18:28.126Z",
+      "updated_at": "2025-12-13T09:18:28.126Z"
+    },
+    {
+      "quote_line_id": 4,
+      "quote_id": 24,
+      "product_id": 466,
+      "product_name": "Sign head paper father can both meeting. Respond present agent eight attorney.",
+      "quantity": "950.25",
+      "unit_price": "3279.62",
+      "discount": "2.47",
+      "line_total": "774.14",
+      "description": "Common air nothing debate require increase argue. Beat available learn provide ever.",
+      "sort_order": 751,
+      "created_at": "2025-12-13T09:18:28.126Z",
+      "updated_at": "2025-12-13T09:18:28.126Z"
+    },
+    {
+      "quote_line_id": 5,
+      "quote_id": 6,
+      "product_id": 749,
+      "product_name": "Ahead girl skill describe. Road message near although indeed side.",
+      "quantity": "972.15",
+      "unit_price": "6352.06",
+      "discount": "697.29",
+      "line_total": "850.11",
+      "description": "Bad remember company right. Eight seem pattern enjoy.",
+      "sort_order": 815,
+      "created_at": "2025-12-13T09:18:28.126Z",
+      "updated_at": "2025-12-13T09:18:28.126Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:41:57.020Z"
+}

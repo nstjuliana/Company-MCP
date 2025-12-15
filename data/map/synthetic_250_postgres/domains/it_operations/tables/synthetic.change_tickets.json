@@ -1,0 +1,236 @@
+{
+  "table": "change_tickets",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.change_tickets` table represents a collection of change requests or tickets within an organizational context, tracking details necessary for managing and executing changes. Each record captures comprehensive information about a change, including its type, risk assessment, status, and relevant timelines, along with identifiers for users involved in the request and execution process. As it stands without relationships to other tables, the table likely functions independently, fulfilling the need to log and manage change events as a self-contained entity within the broader data schema.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "change_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each change ticket and ensures that each entry is distinct within the change management system.",
+      "default": "nextval('synthetic.change_tickets_change_id_seq'::regclass)"
+    },
+    {
+      "name": "change_number",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column represents unique identifiers for individual change tickets, allowing them to be distinctly tracked and referenced. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "title",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column represents brief, descriptive summaries or titles for change tickets, capturing key themes or concepts related to the content of each ticket. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "nullable": true,
+      "description": "This column contains verbose narratives or summaries related to change tickets, which could describe scenarios, tasks, or issues requiring change, with a wide range of themes from personal observations to broader organizational contexts. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "change_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The values appear to be fragmented and do not clearly represent any specific business term or context.",
+      "default": null
+    },
+    {
+      "name": "risk_level",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "The column represents the current state of change tickets, indicating whether they are active, inactive, or pending further action. This status helps track the progress and handling stage of each ticket within a process.",
+      "default": "'draft'::character varying"
+    },
+    {
+      "name": "requested_by",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents identifiers for individuals responsible for initiating change ticket requests. The purpose of these identifiers remains unclear from the available data, as they are only numeric codes without further context.",
+      "default": null
+    },
+    {
+      "name": "assigned_to",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely identifies the person or team responsible for handling a change ticket by referencing their unique numeric identifier. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "planned_start",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column specifies the intended start date and time for change-related activities or tasks. Purpose unclear from available data as no additional context or business processes are provided.",
+      "default": null
+    },
+    {
+      "name": "planned_end",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column indicates the scheduled completion date and time for a change ticket in a project or organizational change process. The purpose is to track when changes are expected to be finalized.",
+      "default": null
+    },
+    {
+      "name": "actual_start",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column stores the date and time when a change ticket actually began, noted in Central Time zones, reflecting either daylight saving or standard time. It is used to capture the real start time of a change event, which may differ from scheduled times.",
+      "default": null
+    },
+    {
+      "name": "actual_end",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Represents the date and time when a change ticket was actually completed. This information can vary as it reflects different time zones but consistently marks the conclusion of the designated task or process.",
+      "default": null
+    },
+    {
+      "name": "approved_by",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents the unique identification numbers of individuals who have approved change tickets. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column captures the date and time when a change ticket is created, defaulting to the current timestamp unless specified otherwise. It is used to track the creation time of change tickets without considering the time zone.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column indicates the date and time when an entry in the change tickets table was last updated. It reflects modifications to the ticket and defaults to the current timestamp when new records are created, but can be updated with the time of any subsequent changes.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "change_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "change_tickets_change_number_key",
+      "index_definition": "CREATE UNIQUE INDEX change_tickets_change_number_key ON synthetic.change_tickets USING btree (change_number)",
+      "columns": [
+        "change_number"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "change_tickets_pkey",
+      "index_definition": "CREATE UNIQUE INDEX change_tickets_pkey ON synthetic.change_tickets USING btree (change_id)",
+      "columns": [
+        "change_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "change_id": 1,
+      "change_number": "771148816058019",
+      "title": "Provide television government majority.",
+      "description": "Husband scene high whatever. Enjoy safe before. Town everything case win end.",
+      "change_type": "See management pick morning.",
+      "risk_level": "Dream left.",
+      "status": "pending",
+      "requested_by": 378,
+      "assigned_to": 485,
+      "planned_start": "2024-12-21T12:20:32.584Z",
+      "planned_end": "2024-10-11T19:13:16.260Z",
+      "actual_start": "2025-06-28T17:56:30.986Z",
+      "actual_end": "2024-04-20T17:57:15.717Z",
+      "approved_by": 567,
+      "created_at": "2025-12-13T09:16:03.029Z",
+      "updated_at": "2025-12-13T09:16:03.029Z"
+    },
+    {
+      "change_id": 2,
+      "change_number": "849704241698142",
+      "title": "Knowledge him.",
+      "description": "Keep action investment back. Detail growth line public difficult. Hot say raise fine building learn ...",
+      "change_type": "Ahead management add.",
+      "risk_level": "On enough country.",
+      "status": "pending",
+      "requested_by": 353,
+      "assigned_to": 436,
+      "planned_start": "2024-07-08T00:47:40.795Z",
+      "planned_end": "2024-09-07T05:29:39.792Z",
+      "actual_start": "2024-11-11T03:49:25.637Z",
+      "actual_end": "2024-02-26T15:17:25.673Z",
+      "approved_by": 764,
+      "created_at": "2025-12-13T09:16:03.029Z",
+      "updated_at": "2025-12-13T09:16:03.029Z"
+    },
+    {
+      "change_id": 3,
+      "change_number": "677066721922834",
+      "title": "Ten else action play somebody.",
+      "description": "Citizen weight seat performance movement cultural. Treatment exactly read time question bill reach.",
+      "change_type": "Generation once environment.",
+      "risk_level": "Traditional notice.",
+      "status": "pending",
+      "requested_by": 339,
+      "assigned_to": 361,
+      "planned_start": "2024-02-17T20:10:33.021Z",
+      "planned_end": "2025-04-16T21:25:50.104Z",
+      "actual_start": "2024-04-12T06:27:48.349Z",
+      "actual_end": "2025-06-17T09:02:25.898Z",
+      "approved_by": 720,
+      "created_at": "2025-12-13T09:16:03.029Z",
+      "updated_at": "2025-12-13T09:16:03.029Z"
+    },
+    {
+      "change_id": 4,
+      "change_number": "208361088025701",
+      "title": "Themselves collection another president.",
+      "description": "Artist top until people those performance fish. Just her baby relate charge occur.",
+      "change_type": "Must however them cover task approach.",
+      "risk_level": "Choose could.",
+      "status": "inactive",
+      "requested_by": 278,
+      "assigned_to": 314,
+      "planned_start": "2025-09-11T09:22:23.777Z",
+      "planned_end": "2024-09-01T06:51:03.717Z",
+      "actual_start": "2025-07-23T16:53:14.158Z",
+      "actual_end": "2025-12-08T21:03:33.009Z",
+      "approved_by": 258,
+      "created_at": "2025-12-13T09:16:03.029Z",
+      "updated_at": "2025-12-13T09:16:03.029Z"
+    },
+    {
+      "change_id": 5,
+      "change_number": "069409787387183",
+      "title": "Throughout senior word.",
+      "description": "Hope music middle yeah whose drive.",
+      "change_type": "Ability move recent weight market although.",
+      "risk_level": "Feel fear manage.",
+      "status": "active",
+      "requested_by": 124,
+      "assigned_to": 739,
+      "planned_start": "2025-03-03T16:30:47.190Z",
+      "planned_end": "2024-01-19T20:47:00.527Z",
+      "actual_start": "2025-08-11T03:54:10.628Z",
+      "actual_end": "2024-07-30T15:05:27.156Z",
+      "approved_by": 198,
+      "created_at": "2025-12-13T09:16:03.029Z",
+      "updated_at": "2025-12-13T09:16:03.029Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:11.438Z"
+}

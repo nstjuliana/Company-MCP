@@ -1,0 +1,159 @@
+{
+  "table": "PRODUCTS_186",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.PRODUCTS_186 table represents a collection of product records, each identified uniquely by a PRODUCT_ID, and includes attributes such as SKU, NAME, PRICE, CATEGORY_ID, and various timestamp and textual attributes resembling review and wishlist metadata. This table appears to operate independently within the data model since it has no defined relationships with other tables. The presence of product-related metadata fields suggests it might be used for tracking or cataloging product data potentially in a retail or inventory context.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "PRODUCT_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column uniquely identifies each product within the product dataset to ensure accurate tracking and referencing. The values are sequential identifiers that distinguish each item without implying any hierarchy or sequence in the product catalog.",
+      "default": null
+    },
+    {
+      "name": "SKU",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column holds unique identifiers commonly used in business to track and manage individual products in a catalog or inventory. Purpose unclear from available data beyond representing product identifiers.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column contains sequentially numbered identifiers for products, suggesting they are part of a series or list of items within a specific context. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "PRICE",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents the cost associated with individual products listed in the dataset. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CATEGORY_ID",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column likely represents distinct categories or classifications of products within the dataset. Each number corresponds to a specific product category, though their precise meanings are not detailed in the available data.",
+      "default": null
+    },
+    {
+      "name": "REVIEW_206_ATTR_0",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column captures the specific date and time a product review was created, referenced in Central Standard Time. Each timestamp indicates when a review entry was logged within the system.",
+      "default": null
+    },
+    {
+      "name": "RATING_206_ATTR_1",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column appears to represent a categorical rating attribute associated with products, with values ranging from 1 to 10. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CHECKOUT_206_ATTR_2",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "WISHLIST_206_ATTR_3",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column records the precise date and time a certain event or action related to the wishlist occurred, consistently capturing the current timestamp at the time of entry. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP()"
+    },
+    {
+      "name": "REVIEW_206_ATTR_4",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column likely represents the date and time when a product review-related event occurred. Purpose unclear from available data as the specific nature of the event is not specified.",
+      "default": null
+    },
+    {
+      "name": "WISHLIST_206_ATTR_5",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column appears to be related to specific attributes or identifiers associated with a wishlist feature in a product database. Each number may represent a distinct product or a category of products that are wished for by users.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "PRODUCT_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "PRODUCT_ID": 1,
+      "SKU": "Sample SKU 1",
+      "NAME": "PRODUCTS_186 1",
+      "PRICE": 100,
+      "CATEGORY_ID": 1,
+      "REVIEW_206_ATTR_0": "2025-12-12 00:00:00.000",
+      "RATING_206_ATTR_1": "Sample RATING_206_ATTR_1 1",
+      "CHECKOUT_206_ATTR_2": null,
+      "WISHLIST_206_ATTR_3": "2025-12-12 17:26:57.482",
+      "REVIEW_206_ATTR_4": "2025-12-12 00:00:00.000",
+      "WISHLIST_206_ATTR_5": null
+    },
+    {
+      "PRODUCT_ID": 2,
+      "SKU": "Sample SKU 2",
+      "NAME": "PRODUCTS_186 2",
+      "PRICE": 101,
+      "CATEGORY_ID": 2,
+      "REVIEW_206_ATTR_0": "2025-12-13 00:00:00.000",
+      "RATING_206_ATTR_1": "Sample RATING_206_ATTR_1 2",
+      "CHECKOUT_206_ATTR_2": 101,
+      "WISHLIST_206_ATTR_3": "2025-12-12 17:26:57.482",
+      "REVIEW_206_ATTR_4": "2025-12-13 00:00:00.000",
+      "WISHLIST_206_ATTR_5": 101
+    },
+    {
+      "PRODUCT_ID": 3,
+      "SKU": "Sample SKU 3",
+      "NAME": "PRODUCTS_186 3",
+      "PRICE": 102,
+      "CATEGORY_ID": 3,
+      "REVIEW_206_ATTR_0": "2025-12-14 00:00:00.000",
+      "RATING_206_ATTR_1": "Sample RATING_206_ATTR_1 3",
+      "CHECKOUT_206_ATTR_2": 102,
+      "WISHLIST_206_ATTR_3": "2025-12-12 17:26:57.482",
+      "REVIEW_206_ATTR_4": "2025-12-14 00:00:00.000",
+      "WISHLIST_206_ATTR_5": 102
+    },
+    {
+      "PRODUCT_ID": 4,
+      "SKU": "Sample SKU 4",
+      "NAME": "PRODUCTS_186 4",
+      "PRICE": 103,
+      "CATEGORY_ID": 4,
+      "REVIEW_206_ATTR_0": "2025-12-15 00:00:00.000",
+      "RATING_206_ATTR_1": "Sample RATING_206_ATTR_1 4",
+      "CHECKOUT_206_ATTR_2": null,
+      "WISHLIST_206_ATTR_3": "2025-12-12 17:26:57.482",
+      "REVIEW_206_ATTR_4": "2025-12-15 00:00:00.000",
+      "WISHLIST_206_ATTR_5": null
+    },
+    {
+      "PRODUCT_ID": 5,
+      "SKU": "Sample SKU 5",
+      "NAME": "PRODUCTS_186 5",
+      "PRICE": 104,
+      "CATEGORY_ID": 5,
+      "REVIEW_206_ATTR_0": "2025-12-16 00:00:00.000",
+      "RATING_206_ATTR_1": "Sample RATING_206_ATTR_1 5",
+      "CHECKOUT_206_ATTR_2": 104,
+      "WISHLIST_206_ATTR_3": "2025-12-12 17:26:57.482",
+      "REVIEW_206_ATTR_4": "2025-12-16 00:00:00.000",
+      "WISHLIST_206_ATTR_5": 104
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:57.352Z"
+}

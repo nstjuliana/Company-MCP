@@ -1,0 +1,109 @@
+{
+  "table": "sprints",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.sprints\" table represents the business concept of a \"sprint,\" likely used in the context of project management or software development as a unit of work. It is uniquely identified by the \"sprint_id\" primary key and potentially references another table, though the specific details are undefined. Currently, there are no rows in this table, indicating it may not yet contain data to illustrate its function within the broader data model.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "sprint_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each sprint in the system and is automatically assigned a sequential integer value for every new sprint entry.",
+      "default": "nextval('synthetic.sprints_sprint_id_seq'::regclass)"
+    },
+    {
+      "name": "project_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Represents a unique identifier for an associated project within the sprints table. The purpose is to link each sprint to its respective project.",
+      "default": null
+    },
+    {
+      "name": "sprint_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "Represents the name or title assigned to a sprint, likely used for identifying or distinguishing specific time-boxed periods within a project management framework. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "sprint_number",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents the ordinal number assigned to each iteration or cycle in a project or development process. Each number indicates a distinct sprint within a sequence of sprints.",
+      "default": null
+    },
+    {
+      "name": "start_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column likely designates the starting point of a defined period for a specific project phase or task sequence. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "end_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column likely signifies the planned completion date for a specific sprint within a project, allowing teams to track their progress towards project milestones. Its nullable nature suggests that some sprints might not have an established end date initially.",
+      "default": null
+    },
+    {
+      "name": "goal",
+      "type": "text",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely indicates the current phase or progress state of a sprint within the project management context, starting with a default phase of \"planning.\" Purpose unclear from available data due to lack of sample values.",
+      "default": "'planning'::character varying"
+    },
+    {
+      "name": "velocity",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records when a sprint is initially created, using the current timestamp as a default value.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "The column records the date and time when a sprint record was last modified, reflecting any updates made. If no specific value is provided, the current timestamp is automatically assigned upon updates.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "sprint_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_sprints_project_id",
+      "column_name": "project_id",
+      "referenced_table": "synthetic.pm_projects",
+      "referenced_column": "project_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "sprints_pkey",
+      "index_definition": "CREATE UNIQUE INDEX sprints_pkey ON synthetic.sprints USING btree (sprint_id)",
+      "columns": [
+        "sprint_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:43:44.190Z"
+}

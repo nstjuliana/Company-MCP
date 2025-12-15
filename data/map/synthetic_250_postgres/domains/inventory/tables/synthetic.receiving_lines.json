@@ -1,0 +1,121 @@
+{
+  "table": "receiving_lines",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.receiving_lines\" table appears to represent individual line items involved in a receiving process within a broader business operation, as indicated by the primary key \"receiving_line_id.\" Although specific column details and sample data are unavailable, the table likely captures distinct aspects of received goods or transactions. It has foreign key relationships to unspecified entities, suggesting integration with other parts of the database model, though it currently holds no data or documented interactions with other tables.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "receiving_line_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Unique identifier for each entry within the receiving lines records, ensuring each record is distinct.",
+      "default": "nextval('synthetic.receiving_lines_receiving_line_id_seq'::regclass)"
+    },
+    {
+      "name": "receiving_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "po_line_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "product_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Identifies the specific product associated with each receiving transaction line, playing a key role in inventory management by tracking incoming goods.",
+      "default": null
+    },
+    {
+      "name": "quantity_received",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column captures the count of items successfully received in a shipment or delivery. It reflects the actual number of goods received as part of inventory management processes.",
+      "default": null
+    },
+    {
+      "name": "quantity_accepted",
+      "type": "integer",
+      "nullable": true,
+      "description": "The column likely indicates the number of items successfully accepted during a receiving transaction. These may come in various contexts such as inventory management or supply chain operations, but the specific purpose is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "quantity_rejected",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column indicates the count of items that did not meet quality standards or specifications in a particular receiving transaction. It reflects rejected items during inventory or logistics processes.",
+      "default": "0"
+    },
+    {
+      "name": "location_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "lot_number",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column indicates the date and time when a record within the receiving lines table was created, with a default setting to capture the present timestamp upon entry. It allows for records to exist without this information being populated initially.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column likely indicates the date and time when each entry in the receiving lines table was last modified. It helps track changes to records for auditing or synchronization purposes.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "receiving_line_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_receiving_lines_location_id",
+      "column_name": "location_id",
+      "referenced_table": "synthetic.storage_locations",
+      "referenced_column": "location_id"
+    },
+    {
+      "constraint_name": "fk_receiving_lines_po_line_id",
+      "column_name": "po_line_id",
+      "referenced_table": "synthetic.purchase_order_lines",
+      "referenced_column": "po_line_id"
+    },
+    {
+      "constraint_name": "fk_receiving_lines_receiving_id",
+      "column_name": "receiving_id",
+      "referenced_table": "synthetic.receiving_orders",
+      "referenced_column": "receiving_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "receiving_lines_pkey",
+      "index_definition": "CREATE UNIQUE INDEX receiving_lines_pkey ON synthetic.receiving_lines USING btree (receiving_line_id)",
+      "columns": [
+        "receiving_line_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:42:25.181Z"
+}

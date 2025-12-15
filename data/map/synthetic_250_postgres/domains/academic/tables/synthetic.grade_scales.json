@@ -1,0 +1,81 @@
+{
+  "table": "grade_scales",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.grade_scales` table aims to define different grading scales, distinguishable by a primary key, `scale_id`. With no foreign key relationships, it operates independently within the database, likely serving as a reference for other tables in the data model to standardize grading metrics. However, with no column details or records, it's uncertain what specific attributes of a grading scale are captured.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "scale_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column likely represents a unique identifier for each entry in the grade scales dataset, ensuring each scale can be distinctly referenced. Purpose unclear from available data.",
+      "default": "nextval('synthetic.grade_scales_scale_id_seq'::regclass)"
+    },
+    {
+      "name": "grade_letter",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column is intended to store the letter representation of a grade, which is a common component of academic assessment scales. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "min_percentage",
+      "type": "numeric",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "max_percentage",
+      "type": "numeric",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "grade_points",
+      "type": "numeric",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Records the date and time when a new grade scale entry is created in the system. The purpose is to track when data entries were added.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column likely records the date and time when a change or update was last made to a grade scale entry. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "scale_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "grade_scales_pkey",
+      "index_definition": "CREATE UNIQUE INDEX grade_scales_pkey ON synthetic.grade_scales USING btree (scale_id)",
+      "columns": [
+        "scale_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:40:55.803Z"
+}

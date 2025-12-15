@@ -1,0 +1,135 @@
+{
+  "table": "LEADS_140",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.LEADS_140 table stores information about leads, which are potential opportunities or contacts that the business may pursue, identified by a unique LEAD_ID. Each row captures details such as the lead’s name, description, event attributes, campaign attributes, update timestamp, and current status, with no direct relationships to other tables, indicating it’s a standalone entity in the data model. The presence of timestamp and status columns suggests the table helps track the lifecycle of a lead from creation through to its latest update.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "LEAD_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column uniquely identifies each lead in the dataset, serving as a sequential identifier to differentiate between individual lead records.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains textual descriptions associated with specific entries in the LEADS_140 table. Each description appears to provide a unique identifier for the corresponding lead entry.",
+      "default": null
+    },
+    {
+      "name": "SOCIAL_160_ATTR_0",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column appears to represent a specific attribute or category related to social interactions or media, indicated by a set of possible numeric identifiers. Purpose unclear from available data.",
+      "default": "6"
+    },
+    {
+      "name": "EVENT_160_ATTR_1",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "Purpose unclear from available data. Sample values do not provide insight into business context or meaning.",
+      "default": null
+    },
+    {
+      "name": "EVENT_160_ATTR_2",
+      "type": "DATE",
+      "nullable": true,
+      "description": "This column likely records scheduled or anticipated event dates occurring in mid-December 2025, as evidenced by the sequential daily values within that period. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CAMPAIGN_160_ATTR_3",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "UPDATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column represents the date and time when a record was last updated, reflecting changes made to entries in the database. The precise purpose of the timestamp regarding business practices is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "STATUS",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This field indicates the operational state of a lead, reflecting that it is currently active. Purpose unclear from available data if it supports other statuses.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "LEAD_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "LEAD_ID": 1,
+      "NAME": "LEADS_140 1",
+      "DESCRIPTION": "Description for LEADS_140 1",
+      "SOCIAL_160_ATTR_0": null,
+      "EVENT_160_ATTR_1": "Sample EVENT_160_ATTR_1 1",
+      "EVENT_160_ATTR_2": "2025-12-12",
+      "CAMPAIGN_160_ATTR_3": "Sample CAMPAIGN_160_ATTR_3 1",
+      "UPDATED_AT": "2026-01-11 00:00:00.000",
+      "STATUS": "ACTIVE"
+    },
+    {
+      "LEAD_ID": 2,
+      "NAME": "LEADS_140 2",
+      "DESCRIPTION": "Description for LEADS_140 2",
+      "SOCIAL_160_ATTR_0": 101,
+      "EVENT_160_ATTR_1": "Sample EVENT_160_ATTR_1 2",
+      "EVENT_160_ATTR_2": "2025-12-13",
+      "CAMPAIGN_160_ATTR_3": "Sample CAMPAIGN_160_ATTR_3 2",
+      "UPDATED_AT": "2026-01-12 00:00:00.000",
+      "STATUS": "ACTIVE"
+    },
+    {
+      "LEAD_ID": 3,
+      "NAME": "LEADS_140 3",
+      "DESCRIPTION": "Description for LEADS_140 3",
+      "SOCIAL_160_ATTR_0": 102,
+      "EVENT_160_ATTR_1": "Sample EVENT_160_ATTR_1 3",
+      "EVENT_160_ATTR_2": "2025-12-14",
+      "CAMPAIGN_160_ATTR_3": "Sample CAMPAIGN_160_ATTR_3 3",
+      "UPDATED_AT": "2026-01-13 00:00:00.000",
+      "STATUS": "ACTIVE"
+    },
+    {
+      "LEAD_ID": 4,
+      "NAME": "LEADS_140 4",
+      "DESCRIPTION": "Description for LEADS_140 4",
+      "SOCIAL_160_ATTR_0": null,
+      "EVENT_160_ATTR_1": "Sample EVENT_160_ATTR_1 4",
+      "EVENT_160_ATTR_2": "2025-12-15",
+      "CAMPAIGN_160_ATTR_3": "Sample CAMPAIGN_160_ATTR_3 4",
+      "UPDATED_AT": "2026-01-14 00:00:00.000",
+      "STATUS": "ACTIVE"
+    },
+    {
+      "LEAD_ID": 5,
+      "NAME": "LEADS_140 5",
+      "DESCRIPTION": "Description for LEADS_140 5",
+      "SOCIAL_160_ATTR_0": 104,
+      "EVENT_160_ATTR_1": "Sample EVENT_160_ATTR_1 5",
+      "EVENT_160_ATTR_2": "2025-12-16",
+      "CAMPAIGN_160_ATTR_3": "Sample CAMPAIGN_160_ATTR_3 5",
+      "UPDATED_AT": "2026-01-15 00:00:00.000",
+      "STATUS": "ACTIVE"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:50.487Z"
+}

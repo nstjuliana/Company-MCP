@@ -1,0 +1,127 @@
+{
+  "table": "promotion_products",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.promotion_products` table captures the relationship between promotions and products, indicating which products are part of specific promotions. Each record is identified by a primary key, `promo_product_id`, and includes references to `promotion_id`, `product_id`, and `category_id`, alongside timestamps of creation and updates. While the table includes foreign keys, their specific relationships aren't defined, implying this table primarily facilitates the association between promotions and products without explicit linkage to other entities.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "promo_product_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each promotion product in a sequential manner, serving as a primary reference within the promotion products table.",
+      "default": "nextval('synthetic.promotion_products_promo_product_id_seq'::regclass)"
+    },
+    {
+      "name": "promotion_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Represents unique identifiers for promotions associated with products, used to link products to specific promotional campaigns. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "product_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This field likely identifies individual products promoted within a business context, represented by unique numerical identifiers. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "category_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents an identifier for different product categories associated with various promotions. Each integer corresponds to a specific category within the promotional context, though the exact meanings of the categories are unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a product associated with a promotion was initially created or added to the system. The default setting suggests it automatically logs the current date and time upon entry creation.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an entry in the promotion_products table was last updated. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "promo_product_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_promotion_products_category_id",
+      "column_name": "category_id",
+      "referenced_table": "synthetic.product_categories",
+      "referenced_column": "category_id"
+    },
+    {
+      "constraint_name": "fk_promotion_products_product_id",
+      "column_name": "product_id",
+      "referenced_table": "synthetic.products",
+      "referenced_column": "product_id"
+    },
+    {
+      "constraint_name": "fk_promotion_products_promotion_id",
+      "column_name": "promotion_id",
+      "referenced_table": "synthetic.promotions",
+      "referenced_column": "promotion_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "promotion_products_pkey",
+      "index_definition": "CREATE UNIQUE INDEX promotion_products_pkey ON synthetic.promotion_products USING btree (promo_product_id)",
+      "columns": [
+        "promo_product_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "promo_product_id": 1,
+      "promotion_id": 49,
+      "product_id": 28,
+      "category_id": 17,
+      "created_at": "2025-12-13T08:57:09.058Z",
+      "updated_at": "2025-12-13T08:57:09.058Z"
+    },
+    {
+      "promo_product_id": 2,
+      "promotion_id": 50,
+      "product_id": 49,
+      "category_id": 47,
+      "created_at": "2025-12-13T08:57:09.058Z",
+      "updated_at": "2025-12-13T08:57:09.058Z"
+    },
+    {
+      "promo_product_id": 3,
+      "promotion_id": 23,
+      "product_id": 33,
+      "category_id": 46,
+      "created_at": "2025-12-13T08:57:09.058Z",
+      "updated_at": "2025-12-13T08:57:09.058Z"
+    },
+    {
+      "promo_product_id": 4,
+      "promotion_id": 32,
+      "product_id": 41,
+      "category_id": 45,
+      "created_at": "2025-12-13T08:57:09.058Z",
+      "updated_at": "2025-12-13T08:57:09.058Z"
+    },
+    {
+      "promo_product_id": 5,
+      "promotion_id": 24,
+      "product_id": 45,
+      "category_id": 4,
+      "created_at": "2025-12-13T08:57:09.058Z",
+      "updated_at": "2025-12-13T08:57:09.058Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:23.945Z"
+}

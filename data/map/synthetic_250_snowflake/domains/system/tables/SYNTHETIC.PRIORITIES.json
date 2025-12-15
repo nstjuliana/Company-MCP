@@ -1,0 +1,147 @@
+{
+  "table": "PRIORITIES",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.PRIORITIES table represents a business entity related to priority management, capturing a variety of priority attributes such as their name, description, survey attributes, case details, and escalation dates. It does not have foreign key relationships with other tables, indicating it functions independently within the data model, possibly serving as a reference or standalone configuration table for priorities. The inclusion of timestamp fields like CREATED_AT suggests a focus on tracking the creation and management of priority records over time.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "PRIORITIE_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents the distinct identification numbers assigned to different priority levels within the dataset. These values likely signify a hierarchical order of importance or urgency, though the exact context is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column categorizes different priority levels, likely indicating a ranking or order for associated tasks or items within a business context. The values reflect a sequential nature, suggesting a hierarchical arrangement from higher to lower priorities.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains textual descriptions detailing each entry's specific prioritization context in the dataset. Each description is labeled sequentially, indicating it could potentially serve as a reference or explanation for corresponding priorities.",
+      "default": null
+    },
+    {
+      "name": "SURVEY_162_ATTR_0",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column likely captures the date and time associated with specific survey events or responses, recorded in Central Standard Time. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "ESCALATION_162_ATTR_1",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column likely represents a categorization or priority level associated with escalation processes, as suggested by the sequential nature of the sample values. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CASE_162_ATTR_2",
+      "type": "DATE",
+      "nullable": true,
+      "description": "This column likely represents a date field associated with specific priority cases, documenting a sequence of dates within the month of December 2025. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CASE_162_ATTR_3",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CASE_162_ATTR_4",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "ESCALATION_162_ATTR_5",
+      "type": "DATE",
+      "nullable": true,
+      "description": "This column likely represents dates associated with an escalation process or timeline, occurring in December 2025. The exact nature of the escalation is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "CREATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column records the exact date and time when a priority entry was created in the system. Its values are generated automatically, ensuring the precise capture of creation times for each record.",
+      "default": "CURRENT_TIMESTAMP()"
+    }
+  ],
+  "primary_key": [
+    "PRIORITIE_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "PRIORITIE_ID": 1,
+      "NAME": "PRIORITIES 1",
+      "DESCRIPTION": "Description for PRIORITIES 1",
+      "SURVEY_162_ATTR_0": "2025-12-12 00:00:00.000",
+      "ESCALATION_162_ATTR_1": null,
+      "CASE_162_ATTR_2": "2025-12-12",
+      "CASE_162_ATTR_3": "Sample CASE_162_ATTR_3 1",
+      "CASE_162_ATTR_4": "Sample CASE_162_ATTR_4 1",
+      "ESCALATION_162_ATTR_5": "2025-12-12",
+      "CREATED_AT": "2025-12-12 17:26:55.808"
+    },
+    {
+      "PRIORITIE_ID": 2,
+      "NAME": "PRIORITIES 2",
+      "DESCRIPTION": "Description for PRIORITIES 2",
+      "SURVEY_162_ATTR_0": "2025-12-13 00:00:00.000",
+      "ESCALATION_162_ATTR_1": 101,
+      "CASE_162_ATTR_2": "2025-12-13",
+      "CASE_162_ATTR_3": "Sample CASE_162_ATTR_3 2",
+      "CASE_162_ATTR_4": "Sample CASE_162_ATTR_4 2",
+      "ESCALATION_162_ATTR_5": "2025-12-13",
+      "CREATED_AT": "2025-12-12 17:26:55.808"
+    },
+    {
+      "PRIORITIE_ID": 3,
+      "NAME": "PRIORITIES 3",
+      "DESCRIPTION": "Description for PRIORITIES 3",
+      "SURVEY_162_ATTR_0": "2025-12-14 00:00:00.000",
+      "ESCALATION_162_ATTR_1": 102,
+      "CASE_162_ATTR_2": "2025-12-14",
+      "CASE_162_ATTR_3": "Sample CASE_162_ATTR_3 3",
+      "CASE_162_ATTR_4": "Sample CASE_162_ATTR_4 3",
+      "ESCALATION_162_ATTR_5": "2025-12-14",
+      "CREATED_AT": "2025-12-12 17:26:55.808"
+    },
+    {
+      "PRIORITIE_ID": 4,
+      "NAME": "PRIORITIES 4",
+      "DESCRIPTION": "Description for PRIORITIES 4",
+      "SURVEY_162_ATTR_0": "2025-12-15 00:00:00.000",
+      "ESCALATION_162_ATTR_1": null,
+      "CASE_162_ATTR_2": "2025-12-15",
+      "CASE_162_ATTR_3": "Sample CASE_162_ATTR_3 4",
+      "CASE_162_ATTR_4": "Sample CASE_162_ATTR_4 4",
+      "ESCALATION_162_ATTR_5": "2025-12-15",
+      "CREATED_AT": "2025-12-12 17:26:55.808"
+    },
+    {
+      "PRIORITIE_ID": 5,
+      "NAME": "PRIORITIES 5",
+      "DESCRIPTION": "Description for PRIORITIES 5",
+      "SURVEY_162_ATTR_0": "2025-12-16 00:00:00.000",
+      "ESCALATION_162_ATTR_1": 104,
+      "CASE_162_ATTR_2": "2025-12-16",
+      "CASE_162_ATTR_3": "Sample CASE_162_ATTR_3 5",
+      "CASE_162_ATTR_4": "Sample CASE_162_ATTR_4 5",
+      "ESCALATION_162_ATTR_5": "2025-12-16",
+      "CREATED_AT": "2025-12-12 17:26:55.808"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:48.943Z"
+}

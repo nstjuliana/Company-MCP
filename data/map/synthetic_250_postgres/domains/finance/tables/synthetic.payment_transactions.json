@@ -1,0 +1,123 @@
+{
+  "table": "payment_transactions",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.payment_transactions\" table is designed to store transaction records, identified by \"transaction_id\" as the primary key, suggesting its role as a central entity for financial exchanges within the database. With no sample data or columns specified, further details about transaction attributes or relationships cannot be discerned, although it likely connects to undefined tables in a parent-child relationship via foreign keys. Its purpose in the data model is to act as a transactional ledger, documenting each payment event uniquely, but specifics on its interactions with other tables remain undefined.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "transaction_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This unique identifier is automatically assigned to each record, ensuring the distinct traceability of transactions within the payment process.",
+      "default": "nextval('synthetic.payment_transactions_transaction_id_seq'::regclass)"
+    },
+    {
+      "name": "order_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies a purchase or sale transaction in the context of payments. It serves as a reference point linking payment records to their specific orders within the system.",
+      "default": null
+    },
+    {
+      "name": "transaction_type",
+      "type": "character varying",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "amount",
+      "type": "numeric",
+      "nullable": false,
+      "description": "This column represents the monetary value involved in a payment transaction, such as the amount paid or charged. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "currency",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column indicates the type of currency used in the payment transactions, defaulting to U.S. dollars if no specific currency is provided.",
+      "default": "'USD'::character varying"
+    },
+    {
+      "name": "payment_method",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "gateway",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "gateway_transaction_id",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "error_message",
+      "type": "text",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "processed_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a payment transaction was processed. It may be left empty, indicating that the processing time is not recorded in some cases.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This value indicates the date and time when a transaction record was created, capturing the moment it was entered into the system. It reflects the initial recording of the transaction event without considering any time zone adjustments.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column likely indicates the most recent date and time when a payment transaction record was last modified. The purpose is to track updates made to transaction records.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "transaction_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_payment_transactions_order_id",
+      "column_name": "order_id",
+      "referenced_table": "synthetic.orders",
+      "referenced_column": "order_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "payment_transactions_pkey",
+      "index_definition": "CREATE UNIQUE INDEX payment_transactions_pkey ON synthetic.payment_transactions USING btree (transaction_id)",
+      "columns": [
+        "transaction_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:40:22.000Z"
+}

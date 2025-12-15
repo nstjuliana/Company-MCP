@@ -1,0 +1,151 @@
+{
+  "table": "backup_history",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.backup_history` table tracks the historical record of backup jobs, indicated by the primary key `history_id`. Each entry logs details such as the `job_id`, time span (`start_time` and `end_time`), `status`, and `size_mb` of backups, with potential error details captured in `error_message`. Although foreign key relationships are not explicitly defined, the table likely links to a jobs table via `job_id`, providing a chronological log for backup-related operations within the system.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "history_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "A sequential identifier that uniquely distinguishes each record in the backup history, ensuring a distinct entry for each backup event. Purpose unclear from available data.",
+      "default": "nextval('synthetic.backup_history_history_id_seq'::regclass)"
+    },
+    {
+      "name": "job_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents the identifier assigned to different backup operations, ensuring each job is uniquely tracked within the system's backup history. The purpose of these identifiers is to differentiate and reference specific backup jobs, but further details on their significance are unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "start_time",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a backup operation began. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "end_time",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Records the date and time when a backup operation completes in the system's history. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column tracks the current operational status of a backup record, indicating whether it is inactive, active, or pending. The status helps in understanding the backup's state in the process lifecycle.",
+      "default": null
+    },
+    {
+      "name": "size_mb",
+      "type": "numeric",
+      "nullable": true,
+      "description": "Represents the size of completed backups in megabytes within the system's backup history. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "error_message",
+      "type": "text",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The column seems to contain non-sensical text strings that do not convey a meaningful error message or pattern based on the provided samples.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when entries in the backup history were created, reflecting when each backup record was logged. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a backup history entry was last modified. The default value suggests it automatically logs the current timestamp when changes occur, though its exact role in the business context is not clear from the available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "history_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_backup_history_job_id",
+      "column_name": "job_id",
+      "referenced_table": "synthetic.backup_jobs",
+      "referenced_column": "job_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "backup_history_pkey",
+      "index_definition": "CREATE UNIQUE INDEX backup_history_pkey ON synthetic.backup_history USING btree (history_id)",
+      "columns": [
+        "history_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "history_id": 1,
+      "job_id": 8,
+      "start_time": "2024-04-09T08:28:28.596Z",
+      "end_time": "2025-03-22T04:39:29.667Z",
+      "status": "inactive",
+      "size_mb": "353.60",
+      "error_message": "Seem point final kitchen hear. Seek season hot buy mean situation. Age learn remember cover law but ...",
+      "created_at": "2025-12-13T09:16:20.233Z",
+      "updated_at": "2025-12-13T09:16:20.233Z"
+    },
+    {
+      "history_id": 2,
+      "job_id": 43,
+      "start_time": "2024-09-03T14:43:23.639Z",
+      "end_time": "2024-09-13T20:24:06.927Z",
+      "status": "inactive",
+      "size_mb": "868.09",
+      "error_message": "Book what account upon. Method sister wind until picture know. Produce bar soldier yet radio item co...",
+      "created_at": "2025-12-13T09:16:20.233Z",
+      "updated_at": "2025-12-13T09:16:20.233Z"
+    },
+    {
+      "history_id": 3,
+      "job_id": 47,
+      "start_time": "2024-04-01T01:40:23.074Z",
+      "end_time": "2024-01-05T12:26:14.627Z",
+      "status": "active",
+      "size_mb": "968.40",
+      "error_message": "Not community star guy as two write. Mention military fire us church college choose keep. Consider p...",
+      "created_at": "2025-12-13T09:16:20.233Z",
+      "updated_at": "2025-12-13T09:16:20.233Z"
+    },
+    {
+      "history_id": 4,
+      "job_id": 39,
+      "start_time": "2024-07-07T16:27:31.309Z",
+      "end_time": "2025-01-25T22:43:18.817Z",
+      "status": "inactive",
+      "size_mb": "351.65",
+      "error_message": "Success carry success focus rock maybe. Value style than official control mean read. I draw present ...",
+      "created_at": "2025-12-13T09:16:20.233Z",
+      "updated_at": "2025-12-13T09:16:20.233Z"
+    },
+    {
+      "history_id": 5,
+      "job_id": 37,
+      "start_time": "2024-10-21T14:14:30.630Z",
+      "end_time": "2024-05-19T00:55:09.705Z",
+      "status": "pending",
+      "size_mb": "212.74",
+      "error_message": "About avoid beat. Whom green stop some country other.",
+      "created_at": "2025-12-13T09:16:20.233Z",
+      "updated_at": "2025-12-13T09:16:20.233Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:12.014Z"
+}

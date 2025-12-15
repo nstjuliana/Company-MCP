@@ -1,0 +1,135 @@
+{
+  "table": "IMAGING",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.IMAGING table represents imaging records, likely for medical or diagnostic purposes, with each record identified by a unique IMAGIN_ID as the primary key. The table contains specific attributes such as NAME, DESCRIPTION, billing and claim details, appointment status, and timestamps, indicating its role in tracking imaging-related activities and updates over time. It is standalone in the data model with no defined relationships to other tables, reflecting its isolated function within the database.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "IMAGIN_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents a unique sequential identifier for entries in the imaging table, where each number assigns a distinct identification to corresponding data records.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column designates distinct identifiers for imaging sessions or items, sequentially numbered for differentiation. Each entry appears to represent a unique imaging instance in a series.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains descriptive text for different imaging records, likely serving as a brief identifier or explanation for each imaging instance. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "BILLING_220_ATTR_0",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column appears to record specific dates and times, likely related to billing events or schedules. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CLAIM_220_ATTR_1",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "A sequential identifier or code associated with claims, likely used for tracking or categorization within the imaging context. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "BILLING_220_ATTR_2",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column likely represents a categorical or enumerated attribute related to billing, as suggested by the sequential and similar nature of the sample values. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "APPOINTMENT_220_ATTR_3",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "This column likely indicates the confirmation status of an imaging appointment, with \"true\" representing confirmed appointments and \"false\" unconfirmed. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "UPDATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column indicates the date and time when a record in the imaging table was last updated. It is currently not required to have a value for every entry.",
+      "default": null
+    },
+    {
+      "name": "STATUS",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column likely indicates the operational state of imaging-related entities, consistently showing that all are currently functioning or available. Purpose unclear from available data.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "IMAGIN_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "IMAGIN_ID": 1,
+      "NAME": "IMAGING 1",
+      "DESCRIPTION": "Description for IMAGING 1",
+      "BILLING_220_ATTR_0": "2025-12-12 00:00:00.000",
+      "CLAIM_220_ATTR_1": 100,
+      "BILLING_220_ATTR_2": null,
+      "APPOINTMENT_220_ATTR_3": true,
+      "UPDATED_AT": "2026-01-11 00:00:00.000",
+      "STATUS": "ACTIVE"
+    },
+    {
+      "IMAGIN_ID": 2,
+      "NAME": "IMAGING 2",
+      "DESCRIPTION": "Description for IMAGING 2",
+      "BILLING_220_ATTR_0": "2025-12-13 00:00:00.000",
+      "CLAIM_220_ATTR_1": 101,
+      "BILLING_220_ATTR_2": 101,
+      "APPOINTMENT_220_ATTR_3": false,
+      "UPDATED_AT": "2026-01-12 00:00:00.000",
+      "STATUS": "ACTIVE"
+    },
+    {
+      "IMAGIN_ID": 3,
+      "NAME": "IMAGING 3",
+      "DESCRIPTION": "Description for IMAGING 3",
+      "BILLING_220_ATTR_0": "2025-12-14 00:00:00.000",
+      "CLAIM_220_ATTR_1": 102,
+      "BILLING_220_ATTR_2": 102,
+      "APPOINTMENT_220_ATTR_3": true,
+      "UPDATED_AT": "2026-01-13 00:00:00.000",
+      "STATUS": "ACTIVE"
+    },
+    {
+      "IMAGIN_ID": 4,
+      "NAME": "IMAGING 4",
+      "DESCRIPTION": "Description for IMAGING 4",
+      "BILLING_220_ATTR_0": "2025-12-15 00:00:00.000",
+      "CLAIM_220_ATTR_1": 103,
+      "BILLING_220_ATTR_2": null,
+      "APPOINTMENT_220_ATTR_3": false,
+      "UPDATED_AT": "2026-01-14 00:00:00.000",
+      "STATUS": "ACTIVE"
+    },
+    {
+      "IMAGIN_ID": 5,
+      "NAME": "IMAGING 5",
+      "DESCRIPTION": "Description for IMAGING 5",
+      "BILLING_220_ATTR_0": "2025-12-16 00:00:00.000",
+      "CLAIM_220_ATTR_1": 104,
+      "BILLING_220_ATTR_2": 104,
+      "APPOINTMENT_220_ATTR_3": true,
+      "UPDATED_AT": "2026-01-15 00:00:00.000",
+      "STATUS": "ACTIVE"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:44.187Z"
+}

@@ -1,0 +1,151 @@
+{
+  "table": "contacts",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.contacts` table in the `synthetic_250_postgres` database is designed to store contact information, uniquely identified by the `contact_id` as its primary key; however, the specific attributes and structure of the contact data remain undefined due to the absence of column names and sample data. With no foreign key relationships defined or references from other tables, the table appears to function independently, likely serving as a placeholder or future repository for contact-related records within the data model. The lack of data and metadata precludes further detailing of its role or integration with other entities.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "contact_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each record in the contacts table, serving as a primary key. Purpose unclear from available data.",
+      "default": "nextval('synthetic.contacts_contact_id_seq'::regclass)"
+    },
+    {
+      "name": "account_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "first_name",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column stores the given names chosen by or assigned to individuals recorded in the contacts table. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "last_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column likely captures the family or surname of individuals within the contact records. It is a mandatory field for identifying or referring to people in a business context.",
+      "default": null
+    },
+    {
+      "name": "email",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "phone",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "mobile",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "title",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "department",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "mailing_address",
+      "type": "text",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "owner_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "lead_source",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "do_not_call",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether a contact should not be called, with the default assumption being that they can be contacted unless specified otherwise.",
+      "default": "false"
+    },
+    {
+      "name": "do_not_email",
+      "type": "boolean",
+      "nullable": true,
+      "description": "This column indicates whether individuals have opted out of receiving email communications. If the value is true, email correspondence should be avoided, but if false, emails may be sent.",
+      "default": "false"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column likely records the date and time when a contact entry was initially created. Purpose unclear from available data due to lack of sample values.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column indicates the most recent date and time a contact record was modified in the system, helping to track changes over time. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "contact_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_contacts_account_id",
+      "column_name": "account_id",
+      "referenced_table": "synthetic.accounts",
+      "referenced_column": "account_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "contacts_pkey",
+      "index_definition": "CREATE UNIQUE INDEX contacts_pkey ON synthetic.contacts USING btree (contact_id)",
+      "columns": [
+        "contact_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:40:29.905Z"
+}

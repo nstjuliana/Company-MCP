@@ -1,0 +1,117 @@
+{
+  "table": "pick_orders",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.pick_orders\" table is designed to manage orders related to the picking process within a synthetic data schema, as indicated by its name and primary key \"pick_id.\" While specific column details are missing, the table likely stores information about order specifics, but it currently holds no data, nor does it have defined relationships with other tables beyond an undefined foreign key reference. This table acts as an isolated component or a placeholder in the data model, awaiting integration or data population.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "pick_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Unique identifier assigned sequentially to each order in the picking process, ensuring each order is distinct and traceable.",
+      "default": "nextval('synthetic.pick_orders_pick_id_seq'::regclass)"
+    },
+    {
+      "name": "pick_number",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "warehouse_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "The column uniquely identifies the warehouse associated with each pick order. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "order_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "priority",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": "0"
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Indicates the current state or progression stage of a pick order within the system, with 'pending' as a default status. Purpose unclear from available data.",
+      "default": "'pending'::character varying"
+    },
+    {
+      "name": "assigned_to",
+      "type": "integer",
+      "nullable": true,
+      "description": "This field likely indicates the ID of a staff member or system entity responsible for handling or completing a pick order. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "started_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "The column records the date and time when a picking order process is initiated. It is optional for orders to have this information recorded.",
+      "default": null
+    },
+    {
+      "name": "completed_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column likely records when an order within the pick orders process has been finalized. It is optional and may not have a value for orders that are not yet completed.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a pick order was created, capturing the initial timestamp of the order process.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a record in the pick orders table was last modified. It helps track changes over time for operational transparency and accountability.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "pick_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_pick_orders_warehouse_id",
+      "column_name": "warehouse_id",
+      "referenced_table": "synthetic.warehouses",
+      "referenced_column": "warehouse_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "pick_orders_pick_number_key",
+      "index_definition": "CREATE UNIQUE INDEX pick_orders_pick_number_key ON synthetic.pick_orders USING btree (pick_number)",
+      "columns": [
+        "pick_number"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "pick_orders_pkey",
+      "index_definition": "CREATE UNIQUE INDEX pick_orders_pkey ON synthetic.pick_orders USING btree (pick_id)",
+      "columns": [
+        "pick_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:41:21.275Z"
+}

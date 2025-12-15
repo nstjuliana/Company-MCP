@@ -1,0 +1,127 @@
+{
+  "table": "price_book_entries",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.price_book_entries\" table represents entries in a pricing catalog, with each entry identified by a unique \"entry_id\" and includes details such as the associated \"price_book_id\" and \"product_id.\" Each entry specifies a \"unit_price\" and tracks its status with \"is_active,\" alongside timestamp columns \"created_at\" and \"updated_at\" for record management. This table plays a role in the data model by linking specific product pricing information to price books, although its specific relationships with other tables are unspecified.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "entry_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier assigned incrementally to each entry in the price book. It serves as a primary key to distinguish individual records within the table.",
+      "default": "nextval('synthetic.price_book_entries_entry_id_seq'::regclass)"
+    },
+    {
+      "name": "price_book_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each entry within the associated pricing catalog or list. It serves as a reference to link specific price book entries to their corresponding price books.",
+      "default": null
+    },
+    {
+      "name": "product_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies products within the price book entries, ensuring each product can be distinctly referenced. These numerical identifiers are critical for tracking and managing pricing information related to specific products.",
+      "default": null
+    },
+    {
+      "name": "unit_price",
+      "type": "numeric",
+      "nullable": false,
+      "description": "This column represents the price assigned to individual items or services when entered into the price book. It ensures precise billing or cost tracking, with values typically ranging from several thousand to tens of thousands of currency units.",
+      "default": null
+    },
+    {
+      "name": "is_active",
+      "type": "boolean",
+      "nullable": true,
+      "description": "This column indicates whether an entry in the price book is currently active or inactive, with \"true\" signaling active status and \"false\" signaling inactive status. The column allows for entries to be inactive by default if not otherwise specified.",
+      "default": "true"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "The column records the date and time of when an entry in the price book was created, defaulting to the current timestamp. It captures the moment an entry is added, serving as a timestamp for creation events.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column likely records the date and time when a price book entry was last updated, reflecting changes to pricing data. The entries demonstrate a uniform update timestamp, possibly indicating a bulk update process rather than individual entry changes.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "entry_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_price_book_entries_price_book_id",
+      "column_name": "price_book_id",
+      "referenced_table": "synthetic.price_books",
+      "referenced_column": "price_book_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "price_book_entries_pkey",
+      "index_definition": "CREATE UNIQUE INDEX price_book_entries_pkey ON synthetic.price_book_entries USING btree (entry_id)",
+      "columns": [
+        "entry_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "entry_id": 1,
+      "price_book_id": 31,
+      "product_id": 555,
+      "unit_price": "36484.51",
+      "is_active": false,
+      "created_at": "2025-12-13T08:59:20.235Z",
+      "updated_at": "2025-12-13T08:59:20.235Z"
+    },
+    {
+      "entry_id": 2,
+      "price_book_id": 13,
+      "product_id": 5654,
+      "unit_price": "6698.93",
+      "is_active": true,
+      "created_at": "2025-12-13T08:59:20.235Z",
+      "updated_at": "2025-12-13T08:59:20.235Z"
+    },
+    {
+      "entry_id": 3,
+      "price_book_id": 17,
+      "product_id": 6383,
+      "unit_price": "18737.59",
+      "is_active": false,
+      "created_at": "2025-12-13T08:59:20.235Z",
+      "updated_at": "2025-12-13T08:59:20.235Z"
+    },
+    {
+      "entry_id": 4,
+      "price_book_id": 30,
+      "product_id": 6513,
+      "unit_price": "78394.11",
+      "is_active": false,
+      "created_at": "2025-12-13T08:59:20.235Z",
+      "updated_at": "2025-12-13T08:59:20.235Z"
+    },
+    {
+      "entry_id": 5,
+      "price_book_id": 29,
+      "product_id": 2178,
+      "unit_price": "81596.54",
+      "is_active": false,
+      "created_at": "2025-12-13T08:59:20.235Z",
+      "updated_at": "2025-12-13T08:59:20.235Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:22.001Z"
+}

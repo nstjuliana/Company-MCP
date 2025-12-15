@@ -1,0 +1,135 @@
+{
+  "table": "INSIGHTS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.INSIGHTS table represents analytic insights within the database, identified by the primary key INSIGHT_ID, and includes attributes such as name, description, visualization details, metrics, queries, and KPIs, with timestamps marking updates. It does not directly interact with other tables, as indicated by the absence of foreign keys and references. This table serves as a standalone repository for storing detailed insight data, providing a basis for analytical reporting and interpretation.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "INSIGHT_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column uniquely identifies each entry in the insights table, serving as the primary key for referencing individual insights. Purpose unclear from available data beyond identification.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column represents a sequential naming or labeling of insights, likely used for unique identification or categorization of insights within a business context. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains textual descriptions that provide brief summaries or titles for individual insights within the database. Each entry uniquely identifies insights by number but lacks further context or detail, leaving the specific nature of the insights unclear.",
+      "default": null
+    },
+    {
+      "name": "VISUALIZATION_185_ATTR_0",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column represents the date and time for a specific recurring event or action, occurring daily at 6:00 PM Central Standard Time, in December 2025. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "METRIC_185_ATTR_1",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column represents date and time values, possibly capturing a specific event or action occurring daily from December 11, 2025, onwards. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "QUERY_185_ATTR_2",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column appears to represent a series of sequential identifiers or codes. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "QUERY_185_ATTR_3",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "KPI_185_ATTR_4",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "UPDATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column likely records the date and time when a specific piece of information within the dataset was last updated. The values indicate updates occurred on consecutive days in January 2026.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "INSIGHT_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "INSIGHT_ID": 1,
+      "NAME": "INSIGHTS 1",
+      "DESCRIPTION": "Description for INSIGHTS 1",
+      "VISUALIZATION_185_ATTR_0": "2025-12-12 00:00:00.000",
+      "METRIC_185_ATTR_1": "2025-12-12 00:00:00.000",
+      "QUERY_185_ATTR_2": null,
+      "QUERY_185_ATTR_3": "Sample QUERY_185_ATTR_3 1",
+      "KPI_185_ATTR_4": "Sample KPI_185_ATTR_4 1",
+      "UPDATED_AT": "2026-01-11 00:00:00.000"
+    },
+    {
+      "INSIGHT_ID": 2,
+      "NAME": "INSIGHTS 2",
+      "DESCRIPTION": "Description for INSIGHTS 2",
+      "VISUALIZATION_185_ATTR_0": "2025-12-13 00:00:00.000",
+      "METRIC_185_ATTR_1": "2025-12-13 00:00:00.000",
+      "QUERY_185_ATTR_2": 101,
+      "QUERY_185_ATTR_3": "Sample QUERY_185_ATTR_3 2",
+      "KPI_185_ATTR_4": "Sample KPI_185_ATTR_4 2",
+      "UPDATED_AT": "2026-01-12 00:00:00.000"
+    },
+    {
+      "INSIGHT_ID": 3,
+      "NAME": "INSIGHTS 3",
+      "DESCRIPTION": "Description for INSIGHTS 3",
+      "VISUALIZATION_185_ATTR_0": "2025-12-14 00:00:00.000",
+      "METRIC_185_ATTR_1": "2025-12-14 00:00:00.000",
+      "QUERY_185_ATTR_2": 102,
+      "QUERY_185_ATTR_3": "Sample QUERY_185_ATTR_3 3",
+      "KPI_185_ATTR_4": "Sample KPI_185_ATTR_4 3",
+      "UPDATED_AT": "2026-01-13 00:00:00.000"
+    },
+    {
+      "INSIGHT_ID": 4,
+      "NAME": "INSIGHTS 4",
+      "DESCRIPTION": "Description for INSIGHTS 4",
+      "VISUALIZATION_185_ATTR_0": "2025-12-15 00:00:00.000",
+      "METRIC_185_ATTR_1": "2025-12-15 00:00:00.000",
+      "QUERY_185_ATTR_2": null,
+      "QUERY_185_ATTR_3": "Sample QUERY_185_ATTR_3 4",
+      "KPI_185_ATTR_4": "Sample KPI_185_ATTR_4 4",
+      "UPDATED_AT": "2026-01-14 00:00:00.000"
+    },
+    {
+      "INSIGHT_ID": 5,
+      "NAME": "INSIGHTS 5",
+      "DESCRIPTION": "Description for INSIGHTS 5",
+      "VISUALIZATION_185_ATTR_0": "2025-12-16 00:00:00.000",
+      "METRIC_185_ATTR_1": "2025-12-16 00:00:00.000",
+      "QUERY_185_ATTR_2": 104,
+      "QUERY_185_ATTR_3": "Sample QUERY_185_ATTR_3 5",
+      "KPI_185_ATTR_4": "Sample KPI_185_ATTR_4 5",
+      "UPDATED_AT": "2026-01-15 00:00:00.000"
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:17.748Z"
+}

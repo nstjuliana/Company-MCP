@@ -1,0 +1,156 @@
+{
+  "table": "shipping_methods",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.shipping_methods\" table captures the details of various shipping methods available, with \"shipping_method_id\" serving as the primary key. Columns include attributes such as \"method_name\", \"carrier\", \"base_rate\", \"per_kg_rate\", \"estimated_days_min\", \"estimated_days_max\", \"is_active\", and timestamps for creation and updates, indicating the specifics of each shipping method's cost structure and estimated delivery times. This table stands independently within the database, as evidenced by the absence of foreign key relationships or references to other tables, possibly serving as a reference for logistics and order fulfillment modules.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "shipping_method_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each shipping method available in the system. It ensures that every shipping method has a distinct number for reference and management purposes.",
+      "default": "nextval('synthetic.shipping_methods_shipping_method_id_seq'::regclass)"
+    },
+    {
+      "name": "method_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "carrier",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "base_rate",
+      "type": "numeric",
+      "nullable": false,
+      "description": "This column represents the fixed starting price for different shipping strategies available to customers. The values suggest a variety of base costs, potentially reflecting differences in delivery speed or service quality.",
+      "default": null
+    },
+    {
+      "name": "per_kg_rate",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the cost associated with shipping items based on their weight, expressed in currency units per kilogram. The varied sample values suggest differing rates that may depend on factors such as distance or shipping speed.",
+      "default": "0"
+    },
+    {
+      "name": "estimated_days_min",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents the minimum number of days estimated for a package to be delivered using a specific shipping method. Values indicate the lower boundary of the expected delivery timeframe, suggesting varying efficiency levels between different methods.",
+      "default": null
+    },
+    {
+      "name": "estimated_days_max",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents the maximum estimated number of days for a shipment to be delivered using a specific shipping method. It helps set customer expectations by indicating the upper limit of delivery timeframes.",
+      "default": null
+    },
+    {
+      "name": "is_active",
+      "type": "boolean",
+      "nullable": true,
+      "description": "This column indicates whether a shipping method is currently active for use in operations. If the value is true, the shipping method is active; if false or null, it is considered inactive.",
+      "default": "true"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a shipping method entry was created in the system. The exact timestamp reflects the moment of entry, with the default being the current time upon record insertion.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when entries in the shipping methods table were last updated. The use of a default timestamp suggests this record is automatically populated upon changes to the data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "shipping_method_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "shipping_methods_pkey",
+      "index_definition": "CREATE UNIQUE INDEX shipping_methods_pkey ON synthetic.shipping_methods USING btree (shipping_method_id)",
+      "columns": [
+        "shipping_method_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "shipping_method_id": 1,
+      "method_name": "Including sort laugh trade. Foreign write what only news enjoy.",
+      "carrier": "Center agency establish smile public. Tough forward everyone letter rule.",
+      "base_rate": "2.60",
+      "per_kg_rate": "68.13",
+      "estimated_days_min": 22,
+      "estimated_days_max": 4,
+      "is_active": false,
+      "created_at": "2025-12-13T08:56:38.669Z",
+      "updated_at": "2025-12-13T08:56:38.669Z"
+    },
+    {
+      "shipping_method_id": 2,
+      "method_name": "Little factor because girl. Maybe plant school any factor. Everyone us yeah evening up cultural.",
+      "carrier": "Energy education growth east upon. Certainly chair mouth mouth let us teach.",
+      "base_rate": "37.36",
+      "per_kg_rate": "92.91",
+      "estimated_days_min": 4,
+      "estimated_days_max": 27,
+      "is_active": false,
+      "created_at": "2025-12-13T08:56:38.669Z",
+      "updated_at": "2025-12-13T08:56:38.669Z"
+    },
+    {
+      "shipping_method_id": 3,
+      "method_name": "Find such Republican. Letter south control least. Reflect writer performance college.",
+      "carrier": "Another anyone all increase police. Space government particularly professional.",
+      "base_rate": "15.38",
+      "per_kg_rate": "8.11",
+      "estimated_days_min": 27,
+      "estimated_days_max": 23,
+      "is_active": false,
+      "created_at": "2025-12-13T08:56:38.669Z",
+      "updated_at": "2025-12-13T08:56:38.669Z"
+    },
+    {
+      "shipping_method_id": 4,
+      "method_name": "Many voice allow whatever financial arm. Interest reflect sport family hospital.",
+      "carrier": "Democratic later look thought away. Outside time low either situation network.",
+      "base_rate": "45.41",
+      "per_kg_rate": "95.52",
+      "estimated_days_min": 20,
+      "estimated_days_max": 22,
+      "is_active": true,
+      "created_at": "2025-12-13T08:56:38.669Z",
+      "updated_at": "2025-12-13T08:56:38.669Z"
+    },
+    {
+      "shipping_method_id": 5,
+      "method_name": "Nothing available focus marriage. Study question star fight ahead carry.",
+      "carrier": "Minute well such respond record south. Line call lawyer kid.",
+      "base_rate": "32.94",
+      "per_kg_rate": "4.38",
+      "estimated_days_min": 20,
+      "estimated_days_max": 15,
+      "is_active": false,
+      "created_at": "2025-12-13T08:56:38.669Z",
+      "updated_at": "2025-12-13T08:56:38.669Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:42:47.877Z"
+}

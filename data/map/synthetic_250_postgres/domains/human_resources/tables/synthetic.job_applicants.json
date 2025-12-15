@@ -1,0 +1,156 @@
+{
+  "table": "job_applicants",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.job_applicants` table represents information about individuals applying for jobs, capturing their personal details and application information. Key columns include the primary key `applicant_id`, personal identifiers like `first_name`, `last_name`, and contact information such as `email` and `phone`, along with URLs for their `resume` and `linkedin` profiles, indicating a comprehensive record for each applicant. This table functions as a standalone entity in the data model, given it has no foreign key relationships, suggesting it centralizes applicant data without direct association to other tables.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "applicant_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier assigned to each person applying for a job, ensuring each applicant is distinctly recognized within the system. This sequential numbering aids in tracking and managing job applications effectively.",
+      "default": "nextval('synthetic.job_applicants_applicant_id_seq'::regclass)"
+    },
+    {
+      "name": "first_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column represents the given names of individuals who have applied for a job. Each entry corresponds to the first name of a job applicant in the database.",
+      "default": null
+    },
+    {
+      "name": "last_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column represents the family surnames of individuals applying for jobs. The values are commonly recognized last names.",
+      "default": null
+    },
+    {
+      "name": "email",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column represents the email addresses of individuals applying for job positions. Each entry is a unique contact detail for communication with a job applicant.",
+      "default": null
+    },
+    {
+      "name": "phone",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column contains contact phone numbers for job applicants. The numbers are presented in various formats, including international dialing codes and extensions.",
+      "default": null
+    },
+    {
+      "name": "resume_url",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column stores the web addresses where job applicants have uploaded their resumes. Each URL provided gives access to an applicant's resume hosted on a personal or business website.",
+      "default": null
+    },
+    {
+      "name": "linkedin_url",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column contains URLs that appear to represent personal or business websites for job applicants, rather than containing direct links to LinkedIn profiles. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "source",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values appear to be nonsensical and do not provide clear insight into the business meaning of this column.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an application was created in the system. Purpose unclear from available data as it lacks a detailed description or variety in sample values.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column indicates the most recent date and time when a record for a job applicant was updated. It is useful for tracking changes or modifications made to applicant data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "applicant_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "job_applicants_pkey",
+      "index_definition": "CREATE UNIQUE INDEX job_applicants_pkey ON synthetic.job_applicants USING btree (applicant_id)",
+      "columns": [
+        "applicant_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "applicant_id": 1,
+      "first_name": "Rose",
+      "last_name": "Crosby",
+      "email": "gerald25@example.com",
+      "phone": "001-978-271-8882x237",
+      "resume_url": "https://hughes.biz/",
+      "linkedin_url": "http://www.cummings.com/",
+      "source": "Outside win why hot send foot into. Perhaps note someone cover question drop. Task teach know.",
+      "created_at": "2025-12-13T08:54:06.839Z",
+      "updated_at": "2025-12-13T08:54:06.839Z"
+    },
+    {
+      "applicant_id": 2,
+      "first_name": "Richard",
+      "last_name": "Ramirez",
+      "email": "hwade@example.com",
+      "phone": "855-975-1247x64000",
+      "resume_url": "https://foley.com/",
+      "linkedin_url": "https://scott-rodriguez.com/",
+      "source": "Employee show open line fast. Soon street cut image.",
+      "created_at": "2025-12-13T08:54:06.839Z",
+      "updated_at": "2025-12-13T08:54:06.839Z"
+    },
+    {
+      "applicant_id": 3,
+      "first_name": "Brandon",
+      "last_name": "Carr",
+      "email": "anthonyfranklin@example.com",
+      "phone": "001-913-449-0961x979",
+      "resume_url": "https://peters.com/",
+      "linkedin_url": "https://nelson.com/",
+      "source": "Government show seem man write. Of marriage police. Of quality thousand once physical.",
+      "created_at": "2025-12-13T08:54:06.839Z",
+      "updated_at": "2025-12-13T08:54:06.839Z"
+    },
+    {
+      "applicant_id": 4,
+      "first_name": "James",
+      "last_name": "Collins",
+      "email": "perezanna@example.com",
+      "phone": "+1-877-648-6759x5141",
+      "resume_url": "http://www.mason.com/",
+      "linkedin_url": "https://robertson.biz/",
+      "source": "Position detail wife investment say. Reveal heavy performance evidence learn stuff.",
+      "created_at": "2025-12-13T08:54:06.839Z",
+      "updated_at": "2025-12-13T08:54:06.839Z"
+    },
+    {
+      "applicant_id": 5,
+      "first_name": "Kathy",
+      "last_name": "Harrison",
+      "email": "kenneththomas@example.com",
+      "phone": "(459)946-9890x623",
+      "resume_url": "http://www.wells.org/",
+      "linkedin_url": "http://www.perez.org/",
+      "source": "Remain someone without. Station their research physical large provide.",
+      "created_at": "2025-12-13T08:54:06.839Z",
+      "updated_at": "2025-12-13T08:54:06.839Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:41:04.415Z"
+}

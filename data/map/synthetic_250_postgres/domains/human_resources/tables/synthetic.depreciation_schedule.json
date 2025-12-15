@@ -1,0 +1,169 @@
+{
+  "table": "depreciation_schedule",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.depreciation_schedule` table represents the scheduled depreciation entries for assets, detailing the depreciation amount, accumulated total, and book value over specified periods for effective asset management. The primary key `schedule_id` uniquely identifies each depreciation entry, and columns like `asset_id` and `period_id` suggest associations with assets and time periods, although specific table relationships are undefined. This table likely plays a critical role in tracking the depreciation process, as indicated by the `depreciation_date`, `depreciation_amount`, and `is_posted`, which collectively facilitate financial reporting and accounting procedures.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "schedule_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each entry within a series in a sequential order for a depreciation schedule. It serves as a primary key to ensure each record is distinct and traceable.",
+      "default": "nextval('synthetic.depreciation_schedule_schedule_id_seq'::regclass)"
+    },
+    {
+      "name": "asset_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column likely represents a unique identifier assigned to each asset within a depreciation schedule, ensuring each asset is distinctly tracked. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "period_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents a numerical identifier for specific periods or intervals within a depreciation schedule. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "depreciation_date",
+      "type": "date",
+      "nullable": false,
+      "description": "This column represents the scheduled dates on which asset depreciation values are recorded or reviewed within the system. The dates appear to track predetermined intervals for assessing the depreciating value of assets.",
+      "default": null
+    },
+    {
+      "name": "depreciation_amount",
+      "type": "numeric",
+      "nullable": false,
+      "description": "This column represents the monetary value allocated as depreciation for specific assets within a schedule, expressed numerically with typical amounts ranging from hundreds to tens of thousands. The purpose is to quantify asset value reduction over time for accounting and financial reporting.",
+      "default": null
+    },
+    {
+      "name": "accumulated_total",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column appears to represent the cumulative value of depreciation for an asset over time, possibly indicating how much an asset's value has decreased. Purpose unclear from available data without further context.",
+      "default": null
+    },
+    {
+      "name": "book_value",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the residual value of an asset at various points in time according to a depreciation schedule. Purpose unclear from available data without further business context.",
+      "default": null
+    },
+    {
+      "name": "is_posted",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether an entry in the depreciation schedule has been officially recorded or confirmed. A value of true signifies it is posted, while a value of false means it is not.",
+      "default": "false"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when each entry in the depreciation schedule table was created. It reflects the creation timestamp, defaulting to the current time at entry, but the specific business purpose of this information is unclear from the available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when records in the depreciation schedule were last updated, with entries defaulting to the current timestamp at the time of record modification. Purpose unclear from available data due to uniformity of sample values.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "schedule_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_depreciation_schedule_asset_id",
+      "column_name": "asset_id",
+      "referenced_table": "synthetic.fixed_assets",
+      "referenced_column": "asset_id"
+    },
+    {
+      "constraint_name": "fk_depreciation_schedule_period_id",
+      "column_name": "period_id",
+      "referenced_table": "synthetic.fiscal_periods",
+      "referenced_column": "period_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "depreciation_schedule_pkey",
+      "index_definition": "CREATE UNIQUE INDEX depreciation_schedule_pkey ON synthetic.depreciation_schedule USING btree (schedule_id)",
+      "columns": [
+        "schedule_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "schedule_id": 1,
+      "asset_id": 17,
+      "period_id": 6,
+      "depreciation_date": "2025-07-17T05:00:00.000Z",
+      "depreciation_amount": "37247.19",
+      "accumulated_total": "903.80",
+      "book_value": "165.53",
+      "is_posted": false,
+      "created_at": "2025-12-13T08:54:54.866Z",
+      "updated_at": "2025-12-13T08:54:54.866Z"
+    },
+    {
+      "schedule_id": 2,
+      "asset_id": 41,
+      "period_id": 20,
+      "depreciation_date": "2025-04-07T05:00:00.000Z",
+      "depreciation_amount": "72626.24",
+      "accumulated_total": "755.23",
+      "book_value": "429.23",
+      "is_posted": true,
+      "created_at": "2025-12-13T08:54:54.866Z",
+      "updated_at": "2025-12-13T08:54:54.866Z"
+    },
+    {
+      "schedule_id": 3,
+      "asset_id": 46,
+      "period_id": 7,
+      "depreciation_date": "2024-10-04T05:00:00.000Z",
+      "depreciation_amount": "208.52",
+      "accumulated_total": "476.81",
+      "book_value": "132.70",
+      "is_posted": true,
+      "created_at": "2025-12-13T08:54:54.866Z",
+      "updated_at": "2025-12-13T08:54:54.866Z"
+    },
+    {
+      "schedule_id": 4,
+      "asset_id": 34,
+      "period_id": 44,
+      "depreciation_date": "2024-08-04T05:00:00.000Z",
+      "depreciation_amount": "44562.18",
+      "accumulated_total": "8.06",
+      "book_value": "343.57",
+      "is_posted": true,
+      "created_at": "2025-12-13T08:54:54.866Z",
+      "updated_at": "2025-12-13T08:54:54.866Z"
+    },
+    {
+      "schedule_id": 5,
+      "asset_id": 28,
+      "period_id": 45,
+      "depreciation_date": "2025-05-20T05:00:00.000Z",
+      "depreciation_amount": "13304.30",
+      "accumulated_total": "70.83",
+      "book_value": "383.07",
+      "is_posted": true,
+      "created_at": "2025-12-13T08:54:54.866Z",
+      "updated_at": "2025-12-13T08:54:54.866Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:41:03.763Z"
+}

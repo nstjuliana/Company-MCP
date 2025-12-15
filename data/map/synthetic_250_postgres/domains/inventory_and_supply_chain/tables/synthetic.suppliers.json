@@ -1,0 +1,131 @@
+{
+  "table": "suppliers",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.suppliers\" table is designed to represent entities that supply goods or services, identified uniquely by the \"supplier_id\" primary key. With no foreign key relationships, this table operates independently within the database, implying it might serve as a standalone resource for supplier information without current explicit integrations with other tables. Without additional column details or sample data, it is difficult to ascertain further specific functions or applications within the overall data model.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "supplier_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each supplier within the system, ensuring that each supplier record is distinct and can be referenced reliably. It automates the creation of these identifiers to maintain consistency across entries.",
+      "default": "nextval('synthetic.suppliers_supplier_id_seq'::regclass)"
+    },
+    {
+      "name": "supplier_code",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "supplier_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "The column represents the names of companies or individuals who provide goods or services to the organization. It is a required field without available default values, indicating its importance in identifying suppliers.",
+      "default": null
+    },
+    {
+      "name": "contact_name",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "email",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column is intended to store the email addresses of suppliers. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "phone",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "address",
+      "type": "text",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "country",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "payment_terms",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely captures the agreed financial agreement or conditions under which payments are made to or from suppliers. Purpose unclear from available data without sample values.",
+      "default": null
+    },
+    {
+      "name": "lead_time_days",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents the number of days it typically takes for a supplier to fulfill and deliver an order once placed, with the possibility of having no set duration in certain cases. The purpose of the column is unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "rating",
+      "type": "numeric",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "is_active",
+      "type": "boolean",
+      "nullable": true,
+      "description": "This column indicates whether a supplier is currently active or inactive. If left unspecified, a supplier is presumed active by default.",
+      "default": "true"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column likely records the date and time when a supplier was created or added to the system. The purpose is unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Records the date and time when the supplier information was last modified. If not manually set, it defaults to the current timestamp at the moment of updating.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "supplier_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "suppliers_pkey",
+      "index_definition": "CREATE UNIQUE INDEX suppliers_pkey ON synthetic.suppliers USING btree (supplier_id)",
+      "columns": [
+        "supplier_id"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "suppliers_supplier_code_key",
+      "index_definition": "CREATE UNIQUE INDEX suppliers_supplier_code_key ON synthetic.suppliers USING btree (supplier_code)",
+      "columns": [
+        "supplier_code"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:42:48.415Z"
+}

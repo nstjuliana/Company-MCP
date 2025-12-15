@@ -1,0 +1,156 @@
+{
+  "table": "fiscal_periods",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.fiscal_periods` table represents a business entity detailing specific fiscal periods, identified uniquely by `period_id`, and includes attributes such as `period_name`, `fiscal_year`, `period_number`, and date ranges (`start_date` and `end_date`). It tracks the status of the fiscal period through the `is_closed` and `closed_date` fields, with timestamps for record management (`created_at` and `updated_at`). As this table has no relationships with other tables, it serves as an isolated reference point for fiscal period information within the data model.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "period_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each fiscal period in the dataset. The sequence of positive integers suggests it is used to sequentially distinguish each fiscal period within the table.",
+      "default": "nextval('synthetic.fiscal_periods_period_id_seq'::regclass)"
+    },
+    {
+      "name": "period_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "Purpose unclear from available data. The sample values do not provide sufficient information to discern the business context or meaning.",
+      "default": null
+    },
+    {
+      "name": "fiscal_year",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents the specific calendar year associated with each fiscal period record within the given dataset. It appears to track distinct years in which financial activities or reports are organized.",
+      "default": null
+    },
+    {
+      "name": "period_number",
+      "type": "integer",
+      "nullable": false,
+      "description": "The values likely represent unique identifiers for different fiscal periods within an organization's calendar. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "start_date",
+      "type": "date",
+      "nullable": false,
+      "description": "This column represents the starting dates of various fiscal periods, likely used for financial or accounting purposes within a specific organization. The dates are consistent with typical fiscal period start dates, such as the beginning of a quarter or fiscal year.",
+      "default": null
+    },
+    {
+      "name": "end_date",
+      "type": "date",
+      "nullable": false,
+      "description": "This column represents the final date of a fiscal period, indicating when it concludes. The dates reflect variations in daylight saving time and regular time adjustments, suggesting the periods cover different time zones.",
+      "default": null
+    },
+    {
+      "name": "is_closed",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether a fiscal period has been concluded or is still ongoing. A value of true suggests the period is closed, while false indicates it remains open.",
+      "default": "false"
+    },
+    {
+      "name": "closed_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column likely represents the date on which a fiscal period is officially concluded or closed. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the exact time and date when a fiscal period entry was created. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when each fiscal period entry was last modified or updated. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "period_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "fiscal_periods_pkey",
+      "index_definition": "CREATE UNIQUE INDEX fiscal_periods_pkey ON synthetic.fiscal_periods USING btree (period_id)",
+      "columns": [
+        "period_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "period_id": 1,
+      "period_name": "Sure form wonder carry.",
+      "fiscal_year": 2022,
+      "period_number": 9660,
+      "start_date": "2024-01-04T06:00:00.000Z",
+      "end_date": "2024-08-07T05:00:00.000Z",
+      "is_closed": false,
+      "closed_date": "2024-01-18T06:00:00.000Z",
+      "created_at": "2025-12-13T08:54:16.384Z",
+      "updated_at": "2025-12-13T08:54:16.384Z"
+    },
+    {
+      "period_id": 2,
+      "period_name": "Support single history.",
+      "fiscal_year": 2020,
+      "period_number": 3181,
+      "start_date": "2024-01-21T06:00:00.000Z",
+      "end_date": "2025-09-21T05:00:00.000Z",
+      "is_closed": false,
+      "closed_date": "2024-01-06T06:00:00.000Z",
+      "created_at": "2025-12-13T08:54:16.384Z",
+      "updated_at": "2025-12-13T08:54:16.384Z"
+    },
+    {
+      "period_id": 3,
+      "period_name": "Mind visit election kid serve.",
+      "fiscal_year": 2021,
+      "period_number": 5913,
+      "start_date": "2024-05-29T05:00:00.000Z",
+      "end_date": "2025-02-03T06:00:00.000Z",
+      "is_closed": true,
+      "closed_date": "2025-11-19T06:00:00.000Z",
+      "created_at": "2025-12-13T08:54:16.384Z",
+      "updated_at": "2025-12-13T08:54:16.384Z"
+    },
+    {
+      "period_id": 4,
+      "period_name": "Page bit blue most watch her attack.",
+      "fiscal_year": 2022,
+      "period_number": 232,
+      "start_date": "2025-01-10T06:00:00.000Z",
+      "end_date": "2024-06-14T05:00:00.000Z",
+      "is_closed": true,
+      "closed_date": "2025-07-13T05:00:00.000Z",
+      "created_at": "2025-12-13T08:54:16.384Z",
+      "updated_at": "2025-12-13T08:54:16.384Z"
+    },
+    {
+      "period_id": 5,
+      "period_name": "Grow attack beautiful total.",
+      "fiscal_year": 2022,
+      "period_number": 746,
+      "start_date": "2025-06-10T05:00:00.000Z",
+      "end_date": "2025-02-06T06:00:00.000Z",
+      "is_closed": true,
+      "closed_date": "2024-04-11T05:00:00.000Z",
+      "created_at": "2025-12-13T08:54:16.384Z",
+      "updated_at": "2025-12-13T08:54:16.384Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:40:02.167Z"
+}

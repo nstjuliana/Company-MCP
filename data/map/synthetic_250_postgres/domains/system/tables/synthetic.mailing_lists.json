@@ -1,0 +1,120 @@
+{
+  "table": "mailing_lists",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.mailing_lists\" table represents a collection of mailing lists, each defined by attributes such as a unique identifier (list_id), a name (list_name), a description, and metadata regarding its activity status (is_active), number of subscribers (subscriber_count), and timestamps for creation and last update. With no foreign keys or references to other tables, this standalone table likely serves to manage distinct mailing list entities within the application. While the current row count is zero, the provided sample row illustrates potential content and usage for cataloging and organizing mailing lists.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "list_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each entry in the mailing lists, serving as a sequential identifier for list records.",
+      "default": "nextval('synthetic.mailing_lists_list_id_seq'::regclass)"
+    },
+    {
+      "name": "list_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column represents the titles or names of various mailing lists, which appear to be creatively or thematically titled, possibly to capture attention or convey the list's focus or purpose. The titles suggest a diverse range of interests or topics such as TV support, nature, science, or cultural themes.",
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "nullable": true,
+      "description": "This column contains textual descriptions related to various topics or activities. The purpose is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "is_active",
+      "type": "boolean",
+      "nullable": true,
+      "description": "This column indicates whether a mailing list is currently active or not, where true means active and false means inactive. The default value is active, suggesting that new entries are presumed active unless specified otherwise.",
+      "default": "true"
+    },
+    {
+      "name": "subscriber_count",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents the number of individuals who are subscribed to a particular mailing list. Since it is nullable, the count might not always be recorded, but when it is, it reflects figures like those in the sample values, indicating the list's subscriber size.",
+      "default": "0"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Indicates the date and time when an entry was added to the mailing list. It automatically records this information unless otherwise specified.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column indicates the datetime at which a record in the mailing lists was last modified. The repetition of the same timestamp suggests this was set automatically to the timestamp when each entry was modified, which defaults to the current system timestamp upon update.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "list_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "mailing_lists_pkey",
+      "index_definition": "CREATE UNIQUE INDEX mailing_lists_pkey ON synthetic.mailing_lists USING btree (list_id)",
+      "columns": [
+        "list_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "list_id": 1,
+      "list_name": "Specific TV care support. Card recognize detail party.",
+      "description": "Early teach artist fight house. Its film than heavy apply near.",
+      "is_active": true,
+      "subscriber_count": 78,
+      "created_at": "2025-12-13T09:14:09.221Z",
+      "updated_at": "2025-12-13T09:14:09.221Z"
+    },
+    {
+      "list_id": 2,
+      "list_name": "Seem here at once seek same poor. Plant green serious police magazine just surface enjoy.",
+      "description": "Understand eight near loss Congress. Director a light drop do education guess.",
+      "is_active": true,
+      "subscriber_count": 100,
+      "created_at": "2025-12-13T09:14:09.221Z",
+      "updated_at": "2025-12-13T09:14:09.221Z"
+    },
+    {
+      "list_id": 3,
+      "list_name": "Color billion son magazine nature nature. Animal provide piece floor. Can set stuff image nature.",
+      "description": "Walk conference sea activity almost continue. Continue maybe them.",
+      "is_active": true,
+      "subscriber_count": 40,
+      "created_at": "2025-12-13T09:14:09.221Z",
+      "updated_at": "2025-12-13T09:14:09.221Z"
+    },
+    {
+      "list_id": 4,
+      "list_name": "Push trip catch. Scientist benefit small agree important. Billion away floor.",
+      "description": "Box debate move decide.",
+      "is_active": true,
+      "subscriber_count": 75,
+      "created_at": "2025-12-13T09:14:09.221Z",
+      "updated_at": "2025-12-13T09:14:09.221Z"
+    },
+    {
+      "list_id": 5,
+      "list_name": "People indicate feel entire. Despite identify ok he eye kid. Under hour rest project full.",
+      "description": "Seat natural different even vote. Improve foreign see east officer. Size hotel Mrs fast like police.",
+      "is_active": true,
+      "subscriber_count": 40,
+      "created_at": "2025-12-13T09:14:09.221Z",
+      "updated_at": "2025-12-13T09:14:09.221Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:15.134Z"
+}

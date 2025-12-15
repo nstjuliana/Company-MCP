@@ -1,0 +1,163 @@
+{
+  "table": "lessons_learned",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"lessons_learned\" table in the \"synthetic_250_postgres\" database captures insights and actionable recommendations derived from various projects, as indicated by columns like \"lesson_title,\" \"description,\" and \"recommendation.\" Each lesson is associated with a specific project, as suggested by the \"project_id\" foreign key, though the target table for this relationship is unspecified. This table primarily serves to document and manage lessons learned over time, tracking who recorded the data and when through fields like \"recorded_by\" and \"record_date.\"",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "lesson_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each record within the lessons learned table. It serves as a sequential number incrementing automatically with each new entry.",
+      "default": "nextval('synthetic.lessons_learned_lesson_id_seq'::regclass)"
+    },
+    {
+      "name": "project_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each project within the lessons learned table, which likely associates recorded insights or feedback with specific projects. The purpose beyond this identification role is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "lesson_title",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column represents brief summaries or themes extracted from experiences or situations potentially useful for reflection or improvement. It likely serves as a title or headline summarizing key takeaways or insights from a given context.",
+      "default": null
+    },
+    {
+      "name": "category",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely categorizes entries based on thematic or contextual aspects derived from lessons learned, although the specific nature of these categories is unclear from the sample values. The phrases appear to be abstract or generic, without revealing a distinct purpose.",
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "nullable": true,
+      "description": "This column appears to capture observations or reflections related to practices, experiences, or events. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "recommendation",
+      "type": "text",
+      "nullable": true,
+      "description": "This column likely contains summarized insights or advice derived from experiences or analyses, as inferred from sentences that reflect reflective thoughts and evaluations. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "recorded_by",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely identifies individuals or entities responsible for recording the lessons learned documented in the table. Specific identities or roles associated with the numeric identifiers are not clear from the available data.",
+      "default": null
+    },
+    {
+      "name": "record_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column captures the specific date on which a lesson was recorded or observed. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a lesson was added to the system, indicating the creation moment of each entry. The values default to the current timestamp, suggesting it captures when new information or insights were documented.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a record in the lessons_learned table was last modified. Its purpose is to track updates to lesson information.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "lesson_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_lessons_learned_project_id",
+      "column_name": "project_id",
+      "referenced_table": "synthetic.pm_projects",
+      "referenced_column": "project_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "lessons_learned_pkey",
+      "index_definition": "CREATE UNIQUE INDEX lessons_learned_pkey ON synthetic.lessons_learned USING btree (lesson_id)",
+      "columns": [
+        "lesson_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "lesson_id": 1,
+      "project_id": 18,
+      "lesson_title": "She something.",
+      "category": "Man fly charge wide against win example by. Road do character management game find.",
+      "description": "Current same behind. List race fine follow pick.",
+      "recommendation": "Minute education police cup thought tell design.",
+      "recorded_by": 271,
+      "record_date": "2024-03-03T06:00:00.000Z",
+      "created_at": "2025-12-13T09:13:58.952Z",
+      "updated_at": "2025-12-13T09:13:58.952Z"
+    },
+    {
+      "lesson_id": 2,
+      "project_id": 15,
+      "lesson_title": "Foot cold everybody build.",
+      "category": "Why ok real. Choice side eat matter rather full wide service.",
+      "description": "Right economy always religious next my. Couple cost girl run every story trial. Civil most last stan...",
+      "recommendation": "Safe third people hair per fly. Probably much hold model. She child executive important focus benefi...",
+      "recorded_by": 912,
+      "record_date": "2024-01-13T06:00:00.000Z",
+      "created_at": "2025-12-13T09:13:58.952Z",
+      "updated_at": "2025-12-13T09:13:58.952Z"
+    },
+    {
+      "lesson_id": 3,
+      "project_id": 14,
+      "lesson_title": "Condition all blood.",
+      "category": "All politics home majority. Red eight hand paper audience us decade man.",
+      "description": "Country moment eat personal condition see. Second short office purpose reflect interview. Coach Cong...",
+      "recommendation": "Your kitchen good firm yard foot he. Step food drive nation heart nearly.",
+      "recorded_by": 761,
+      "record_date": "2025-06-08T05:00:00.000Z",
+      "created_at": "2025-12-13T09:13:58.952Z",
+      "updated_at": "2025-12-13T09:13:58.952Z"
+    },
+    {
+      "lesson_id": 4,
+      "project_id": 71,
+      "lesson_title": "Which language however risk.",
+      "category": "Administration career three according worker Democrat fire sign. Try memory number occur behind.",
+      "description": "They its us building side section. Up plant place approach modern floor north force. Check purpose y...",
+      "recommendation": "Bed it skill challenge from live seat. Human be maybe similar candidate care nice. House number nigh...",
+      "recorded_by": 160,
+      "record_date": "2024-10-21T05:00:00.000Z",
+      "created_at": "2025-12-13T09:13:58.952Z",
+      "updated_at": "2025-12-13T09:13:58.952Z"
+    },
+    {
+      "lesson_id": 5,
+      "project_id": 35,
+      "lesson_title": "Become public interest give fly.",
+      "category": "Deep national seek nature performance yeah reason. Heavy town money.",
+      "description": "Test power discuss herself with.",
+      "recommendation": "Machine others because current whom night. Always two figure.",
+      "recorded_by": 289,
+      "record_date": "2024-12-04T06:00:00.000Z",
+      "created_at": "2025-12-13T09:13:58.952Z",
+      "updated_at": "2025-12-13T09:13:58.952Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:13.756Z"
+}

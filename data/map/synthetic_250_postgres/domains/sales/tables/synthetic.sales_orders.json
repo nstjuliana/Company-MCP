@@ -1,0 +1,285 @@
+{
+  "table": "sales_orders",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.sales_orders` table represents the details of sales orders within the synthetic_250_postgres database, capturing essential attributes such as order dates, billing and shipping information, and financial details like subtotal, discount, tax, and grand total. It is linked via foreign keys to undefined tables, possibly denoting related entities such as customers or product listings, and serves as a central repository for tracking and managing sales orders within the business. Despite the absence of foreign key details, the table's primary key, `sales_order_id`, uniquely identifies each order, and columns like `order_number`, `account_id`, and `status` facilitate business operations and reporting.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "sales_order_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each sales order within the system, ensuring that every transaction is distinct and traceable. Each value represents a new and sequential order entry in the sales process.",
+      "default": "nextval('synthetic.sales_orders_sales_order_id_seq'::regclass)"
+    },
+    {
+      "name": "order_number",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column represents unique identifiers assigned to each sales order processed by the company. These identifiers help track and manage individual transactions within the sales operation.",
+      "default": null
+    },
+    {
+      "name": "quote_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This field likely represents a unique identifier for quotes associated with sales orders, possibly linking orders to their respective quotes for pricing or terms reference. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "opportunity_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "Represents a numeric identifier linking sales orders to specific sales opportunities. Allows for the association of sales transactions with potential business deals.",
+      "default": null
+    },
+    {
+      "name": "account_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents unique identifiers for customer accounts involved in sales orders, allowing linkage to specific customers. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "contact_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "order_date",
+      "type": "date",
+      "nullable": false,
+      "description": "This column records the specific date on which each sales order was placed, with values reflecting different time zones according to daylight saving time changes. It is a non-nullable field, ensuring that every sales order is associated with a distinct order date.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column indicates the current state of a sales order, with possible statuses including \"active,\" \"inactive,\" and \"pending.\" It captures whether the order is actively being processed, not currently active, or awaiting further action.",
+      "default": "'pending'::character varying"
+    },
+    {
+      "name": "subtotal",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the pre-tax total monetary value of items listed in a sales order. It accounts for the aggregate cost prior to any additional charges or discounts.",
+      "default": null
+    },
+    {
+      "name": "discount",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the monetary amount deducted from the original sales order price, allowing buyers to pay a lesser amount for their purchase. The values indicate discounts applied to various sales orders, with amounts ranging from small to substantial.",
+      "default": "0"
+    },
+    {
+      "name": "tax",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column likely represents the monetary amount of tax applied to sales orders. The values indicate variable tax amounts that are associated with different sales transactions.",
+      "default": "0"
+    },
+    {
+      "name": "shipping",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column likely represents the shipping cost associated with sales orders, reflecting a financial value that varies for each transaction. The purpose is to capture shipping expenses, which are often a component of the total order cost.",
+      "default": "0"
+    },
+    {
+      "name": "grand_total",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the final total amount for sales orders, including any applicable taxes, fees, or discounts. The amounts are presented in a monetary format, reflecting the overall charge for each order.",
+      "default": null
+    },
+    {
+      "name": "billing_address",
+      "type": "text",
+      "nullable": true,
+      "description": "This column contains the complete mailing addresses associated with the billing details for sales orders, including street addresses, city names, state abbreviations, and postal codes. These addresses indicate the locations to which invoices or billing information are sent for sales transactions.",
+      "default": null
+    },
+    {
+      "name": "shipping_address",
+      "type": "text",
+      "nullable": true,
+      "description": "This column captures the full shipping address for orders, reflecting diverse locations, including street addresses, suites or units, and sometimes military or diplomatic post office boxes. The presence of state abbreviations and ZIP codes indicates U.S.-based delivery destinations.",
+      "default": null
+    },
+    {
+      "name": "owner_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents the identifier for individuals responsible for specific sales orders, indicating who manages or owns each order within the sales system. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column captures the date and time when a sales order was initially recorded or created in the system. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a sales order was last updated. It captures changes in the order's status or details, reflecting the most recent activity.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "sales_order_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_sales_orders_account_id",
+      "column_name": "account_id",
+      "referenced_table": "synthetic.accounts",
+      "referenced_column": "account_id"
+    },
+    {
+      "constraint_name": "fk_sales_orders_contact_id",
+      "column_name": "contact_id",
+      "referenced_table": "synthetic.contacts",
+      "referenced_column": "contact_id"
+    },
+    {
+      "constraint_name": "fk_sales_orders_opportunity_id",
+      "column_name": "opportunity_id",
+      "referenced_table": "synthetic.opportunities",
+      "referenced_column": "opportunity_id"
+    },
+    {
+      "constraint_name": "fk_sales_orders_quote_id",
+      "column_name": "quote_id",
+      "referenced_table": "synthetic.quotes",
+      "referenced_column": "quote_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "sales_orders_order_number_key",
+      "index_definition": "CREATE UNIQUE INDEX sales_orders_order_number_key ON synthetic.sales_orders USING btree (order_number)",
+      "columns": [
+        "order_number"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "sales_orders_pkey",
+      "index_definition": "CREATE UNIQUE INDEX sales_orders_pkey ON synthetic.sales_orders USING btree (sales_order_id)",
+      "columns": [
+        "sales_order_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "sales_order_id": 1,
+      "order_number": "512090181749731",
+      "quote_id": 4,
+      "opportunity_id": 28,
+      "account_id": 85,
+      "contact_id": null,
+      "order_date": "2024-03-10T06:00:00.000Z",
+      "status": "active",
+      "subtotal": "236.77",
+      "discount": "260.99",
+      "tax": "315.01",
+      "shipping": "800.82",
+      "grand_total": "700.73",
+      "billing_address": "36098 Sarah Center Suite 045, Reidville, RI 86275",
+      "shipping_address": "05975 Jose Spring Suite 594, North Allen, ME 21853",
+      "owner_id": 754,
+      "created_at": "2025-12-13T09:18:31.513Z",
+      "updated_at": "2025-12-13T09:18:31.513Z"
+    },
+    {
+      "sales_order_id": 2,
+      "order_number": "084182865490787",
+      "quote_id": 21,
+      "opportunity_id": 21,
+      "account_id": 58,
+      "contact_id": null,
+      "order_date": "2024-04-17T05:00:00.000Z",
+      "status": "inactive",
+      "subtotal": "233.61",
+      "discount": "943.55",
+      "tax": "136.11",
+      "shipping": "770.15",
+      "grand_total": "108.97",
+      "billing_address": "1519 Audrey Mount Suite 770, Claytonshire, MS 86663",
+      "shipping_address": "PSC 6169, Box 4135, APO AE 23023",
+      "owner_id": 109,
+      "created_at": "2025-12-13T09:18:31.513Z",
+      "updated_at": "2025-12-13T09:18:31.513Z"
+    },
+    {
+      "sales_order_id": 3,
+      "order_number": "848369559582770",
+      "quote_id": 11,
+      "opportunity_id": 29,
+      "account_id": 60,
+      "contact_id": null,
+      "order_date": "2025-05-01T05:00:00.000Z",
+      "status": "inactive",
+      "subtotal": "406.51",
+      "discount": "535.92",
+      "tax": "964.63",
+      "shipping": "207.64",
+      "grand_total": "308.31",
+      "billing_address": "69156 Harper Mews, Port Alexandraburgh, NM 56169",
+      "shipping_address": "35120 Diaz Radial, Silvamouth, WI 62017",
+      "owner_id": 272,
+      "created_at": "2025-12-13T09:18:31.513Z",
+      "updated_at": "2025-12-13T09:18:31.513Z"
+    },
+    {
+      "sales_order_id": 4,
+      "order_number": "349438563375984",
+      "quote_id": 8,
+      "opportunity_id": 6,
+      "account_id": 21,
+      "contact_id": null,
+      "order_date": "2025-02-16T06:00:00.000Z",
+      "status": "pending",
+      "subtotal": "304.21",
+      "discount": "704.70",
+      "tax": "603.30",
+      "shipping": "215.02",
+      "grand_total": "856.57",
+      "billing_address": "870 Ann Corners Apt. 133, Bishopburgh, IL 26982",
+      "shipping_address": "41707 Duane Parkway, Ingramchester, IA 32703",
+      "owner_id": 152,
+      "created_at": "2025-12-13T09:18:31.513Z",
+      "updated_at": "2025-12-13T09:18:31.513Z"
+    },
+    {
+      "sales_order_id": 5,
+      "order_number": "879081322082204",
+      "quote_id": 6,
+      "opportunity_id": 46,
+      "account_id": 32,
+      "contact_id": null,
+      "order_date": "2024-07-05T05:00:00.000Z",
+      "status": "inactive",
+      "subtotal": "396.24",
+      "discount": "48.95",
+      "tax": "298.84",
+      "shipping": "820.09",
+      "grand_total": "173.87",
+      "billing_address": "1978 Robert Glens, Thomaston, AS 38631",
+      "shipping_address": "Unit 5990 Box 0284, DPO AE 17948",
+      "owner_id": 975,
+      "created_at": "2025-12-13T09:18:31.513Z",
+      "updated_at": "2025-12-13T09:18:31.513Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:42:02.442Z"
+}

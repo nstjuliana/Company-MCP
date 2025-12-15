@@ -1,0 +1,116 @@
+{
+  "table": "receiving_orders",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.receiving_orders\" table is intended to represent business transactions where products or goods are received, likely within a larger supply chain or inventory management system, although it currently contains no data. The primary key, \"receiving_id,\" ensures unique identification for each receiving order. The table is linked to at least two other entities through unspecified foreign keys, signifying its role in associating receiving operations with details or events in other areas of the business process.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "receiving_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column serves as a unique identifier for each order recorded in the receiving orders table. It is automatically generated and incremented for new entries.",
+      "default": "nextval('synthetic.receiving_orders_receiving_id_seq'::regclass)"
+    },
+    {
+      "name": "receiving_number",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "po_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "warehouse_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column likely identifies the specific warehouse associated with each receiving order. Each entry in the column corresponds to a unique warehouse location necessary for the logistical processing of orders.",
+      "default": null
+    },
+    {
+      "name": "received_date",
+      "type": "timestamp without time zone",
+      "nullable": false,
+      "description": "This column indicates the specific date and time when an order was successfully received. It is instrumental in tracking the completion of order deliveries.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely indicates the current progress or state of receiving orders within a business's workflow. The default value suggests new records start as pending until further updates.",
+      "default": "'pending'::character varying"
+    },
+    {
+      "name": "received_by",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely identifies the employee or individual responsible for receiving the order. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "notes",
+      "type": "text",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an entry is initially created in the context of receiving orders. The exact purpose of tracking this timestamp is unclear from the available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column indicates the latest time when a record in the receiving orders table was modified. It helps in tracking the most recent updates to the order information.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "receiving_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_receiving_orders_po_id",
+      "column_name": "po_id",
+      "referenced_table": "synthetic.purchase_orders",
+      "referenced_column": "po_id"
+    },
+    {
+      "constraint_name": "fk_receiving_orders_warehouse_id",
+      "column_name": "warehouse_id",
+      "referenced_table": "synthetic.warehouses",
+      "referenced_column": "warehouse_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "receiving_orders_pkey",
+      "index_definition": "CREATE UNIQUE INDEX receiving_orders_pkey ON synthetic.receiving_orders USING btree (receiving_id)",
+      "columns": [
+        "receiving_id"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "receiving_orders_receiving_number_key",
+      "index_definition": "CREATE UNIQUE INDEX receiving_orders_receiving_number_key ON synthetic.receiving_orders USING btree (receiving_number)",
+      "columns": [
+        "receiving_number"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:42:23.171Z"
+}

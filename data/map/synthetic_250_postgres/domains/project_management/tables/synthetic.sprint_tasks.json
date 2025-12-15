@@ -1,0 +1,80 @@
+{
+  "table": "sprint_tasks",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"sprint_tasks\" table in the \"synthetic\" schema is intended to represent tasks associated with a particular sprint in a project management or agile development context, as suggested by its primary key \"sprint_task_id.\" Although there is no column information provided, the table likely manages relationships with other entities given the presence of foreign keys, albeit undefined, suggesting it may link tasks to broader project elements such as sprints or project teams. Its role in the data model is to serve as a mechanism to organize and track individual tasks within the structure of a defined sprint, but the exact nature of its relationships remains unclear without further data.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "sprint_task_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each task within a sprint, serving as a sequential identifier to ensure individual task traceability and management. Purpose unclear from available data.",
+      "default": "nextval('synthetic.sprint_tasks_sprint_task_id_seq'::regclass)"
+    },
+    {
+      "name": "sprint_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column identifies the unique identifier for each sprint task. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "task_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies tasks within a sprint. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "story_points",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents the effort estimation or complexity metric assigned to tasks within a sprint, used to quantify work in agile project management. Purpose is unclear from available data due to the lack of sample values.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column stores the date and time when a task was initially recorded in the system, capturing the moment each task was entered into the sprint planning process.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the most recent date and time when a task in a sprint was updated. It helps in tracking changes and modifications made to the tasks over time.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "sprint_task_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_sprint_tasks_sprint_id",
+      "column_name": "sprint_id",
+      "referenced_table": "synthetic.sprints",
+      "referenced_column": "sprint_id"
+    },
+    {
+      "constraint_name": "fk_sprint_tasks_task_id",
+      "column_name": "task_id",
+      "referenced_table": "synthetic.pm_tasks",
+      "referenced_column": "task_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "sprint_tasks_pkey",
+      "index_definition": "CREATE UNIQUE INDEX sprint_tasks_pkey ON synthetic.sprint_tasks USING btree (sprint_task_id)",
+      "columns": [
+        "sprint_task_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:43:43.809Z"
+}

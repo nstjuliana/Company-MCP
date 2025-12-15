@@ -1,0 +1,123 @@
+{
+  "table": "DATASETS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.DATASETS table represents a repository of distinct datasets, identifiable by the primary key DATASET_ID, each with specific characteristics including a name, description, and creation timestamp. Without relationships to other tables, it serves as an isolated component within the data model, possibly acting as a foundational element for organizing dataset information and metrics attributes, such as KPI and visualization dates. The sample data indicates detailed logging of dataset-specific metrics and timestamps, underpinning its role in tracking dataset-related metadata.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "DATASET_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each dataset entry in the table, ensuring each record can be distinctly recognized within the dataset collection.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column contains identifiers or names for individual datasets within a collection, numbered sequentially to distinguish them. These values suggest the datasets are likely part of an organized series or group.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column stores brief textual descriptions associated with each dataset in the table. These descriptions likely provide an overview or summary of the contents or purpose of each dataset.",
+      "default": null
+    },
+    {
+      "name": "VISUALIZATION_183_ATTR_0",
+      "type": "DATE",
+      "nullable": false,
+      "description": "This column represents a sequence of consecutive calendar dates, likely related to scheduled events or data updates. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "KPI_183_ATTR_1",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column likely represents a categorization or classification indicator related to a specific key performance metric within datasets. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "METRIC_183_ATTR_2",
+      "type": "DATE",
+      "nullable": true,
+      "description": "This column likely represents a scheduled or expected date associated with a metric event or activity. The purpose is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "KPI_183_ATTR_3",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column likely represents a sequence or category identifier related to a specific performance metric used in the datasets. The purpose is unclear from the available data beyond indicating a series of consecutive whole numbers.",
+      "default": null
+    },
+    {
+      "name": "CREATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column records the date and time when each entry in the dataset was created, ensuring a consistent timestamp at the moment of entry creation. The purpose of tracking this information is unclear from the available data.",
+      "default": "CURRENT_TIMESTAMP()"
+    }
+  ],
+  "primary_key": [
+    "DATASET_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "DATASET_ID": 1,
+      "NAME": "DATASETS 1",
+      "DESCRIPTION": "Description for DATASETS 1",
+      "VISUALIZATION_183_ATTR_0": "2025-12-12",
+      "KPI_183_ATTR_1": null,
+      "METRIC_183_ATTR_2": "2025-12-12",
+      "KPI_183_ATTR_3": 100,
+      "CREATED_AT": "2025-12-12 17:26:08.336"
+    },
+    {
+      "DATASET_ID": 2,
+      "NAME": "DATASETS 2",
+      "DESCRIPTION": "Description for DATASETS 2",
+      "VISUALIZATION_183_ATTR_0": "2025-12-13",
+      "KPI_183_ATTR_1": 101,
+      "METRIC_183_ATTR_2": "2025-12-13",
+      "KPI_183_ATTR_3": 101,
+      "CREATED_AT": "2025-12-12 17:26:08.336"
+    },
+    {
+      "DATASET_ID": 3,
+      "NAME": "DATASETS 3",
+      "DESCRIPTION": "Description for DATASETS 3",
+      "VISUALIZATION_183_ATTR_0": "2025-12-14",
+      "KPI_183_ATTR_1": 102,
+      "METRIC_183_ATTR_2": "2025-12-14",
+      "KPI_183_ATTR_3": 102,
+      "CREATED_AT": "2025-12-12 17:26:08.336"
+    },
+    {
+      "DATASET_ID": 4,
+      "NAME": "DATASETS 4",
+      "DESCRIPTION": "Description for DATASETS 4",
+      "VISUALIZATION_183_ATTR_0": "2025-12-15",
+      "KPI_183_ATTR_1": null,
+      "METRIC_183_ATTR_2": "2025-12-15",
+      "KPI_183_ATTR_3": 103,
+      "CREATED_AT": "2025-12-12 17:26:08.336"
+    },
+    {
+      "DATASET_ID": 5,
+      "NAME": "DATASETS 5",
+      "DESCRIPTION": "Description for DATASETS 5",
+      "VISUALIZATION_183_ATTR_0": "2025-12-16",
+      "KPI_183_ATTR_1": 104,
+      "METRIC_183_ATTR_2": "2025-12-16",
+      "KPI_183_ATTR_3": 104,
+      "CREATED_AT": "2025-12-12 17:26:08.336"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:44.431Z"
+}

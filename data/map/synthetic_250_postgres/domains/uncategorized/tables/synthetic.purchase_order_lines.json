@@ -1,0 +1,95 @@
+{
+  "table": "purchase_order_lines",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.purchase_order_lines` table is designed to hold individual line items of a purchase order, each identified by a unique `po_line_id`. It possesses a foreign key relationship that is undefined, suggesting it might link to another table, potentially to reference broader order or item details. The absence of rows and columns limits detailed analysis, but the table likely plays a role in itemizing components of purchase orders within the broader database schema.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "po_line_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each line item within a purchase order, ensuring each entry is distinguishable within the context of order processing.",
+      "default": "nextval('synthetic.purchase_order_lines_po_line_id_seq'::regclass)"
+    },
+    {
+      "name": "po_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column likely serves as a unique identifier for each purchase order line entry. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "product_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents the unique identifier assigned to each product associated with purchase order lines in the system. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "quantity_ordered",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents the total number of each item requested in individual purchase order line entries. Each entry is mandatory and must specify a whole number indicating the amount ordered.",
+      "default": null
+    },
+    {
+      "name": "quantity_received",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column indicates the number of items that have been received against a specific purchase order line. The default value suggests that no items are initially recorded as received until updated.",
+      "default": "0"
+    },
+    {
+      "name": "unit_cost",
+      "type": "numeric",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "line_total",
+      "type": "numeric",
+      "nullable": true,
+      "description": "The column likely represents the total amount for a line item within a purchase order, which may be used to calculate the overall order cost.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a purchase order line was initially created. The inclusion of a default timestamp suggests it captures the moment of entry into the system.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column likely records the date and time when a change or update was made to the purchase order line entry. It captures the most recent modification timestamp, assuming no explicit overrides were applied.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "po_line_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_purchase_order_lines_po_id",
+      "column_name": "po_id",
+      "referenced_table": "synthetic.purchase_orders",
+      "referenced_column": "po_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "purchase_order_lines_pkey",
+      "index_definition": "CREATE UNIQUE INDEX purchase_order_lines_pkey ON synthetic.purchase_order_lines USING btree (po_line_id)",
+      "columns": [
+        "po_line_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:41:19.962Z"
+}

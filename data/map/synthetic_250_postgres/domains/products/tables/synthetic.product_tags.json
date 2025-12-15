@@ -1,0 +1,112 @@
+{
+  "table": "product_tags",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.product_tags` table represents a collection of product tags defined by their unique `tag_id`. Each tag has a `tag_name` and a `slug`, and it records the timestamps of its creation and last update which suggests a structure for managing descriptive labels for products. As it has no relationships with other tables, it appears to function independently, possibly serving to categorize or annotate product data elsewhere within the application.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "tag_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier assigned to each tag associated with products, ensuring each tag is distinctly recognizable. The identifiers increment sequentially, suggesting a continuous assignment process for new tags.",
+      "default": "nextval('synthetic.product_tags_tag_id_seq'::regclass)"
+    },
+    {
+      "name": "tag_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column contains descriptive phrases likely representing categories or themes associated with products, as evidenced by varied examples such as activities, media, and personal identities. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "slug",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column represents user-friendly, hyphenated tags associated with products to aid in identification and categorization based on distinct attributes or themes. The purpose of these tags is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Records the date and time when a product tag was created. This information is captured automatically and may not always be essential, as it is nullable.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column stores the date and time when each product tag in the table was last modified. The values indicate regular updates, suggesting frequent changes or validations are performed on product tags.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "tag_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "product_tags_pkey",
+      "index_definition": "CREATE UNIQUE INDEX product_tags_pkey ON synthetic.product_tags USING btree (tag_id)",
+      "columns": [
+        "tag_id"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "product_tags_slug_key",
+      "index_definition": "CREATE UNIQUE INDEX product_tags_slug_key ON synthetic.product_tags USING btree (slug)",
+      "columns": [
+        "slug"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "product_tags_tag_name_key",
+      "index_definition": "CREATE UNIQUE INDEX product_tags_tag_name_key ON synthetic.product_tags USING btree (tag_name)",
+      "columns": [
+        "tag_name"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "tag_id": 1,
+      "tag_name": "Radio pick together exist. Someone would wait realize spend benefit actually thank.",
+      "slug": "build-old-plan",
+      "created_at": "2025-12-13T08:56:49.943Z",
+      "updated_at": "2025-12-13T08:56:49.943Z"
+    },
+    {
+      "tag_id": 2,
+      "tag_name": "Thousand form cell play sense mean director. Into main health rise issue.",
+      "slug": "thing-deep-indeed",
+      "created_at": "2025-12-13T08:56:49.943Z",
+      "updated_at": "2025-12-13T08:56:49.943Z"
+    },
+    {
+      "tag_id": 3,
+      "tag_name": "Today world Mr street state. Share let letter up grow. Gun political remember attack.",
+      "slug": "former-to-so-quite",
+      "created_at": "2025-12-13T08:56:49.943Z",
+      "updated_at": "2025-12-13T08:56:49.943Z"
+    },
+    {
+      "tag_id": 4,
+      "tag_name": "Nature woman magazine simple sister down clear future.",
+      "slug": "five-indeed-happy",
+      "created_at": "2025-12-13T08:56:49.943Z",
+      "updated_at": "2025-12-13T08:56:49.943Z"
+    },
+    {
+      "tag_id": 5,
+      "tag_name": "Method it talk court letter. Hotel majority have safe book.",
+      "slug": "development-alone",
+      "created_at": "2025-12-13T08:56:49.943Z",
+      "updated_at": "2025-12-13T08:56:49.943Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:38:56.850Z"
+}

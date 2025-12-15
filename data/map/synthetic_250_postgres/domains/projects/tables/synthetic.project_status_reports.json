@@ -1,0 +1,187 @@
+{
+  "table": "project_status_reports",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.project_status_reports` table represents periodic status reports for projects, each identified by a unique `report_id`. It tracks various aspects such as the overall, schedule, and budget statuses, accomplishments, upcoming tasks, and issues or risks related to a project, which is referenced by `project_id`. This table serves as a record-keeping entity within the data model, capturing changes over time in project health and progress for analysis and decision-making, though its foreign key relationships are presently undefined.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "report_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each status report within a project, ensuring that each report can be individually referenced and tracked. The sequence of numbers indicates a simple incremental assignment designed for distinct report identification.",
+      "default": "nextval('synthetic.project_status_reports_report_id_seq'::regclass)"
+    },
+    {
+      "name": "project_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "A unique identifier for each project within the project status reports table. It ensures each project can be distinctly tracked and referenced.",
+      "default": null
+    },
+    {
+      "name": "report_date",
+      "type": "date",
+      "nullable": false,
+      "description": "This column captures the specific calendar date when a project status report was created, reflecting the timeline of project updates and progress. The values indicate adherence to Central Time (with respective daylight saving adjustments) for recording these dates.",
+      "default": null
+    },
+    {
+      "name": "overall_status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column indicates the current state of a project, reflecting whether it is \"active,\" \"pending,\" or \"inactive\" based on the sample values. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "schedule_status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column indicates the current progress of a project, categorizing its status as either active, pending, or inactive. This classification helps track and assess the project's stage within the organizational schedule.",
+      "default": null
+    },
+    {
+      "name": "budget_status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column indicates the current financial standing or phase of a project, with possible values such as \"pending,\" \"active,\" and \"inactive.\" Purpose unclear from available data regarding the specific criteria that define each status.",
+      "default": null
+    },
+    {
+      "name": "accomplishments",
+      "type": "text",
+      "nullable": true,
+      "description": "This column contains narrative summaries of achievements or key events related to a project, as noted in project status reports. The nature or context of these achievements is not explicitly detailed, and their purpose is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "upcoming_tasks",
+      "type": "text",
+      "nullable": true,
+      "description": "This column contains narrative descriptions of tasks expected to be addressed in the future for ongoing projects. The purpose of these entries remains unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "issues_risks",
+      "type": "text",
+      "nullable": true,
+      "description": "This column appears to capture narrative descriptions or summaries about potential issues and risks associated with project status reports. The content often involves reflections on decisions, actions, and predictions related to the projects.",
+      "default": null
+    },
+    {
+      "name": "submitted_by",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents the identifier of the individual or entity responsible for submitting the project status report. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when each project status report was created. It is typically set to the current timestamp when a new report entry is added.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a project status report was last modified. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "report_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_project_status_reports_project_id",
+      "column_name": "project_id",
+      "referenced_table": "synthetic.pm_projects",
+      "referenced_column": "project_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "project_status_reports_pkey",
+      "index_definition": "CREATE UNIQUE INDEX project_status_reports_pkey ON synthetic.project_status_reports USING btree (report_id)",
+      "columns": [
+        "report_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "report_id": 1,
+      "project_id": 23,
+      "report_date": "2025-05-09T05:00:00.000Z",
+      "overall_status": "pending",
+      "schedule_status": "active",
+      "budget_status": "pending",
+      "accomplishments": "Police wait happen determine. Long lawyer writer health.",
+      "upcoming_tasks": "Serious soon stay seven quite other skin. Land region back nor article natural measure. Mr clearly t...",
+      "issues_risks": "Speak law message lead around left southern. How staff second. Authority interest red must art thus ...",
+      "submitted_by": 306,
+      "created_at": "2025-12-13T09:13:55.589Z",
+      "updated_at": "2025-12-13T09:13:55.589Z"
+    },
+    {
+      "report_id": 2,
+      "project_id": 82,
+      "report_date": "2024-07-08T05:00:00.000Z",
+      "overall_status": "pending",
+      "schedule_status": "pending",
+      "budget_status": "active",
+      "accomplishments": "She within position inside. Large true help bag who themselves.",
+      "upcoming_tasks": "Budget year hotel camera without strong. Without leg rest.",
+      "issues_risks": "Here discover leave choice country themselves she. Special information she. Drive attack order.",
+      "submitted_by": 157,
+      "created_at": "2025-12-13T09:13:55.589Z",
+      "updated_at": "2025-12-13T09:13:55.589Z"
+    },
+    {
+      "report_id": 3,
+      "project_id": 48,
+      "report_date": "2024-11-02T05:00:00.000Z",
+      "overall_status": "active",
+      "schedule_status": "pending",
+      "budget_status": "pending",
+      "accomplishments": "Scientist I doctor describe tell.",
+      "upcoming_tasks": "Mean eye staff rule. Officer significant stand down then worry.",
+      "issues_risks": "Including every news option same. Personal interview many win. Skill five indicate chance heavy seni...",
+      "submitted_by": 941,
+      "created_at": "2025-12-13T09:13:55.589Z",
+      "updated_at": "2025-12-13T09:13:55.589Z"
+    },
+    {
+      "report_id": 4,
+      "project_id": 1,
+      "report_date": "2024-11-22T06:00:00.000Z",
+      "overall_status": "pending",
+      "schedule_status": "inactive",
+      "budget_status": "inactive",
+      "accomplishments": "Tax certain leg arm include. Newspaper care drug data position two.",
+      "upcoming_tasks": "Movie stop appear help. Owner them could seven right next look thank. Field training deep couple sci...",
+      "issues_risks": "Receive region however dream focus. Herself move grow end mention. Letter sort reveal seven floor da...",
+      "submitted_by": 20,
+      "created_at": "2025-12-13T09:13:55.589Z",
+      "updated_at": "2025-12-13T09:13:55.589Z"
+    },
+    {
+      "report_id": 5,
+      "project_id": 15,
+      "report_date": "2024-01-14T06:00:00.000Z",
+      "overall_status": "inactive",
+      "schedule_status": "inactive",
+      "budget_status": "active",
+      "accomplishments": "Administration network once result. Charge form here street material.",
+      "upcoming_tasks": "Shake major rich science leave. College result major true my politics. Model stuff avoid stand.",
+      "issues_risks": "Include successful discuss.",
+      "submitted_by": 60,
+      "created_at": "2025-12-13T09:13:55.589Z",
+      "updated_at": "2025-12-13T09:13:55.589Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:42:16.314Z"
+}

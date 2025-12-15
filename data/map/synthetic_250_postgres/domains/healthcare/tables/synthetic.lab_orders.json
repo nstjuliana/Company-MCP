@@ -1,0 +1,114 @@
+{
+  "table": "lab_orders",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.lab_orders\" table likely represents orders made for laboratory tests or services, serving as a transactional or records table within the synthetic_250_postgres database. The use of \"order_id\" as a primary key indicates that each record is uniquely identified, although no specific information about columns is available to further detail its structure or attributes. The table has undefined foreign key constraints, suggesting it forms part of a wider relational system with other unspecified entities.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "order_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each entry in the lab orders table, serving as a primary key to ensure distinct tracking of individual lab orders.",
+      "default": "nextval('synthetic.lab_orders_order_id_seq'::regclass)"
+    },
+    {
+      "name": "patient_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "A unique numerical identifier for each patient associated with laboratory orders. This ensures that lab tests and results are accurately attributed to the correct individual.",
+      "default": null
+    },
+    {
+      "name": "physician_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Represents the unique identifier for a medical professional associated with laboratory orders. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "encounter_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This field likely represents a unique identifier associated with a medical encounter in the laboratory orders context. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "order_date",
+      "type": "timestamp without time zone",
+      "nullable": false,
+      "description": "This column indicates the date and time when a laboratory order was placed.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This field captures the progression state of lab orders, with a default indicator of 'ordered'. Further detail on the possible states is unavailable, leaving its full range of purpose unclear from the provided data.",
+      "default": "'ordered'::character varying"
+    },
+    {
+      "name": "priority",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "notes",
+      "type": "text",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Records the date and time when each laboratory order was initiated or recorded. This information is automatically set to the current timestamp when a new lab order entry is created.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Indicates the date and time when a laboratory order was last modified. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "order_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_lab_orders_encounter_id",
+      "column_name": "encounter_id",
+      "referenced_table": "synthetic.encounters",
+      "referenced_column": "encounter_id"
+    },
+    {
+      "constraint_name": "fk_lab_orders_patient_id",
+      "column_name": "patient_id",
+      "referenced_table": "synthetic.patients",
+      "referenced_column": "patient_id"
+    },
+    {
+      "constraint_name": "fk_lab_orders_physician_id",
+      "column_name": "physician_id",
+      "referenced_table": "synthetic.physicians",
+      "referenced_column": "physician_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "lab_orders_pkey",
+      "index_definition": "CREATE UNIQUE INDEX lab_orders_pkey ON synthetic.lab_orders USING btree (order_id)",
+      "columns": [
+        "order_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:41:37.834Z"
+}

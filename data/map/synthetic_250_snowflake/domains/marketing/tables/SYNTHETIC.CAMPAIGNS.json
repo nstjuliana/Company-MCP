@@ -1,0 +1,123 @@
+{
+  "table": "CAMPAIGNS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.CAMPAIGNS table represents a business entity that manages marketing campaigns, with each campaign identified uniquely by the CAMPAIGN_ID. Key details include the campaign's name, start and end dates, with fields for budget and other campaign attributes such as EMAIL_131_ATTR_0, EVENT_131_ATTR_1, and AD_131_ATTR_2, which suggest this table tracks various campaign-specific characteristics or metrics. This table stands isolated in terms of relationships as it neither references nor is referenced by any other tables, making it primarily a standalone representation of campaign information in the database.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "CAMPAIGN_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each campaign within the dataset. It ensures that each campaign can be distinctly recognized and referenced.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column represents the identifier for different campaigns, likely enumerated or named in a sequential manner. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "START_DATE",
+      "type": "DATE",
+      "nullable": true,
+      "description": "This column likely records the scheduled start date for marketing campaigns within the organization. The data reflects a specific future date and time zone, indicating when a campaign is set to commence.",
+      "default": null
+    },
+    {
+      "name": "END_DATE",
+      "type": "DATE",
+      "nullable": true,
+      "description": "This column indicates the planned or actual end date for each campaign. It reflects the date when a campaign may conclude or the period it covers ends, with an absence of a date signifying that the end has not been determined.",
+      "default": null
+    },
+    {
+      "name": "BUDGET",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column represents the monetary allocation for various marketing campaigns. Actual budgets can vary and are not mandatory for every campaign.",
+      "default": null
+    },
+    {
+      "name": "EMAIL_131_ATTR_0",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column represents a numerically coded attribute related to email campaigns. The specific purpose of these codes is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "EVENT_131_ATTR_1",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "AD_131_ATTR_2",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "CAMPAIGN_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "CAMPAIGN_ID": 1,
+      "NAME": "CAMPAIGNS 1",
+      "START_DATE": "2025-12-12",
+      "END_DATE": "2026-01-11",
+      "BUDGET": null,
+      "EMAIL_131_ATTR_0": null,
+      "EVENT_131_ATTR_1": "Sample EVENT_131_ATTR_1 1",
+      "AD_131_ATTR_2": "Sample AD_131_ATTR_2 1"
+    },
+    {
+      "CAMPAIGN_ID": 2,
+      "NAME": "CAMPAIGNS 2",
+      "START_DATE": "2025-12-12",
+      "END_DATE": "2026-01-12",
+      "BUDGET": 101,
+      "EMAIL_131_ATTR_0": 101,
+      "EVENT_131_ATTR_1": "Sample EVENT_131_ATTR_1 2",
+      "AD_131_ATTR_2": "Sample AD_131_ATTR_2 2"
+    },
+    {
+      "CAMPAIGN_ID": 3,
+      "NAME": "CAMPAIGNS 3",
+      "START_DATE": "2025-12-12",
+      "END_DATE": "2026-01-13",
+      "BUDGET": 102,
+      "EMAIL_131_ATTR_0": 102,
+      "EVENT_131_ATTR_1": "Sample EVENT_131_ATTR_1 3",
+      "AD_131_ATTR_2": "Sample AD_131_ATTR_2 3"
+    },
+    {
+      "CAMPAIGN_ID": 4,
+      "NAME": "CAMPAIGNS 4",
+      "START_DATE": "2025-12-12",
+      "END_DATE": "2026-01-14",
+      "BUDGET": null,
+      "EMAIL_131_ATTR_0": null,
+      "EVENT_131_ATTR_1": "Sample EVENT_131_ATTR_1 4",
+      "AD_131_ATTR_2": "Sample AD_131_ATTR_2 4"
+    },
+    {
+      "CAMPAIGN_ID": 5,
+      "NAME": "CAMPAIGNS 5",
+      "START_DATE": "2025-12-12",
+      "END_DATE": "2026-01-15",
+      "BUDGET": 104,
+      "EMAIL_131_ATTR_0": 104,
+      "EVENT_131_ATTR_1": "Sample EVENT_131_ATTR_1 5",
+      "AD_131_ATTR_2": "Sample AD_131_ATTR_2 5"
+    }
+  ],
+  "generated_at": "2025-12-14T23:42:37.014Z"
+}

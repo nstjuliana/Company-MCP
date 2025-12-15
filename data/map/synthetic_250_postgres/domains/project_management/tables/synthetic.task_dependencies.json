@@ -1,0 +1,133 @@
+{
+  "table": "task_dependencies",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.task_dependencies\" table represents the relationships between tasks, where each record defines a dependency between a specific task and another task it depends on. The table captures the type and timing of dependencies using columns like \"dependency_type\" and \"lag_days\", with each dependency uniquely identified by the \"dependency_id\" primary key. Although the foreign key relationships are not explicitly defined, the presence of \"task_id\" and \"depends_on_task_id\" suggests that it plays a role in managing task order and scheduling within the broader task management data model.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "dependency_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each task dependency within the system, ensuring that dependencies can be tracked and managed individually.",
+      "default": "nextval('synthetic.task_dependencies_dependency_id_seq'::regclass)"
+    },
+    {
+      "name": "task_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column likely represents a unique identifier for individual tasks involved in dependencies within a workflow or project system. It links tasks by identifying them numerically, ensuring clear reference and management of task relationships.",
+      "default": null
+    },
+    {
+      "name": "depends_on_task_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column identifies the specific tasks that a given task is dependent on, indicating an inter-task relationship where completion of one task is contingent upon the completion of another task. Each number corresponds to an ID of a preceding task that must be completed first.",
+      "default": null
+    },
+    {
+      "name": "dependency_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": "'finish_to_start'::character varying"
+    },
+    {
+      "name": "lag_days",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column indicates the number of days delay between dependent tasks in a sequence, with both positive and zero values suggesting variability in scheduling flexibility. The purpose within the overall task planning context is unclear from the available data.",
+      "default": "0"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when each task dependency entry was created. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when each task dependency entry was last modified. It is a crucial element for tracking updates and changes in task dependencies over time.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "dependency_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_task_dependencies_depends_on_task_id",
+      "column_name": "depends_on_task_id",
+      "referenced_table": "synthetic.pm_tasks",
+      "referenced_column": "task_id"
+    },
+    {
+      "constraint_name": "fk_task_dependencies_task_id",
+      "column_name": "task_id",
+      "referenced_table": "synthetic.pm_tasks",
+      "referenced_column": "task_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "task_dependencies_pkey",
+      "index_definition": "CREATE UNIQUE INDEX task_dependencies_pkey ON synthetic.task_dependencies USING btree (dependency_id)",
+      "columns": [
+        "dependency_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "dependency_id": 1,
+      "task_id": 8,
+      "depends_on_task_id": 44,
+      "dependency_type": "south",
+      "lag_days": 30,
+      "created_at": "2025-12-13T09:00:05.586Z",
+      "updated_at": "2025-12-13T09:00:05.586Z"
+    },
+    {
+      "dependency_id": 2,
+      "task_id": 45,
+      "depends_on_task_id": 30,
+      "dependency_type": "rich",
+      "lag_days": 14,
+      "created_at": "2025-12-13T09:00:05.586Z",
+      "updated_at": "2025-12-13T09:00:05.586Z"
+    },
+    {
+      "dependency_id": 3,
+      "task_id": 30,
+      "depends_on_task_id": 49,
+      "dependency_type": "impact",
+      "lag_days": 22,
+      "created_at": "2025-12-13T09:00:05.586Z",
+      "updated_at": "2025-12-13T09:00:05.586Z"
+    },
+    {
+      "dependency_id": 4,
+      "task_id": 9,
+      "depends_on_task_id": 4,
+      "dependency_type": "fine",
+      "lag_days": 4,
+      "created_at": "2025-12-13T09:00:05.586Z",
+      "updated_at": "2025-12-13T09:00:05.586Z"
+    },
+    {
+      "dependency_id": 5,
+      "task_id": 39,
+      "depends_on_task_id": 50,
+      "dependency_type": "could",
+      "lag_days": 24,
+      "created_at": "2025-12-13T09:00:05.586Z",
+      "updated_at": "2025-12-13T09:00:05.586Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:42.756Z"
+}

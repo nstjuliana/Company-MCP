@@ -1,0 +1,147 @@
+{
+  "table": "ALLERGIES",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.ALLERGIES table represents allergy records within the synthetic_250_snowflake database, capturing details such as allergy names, descriptions, and relevant medical attributes for patient care. Each entry is uniquely identified by the primary key, ALLERGIE_ID, and contains various attributes including appointment and prescription information, suggesting its role in tracking allergy-related healthcare interactions. This table operates independently with no direct foreign key connections to other tables, signifying its role as a standalone record-keeping entity within the data model.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "ALLERGIE_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column uniquely identifies individual allergy records within the dataset, ensuring each allergy entry is distinct and can be referenced separately.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column enumerates various types of allergies identified in a synthetic dataset. Each entry represents a unique allergy with a sequential numeric designation.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column provides textual descriptions of different allergies identified within the table, offering detailed information or labels for each allergy entry. Each description follows a sequential naming pattern, indicating distinct allergy descriptions.",
+      "default": null
+    },
+    {
+      "name": "RECORD_217_ATTR_0",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column appears to represent a sequential identifier or code unique to each allergy record in the dataset. The purpose behind assigning these specific numerical values to the records is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "BILLING_217_ATTR_1",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "APPOINTMENT_217_ATTR_2",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "PATIENT_217_ATTR_3",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "RECORD_217_ATTR_4",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "PRESCRIPTION_217_ATTR_5",
+      "type": "DATE",
+      "nullable": true,
+      "description": "This column likely represents a scheduled date associated with specific prescriptions, possibly indicating when a prescription was prescribed, dispensed, or needs to be refilled. The purpose is unclear beyond representing a date related to prescriptions.",
+      "default": null
+    },
+    {
+      "name": "VERSION",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents the sequential versioning or iteration identifier for entries in the allergies table. It starts at 1 by default and increments with each new version, ensuring precise tracking of updates or changes.",
+      "default": "1"
+    }
+  ],
+  "primary_key": [
+    "ALLERGIE_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "ALLERGIE_ID": 1,
+      "NAME": "ALLERGIES 1",
+      "DESCRIPTION": "Description for ALLERGIES 1",
+      "RECORD_217_ATTR_0": 100,
+      "BILLING_217_ATTR_1": 100,
+      "APPOINTMENT_217_ATTR_2": "Sample APPOINTMENT_217_ATTR_2 1",
+      "PATIENT_217_ATTR_3": true,
+      "RECORD_217_ATTR_4": "Sample RECORD_217_ATTR_4 1",
+      "PRESCRIPTION_217_ATTR_5": "2025-12-12",
+      "VERSION": 100
+    },
+    {
+      "ALLERGIE_ID": 2,
+      "NAME": "ALLERGIES 2",
+      "DESCRIPTION": "Description for ALLERGIES 2",
+      "RECORD_217_ATTR_0": 101,
+      "BILLING_217_ATTR_1": 101,
+      "APPOINTMENT_217_ATTR_2": "Sample APPOINTMENT_217_ATTR_2 2",
+      "PATIENT_217_ATTR_3": false,
+      "RECORD_217_ATTR_4": "Sample RECORD_217_ATTR_4 2",
+      "PRESCRIPTION_217_ATTR_5": "2025-12-13",
+      "VERSION": 101
+    },
+    {
+      "ALLERGIE_ID": 3,
+      "NAME": "ALLERGIES 3",
+      "DESCRIPTION": "Description for ALLERGIES 3",
+      "RECORD_217_ATTR_0": 102,
+      "BILLING_217_ATTR_1": 102,
+      "APPOINTMENT_217_ATTR_2": "Sample APPOINTMENT_217_ATTR_2 3",
+      "PATIENT_217_ATTR_3": true,
+      "RECORD_217_ATTR_4": "Sample RECORD_217_ATTR_4 3",
+      "PRESCRIPTION_217_ATTR_5": "2025-12-14",
+      "VERSION": 102
+    },
+    {
+      "ALLERGIE_ID": 4,
+      "NAME": "ALLERGIES 4",
+      "DESCRIPTION": "Description for ALLERGIES 4",
+      "RECORD_217_ATTR_0": 103,
+      "BILLING_217_ATTR_1": 103,
+      "APPOINTMENT_217_ATTR_2": "Sample APPOINTMENT_217_ATTR_2 4",
+      "PATIENT_217_ATTR_3": false,
+      "RECORD_217_ATTR_4": "Sample RECORD_217_ATTR_4 4",
+      "PRESCRIPTION_217_ATTR_5": "2025-12-15",
+      "VERSION": 103
+    },
+    {
+      "ALLERGIE_ID": 5,
+      "NAME": "ALLERGIES 5",
+      "DESCRIPTION": "Description for ALLERGIES 5",
+      "RECORD_217_ATTR_0": 104,
+      "BILLING_217_ATTR_1": 104,
+      "APPOINTMENT_217_ATTR_2": "Sample APPOINTMENT_217_ATTR_2 5",
+      "PATIENT_217_ATTR_3": true,
+      "RECORD_217_ATTR_4": "Sample RECORD_217_ATTR_4 5",
+      "PRESCRIPTION_217_ATTR_5": "2025-12-16",
+      "VERSION": 104
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:02.835Z"
+}

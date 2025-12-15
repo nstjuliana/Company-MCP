@@ -1,0 +1,151 @@
+{
+  "table": "student_clubs",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.student_clubs\" table represents student-led clubs or organizations within an educational institution, with each club identified by a unique \"club_id\". Key columns include \"club_name\" for the club's title, \"description\" for detailing the club's purpose, \"advisor_id\" for linking to a faculty advisor, and various logistical details such as \"meeting_schedule\" and \"meeting_location\". As it stands, the table does not have defined relationships to other tables via foreign key constraints, but it serves as a standalone repository of club information including activity status and timestamps for record-keeping.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "club_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each club within the student clubs table. Each number assigns a distinct identifier to a club, ensuring differentiation.",
+      "default": "nextval('synthetic.student_clubs_club_id_seq'::regclass)"
+    },
+    {
+      "name": "club_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column lists various expressive or descriptive phrases, likely representing names or mottos of student clubs or similar organizations. Purpose unclear from available data due to the abstract nature of the sample values.",
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "nullable": true,
+      "description": "This column contains detailed textual descriptions or summaries of activities, events, or characteristics associated with student clubs. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "advisor_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely identifies an advisor associated with student clubs, with each integer representing a different advisor. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "meeting_schedule",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "meeting_location",
+      "type": "character varying",
+      "nullable": true,
+      "description": "The column represents descriptions or names of locations where student club meetings are held. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "is_active",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether a student club is currently active or not, defaulting to active status unless otherwise specified. Absence of other information prevents further clarification of purpose.",
+      "default": "true"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Represents the date and time when a record of student club activity or membership entry was created. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column captures the date and time when a record in the student clubs table was last modified. It automatically updates to the current timestamp when changes are made, indicating the most recent update.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "club_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_student_clubs_advisor_id",
+      "column_name": "advisor_id",
+      "referenced_table": "synthetic.instructors",
+      "referenced_column": "instructor_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "student_clubs_pkey",
+      "index_definition": "CREATE UNIQUE INDEX student_clubs_pkey ON synthetic.student_clubs USING btree (club_id)",
+      "columns": [
+        "club_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "club_id": 1,
+      "club_name": "White measure manager range indeed style. Cold not somebody determine allow different eye.",
+      "description": "Simply down specific onto. Technology particular into pattern size spend. Now mother others collecti...",
+      "advisor_id": 30,
+      "meeting_schedule": "Of weight method too spring. While size try yeah.",
+      "meeting_location": "Middle everything view hard wear force. Than suggest behavior.",
+      "is_active": false,
+      "created_at": "2025-12-13T09:19:32.312Z",
+      "updated_at": "2025-12-13T09:19:32.312Z"
+    },
+    {
+      "club_id": 2,
+      "club_name": "Upon citizen lead yeah.",
+      "description": "Pretty region ability live car difficult. Act receive stage write institution car.",
+      "advisor_id": 18,
+      "meeting_schedule": "Him room bill finish thing. Him spend themselves political.",
+      "meeting_location": "Cause but role goal. Fire cause everybody base network outside.",
+      "is_active": true,
+      "created_at": "2025-12-13T09:19:32.312Z",
+      "updated_at": "2025-12-13T09:19:32.312Z"
+    },
+    {
+      "club_id": 3,
+      "club_name": "Onto add democratic. We huge expert Republican.",
+      "description": "Under break partner area. Budget remain reduce clearly.",
+      "advisor_id": 44,
+      "meeting_schedule": "Military state else head seek them run. Sign ahead southern evening. Enjoy window physical many.",
+      "meeting_location": "Sort research pretty different eat trouble floor.",
+      "is_active": false,
+      "created_at": "2025-12-13T09:19:32.312Z",
+      "updated_at": "2025-12-13T09:19:32.312Z"
+    },
+    {
+      "club_id": 4,
+      "club_name": "Lead hard factor six science drug happy. Young simply run national somebody character usually.",
+      "description": "Billion morning draw man art. Republican behavior TV today. Including time learn security oil measur...",
+      "advisor_id": 50,
+      "meeting_schedule": "Option artist production candidate. End fire song red save. Laugh do want carry show board.",
+      "meeting_location": "American structure foreign before eat green message quality. Star community weight take new.",
+      "is_active": true,
+      "created_at": "2025-12-13T09:19:32.312Z",
+      "updated_at": "2025-12-13T09:19:32.312Z"
+    },
+    {
+      "club_id": 5,
+      "club_name": "Evidence case current this. Eat yes myself affect him require look.",
+      "description": "Offer work home very yard. Compare or south recently.",
+      "advisor_id": 15,
+      "meeting_schedule": "Against only true similar. Team whether health walk how big few. Wish run join police.",
+      "meeting_location": "Seat draw word collection those become. Land enter economic attack either blue.\nHistory run why.",
+      "is_active": true,
+      "created_at": "2025-12-13T09:19:32.312Z",
+      "updated_at": "2025-12-13T09:19:32.312Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:30.936Z"
+}

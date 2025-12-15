@@ -1,0 +1,163 @@
+{
+  "table": "medical_history",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.medical_history` table represents the medical history records of patients, capturing details such as medical conditions, corresponding ICD-10 codes, and the status of the condition. It primarily links to a `patient_id`, implying a relationship to a patients' table for individual patient information. While it doesn't explicitly reference other tables, it serves a critical role in the data model by documenting the timeline and details of medical conditions pertinent to patient care.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "history_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column assigns a unique identifier to each record in the medical history table, ensuring each history entry can be distinctly referenced. The sequence of numbers suggests an ordered list typically used for record tracking.",
+      "default": "nextval('synthetic.medical_history_history_id_seq'::regclass)"
+    },
+    {
+      "name": "patient_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column identifies each patient with a unique numerical identifier within the medical history dataset. It is a necessary reference point for associating medical records with individual patients.",
+      "default": null
+    },
+    {
+      "name": "condition",
+      "type": "character varying",
+      "nullable": false,
+      "description": "Purpose unclear from available data. The sample values appear unrelated to health conditions or medical history.",
+      "default": null
+    },
+    {
+      "name": "icd10_code",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "onset_date",
+      "type": "date",
+      "nullable": true,
+      "description": "Represents the date when a medical condition or event began for a patient. This data is used to track the timeline and development of medical conditions over time.",
+      "default": null
+    },
+    {
+      "name": "resolution_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column likely records the date when a particular medical issue was resolved for a patient. It can remain empty if the resolution date is not yet determined.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column indicates the current state of an individual's medical record, which can be either 'active', 'inactive', or 'pending'. It serves to track whether medical histories are currently being maintained and updated, are no longer in use, or are awaiting further updates or verification.",
+      "default": "'active'::character varying"
+    },
+    {
+      "name": "notes",
+      "type": "text",
+      "nullable": true,
+      "description": "This column contains narrative descriptions or commentary related to individuals' social or personal histories, activities, or other general observations, potentially relevant to their medical context. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time an entry in the medical history table was created. The purpose is to track when a medical record was first logged.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a medical record entry was last updated. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "history_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_medical_history_patient_id",
+      "column_name": "patient_id",
+      "referenced_table": "synthetic.patients",
+      "referenced_column": "patient_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "medical_history_pkey",
+      "index_definition": "CREATE UNIQUE INDEX medical_history_pkey ON synthetic.medical_history USING btree (history_id)",
+      "columns": [
+        "history_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "history_id": 1,
+      "patient_id": 11,
+      "condition": "Development chair tonight skin.",
+      "icd10_code": "YIPNCLQD",
+      "onset_date": "2025-02-05T06:00:00.000Z",
+      "resolution_date": "2025-10-09T05:00:00.000Z",
+      "status": "active",
+      "notes": "We money risk culture social history. Foot choose food idea day. Debate detail act development accor...",
+      "created_at": "2025-12-13T09:22:47.666Z",
+      "updated_at": "2025-12-13T09:22:47.666Z"
+    },
+    {
+      "history_id": 2,
+      "patient_id": 32,
+      "condition": "Dog young computer easy. Word training plant. Sound or activity about bed onto care maintain.",
+      "icd10_code": "QPXPUWVQ",
+      "onset_date": "2024-10-19T05:00:00.000Z",
+      "resolution_date": "2024-04-10T05:00:00.000Z",
+      "status": "inactive",
+      "notes": "This feel several identify along particularly fill. Ability wear truth position herself paper health...",
+      "created_at": "2025-12-13T09:22:47.666Z",
+      "updated_at": "2025-12-13T09:22:47.666Z"
+    },
+    {
+      "history_id": 3,
+      "patient_id": 42,
+      "condition": "Big benefit skill he stay father. Financial meeting painting husband.",
+      "icd10_code": "FWSUILNB",
+      "onset_date": "2025-09-16T05:00:00.000Z",
+      "resolution_date": "2023-12-30T06:00:00.000Z",
+      "status": "inactive",
+      "notes": "Agent involve order special color better. Learn since among feel.",
+      "created_at": "2025-12-13T09:22:47.666Z",
+      "updated_at": "2025-12-13T09:22:47.666Z"
+    },
+    {
+      "history_id": 4,
+      "patient_id": 37,
+      "condition": "Cost military case who. Pull natural growth lay.",
+      "icd10_code": "KUIUPZUU",
+      "onset_date": "2025-03-20T05:00:00.000Z",
+      "resolution_date": "2025-03-08T06:00:00.000Z",
+      "status": "active",
+      "notes": "Fire black factor inside. Eye natural camera. Dog world mention next identify.",
+      "created_at": "2025-12-13T09:22:47.666Z",
+      "updated_at": "2025-12-13T09:22:47.666Z"
+    },
+    {
+      "history_id": 5,
+      "patient_id": 34,
+      "condition": "Surface practice up fear scene guy.\nTerm high court sit forward magazine raise.",
+      "icd10_code": "MYWPECQE",
+      "onset_date": "2024-10-07T05:00:00.000Z",
+      "resolution_date": "2024-12-13T06:00:00.000Z",
+      "status": "active",
+      "notes": "Need water how dog fine green station down. Yourself consider gun energy make.",
+      "created_at": "2025-12-13T09:22:47.666Z",
+      "updated_at": "2025-12-13T09:22:47.666Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:41:38.362Z"
+}

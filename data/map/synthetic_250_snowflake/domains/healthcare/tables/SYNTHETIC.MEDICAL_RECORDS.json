@@ -1,0 +1,123 @@
+{
+  "table": "MEDICAL_RECORDS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.MEDICAL_RECORDS table represents detailed records of medical interactions, specifically capturing information related to individual medical records identified by a unique MEDICAL_RECORD_ID. Each record includes descriptive attributes, prescription details, billing status, and associated patient information, indicating its role in documenting medical history and transactions. The table is self-contained with no direct relational dependencies, serving as a standalone component in the broader medical data model.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "MEDICAL_RECORD_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column uniquely identifies each medical record in the database, ensuring each entry can be individually referenced and accessed.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Contains text descriptions or comments associated with each medical record entry. The specific content or significance of the descriptions is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "PRESCRIPTION_208_ATTR_0",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column represents intended prescription dates and times for patients' medication schedules in the medical records. The data indicates specific times when prescriptions are due, likely used for timing the administration of treatments.",
+      "default": null
+    },
+    {
+      "name": "BILLING_208_ATTR_1",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "Indicates whether a specific condition related to billing within medical records is met or not. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "PRESCRIPTION_208_ATTR_2",
+      "type": "DATE",
+      "nullable": true,
+      "description": "This column likely captures significant dates or deadlines related to prescriptions, possibly reflecting when an action or decision regarding a prescription is scheduled. The specific purpose of these dates is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "RECORD_208_ATTR_3",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column likely represents a sequence of scheduled or recorded events each day, as indicated by its chronological daily timestamp entries. Purpose unclear from available data beyond the recording of specific dates and times.",
+      "default": null
+    },
+    {
+      "name": "PATIENT_208_ATTR_4",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "MEDICAL_RECORD_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "MEDICAL_RECORD_ID": 1,
+      "NAME": "MEDICAL_RECORDS 1",
+      "DESCRIPTION": "Description for MEDICAL_RECORDS 1",
+      "PRESCRIPTION_208_ATTR_0": "2025-12-12 00:00:00.000",
+      "BILLING_208_ATTR_1": true,
+      "PRESCRIPTION_208_ATTR_2": "2025-12-12",
+      "RECORD_208_ATTR_3": "2025-12-12 00:00:00.000",
+      "PATIENT_208_ATTR_4": "Sample PATIENT_208_ATTR_4 1"
+    },
+    {
+      "MEDICAL_RECORD_ID": 2,
+      "NAME": "MEDICAL_RECORDS 2",
+      "DESCRIPTION": "Description for MEDICAL_RECORDS 2",
+      "PRESCRIPTION_208_ATTR_0": "2025-12-13 00:00:00.000",
+      "BILLING_208_ATTR_1": false,
+      "PRESCRIPTION_208_ATTR_2": "2025-12-13",
+      "RECORD_208_ATTR_3": "2025-12-13 00:00:00.000",
+      "PATIENT_208_ATTR_4": "Sample PATIENT_208_ATTR_4 2"
+    },
+    {
+      "MEDICAL_RECORD_ID": 3,
+      "NAME": "MEDICAL_RECORDS 3",
+      "DESCRIPTION": "Description for MEDICAL_RECORDS 3",
+      "PRESCRIPTION_208_ATTR_0": "2025-12-14 00:00:00.000",
+      "BILLING_208_ATTR_1": true,
+      "PRESCRIPTION_208_ATTR_2": "2025-12-14",
+      "RECORD_208_ATTR_3": "2025-12-14 00:00:00.000",
+      "PATIENT_208_ATTR_4": "Sample PATIENT_208_ATTR_4 3"
+    },
+    {
+      "MEDICAL_RECORD_ID": 4,
+      "NAME": "MEDICAL_RECORDS 4",
+      "DESCRIPTION": "Description for MEDICAL_RECORDS 4",
+      "PRESCRIPTION_208_ATTR_0": "2025-12-15 00:00:00.000",
+      "BILLING_208_ATTR_1": false,
+      "PRESCRIPTION_208_ATTR_2": "2025-12-15",
+      "RECORD_208_ATTR_3": "2025-12-15 00:00:00.000",
+      "PATIENT_208_ATTR_4": "Sample PATIENT_208_ATTR_4 4"
+    },
+    {
+      "MEDICAL_RECORD_ID": 5,
+      "NAME": "MEDICAL_RECORDS 5",
+      "DESCRIPTION": "Description for MEDICAL_RECORDS 5",
+      "PRESCRIPTION_208_ATTR_0": "2025-12-16 00:00:00.000",
+      "BILLING_208_ATTR_1": true,
+      "PRESCRIPTION_208_ATTR_2": "2025-12-16",
+      "RECORD_208_ATTR_3": "2025-12-16 00:00:00.000",
+      "PATIENT_208_ATTR_4": "Sample PATIENT_208_ATTR_4 5"
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:02.216Z"
+}

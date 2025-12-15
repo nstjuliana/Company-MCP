@@ -1,0 +1,109 @@
+{
+  "table": "case_solutions",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.case_solutions` table represents a business entity that records the association between cases and their corresponding solutions, capturing when the solution was created and last updated. The table plays a role in linking `case_id` and `solution_id`, though the exact other tables it references are unspecified due to undefined relationships. Key fields such as `created_at` and `updated_at` suggest the table also tracks the timing of these associations.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "case_solution_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each solution associated with a specific case in the system. It ensures that each solution can be individually referenced and retrieved.",
+      "default": "nextval('synthetic.case_solutions_case_solution_id_seq'::regclass)"
+    },
+    {
+      "name": "case_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Represents unique identifiers for cases within the solutions table, serving as keys to differentiate between individual cases. These identifiers help associate each solution with its respective case.",
+      "default": null
+    },
+    {
+      "name": "solution_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier assigned to each case solution within the dataset. It ensures that each solution is distinctly cataloged for tracking and reference purposes.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a solution within a case was created. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the most recent modification date and time of each entry in the case_solutions table. The exact purpose of this timestamp is unclear from the available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "case_solution_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_case_solutions_case_id",
+      "column_name": "case_id",
+      "referenced_table": "synthetic.cases",
+      "referenced_column": "case_id"
+    },
+    {
+      "constraint_name": "fk_case_solutions_solution_id",
+      "column_name": "solution_id",
+      "referenced_table": "synthetic.solutions",
+      "referenced_column": "solution_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "case_solutions_pkey",
+      "index_definition": "CREATE UNIQUE INDEX case_solutions_pkey ON synthetic.case_solutions USING btree (case_solution_id)",
+      "columns": [
+        "case_solution_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "case_solution_id": 1,
+      "case_id": 11,
+      "solution_id": 23,
+      "created_at": "2025-12-13T08:59:36.196Z",
+      "updated_at": "2025-12-13T08:59:36.196Z"
+    },
+    {
+      "case_solution_id": 2,
+      "case_id": 49,
+      "solution_id": 24,
+      "created_at": "2025-12-13T08:59:36.196Z",
+      "updated_at": "2025-12-13T08:59:36.196Z"
+    },
+    {
+      "case_solution_id": 3,
+      "case_id": 49,
+      "solution_id": 19,
+      "created_at": "2025-12-13T08:59:36.196Z",
+      "updated_at": "2025-12-13T08:59:36.196Z"
+    },
+    {
+      "case_solution_id": 4,
+      "case_id": 3,
+      "solution_id": 12,
+      "created_at": "2025-12-13T08:59:36.196Z",
+      "updated_at": "2025-12-13T08:59:36.196Z"
+    },
+    {
+      "case_solution_id": 5,
+      "case_id": 26,
+      "solution_id": 15,
+      "created_at": "2025-12-13T08:59:36.196Z",
+      "updated_at": "2025-12-13T08:59:36.196Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:44:18.890Z"
+}

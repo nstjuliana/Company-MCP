@@ -1,0 +1,109 @@
+{
+  "table": "inventory_transactions",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.inventory_transactions` table in the `synthetic_250_postgres` database is designed to track transactional data related to inventory activities, as indicated by its name, with `transaction_id` serving as the primary key. This table likely interacts with other tables to manage detailed and contextual inventory operations, although specific column and relationship information is currently undefined. Its structure suggests a role in recording, managing, or auditing transactions, but its lack of data and relationship details limits further precision in describing its function within the overall data model.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "transaction_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each transaction within the inventory system. The values are automatically generated in sequence to ensure distinctness across entries.",
+      "default": "nextval('synthetic.inventory_transactions_transaction_id_seq'::regclass)"
+    },
+    {
+      "name": "inventory_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "transaction_type",
+      "type": "character varying",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "quantity",
+      "type": "integer",
+      "nullable": false,
+      "description": "This field likely represents the number of units involved in each inventory transaction, indicating how much stock is moving in or out during the transaction. Further details about its specific purpose are unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "reference_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "reference_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "notes",
+      "type": "text",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "transaction_date",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column captures the date and time when an inventory transaction occurs. By default, it records the moment of entry unless specified otherwise.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "performed_by",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when each inventory transaction is created or entered into the system. It can remain empty if no timestamp is provided during the transaction entry.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column likely records the last modification date and time for each inventory transaction entry. It helps track when changes occur within the inventory transaction records.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "transaction_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_inventory_transactions_inventory_id",
+      "column_name": "inventory_id",
+      "referenced_table": "synthetic.inventory_items",
+      "referenced_column": "inventory_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "inventory_transactions_pkey",
+      "index_definition": "CREATE UNIQUE INDEX inventory_transactions_pkey ON synthetic.inventory_transactions USING btree (transaction_id)",
+      "columns": [
+        "transaction_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:42:23.707Z"
+}

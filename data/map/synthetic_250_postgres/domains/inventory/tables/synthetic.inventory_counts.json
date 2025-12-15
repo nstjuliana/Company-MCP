@@ -1,0 +1,117 @@
+{
+  "table": "inventory_counts",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.inventory_counts` table is designed to store information about inventory levels within a system; however, it currently does not contain any data. The table's primary key is `count_id`, which uniquely identifies each record, and it is set to reference another unspecified entity, suggesting its role in tracking inventory changes or audits related to that entity. Although precise inter-table relationships and the specifics of its columns are not provided, the table likely plays a critical role in maintaining inventory accountability within the broader synthetic database architecture.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "count_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": "nextval('synthetic.inventory_counts_count_id_seq'::regclass)"
+    },
+    {
+      "name": "count_number",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "warehouse_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Identifies a specific storage location within the inventory system, where products are stored and managed. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "count_date",
+      "type": "date",
+      "nullable": false,
+      "description": "This column likely represents the specific date on which inventory quantities were recorded or assessed. It is a critical field for tracking inventory changes over time.",
+      "default": null
+    },
+    {
+      "name": "count_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This field likely indicates the current state or progress of inventory counts, with a default state suggesting that counts are initially anticipated or scheduled.",
+      "default": "'planned'::character varying"
+    },
+    {
+      "name": "started_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "completed_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "performed_by",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Records the date and time when an inventory count entry is created in the system. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column likely records the last time an update was made to the inventory counts, aiding in tracking changes over time. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "count_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_inventory_counts_warehouse_id",
+      "column_name": "warehouse_id",
+      "referenced_table": "synthetic.warehouses",
+      "referenced_column": "warehouse_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "inventory_counts_count_number_key",
+      "index_definition": "CREATE UNIQUE INDEX inventory_counts_count_number_key ON synthetic.inventory_counts USING btree (count_number)",
+      "columns": [
+        "count_number"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "inventory_counts_pkey",
+      "index_definition": "CREATE UNIQUE INDEX inventory_counts_pkey ON synthetic.inventory_counts USING btree (count_id)",
+      "columns": [
+        "count_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:42:25.018Z"
+}

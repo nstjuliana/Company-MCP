@@ -1,0 +1,100 @@
+{
+  "table": "coupon_usage",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.coupon_usage` table appears to represent records of coupon usage events, where each record is uniquely identified by the `usage_id` primary key. The absence of foreign key details suggests undefined relationships to other tables, while the table itself is not referenced by any other tables, indicating it might be a standalone or final destination entity for tracking coupon uses without further relational ties. With zero rows and no column details, the exact nature and attributes involved in logging coupon usage remain unspecified.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "usage_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each record of coupon usage within the table, as indicated by its sequentially generated values. Purpose unclear from available data due to lack of sample values.",
+      "default": "nextval('synthetic.coupon_usage_usage_id_seq'::regclass)"
+    },
+    {
+      "name": "coupon_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each coupon used in the system, linking coupon usage records to specific promotional offers.",
+      "default": null
+    },
+    {
+      "name": "order_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "customer_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "discount_applied",
+      "type": "numeric",
+      "nullable": false,
+      "description": "The column likely represents the amount of a discount applied during a coupon usage transaction. Without sample values, the exact business context remains unclear.",
+      "default": null
+    },
+    {
+      "name": "used_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a coupon was used. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a coupon usage event was initially logged in the system. The exact business context of these records is not clear from the available information.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Represents the date and time when a record in the coupon usage table was last modified.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "usage_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_coupon_usage_coupon_id",
+      "column_name": "coupon_id",
+      "referenced_table": "synthetic.coupons",
+      "referenced_column": "coupon_id"
+    },
+    {
+      "constraint_name": "fk_coupon_usage_customer_id",
+      "column_name": "customer_id",
+      "referenced_table": "synthetic.customers",
+      "referenced_column": "customer_id"
+    },
+    {
+      "constraint_name": "fk_coupon_usage_order_id",
+      "column_name": "order_id",
+      "referenced_table": "synthetic.orders",
+      "referenced_column": "order_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "coupon_usage_pkey",
+      "index_definition": "CREATE UNIQUE INDEX coupon_usage_pkey ON synthetic.coupon_usage USING btree (usage_id)",
+      "columns": [
+        "usage_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:40:02.666Z"
+}

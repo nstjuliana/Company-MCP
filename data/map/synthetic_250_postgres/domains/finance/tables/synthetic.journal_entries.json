@@ -1,0 +1,195 @@
+{
+  "table": "journal_entries",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.journal_entries` table represents individual records of financial transactions or entries within a journal system. It tracks details such as the entry number, date, description, source, status, and who posted it, using the `entry_id` as the primary key, without referencing or being referenced by any other table. This table appears to serve as a core component for recording transactional or operational events, key in maintaining an accurate record of historical financial data within the database.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "entry_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each journal entry in the synthetic database, functioning as a sequential identifier to ensure distinct record-keeping.",
+      "default": "nextval('synthetic.journal_entries_entry_id_seq'::regclass)"
+    },
+    {
+      "name": "entry_number",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely serves as a unique identifier associated with each journal entry, denoted by large numeric sequences. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "entry_date",
+      "type": "date",
+      "nullable": false,
+      "description": "This column represents the dates on which journal entries were recorded, with all available entries falling between 2024 and 2025. The dates are fixed and not subject to change, indicating the exact calendar day of the logging or occurrence of these entries.",
+      "default": null
+    },
+    {
+      "name": "period_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents a numerical identifier for distinct periods or timeframes associated with journal entries, such as months or accounting periods. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "nullable": true,
+      "description": "This column likely contains narrative or descriptive text entries, possibly documenting events, observations, or insights in a verbose and abstract manner. The purpose of these entries is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "source",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column represents the origin or source of various thoughts, strategies, or activities described in journal entries, as deduced from diverse contextual sentences. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "reference_number",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely contains a unique identifier for entries within a journal, serving as a reference for tracking or auditing purposes. The actual purpose is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column indicates the current state of a journal entry, reflecting whether it is still being processed ('pending'), has been finalized ('completed'), or is no longer active due to cancellation or other actions. The default status for new entries is typically 'draft'.",
+      "default": "'draft'::character varying"
+    },
+    {
+      "name": "posted_by",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents a unique identifier for users or employees who posted the journal entries, correlating entries with the individuals involved. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "posted_date",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column represents the date and time when a journal entry was recorded or recognized, typically corresponding to specific entries in the journal keeping process. The values indicate dates and times across different days and months, adjusted for Central Time, with some instances reflecting daylight saving time.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when each journal entry was created. The logged times indicate events occurring in the early morning hours, suggesting these entries could be automated or generated during system maintenance periods.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the timestamp of the most recent update made to each journal entry. It is optional and automatically set to the current date and time if no value is provided.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "entry_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_journal_entries_period_id",
+      "column_name": "period_id",
+      "referenced_table": "synthetic.fiscal_periods",
+      "referenced_column": "period_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "journal_entries_entry_number_key",
+      "index_definition": "CREATE UNIQUE INDEX journal_entries_entry_number_key ON synthetic.journal_entries USING btree (entry_number)",
+      "columns": [
+        "entry_number"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "journal_entries_pkey",
+      "index_definition": "CREATE UNIQUE INDEX journal_entries_pkey ON synthetic.journal_entries USING btree (entry_id)",
+      "columns": [
+        "entry_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "entry_id": 1,
+      "entry_number": "14400040756023106407",
+      "entry_date": "2025-06-25T05:00:00.000Z",
+      "period_id": 17,
+      "description": "City in scientist computer no product form. Child under sea else open. Office scientist chance tell ...",
+      "source": "Meet structure student reduce vote whose.",
+      "reference_number": "39259067718536017430",
+      "status": "pending",
+      "posted_by": 1900,
+      "posted_date": "2024-06-18T11:13:45.618Z",
+      "created_at": "2025-12-13T08:54:19.599Z",
+      "updated_at": "2025-12-13T08:54:19.599Z"
+    },
+    {
+      "entry_id": 2,
+      "entry_number": "25600413166775270712",
+      "entry_date": "2025-09-16T05:00:00.000Z",
+      "period_id": 50,
+      "description": "Bill involve scientist for improve someone fast. Church result true reach decision natural beyond. L...",
+      "source": "Find week how worker discussion at.",
+      "reference_number": "78203690615502613409",
+      "status": "completed",
+      "posted_by": 8432,
+      "posted_date": "2025-09-09T17:40:09.994Z",
+      "created_at": "2025-12-13T08:54:19.599Z",
+      "updated_at": "2025-12-13T08:54:19.599Z"
+    },
+    {
+      "entry_id": 3,
+      "entry_number": "73122066766540532421",
+      "entry_date": "2025-04-30T05:00:00.000Z",
+      "period_id": 1,
+      "description": "Everyone friend red war may its available. Program hand threat dream whom allow four. Cost differenc...",
+      "source": "His ground strategy card book budget key.",
+      "reference_number": "08687441235998962586",
+      "status": "cancelled",
+      "posted_by": 7570,
+      "posted_date": "2025-02-21T12:28:22.886Z",
+      "created_at": "2025-12-13T08:54:19.599Z",
+      "updated_at": "2025-12-13T08:54:19.599Z"
+    },
+    {
+      "entry_id": 4,
+      "entry_number": "63560062551517975193",
+      "entry_date": "2024-11-22T06:00:00.000Z",
+      "period_id": 27,
+      "description": "Onto design strong common sort. She economy test morning after. Person manage reach born.",
+      "source": "Indicate become everyone heavy floor.",
+      "reference_number": "70810148129719884089",
+      "status": "active",
+      "posted_by": 3074,
+      "posted_date": "2025-09-16T05:14:38.407Z",
+      "created_at": "2025-12-13T08:54:19.599Z",
+      "updated_at": "2025-12-13T08:54:19.599Z"
+    },
+    {
+      "entry_id": 5,
+      "entry_number": "43748126817930080588",
+      "entry_date": "2025-07-23T05:00:00.000Z",
+      "period_id": 34,
+      "description": "Form pressure writer. National environmental cover. Republican agent yes need scientist. Fund wonder...",
+      "source": "Whatever million statement it soon opportunity.",
+      "reference_number": "69460212467642812598",
+      "status": "pending",
+      "posted_by": 8168,
+      "posted_date": "2025-09-04T16:44:33.525Z",
+      "created_at": "2025-12-13T08:54:19.599Z",
+      "updated_at": "2025-12-13T08:54:19.599Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:40:14.730Z"
+}

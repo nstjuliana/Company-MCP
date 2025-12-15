@@ -1,0 +1,159 @@
+{
+  "table": "KPIS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.KPIS table stores key performance indicators (KPIs) details, with each KPI uniquely identified by KPI_ID. It includes attributes related to the KPI's visualization and reporting properties, such as flags, numeric values, strings, and timestamps. This table stands alone in the data model, as it neither references nor is referenced by other tables, serving as a self-contained repository for KPI definitions and metadata.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "KPI_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents unique identifiers for specific key performance indicators (KPIs) used in the business context. Each value corresponds to a distinct KPI tracked within the system.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column represents distinct identifiers or labels for KPI entities within the dataset, serving as a clear and simple naming convention to differentiate various key performance indicators. Purpose unclear from available data beyond serving as a distinct label.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains textual descriptions explaining individual Key Performance Indicators (KPIs) in the KPIS table, contextualizing their significance or characteristics.",
+      "default": null
+    },
+    {
+      "name": "VISUALIZATION_174_ATTR_0",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "The column likely indicates whether a particular KPI visualization attribute is enabled or active. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "VISUALIZATION_174_ATTR_1",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column appears to represent a sequential or categorical identifier within a dataset, but its specific business purpose is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "KPI_174_ATTR_2",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "KPI_174_ATTR_3",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "Purpose unclear from available data. The sample values do not provide enough context to determine the business meaning.",
+      "default": null
+    },
+    {
+      "name": "REPORT_174_ATTR_4",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column appears to store numerical identifiers or codes potentially linked to specific business metrics or attributes, as evidenced by the sample sequential values provided. Purpose unclear from available data.",
+      "default": "16"
+    },
+    {
+      "name": "REPORT_174_ATTR_5",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "VISUALIZATION_174_ATTR_6",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column represents specific dates and times related to key performance indicator events or data points within the system, with entries reflecting daily timestamps. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CREATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "Represents the date and time records were created in the KPIS table, with each entry timestamped at the moment of creation. The specific timing indicates synchronized recording of entries.",
+      "default": "CURRENT_TIMESTAMP()"
+    }
+  ],
+  "primary_key": [
+    "KPI_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "KPI_ID": 1,
+      "NAME": "KPIS 1",
+      "DESCRIPTION": "Description for KPIS 1",
+      "VISUALIZATION_174_ATTR_0": true,
+      "VISUALIZATION_174_ATTR_1": 100,
+      "KPI_174_ATTR_2": "Sample KPI_174_ATTR_2 1",
+      "KPI_174_ATTR_3": "Sample KPI_174_ATTR_3 1",
+      "REPORT_174_ATTR_4": null,
+      "REPORT_174_ATTR_5": 100,
+      "VISUALIZATION_174_ATTR_6": "2025-12-12 00:00:00.000",
+      "CREATED_AT": "2025-12-12 17:26:35.852"
+    },
+    {
+      "KPI_ID": 2,
+      "NAME": "KPIS 2",
+      "DESCRIPTION": "Description for KPIS 2",
+      "VISUALIZATION_174_ATTR_0": false,
+      "VISUALIZATION_174_ATTR_1": 101,
+      "KPI_174_ATTR_2": "Sample KPI_174_ATTR_2 2",
+      "KPI_174_ATTR_3": "Sample KPI_174_ATTR_3 2",
+      "REPORT_174_ATTR_4": 101,
+      "REPORT_174_ATTR_5": 101,
+      "VISUALIZATION_174_ATTR_6": "2025-12-13 00:00:00.000",
+      "CREATED_AT": "2025-12-12 17:26:35.852"
+    },
+    {
+      "KPI_ID": 3,
+      "NAME": "KPIS 3",
+      "DESCRIPTION": "Description for KPIS 3",
+      "VISUALIZATION_174_ATTR_0": true,
+      "VISUALIZATION_174_ATTR_1": 102,
+      "KPI_174_ATTR_2": "Sample KPI_174_ATTR_2 3",
+      "KPI_174_ATTR_3": "Sample KPI_174_ATTR_3 3",
+      "REPORT_174_ATTR_4": 102,
+      "REPORT_174_ATTR_5": 102,
+      "VISUALIZATION_174_ATTR_6": "2025-12-14 00:00:00.000",
+      "CREATED_AT": "2025-12-12 17:26:35.852"
+    },
+    {
+      "KPI_ID": 4,
+      "NAME": "KPIS 4",
+      "DESCRIPTION": "Description for KPIS 4",
+      "VISUALIZATION_174_ATTR_0": false,
+      "VISUALIZATION_174_ATTR_1": 103,
+      "KPI_174_ATTR_2": "Sample KPI_174_ATTR_2 4",
+      "KPI_174_ATTR_3": "Sample KPI_174_ATTR_3 4",
+      "REPORT_174_ATTR_4": null,
+      "REPORT_174_ATTR_5": 103,
+      "VISUALIZATION_174_ATTR_6": "2025-12-15 00:00:00.000",
+      "CREATED_AT": "2025-12-12 17:26:35.852"
+    },
+    {
+      "KPI_ID": 5,
+      "NAME": "KPIS 5",
+      "DESCRIPTION": "Description for KPIS 5",
+      "VISUALIZATION_174_ATTR_0": true,
+      "VISUALIZATION_174_ATTR_1": 104,
+      "KPI_174_ATTR_2": "Sample KPI_174_ATTR_2 5",
+      "KPI_174_ATTR_3": "Sample KPI_174_ATTR_3 5",
+      "REPORT_174_ATTR_4": 104,
+      "REPORT_174_ATTR_5": 104,
+      "VISUALIZATION_174_ATTR_6": "2025-12-16 00:00:00.000",
+      "CREATED_AT": "2025-12-12 17:26:35.852"
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:18.470Z"
+}

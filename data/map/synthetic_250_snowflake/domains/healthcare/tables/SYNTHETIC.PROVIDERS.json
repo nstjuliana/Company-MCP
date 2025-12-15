@@ -1,0 +1,147 @@
+{
+  "table": "PROVIDERS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.PROVIDERS table represents a collection of healthcare service providers, with each row uniquely identified by a PROVIDER_ID. It includes attributes related to billing, claims, patient interactions, and records as evidenced by columns like BILLING_212_ATTR_0 and CLAIM_212_ATTR_1, though it currently has no defined relationships with other tables. Despite its standalone nature in the provided schema, the data suggests a focus on tracking provider-related operations and their interactions within the healthcare system.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "PROVIDER_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column likely represents unique identifiers assigned to providers within the dataset. Purpose unclear from available data without further context.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column represents a sequentially numbered identifier for providers within the dataset. The purpose is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains textual descriptions for providers, serving as a brief narrative or identifier for each provider entity in the table. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "BILLING_212_ATTR_0",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CLAIM_212_ATTR_1",
+      "type": "DATE",
+      "nullable": false,
+      "description": "This column likely represents a series of consecutive dates within December 2025, possibly related to specific events or deadlines associated with providers. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "PATIENT_212_ATTR_2",
+      "type": "DATE",
+      "nullable": true,
+      "description": "This column likely records specific dates relevant to each patient, possibly indicating scheduled appointments or significant dates in a medical plan. Purpose unclear from available data as no specific context or event is directly associated with these dates.",
+      "default": null
+    },
+    {
+      "name": "PRESCRIPTION_212_ATTR_3",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column likely represents a categorical identifier or code associated with providers related to prescriptions. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CLAIM_212_ATTR_4",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values suggest repetitive placeholder text without specific business meaning.",
+      "default": null
+    },
+    {
+      "name": "BILLING_212_ATTR_5",
+      "type": "DATE",
+      "nullable": false,
+      "description": "This column likely represents the sequential daily billing dates for providers within a specific period. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "RECORD_212_ATTR_6",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "PROVIDER_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "PROVIDER_ID": 1,
+      "NAME": "PROVIDERS 1",
+      "DESCRIPTION": "Description for PROVIDERS 1",
+      "BILLING_212_ATTR_0": true,
+      "CLAIM_212_ATTR_1": "2025-12-12",
+      "PATIENT_212_ATTR_2": "2025-12-12",
+      "PRESCRIPTION_212_ATTR_3": null,
+      "CLAIM_212_ATTR_4": "Sample CLAIM_212_ATTR_4 1",
+      "BILLING_212_ATTR_5": "2025-12-12",
+      "RECORD_212_ATTR_6": "Sample RECORD_212_ATTR_6 1"
+    },
+    {
+      "PROVIDER_ID": 2,
+      "NAME": "PROVIDERS 2",
+      "DESCRIPTION": "Description for PROVIDERS 2",
+      "BILLING_212_ATTR_0": false,
+      "CLAIM_212_ATTR_1": "2025-12-13",
+      "PATIENT_212_ATTR_2": "2025-12-13",
+      "PRESCRIPTION_212_ATTR_3": 101,
+      "CLAIM_212_ATTR_4": "Sample CLAIM_212_ATTR_4 2",
+      "BILLING_212_ATTR_5": "2025-12-13",
+      "RECORD_212_ATTR_6": "Sample RECORD_212_ATTR_6 2"
+    },
+    {
+      "PROVIDER_ID": 3,
+      "NAME": "PROVIDERS 3",
+      "DESCRIPTION": "Description for PROVIDERS 3",
+      "BILLING_212_ATTR_0": true,
+      "CLAIM_212_ATTR_1": "2025-12-14",
+      "PATIENT_212_ATTR_2": "2025-12-14",
+      "PRESCRIPTION_212_ATTR_3": 102,
+      "CLAIM_212_ATTR_4": "Sample CLAIM_212_ATTR_4 3",
+      "BILLING_212_ATTR_5": "2025-12-14",
+      "RECORD_212_ATTR_6": "Sample RECORD_212_ATTR_6 3"
+    },
+    {
+      "PROVIDER_ID": 4,
+      "NAME": "PROVIDERS 4",
+      "DESCRIPTION": "Description for PROVIDERS 4",
+      "BILLING_212_ATTR_0": false,
+      "CLAIM_212_ATTR_1": "2025-12-15",
+      "PATIENT_212_ATTR_2": "2025-12-15",
+      "PRESCRIPTION_212_ATTR_3": null,
+      "CLAIM_212_ATTR_4": "Sample CLAIM_212_ATTR_4 4",
+      "BILLING_212_ATTR_5": "2025-12-15",
+      "RECORD_212_ATTR_6": "Sample RECORD_212_ATTR_6 4"
+    },
+    {
+      "PROVIDER_ID": 5,
+      "NAME": "PROVIDERS 5",
+      "DESCRIPTION": "Description for PROVIDERS 5",
+      "BILLING_212_ATTR_0": true,
+      "CLAIM_212_ATTR_1": "2025-12-16",
+      "PATIENT_212_ATTR_2": "2025-12-16",
+      "PRESCRIPTION_212_ATTR_3": 104,
+      "CLAIM_212_ATTR_4": "Sample CLAIM_212_ATTR_4 5",
+      "BILLING_212_ATTR_5": "2025-12-16",
+      "RECORD_212_ATTR_6": "Sample RECORD_212_ATTR_6 5"
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:02.991Z"
+}

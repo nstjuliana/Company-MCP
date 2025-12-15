@@ -1,0 +1,123 @@
+{
+  "table": "LAB_RESULTS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.LAB_RESULTS table stores data related to laboratory results, uniquely identified by the primary key LAB_RESULT_ID. Each row contains details such as the result name, description, attributes related to patients and appointments, and a timestamp for creation, with no apparent relationships to other tables in the database. Its role appears to be an isolated record-keeping entity for lab results within the synthetic_250_snowflake database.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "LAB_RESULT_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents the unique identifier assigned to each laboratory result entry, ensuring each result can be distinctly referenced.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column represents unique identifiers for individual lab results, where each entry is sequentially numbered (e.g., LAB_RESULTS 1, LAB_RESULTS 2). Purpose unclear from available data beyond providing distinct labels for lab outcomes.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "The column records narrative descriptions for specific lab results, offering detailed explanations or summaries related to each individual lab test entry. Each entry is uniquely referenced, typically indicating sequential lab test identification without additional context.",
+      "default": null
+    },
+    {
+      "name": "PATIENT_219_ATTR_0",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values do not provide specific business context or meaning.",
+      "default": null
+    },
+    {
+      "name": "APPOINTMENT_219_ATTR_1",
+      "type": "BOOLEAN",
+      "nullable": false,
+      "description": "This column likely indicates a true or false condition related to a specific attribute of appointment number 219 in lab results. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "PRESCRIPTION_219_ATTR_2",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "Purpose unclear from available data; the column stores timestamp values that may relate to prescription records given the context of the table name.",
+      "default": "CURRENT_TIMESTAMP()"
+    },
+    {
+      "name": "PATIENT_219_ATTR_3",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CREATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column records the exact date and time when a laboratory result entry was created. It ensures each entry's creation time is accurately tracked and never left empty, as it defaults to the current time when the record is inserted.",
+      "default": "CURRENT_TIMESTAMP()"
+    }
+  ],
+  "primary_key": [
+    "LAB_RESULT_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "LAB_RESULT_ID": 1,
+      "NAME": "LAB_RESULTS 1",
+      "DESCRIPTION": "Description for LAB_RESULTS 1",
+      "PATIENT_219_ATTR_0": "Sample PATIENT_219_ATTR_0 1",
+      "APPOINTMENT_219_ATTR_1": true,
+      "PRESCRIPTION_219_ATTR_2": "2025-12-12 17:26:37.460",
+      "PATIENT_219_ATTR_3": "Sample PATIENT_219_ATTR_3 1",
+      "CREATED_AT": "2025-12-12 17:26:37.460"
+    },
+    {
+      "LAB_RESULT_ID": 2,
+      "NAME": "LAB_RESULTS 2",
+      "DESCRIPTION": "Description for LAB_RESULTS 2",
+      "PATIENT_219_ATTR_0": "Sample PATIENT_219_ATTR_0 2",
+      "APPOINTMENT_219_ATTR_1": false,
+      "PRESCRIPTION_219_ATTR_2": "2025-12-12 17:26:37.460",
+      "PATIENT_219_ATTR_3": "Sample PATIENT_219_ATTR_3 2",
+      "CREATED_AT": "2025-12-12 17:26:37.460"
+    },
+    {
+      "LAB_RESULT_ID": 3,
+      "NAME": "LAB_RESULTS 3",
+      "DESCRIPTION": "Description for LAB_RESULTS 3",
+      "PATIENT_219_ATTR_0": "Sample PATIENT_219_ATTR_0 3",
+      "APPOINTMENT_219_ATTR_1": true,
+      "PRESCRIPTION_219_ATTR_2": "2025-12-12 17:26:37.460",
+      "PATIENT_219_ATTR_3": "Sample PATIENT_219_ATTR_3 3",
+      "CREATED_AT": "2025-12-12 17:26:37.460"
+    },
+    {
+      "LAB_RESULT_ID": 4,
+      "NAME": "LAB_RESULTS 4",
+      "DESCRIPTION": "Description for LAB_RESULTS 4",
+      "PATIENT_219_ATTR_0": "Sample PATIENT_219_ATTR_0 4",
+      "APPOINTMENT_219_ATTR_1": false,
+      "PRESCRIPTION_219_ATTR_2": "2025-12-12 17:26:37.460",
+      "PATIENT_219_ATTR_3": "Sample PATIENT_219_ATTR_3 4",
+      "CREATED_AT": "2025-12-12 17:26:37.460"
+    },
+    {
+      "LAB_RESULT_ID": 5,
+      "NAME": "LAB_RESULTS 5",
+      "DESCRIPTION": "Description for LAB_RESULTS 5",
+      "PATIENT_219_ATTR_0": "Sample PATIENT_219_ATTR_0 5",
+      "APPOINTMENT_219_ATTR_1": true,
+      "PRESCRIPTION_219_ATTR_2": "2025-12-12 17:26:37.460",
+      "PATIENT_219_ATTR_3": "Sample PATIENT_219_ATTR_3 5",
+      "CREATED_AT": "2025-12-12 17:26:37.460"
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:03.048Z"
+}

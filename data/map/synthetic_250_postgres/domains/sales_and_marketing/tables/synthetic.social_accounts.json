@@ -1,0 +1,144 @@
+{
+  "table": "social_accounts",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.social_accounts` table represents social media accounts, detailing information such as the platform, account name, handle, and URL, along with metrics like the number of followers and account status (active or inactive). This table, identifiable by the primary key `account_id`, serves as a standalone entity within the database, as it neither references nor is referenced by other tables. The information captured, such as creation and update timestamps, suggests it supports tracking the activity and status of social media presences over time.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "account_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each record in the social accounts table, ensuring each social account has a distinct identifier. The sequential nature of the values suggests an order of creation or entry.",
+      "default": "nextval('synthetic.social_accounts_account_id_seq'::regclass)"
+    },
+    {
+      "name": "platform",
+      "type": "character varying",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "account_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "account_handle",
+      "type": "character varying",
+      "nullable": true,
+      "description": "The column appears to store phrases or sentences that seem more abstract and unrelated, potentially representing user-generated content or text blurbs associated with social media accounts. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "account_url",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column contains URLs associated with various social accounts, which appear to represent the web addresses of individuals' or organizations' online profiles. The exact purpose or nature of these social accounts is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "followers_count",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents the number of followers associated with a specific social media account. The values indicate varying levels of social media engagement for each account.",
+      "default": "0"
+    },
+    {
+      "name": "is_active",
+      "type": "boolean",
+      "nullable": true,
+      "description": "This column indicates whether a social account is currently active. The default state is active, but it can be switched to inactive.",
+      "default": "true"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Represents the date and time when a social account record was created. The values suggest that entries default to the current timestamp if not otherwise specified.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column stores the date and time when a social account record was last updated. It is set to the current timestamp by default but can be null if no updates have occurred.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "account_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "social_accounts_pkey",
+      "index_definition": "CREATE UNIQUE INDEX social_accounts_pkey ON synthetic.social_accounts USING btree (account_id)",
+      "columns": [
+        "account_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "account_id": 1,
+      "platform": "Not source phone per someone.",
+      "account_name": "One use on. Plant read tell evening.",
+      "account_handle": "Worker talk box option herself part. Phone tonight town raise same learn.",
+      "account_url": "http://www.cortez.info/",
+      "followers_count": 98,
+      "is_active": true,
+      "created_at": "2025-12-13T09:14:32.992Z",
+      "updated_at": "2025-12-13T09:14:32.992Z"
+    },
+    {
+      "account_id": 2,
+      "platform": "Best call voice new again.",
+      "account_name": "Full religious production bag. Ground behavior rock.",
+      "account_handle": "There main small those case available listen early. Culture set whether radio cold early.",
+      "account_url": "http://www.smith.com/",
+      "followers_count": 76,
+      "is_active": true,
+      "created_at": "2025-12-13T09:14:32.992Z",
+      "updated_at": "2025-12-13T09:14:32.992Z"
+    },
+    {
+      "account_id": 3,
+      "platform": "Usually central Congress can middle bag stay.",
+      "account_name": "Certain set thus born everything. Within decide allow watch sing arm great.",
+      "account_handle": "Laugh per TV by memory ever. Account who center mother campaign. Worry among former bank.",
+      "account_url": "https://shannon.com/",
+      "followers_count": 30,
+      "is_active": false,
+      "created_at": "2025-12-13T09:14:32.992Z",
+      "updated_at": "2025-12-13T09:14:32.992Z"
+    },
+    {
+      "account_id": 4,
+      "platform": "Report hard its. Second life trial charge.",
+      "account_name": "Offer individual leave final edge. Personal style cost line process task road.",
+      "account_handle": "Change development popular represent. Type management one top despite foreign.",
+      "account_url": "https://johnson.com/",
+      "followers_count": 100,
+      "is_active": true,
+      "created_at": "2025-12-13T09:14:32.992Z",
+      "updated_at": "2025-12-13T09:14:32.992Z"
+    },
+    {
+      "account_id": 5,
+      "platform": "One not rule approach economic upon history.",
+      "account_name": "Exist reflect high subject teach now. Including sometimes speech at tend.",
+      "account_handle": "Worry people bad set late wrong add.",
+      "account_url": "https://www.austin-holmes.com/",
+      "followers_count": 77,
+      "is_active": true,
+      "created_at": "2025-12-13T09:14:32.992Z",
+      "updated_at": "2025-12-13T09:14:32.992Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:40:36.880Z"
+}

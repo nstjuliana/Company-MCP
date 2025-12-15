@@ -1,0 +1,175 @@
+{
+  "table": "project_documents",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.project_documents` table represents project-related documents within an undefined business entity, capturing details such as document names, types, versions, and file paths. The table is linked to projects via the `project_id` foreign key, suggesting it serves as a repository for documents associated with specific projects, with information on who uploaded them and when. Its role in the data model appears to be maintaining a record of various document attributes related to projects, which can be identified by the primary key `document_id`.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "document_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each document associated with a project. It ensures that each document can be distinctly referenced within the project documentation system.",
+      "default": "nextval('synthetic.project_documents_document_id_seq'::regclass)"
+    },
+    {
+      "name": "project_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column likely represents a unique identifier associated with a specific project within a dataset of project documents. Its purpose is to link documents to their respective projects, as indicated by distinct numeric values.",
+      "default": null
+    },
+    {
+      "name": "document_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column likely contains summaries or titles of various documents related to project activities or reports, reflecting a broad range of topics and subjects. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "document_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "The column appears to contain short, narrative-like entries that may represent abstract descriptions or categorizations related to projects, as indicated by varied sample phrases encompassing actions, entities, and general scenarios. The intended purpose or context of these entries is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "file_path",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values appear to be fragmented text excerpts, making it difficult to determine the specific nature of the information stored.",
+      "default": null
+    },
+    {
+      "name": "version",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "uploaded_by",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column identifies the user who uploaded a document, represented by their unique identifier. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "upload_date",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column indicates the date and time when a document related to a project was uploaded. It reflects the submissions occurring across various months and years, primarily during Central daylight and standard time.",
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "nullable": true,
+      "description": "This column contains textual summaries or abstracts related to various subjects, possibly detailing project-related narratives or concepts. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a project document was created, reflecting the moment of entry or generation in the system. The exact purpose of capturing this timestamp is unclear from the available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a document within a project was last modified. It helps in tracking the most recent updates to project-related documents.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "document_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_project_documents_project_id",
+      "column_name": "project_id",
+      "referenced_table": "synthetic.pm_projects",
+      "referenced_column": "project_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "project_documents_pkey",
+      "index_definition": "CREATE UNIQUE INDEX project_documents_pkey ON synthetic.project_documents USING btree (document_id)",
+      "columns": [
+        "document_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "document_id": 22,
+      "project_id": 77,
+      "document_name": "Provide decide range hotel industry. Perform price price plan training sometimes.",
+      "document_type": "Fly care somebody image. Person hotel east.",
+      "file_path": "Base leave to our action may. Wind ready whom arrive choose blue month upon.",
+      "version": "Center away its ago.",
+      "uploaded_by": 47,
+      "upload_date": "2025-09-17T12:57:11.837Z",
+      "description": "Try themselves particularly country. Scientist others person.",
+      "created_at": "2025-12-13T09:13:09.995Z",
+      "updated_at": "2025-12-13T09:13:09.995Z"
+    },
+    {
+      "document_id": 21,
+      "project_id": 74,
+      "document_name": "Tonight inside moment social catch push. None run north image his.",
+      "document_type": "Animal mouth candidate tend success ever.",
+      "file_path": "Run score cause common these. Might specific Mrs. Past prevent guess.",
+      "version": "Hotel common energy.",
+      "uploaded_by": 321,
+      "upload_date": "2025-02-15T14:32:07.360Z",
+      "description": "Them writer occur among. Resource hundred thought guy leg man.",
+      "created_at": "2025-12-13T09:13:09.995Z",
+      "updated_at": "2025-12-13T09:13:09.995Z"
+    },
+    {
+      "document_id": 23,
+      "project_id": 87,
+      "document_name": "Score if against especially talk. Mean citizen law its agent tell college. Ten company husband.",
+      "document_type": "Avoid cost my.",
+      "file_path": "High trial indicate structure consider allow. Attack protect design security wind player past.",
+      "version": "Speech may science.",
+      "uploaded_by": 885,
+      "upload_date": "2024-05-28T12:36:39.551Z",
+      "description": "Face among speech too staff across. There thank show next. Somebody one bill local what ability fini...",
+      "created_at": "2025-12-13T09:13:09.995Z",
+      "updated_at": "2025-12-13T09:13:09.995Z"
+    },
+    {
+      "document_id": 24,
+      "project_id": 65,
+      "document_name": "Talk worker around across also onto success. Article any note community.",
+      "document_type": "Computer example cause great put hand.",
+      "file_path": "Win company report teacher. Near current catch minute light recent.",
+      "version": "Film door station.",
+      "uploaded_by": 760,
+      "upload_date": "2025-11-09T16:31:25.474Z",
+      "description": "Political owner road scene learn and. Action event we town pattern.",
+      "created_at": "2025-12-13T09:13:09.995Z",
+      "updated_at": "2025-12-13T09:13:09.995Z"
+    },
+    {
+      "document_id": 25,
+      "project_id": 60,
+      "document_name": "Me speech he. Daughter simple matter avoid. Whatever serve window but.",
+      "document_type": "Less travel respond official black.",
+      "file_path": "Series interest right cost boy relate talk. Employee plan professional offer.",
+      "version": "Society include.",
+      "uploaded_by": 17,
+      "upload_date": "2025-08-07T00:47:05.472Z",
+      "description": "Network instead stuff next single federal. Industry also major manage meet on money.",
+      "created_at": "2025-12-13T09:13:09.995Z",
+      "updated_at": "2025-12-13T09:13:09.995Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:42:10.936Z"
+}

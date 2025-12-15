@@ -1,0 +1,116 @@
+{
+  "table": "social_metrics",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.social_metrics` table is designed to track various metrics related to social interactions, with `metric_id` serving as the unique identifier for each metric in the dataset. Although no specific column names or sample data are available, the table is part of a larger schema in the `synthetic_250_postgres` database and does not currently have any rows or defined relationships to other tables. It appears to play a role in capturing and organizing unspecified social metric data within this synthetic dataset, but without additional context or data, its precise function remains unspecified.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "metric_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies individual social metrics records within the table. Purpose unclear from available data.",
+      "default": "nextval('synthetic.social_metrics_metric_id_seq'::regclass)"
+    },
+    {
+      "name": "post_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each post within the social metrics dataset. It is a mandatory field likely used to associate specific metrics with individual posts.",
+      "default": null
+    },
+    {
+      "name": "recorded_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "The purpose of this column is unclear from available data due to the absence of sample values.",
+      "default": null
+    },
+    {
+      "name": "impressions",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents the number of times a social media post or advertisement has been displayed to users. Purpose unclear from available data.",
+      "default": "0"
+    },
+    {
+      "name": "reach",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely measures the potential audience size exposed to social media content or campaigns, representing the number of unique individuals reached. Purpose unclear from available data.",
+      "default": "0"
+    },
+    {
+      "name": "likes",
+      "type": "integer",
+      "nullable": true,
+      "description": "Represents the number of positive acknowledgments or approvals received on a social media post. The total count may be absent if it wasn't recorded.",
+      "default": "0"
+    },
+    {
+      "name": "comments",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column indicates the number of user comments related to a particular social media post or entity. The value can be missing, and it defaults to zero when unspecified.",
+      "default": "0"
+    },
+    {
+      "name": "shares",
+      "type": "integer",
+      "nullable": true,
+      "description": "The column represents the number of times a piece of content has been shared across social platforms. If no data is available, it defaults to indicating no shares.",
+      "default": "0"
+    },
+    {
+      "name": "clicks",
+      "type": "integer",
+      "nullable": true,
+      "description": "The column likely quantifies user engagements or interactions on social media content within the dataset. Purpose unclear from available data, as sample values were not provided.",
+      "default": "0"
+    },
+    {
+      "name": "engagement_rate",
+      "type": "numeric",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column captures the date and time when a record was created within the social metrics table. The specific business context or significance of this timestamp is unclear from the available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a record in the social metrics table was last modified. It is updated automatically to the current timestamp each time a modification occurs, ensuring changes are tracked chronologically.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "metric_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_social_metrics_post_id",
+      "column_name": "post_id",
+      "referenced_table": "synthetic.social_posts",
+      "referenced_column": "post_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "social_metrics_pkey",
+      "index_definition": "CREATE UNIQUE INDEX social_metrics_pkey ON synthetic.social_metrics USING btree (metric_id)",
+      "columns": [
+        "metric_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:40:39.175Z"
+}

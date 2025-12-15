@@ -1,0 +1,123 @@
+{
+  "table": "DIAGNOSES",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.DIAGNOSES table represents diagnostic records within the synthetic_250_snowflake database, identified by a unique DIAGNOSE_ID. This table captures specific details about each diagnosis, including its name, description, and various related attributes such as claims, billing, appointments, and records, as evidenced by columns like CLAIM_214_ATTR_0 and BILLING_214_ATTR_1. It operates independently with no direct relationships with other tables, indicating its role is likely centered around maintaining standalone diagnosis information.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "DIAGNOSE_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each diagnosis record within the dataset. It ensures each entry can be distinctively referenced and tracked.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column appears to categorize or label a series of diagnoses within the dataset, with each entry seemingly representing a distinct numerical identifier for a specific diagnosis type. The precise nature of these diagnoses is not specified in the available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains textual descriptions associated with various diagnostic entries in the dataset. Each description uniquely identifies or explains a specific diagnosis by its enumeration within the dataset.",
+      "default": null
+    },
+    {
+      "name": "CLAIM_214_ATTR_0",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column represents the date and time of specific events related to diagnoses, occurring daily. Each timestamp falls at exactly 6:00 PM Central Standard Time.",
+      "default": null
+    },
+    {
+      "name": "BILLING_214_ATTR_1",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "APPOINTMENT_214_ATTR_2",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column represents a categorical identifier related to specific attributes or characteristics associated with medical appointments. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "RECORD_214_ATTR_3",
+      "type": "DATE",
+      "nullable": false,
+      "description": "This column captures specific dates associated with diagnoses, likely representing scheduled or occurred events in the context of a medical or synthetic data scenario. The consistent advancement of dates suggests it may track a sequential process or monitoring observations.",
+      "default": null
+    },
+    {
+      "name": "APPOINTMENT_214_ATTR_4",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "DIAGNOSE_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "DIAGNOSE_ID": 1,
+      "NAME": "DIAGNOSES 1",
+      "DESCRIPTION": "Description for DIAGNOSES 1",
+      "CLAIM_214_ATTR_0": "2025-12-12 00:00:00.000",
+      "BILLING_214_ATTR_1": "Sample BILLING_214_ATTR_1 1",
+      "APPOINTMENT_214_ATTR_2": null,
+      "RECORD_214_ATTR_3": "2025-12-12",
+      "APPOINTMENT_214_ATTR_4": "Sample APPOINTMENT_214_ATTR_4 1"
+    },
+    {
+      "DIAGNOSE_ID": 2,
+      "NAME": "DIAGNOSES 2",
+      "DESCRIPTION": "Description for DIAGNOSES 2",
+      "CLAIM_214_ATTR_0": "2025-12-13 00:00:00.000",
+      "BILLING_214_ATTR_1": "Sample BILLING_214_ATTR_1 2",
+      "APPOINTMENT_214_ATTR_2": 101,
+      "RECORD_214_ATTR_3": "2025-12-13",
+      "APPOINTMENT_214_ATTR_4": "Sample APPOINTMENT_214_ATTR_4 2"
+    },
+    {
+      "DIAGNOSE_ID": 3,
+      "NAME": "DIAGNOSES 3",
+      "DESCRIPTION": "Description for DIAGNOSES 3",
+      "CLAIM_214_ATTR_0": "2025-12-14 00:00:00.000",
+      "BILLING_214_ATTR_1": "Sample BILLING_214_ATTR_1 3",
+      "APPOINTMENT_214_ATTR_2": 102,
+      "RECORD_214_ATTR_3": "2025-12-14",
+      "APPOINTMENT_214_ATTR_4": "Sample APPOINTMENT_214_ATTR_4 3"
+    },
+    {
+      "DIAGNOSE_ID": 4,
+      "NAME": "DIAGNOSES 4",
+      "DESCRIPTION": "Description for DIAGNOSES 4",
+      "CLAIM_214_ATTR_0": "2025-12-15 00:00:00.000",
+      "BILLING_214_ATTR_1": "Sample BILLING_214_ATTR_1 4",
+      "APPOINTMENT_214_ATTR_2": null,
+      "RECORD_214_ATTR_3": "2025-12-15",
+      "APPOINTMENT_214_ATTR_4": "Sample APPOINTMENT_214_ATTR_4 4"
+    },
+    {
+      "DIAGNOSE_ID": 5,
+      "NAME": "DIAGNOSES 5",
+      "DESCRIPTION": "Description for DIAGNOSES 5",
+      "CLAIM_214_ATTR_0": "2025-12-16 00:00:00.000",
+      "BILLING_214_ATTR_1": "Sample BILLING_214_ATTR_1 5",
+      "APPOINTMENT_214_ATTR_2": 104,
+      "RECORD_214_ATTR_3": "2025-12-16",
+      "APPOINTMENT_214_ATTR_4": "Sample APPOINTMENT_214_ATTR_4 5"
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:02.800Z"
+}

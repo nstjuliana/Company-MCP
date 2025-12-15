@@ -1,0 +1,109 @@
+{
+  "table": "product_tag_map",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.product_tag_map` table represents a mapping between products and tags, associating each product with relevant tags for categorization purposes. Each record links a `product_id` to a `tag_id`, with timestamps for creation and last update, but relationships indicating foreign keys are undefined, suggesting reference integrity is not enforced in the schema provided. This table serves as a junction table that facilitates the many-to-many relationship between products and tags within the data model.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "product_tag_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each entry in the product-tag mapping, used to associate products with their respective tags. Its purpose is to ensure each product-tag relationship can be distinctly referenced.",
+      "default": "nextval('synthetic.product_tag_map_product_tag_id_seq'::regclass)"
+    },
+    {
+      "name": "product_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Represents the unique identifier for a product associated with various tags. This allows for the classification and filtering of products based on their assigned tags.",
+      "default": null
+    },
+    {
+      "name": "tag_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column likely represents a unique identifier associated with specific tags that are used to categorize or label products. These identifiers help in mapping tags to products within the system.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column represents the date and time when a record was initially recorded or logged in the product tag map. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a record in the product-tag mapping table was last updated. Its default value is the current timestamp, indicating when a record is first created or modified if no specific update time is supplied manually.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "product_tag_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_product_tag_map_product_id",
+      "column_name": "product_id",
+      "referenced_table": "synthetic.products",
+      "referenced_column": "product_id"
+    },
+    {
+      "constraint_name": "fk_product_tag_map_tag_id",
+      "column_name": "tag_id",
+      "referenced_table": "synthetic.product_tags",
+      "referenced_column": "tag_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "product_tag_map_pkey",
+      "index_definition": "CREATE UNIQUE INDEX product_tag_map_pkey ON synthetic.product_tag_map USING btree (product_tag_id)",
+      "columns": [
+        "product_tag_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "product_tag_id": 1,
+      "product_id": 22,
+      "tag_id": 42,
+      "created_at": "2025-12-13T08:56:53.054Z",
+      "updated_at": "2025-12-13T08:56:53.054Z"
+    },
+    {
+      "product_tag_id": 2,
+      "product_id": 44,
+      "tag_id": 2,
+      "created_at": "2025-12-13T08:56:53.054Z",
+      "updated_at": "2025-12-13T08:56:53.054Z"
+    },
+    {
+      "product_tag_id": 3,
+      "product_id": 30,
+      "tag_id": 34,
+      "created_at": "2025-12-13T08:56:53.054Z",
+      "updated_at": "2025-12-13T08:56:53.054Z"
+    },
+    {
+      "product_tag_id": 4,
+      "product_id": 22,
+      "tag_id": 38,
+      "created_at": "2025-12-13T08:56:53.054Z",
+      "updated_at": "2025-12-13T08:56:53.054Z"
+    },
+    {
+      "product_tag_id": 5,
+      "product_id": 13,
+      "tag_id": 7,
+      "created_at": "2025-12-13T08:56:53.054Z",
+      "updated_at": "2025-12-13T08:56:53.054Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:38:57.104Z"
+}

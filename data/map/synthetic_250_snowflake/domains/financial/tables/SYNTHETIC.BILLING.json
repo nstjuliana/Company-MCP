@@ -1,0 +1,195 @@
+{
+  "table": "BILLING",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.BILLING table records billing information for a healthcare or pharmaceutical context, capturing details such as a unique billing identifier (BILLIN_ID), descriptions, dates associated with prescriptions and records, patient-related attributes, claims, appointment references, and timestamps for record creation and updates. It functions as a standalone entity within the database with no direct foreign key relationships to or from other tables, indicating an independent role primarily for billing-related data storage. The STATUS and VERSION columns suggest mechanisms for managing record states and revisions over time.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "BILLIN_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column likely represents a sequential identifier for individual billing records. It provides a unique reference number for each entry within the billing table.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column represents sequential identifiers for billing records within a dataset, with each entry indicating a unique billing instance. The numbering suggests an ordered sequence of billing activities or records.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains descriptive text pertaining to specific billing entries, likely indicating details or identifiers for each unique billing record. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "PRESCRIPTION_210_ATTR_0",
+      "type": "DATE",
+      "nullable": true,
+      "description": "This column contains dates that appear to be in a sequential series, likely representing a timeline or schedule related to prescriptions. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "RECORD_210_ATTR_1",
+      "type": "DATE",
+      "nullable": true,
+      "description": "This column likely records billing dates, capturing the specific days on which billing-related actions or events occur. The purpose of the column can include tracking, scheduling, or verifying billing events over time, although its exact purpose is unclear from the given data.",
+      "default": null
+    },
+    {
+      "name": "RECORD_210_ATTR_2",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column appears to represent a numeric attribute related to billing records in a business context, possibly a code or identifier. Purpose unclear from available data.",
+      "default": "57"
+    },
+    {
+      "name": "PATIENT_210_ATTR_3",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column likely represents a specific date and time associated with a patient's billing activity. The purpose is unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "PATIENT_210_ATTR_4",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column likely identifies a unique attribute related to a patient in the billing table, as suggested by the sequential numerical pattern of the sample values. The specific purpose of this attribute is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "CLAIM_210_ATTR_5",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "APPOINTMENT_210_ATTR_6",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column appears to store a numeric code associated with appointments in the billing system. The specific nature or purpose of these codes is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "CREATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column captures the exact date and time when a billing record was created. It consistently uses the current timestamp as a default to ensure accurate record-keeping.",
+      "default": "CURRENT_TIMESTAMP()"
+    },
+    {
+      "name": "UPDATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column represents the timestamp indicating when a billing record was last updated. The values suggest regular updates, potentially reflecting a periodic billing cycle.",
+      "default": null
+    },
+    {
+      "name": "VERSION",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column likely represents a sequential versioning system for billing records, where each entry indicates a unique version or iteration. The incrementing pattern suggests it tracks updates or modifications in the billing structure or data over time.",
+      "default": "1"
+    },
+    {
+      "name": "STATUS",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column indicates the current operational condition of a billing account, such as whether the account is in good standing and operational. The dominance of the sample value \"ACTIVE\" suggests that most accounts are currently active.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "BILLIN_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "BILLIN_ID": 1,
+      "NAME": "BILLING 1",
+      "DESCRIPTION": "Description for BILLING 1",
+      "PRESCRIPTION_210_ATTR_0": "2025-12-12",
+      "RECORD_210_ATTR_1": "2025-12-12",
+      "RECORD_210_ATTR_2": null,
+      "PATIENT_210_ATTR_3": "2025-12-12 00:00:00.000",
+      "PATIENT_210_ATTR_4": 100,
+      "CLAIM_210_ATTR_5": "Sample CLAIM_210_ATTR_5 1",
+      "APPOINTMENT_210_ATTR_6": null,
+      "CREATED_AT": "2025-12-12 17:25:38.335",
+      "UPDATED_AT": "2026-01-11 00:00:00.000",
+      "VERSION": 100,
+      "STATUS": "ACTIVE"
+    },
+    {
+      "BILLIN_ID": 2,
+      "NAME": "BILLING 2",
+      "DESCRIPTION": "Description for BILLING 2",
+      "PRESCRIPTION_210_ATTR_0": "2025-12-13",
+      "RECORD_210_ATTR_1": "2025-12-13",
+      "RECORD_210_ATTR_2": 101,
+      "PATIENT_210_ATTR_3": "2025-12-13 00:00:00.000",
+      "PATIENT_210_ATTR_4": 101,
+      "CLAIM_210_ATTR_5": "Sample CLAIM_210_ATTR_5 2",
+      "APPOINTMENT_210_ATTR_6": 101,
+      "CREATED_AT": "2025-12-12 17:25:38.335",
+      "UPDATED_AT": "2026-01-12 00:00:00.000",
+      "VERSION": 101,
+      "STATUS": "ACTIVE"
+    },
+    {
+      "BILLIN_ID": 3,
+      "NAME": "BILLING 3",
+      "DESCRIPTION": "Description for BILLING 3",
+      "PRESCRIPTION_210_ATTR_0": "2025-12-14",
+      "RECORD_210_ATTR_1": "2025-12-14",
+      "RECORD_210_ATTR_2": 102,
+      "PATIENT_210_ATTR_3": "2025-12-14 00:00:00.000",
+      "PATIENT_210_ATTR_4": 102,
+      "CLAIM_210_ATTR_5": "Sample CLAIM_210_ATTR_5 3",
+      "APPOINTMENT_210_ATTR_6": 102,
+      "CREATED_AT": "2025-12-12 17:25:38.335",
+      "UPDATED_AT": "2026-01-13 00:00:00.000",
+      "VERSION": 102,
+      "STATUS": "ACTIVE"
+    },
+    {
+      "BILLIN_ID": 4,
+      "NAME": "BILLING 4",
+      "DESCRIPTION": "Description for BILLING 4",
+      "PRESCRIPTION_210_ATTR_0": "2025-12-15",
+      "RECORD_210_ATTR_1": "2025-12-15",
+      "RECORD_210_ATTR_2": null,
+      "PATIENT_210_ATTR_3": "2025-12-15 00:00:00.000",
+      "PATIENT_210_ATTR_4": 103,
+      "CLAIM_210_ATTR_5": "Sample CLAIM_210_ATTR_5 4",
+      "APPOINTMENT_210_ATTR_6": null,
+      "CREATED_AT": "2025-12-12 17:25:38.335",
+      "UPDATED_AT": "2026-01-14 00:00:00.000",
+      "VERSION": 103,
+      "STATUS": "ACTIVE"
+    },
+    {
+      "BILLIN_ID": 5,
+      "NAME": "BILLING 5",
+      "DESCRIPTION": "Description for BILLING 5",
+      "PRESCRIPTION_210_ATTR_0": "2025-12-16",
+      "RECORD_210_ATTR_1": "2025-12-16",
+      "RECORD_210_ATTR_2": 104,
+      "PATIENT_210_ATTR_3": "2025-12-16 00:00:00.000",
+      "PATIENT_210_ATTR_4": 104,
+      "CLAIM_210_ATTR_5": "Sample CLAIM_210_ATTR_5 5",
+      "APPOINTMENT_210_ATTR_6": 104,
+      "CREATED_AT": "2025-12-12 17:25:38.335",
+      "UPDATED_AT": "2026-01-15 00:00:00.000",
+      "VERSION": 104,
+      "STATUS": "ACTIVE"
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:50.922Z"
+}

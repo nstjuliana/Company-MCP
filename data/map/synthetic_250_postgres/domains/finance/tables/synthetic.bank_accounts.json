@@ -1,0 +1,187 @@
+{
+  "table": "bank_accounts",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.bank_accounts` table represents bank account details, capturing essential information such as account names, numbers, bank details, types, and balances, with a primary key of `bank_account_id`. While it has a foreign key `gl_account_id` indicating linkage to another table, the specifics of this relationship are not defined, but it suggests integration with a general ledger system. The table is crucial for encapsulating individual account records, holding meta-information like creation and update timestamps alongside balance details, ensuring it is a key component in modeling financial data.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "bank_account_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier assigned to each bank account in the system. The sequence of integer values implies it serves as a primary key for the table, ensuring each account can be distinctly identified.",
+      "default": "nextval('synthetic.bank_accounts_bank_account_id_seq'::regclass)"
+    },
+    {
+      "name": "account_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column appears to hold descriptive titles or phrases, possibly representing the names or identifiers of individual bank accounts. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "account_number",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column represents unique identifiers assigned to individual bank accounts, which are composed of numeric strings of varying lengths. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "routing_number",
+      "type": "character varying",
+      "nullable": true,
+      "description": "The column contains numerical identifiers that likely represent banking routing numbers used to facilitate the exchange of funds between financial institutions. These values appear to be arbitrary long strings of digits, suggesting they may be placeholders in this synthetic dataset.",
+      "default": null
+    },
+    {
+      "name": "bank_name",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "account_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. Sample values do not provide clear indication of what the data represents in business terms.",
+      "default": null
+    },
+    {
+      "name": "currency",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column represents the type of currency associated with a bank account, indicating the denomination in which transactions or balances are recorded. Common currencies included are the Euro, US Dollar, British Pound, Canadian Dollar, and Japanese Yen.",
+      "default": "'USD'::character varying"
+    },
+    {
+      "name": "current_balance",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the amount of money currently available in a bank account, reflecting the immediate accessible funds for transactions. The values typically vary significantly among different accounts, indicating differing levels of financial activity or account holder prosperity.",
+      "default": "0"
+    },
+    {
+      "name": "gl_account_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents identifiers for general ledger accounts associated with bank accounts. Each identifier is a unique number that links bank transactions to their corresponding general ledger account for financial tracking and reporting.",
+      "default": null
+    },
+    {
+      "name": "is_active",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether a bank account is currently active. A value of \"true\" suggests an active account status, while \"false\" denotes inactivity.",
+      "default": "true"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column captures the date and time when a bank account entry was created, defaulting to the current timestamp at the moment of creation. Its main usage appears to be tracking the creation date of each record in the bank accounts table.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column captures the date and time when a bank account record was last updated. Its purpose is unclear from the available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "bank_account_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_bank_accounts_gl_account_id",
+      "column_name": "gl_account_id",
+      "referenced_table": "synthetic.chart_of_accounts",
+      "referenced_column": "account_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "bank_accounts_pkey",
+      "index_definition": "CREATE UNIQUE INDEX bank_accounts_pkey ON synthetic.bank_accounts USING btree (bank_account_id)",
+      "columns": [
+        "bank_account_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "bank_account_id": 1,
+      "account_name": "Attorney use discuss week this democratic to. Race base argue glass start Mrs side. Former city trai...",
+      "account_number": "75153672097506699128",
+      "routing_number": "56859441649331115685",
+      "bank_name": "Color security by. Among respond prevent act early with economic.\nScience near term certain process ...",
+      "account_type": "doctor",
+      "currency": "EUR",
+      "current_balance": "952.79",
+      "gl_account_id": 10,
+      "is_active": false,
+      "created_at": "2025-12-13T08:54:35.656Z",
+      "updated_at": "2025-12-13T08:54:35.656Z"
+    },
+    {
+      "bank_account_id": 2,
+      "account_name": "Culture forward same leg measure here. Law around still term.\nRest high interview view offer purpose...",
+      "account_number": "43968483596000182087",
+      "routing_number": "16388193927191899381",
+      "bank_name": "Long page benefit forward best modern available. Lead season bill allow mind require. See call capit...",
+      "account_type": "last",
+      "currency": "USD",
+      "current_balance": "126.23",
+      "gl_account_id": 16,
+      "is_active": false,
+      "created_at": "2025-12-13T08:54:35.656Z",
+      "updated_at": "2025-12-13T08:54:35.656Z"
+    },
+    {
+      "bank_account_id": 3,
+      "account_name": "Garden east man process artist technology. Fly send interest similar.\nDemocrat body college believe ...",
+      "account_number": "44654482187398212558",
+      "routing_number": "87740503151346508656",
+      "bank_name": "Turn ready despite make entire look man. Film close season political million. Enjoy story agent happ...",
+      "account_type": "degree",
+      "currency": "GBP",
+      "current_balance": "382.85",
+      "gl_account_id": 37,
+      "is_active": true,
+      "created_at": "2025-12-13T08:54:35.656Z",
+      "updated_at": "2025-12-13T08:54:35.656Z"
+    },
+    {
+      "bank_account_id": 4,
+      "account_name": "Top see seven mind worry area activity. Along save friend sense consumer. Try magazine reach TV. Dee...",
+      "account_number": "97114917946190692395",
+      "routing_number": "10832786686899842003",
+      "bank_name": "Vote former political you there trouble. Behind evening collection same young.\nYour development fron...",
+      "account_type": "full",
+      "currency": "CAD",
+      "current_balance": "153.44",
+      "gl_account_id": 29,
+      "is_active": false,
+      "created_at": "2025-12-13T08:54:35.656Z",
+      "updated_at": "2025-12-13T08:54:35.656Z"
+    },
+    {
+      "bank_account_id": 5,
+      "account_name": "Year return would build. Various trouble phone range fight. Test require guy woman at thank treatmen...",
+      "account_number": "89762177942921017274",
+      "routing_number": "82151750796313240496",
+      "bank_name": "Too recognize wind five particular hot loss everybody. Appear interest unit most ready single job.\nM...",
+      "account_type": "somebody",
+      "currency": "GBP",
+      "current_balance": "443.94",
+      "gl_account_id": 5,
+      "is_active": true,
+      "created_at": "2025-12-13T08:54:35.656Z",
+      "updated_at": "2025-12-13T08:54:35.656Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:40:03.941Z"
+}

@@ -1,0 +1,140 @@
+{
+  "table": "academic_departments",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.academic_departments` table represents academic departments within an educational institution, capturing details such as department codes, names, and associated building locations. Each department is uniquely identified by `department_id`, and further characterized by additional information including `head_instructor_id` and contact `phone`, with timestamps indicating record creation and updates. Notably, the table currently has no relational dependencies with other tables, suggesting it serves as a standalone entity within the database schema.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "department_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column assigns a unique identifier to each academic department within the database, ensuring that each department can be individually and consistently referenced.",
+      "default": "nextval('synthetic.academic_departments_department_id_seq'::regclass)"
+    },
+    {
+      "name": "department_code",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely represents unique identifiers assigned to academic departments. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "department_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "head_instructor_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column identifies the head instructor associated with each academic department, using a unique identifier for each instructor. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "building",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The entries suggest abstract or nonsensical text rather than representing a clear business concept.",
+      "default": null
+    },
+    {
+      "name": "phone",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column captures contact phone numbers associated with academic departments, often including extensions which suggest direct lines to specific department personnel or offices. The presence of international and domestic number formats indicates the column supports a diverse range of geographic locations.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the timestamp when a record in the academic departments table was created, with initial values generated automatically at the current time of record insertion. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a record in the academic departments table was last updated. It is intended to track changes or modifications made to department information.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "department_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "academic_departments_department_code_key",
+      "index_definition": "CREATE UNIQUE INDEX academic_departments_department_code_key ON synthetic.academic_departments USING btree (department_code)",
+      "columns": [
+        "department_code"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "academic_departments_pkey",
+      "index_definition": "CREATE UNIQUE INDEX academic_departments_pkey ON synthetic.academic_departments USING btree (department_id)",
+      "columns": [
+        "department_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "department_id": 1,
+      "department_code": "NPWBRYGX",
+      "department_name": "Fly care somebody image.\nSong almost already stay gun reason gas part.",
+      "head_instructor_id": 331,
+      "building": "Campaign late event alone policy. There under mention fast plant budget.",
+      "phone": "459.308.8700x251",
+      "created_at": "2025-12-13T09:16:41.431Z",
+      "updated_at": "2025-12-13T09:16:41.431Z"
+    },
+    {
+      "department_id": 2,
+      "department_code": "ZCKWUPPQ",
+      "department_name": "Surface window boy ability. Almost difference care in.",
+      "head_instructor_id": 958,
+      "building": "Style candidate behind where score if.\nEspecially talk range mean citizen law.",
+      "phone": "+1-526-992-7829x7253",
+      "created_at": "2025-12-13T09:16:41.431Z",
+      "updated_at": "2025-12-13T09:16:41.431Z"
+    },
+    {
+      "department_id": 3,
+      "department_code": "SUOCRDEV",
+      "department_name": "My send already upon travel general. Cup possible in view what.",
+      "head_instructor_id": 727,
+      "building": "Later enjoy next forget brother style. Do high trial indicate.",
+      "phone": "920-852-6738x890",
+      "created_at": "2025-12-13T09:16:41.431Z",
+      "updated_at": "2025-12-13T09:16:41.431Z"
+    },
+    {
+      "department_id": 4,
+      "department_code": "UHPHOSJX",
+      "department_name": "Major represent lot plan side writer.",
+      "head_instructor_id": 231,
+      "building": "Lot now week become production city war. Growth product watch.",
+      "phone": "3908014310",
+      "created_at": "2025-12-13T09:16:41.431Z",
+      "updated_at": "2025-12-13T09:16:41.431Z"
+    },
+    {
+      "department_id": 5,
+      "department_code": "PDMCUBVB",
+      "department_name": "Effort each civil. We town pattern understand. Me speech he.",
+      "head_instructor_id": 355,
+      "building": "Interest right cost boy. Talk central doctor factor budget. Leg win person reflect.",
+      "phone": "(968)861-0844",
+      "created_at": "2025-12-13T09:16:41.431Z",
+      "updated_at": "2025-12-13T09:16:41.431Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:40:49.684Z"
+}

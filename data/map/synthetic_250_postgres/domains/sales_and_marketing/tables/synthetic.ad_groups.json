@@ -1,0 +1,149 @@
+{
+  "table": "ad_groups",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.ad_groups\" table represents individual groups of advertisements associated with advertising campaigns, where each group is identified by a unique \"ad_group_id\" and linked to an \"ad_campaign_id.\" This table holds critical details including the ad group name, targeting information, bid amount, status, and timestamps for creation and updates. The table's role in the data model is to detail and manage each ad group's attributes and configurations within broader ad campaigns, evidenced by its primary key and linkage to ad campaigns through foreign key relationships.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "ad_group_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents the unique identifier for each advertising group within the dataset, with values incrementing sequentially.",
+      "default": "nextval('synthetic.ad_groups_ad_group_id_seq'::regclass)"
+    },
+    {
+      "name": "ad_campaign_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier associated with advertising campaigns, linking ad groups to specific campaigns in the business context. Each number corresponds to a distinct campaign managed in the ad system.",
+      "default": null
+    },
+    {
+      "name": "ad_group_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "The column represents descriptive labels or titles assigned to different groups of advertisements. The names appear to be varied and creative, possibly reflecting campaign themes or slogans.",
+      "default": null
+    },
+    {
+      "name": "targeting",
+      "type": "jsonb",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "bid_amount",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the monetary value allocated for a payment or offering associated with ad groups, likely indicating the budget or financial investment intended per instance. Purpose unclear from available data regarding the exact role or context of these financial values within ad group operations.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column indicates the current state of advertising groups, typically identifying their operational status as 'active', 'inactive', or 'pending'. It helps monitor and manage the workflow and engagement of these advertising groups.",
+      "default": "'active'::character varying"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an advertisement group was created, defaulting to the current timestamp. Purpose and further distinguishing characteristics are unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column logs the date and time of the last update made to an entry in the advertising groups. The timestamp indicates when any changes were last recorded in these specific data records.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "ad_group_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_ad_groups_ad_campaign_id",
+      "column_name": "ad_campaign_id",
+      "referenced_table": "synthetic.ad_campaigns",
+      "referenced_column": "ad_campaign_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "ad_groups_pkey",
+      "index_definition": "CREATE UNIQUE INDEX ad_groups_pkey ON synthetic.ad_groups USING btree (ad_group_id)",
+      "columns": [
+        "ad_group_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "ad_group_id": 1,
+      "ad_campaign_id": 34,
+      "ad_group_name": "Executive may person college. Yard ahead stay store I security. Various team poor somebody worker.",
+      "targeting": {
+        "key": "miss"
+      },
+      "bid_amount": "1538.62",
+      "status": "active",
+      "created_at": "2025-12-13T09:14:46.509Z",
+      "updated_at": "2025-12-13T09:14:46.509Z"
+    },
+    {
+      "ad_group_id": 2,
+      "ad_campaign_id": 11,
+      "ad_group_name": "Focus summer true set they.",
+      "targeting": {
+        "key": "whose"
+      },
+      "bid_amount": "3233.38",
+      "status": "pending",
+      "created_at": "2025-12-13T09:14:46.509Z",
+      "updated_at": "2025-12-13T09:14:46.509Z"
+    },
+    {
+      "ad_group_id": 3,
+      "ad_campaign_id": 15,
+      "ad_group_name": "Cell benefit letter house. Easy though size.",
+      "targeting": {
+        "key": "quality"
+      },
+      "bid_amount": "3466.77",
+      "status": "pending",
+      "created_at": "2025-12-13T09:14:46.509Z",
+      "updated_at": "2025-12-13T09:14:46.509Z"
+    },
+    {
+      "ad_group_id": 4,
+      "ad_campaign_id": 19,
+      "ad_group_name": "Join data exist statement spring speech brother. Know maintain half avoid fine.",
+      "targeting": {
+        "key": "until"
+      },
+      "bid_amount": "8460.88",
+      "status": "inactive",
+      "created_at": "2025-12-13T09:14:46.509Z",
+      "updated_at": "2025-12-13T09:14:46.509Z"
+    },
+    {
+      "ad_group_id": 5,
+      "ad_campaign_id": 13,
+      "ad_group_name": "Later later know brother. Cost left member herself.",
+      "targeting": {
+        "key": "garden"
+      },
+      "bid_amount": "6354.22",
+      "status": "pending",
+      "created_at": "2025-12-13T09:14:46.509Z",
+      "updated_at": "2025-12-13T09:14:46.509Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:40:29.808Z"
+}

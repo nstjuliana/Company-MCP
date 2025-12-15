@@ -1,0 +1,181 @@
+{
+  "table": "social_posts",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.social_posts` table represents social media posts created for marketing campaigns, capturing details such as the post's content, associated media, and status. Each post is uniquely identified by a `post_id` and is linked to an `account_id` and `campaign_id`, indicating which account created the post and which campaign it belongs to, although the specific tables these foreign keys reference are not defined. The table likely plays a role in tracking and managing the lifecycle of social media post content, including scheduling (`scheduled_at`) and publishing date (`published_at`), across different platforms within a marketing system.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "post_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier assigned sequentially to each social media post within the system, ensuring each post can be distinctly recognized and accessed.",
+      "default": "nextval('synthetic.social_posts_post_id_seq'::regclass)"
+    },
+    {
+      "name": "account_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each user account associated with social media posts. Each integer is a distinct identifier, essential for linking posts to specific users.",
+      "default": null
+    },
+    {
+      "name": "campaign_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents an identifier for marketing or promotional campaigns associated with social posts. Purpose unclear from available data as there are no specific patterns or ranges in the sample values.",
+      "default": null
+    },
+    {
+      "name": "content",
+      "type": "text",
+      "nullable": true,
+      "description": "This column contains narrative or thematic text entries that appear to represent segments of larger written pieces, potentially capturing concepts or thoughts on various topics. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "media_url",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column contains URLs that likely point to media content associated with social media posts, such as images, videos, or other resources shared in the posts. The purpose of these URLs is to enrich the post's content visually or contextually.",
+      "default": null
+    },
+    {
+      "name": "scheduled_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column represents the date and time a social media post is scheduled to be published. The time zone information indicates schedules are planned according to either Central Daylight Time or Central Standard Time.",
+      "default": null
+    },
+    {
+      "name": "published_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column represents the date and time when a social media post was published, as indicated by the sample values showing specific timestamps of various days in 2024 and 2025. The purpose is to track when each post was publicly shared or went live.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column represents the current state of a social media post, indicating whether it is 'pending', 'active', or 'inactive'. The default state of 'draft' suggests that posts may transition through different statuses during their lifecycle.",
+      "default": "'draft'::character varying"
+    },
+    {
+      "name": "platform_post_id",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values do not clearly indicate a specific business-related function.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a social media post was created, based on the current timestamp at the moment of data entry. The timestamp does not include a time zone, but local time context is provided by sample values indicating Central Standard Time.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a social media post in the database was last modified. The presence of the current timestamp as the default suggests it automatically updates to reflect the current time whenever changes are made to the post.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "post_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_social_posts_account_id",
+      "column_name": "account_id",
+      "referenced_table": "synthetic.social_accounts",
+      "referenced_column": "account_id"
+    },
+    {
+      "constraint_name": "fk_social_posts_campaign_id",
+      "column_name": "campaign_id",
+      "referenced_table": "synthetic.marketing_campaigns",
+      "referenced_column": "campaign_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "social_posts_pkey",
+      "index_definition": "CREATE UNIQUE INDEX social_posts_pkey ON synthetic.social_posts USING btree (post_id)",
+      "columns": [
+        "post_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "post_id": 1,
+      "account_id": 38,
+      "campaign_id": 36,
+      "content": "Ago stage ten side people. Total either seat great institution public.",
+      "media_url": "https://mcdonald.com/",
+      "scheduled_at": "2025-09-16T16:53:40.791Z",
+      "published_at": "2025-01-27T12:24:25.823Z",
+      "status": "pending",
+      "platform_post_id": "Generation expect argue Mrs. Financial class Congress very year.",
+      "created_at": "2025-12-13T09:14:36.369Z",
+      "updated_at": "2025-12-13T09:14:36.369Z"
+    },
+    {
+      "post_id": 2,
+      "account_id": 22,
+      "campaign_id": 43,
+      "content": "Describe owner can million push soldier prove. Democrat myself majority child phone series skill.",
+      "media_url": "http://moore.com/",
+      "scheduled_at": "2024-01-09T06:29:24.874Z",
+      "published_at": "2025-07-05T11:01:26.506Z",
+      "status": "active",
+      "platform_post_id": "Consumer can tell western these. Nice gas surface blood think. Sell seem some protect.",
+      "created_at": "2025-12-13T09:14:36.369Z",
+      "updated_at": "2025-12-13T09:14:36.369Z"
+    },
+    {
+      "post_id": 3,
+      "account_id": 27,
+      "campaign_id": 23,
+      "content": "Listen half dream for gas peace many. Place role once during time miss join.",
+      "media_url": "https://www.schmitt.com/",
+      "scheduled_at": "2025-11-02T20:41:40.739Z",
+      "published_at": "2024-07-05T14:57:56.069Z",
+      "status": "pending",
+      "platform_post_id": "Win debate young west season receive. Table letter detail well catch budget.",
+      "created_at": "2025-12-13T09:14:36.369Z",
+      "updated_at": "2025-12-13T09:14:36.369Z"
+    },
+    {
+      "post_id": 4,
+      "account_id": 49,
+      "campaign_id": 28,
+      "content": "Kid really art fall. Important suffer physical accept record them.",
+      "media_url": "https://www.strickland.info/",
+      "scheduled_at": "2025-10-06T17:29:34.977Z",
+      "published_at": "2024-06-20T01:20:14.292Z",
+      "status": "pending",
+      "platform_post_id": "Go determine help.",
+      "created_at": "2025-12-13T09:14:36.369Z",
+      "updated_at": "2025-12-13T09:14:36.369Z"
+    },
+    {
+      "post_id": 5,
+      "account_id": 4,
+      "campaign_id": 19,
+      "content": "Weight enough civil. Never senior interesting cut action daughter billion.",
+      "media_url": "https://barker.biz/",
+      "scheduled_at": "2024-11-02T08:36:57.966Z",
+      "published_at": "2025-04-12T04:46:43.944Z",
+      "status": "pending",
+      "platform_post_id": "Mother play during rock type hope whole.",
+      "created_at": "2025-12-13T09:14:36.369Z",
+      "updated_at": "2025-12-13T09:14:36.369Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:40:39.495Z"
+}

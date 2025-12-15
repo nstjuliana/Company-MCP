@@ -1,0 +1,175 @@
+{
+  "table": "deployment_history",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.deployment_history` table tracks the deployment logs of applications, represented by the unique `deployment_id`, and records details such as the associated `app_id`, `server_id`, deployment `version`, deployment timestamps, who conducted the deployment via `deployed_by`, and the deployment `status`. The table holds historical deployment information including potential `rollback_version` details and accompanying `notes`, though it currently does not have any defined relationships to other tables. Its primary role in the data model is likely to maintain a chronological record of application deployments for auditing or tracking purposes.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "deployment_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each record in the deployment history, ensuring that each deployment entry is distinct and can be easily referenced. The sequential values suggest it tracks deployments in the order they occur.",
+      "default": "nextval('synthetic.deployment_history_deployment_id_seq'::regclass)"
+    },
+    {
+      "name": "app_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column typically represents the identifier for an application within a deployment history, indicating which application entry each record is associated with. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "server_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely identifies the server associated with each deployment record, with potential values indicating different servers. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "version",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "deployed_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Records the date and time a deployment event occurred in the system. The specific timestamps are without time zone adjustments and can signify various time periods reflecting when deployments took place.",
+      "default": null
+    },
+    {
+      "name": "deployed_by",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents the identifier of personnel or a system responsible for deploying a particular software or service version. The purpose or identity specifics of these entities are unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column tracks the current operational state of a deployment, indicating whether it is active, inactive, or pending. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "rollback_version",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "notes",
+      "type": "text",
+      "nullable": true,
+      "description": "This column stores freeform text entries that appear to capture various qualitative observations, commentary, or notes related to deployment activities or events. Purpose unclear from available data due to the abstract nature of the sample values provided.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an event or action within the deployment history table was created. It is used to track the exact moment of record entries, capturing them by default at the current timestamp.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a particular deployment was last updated. The exact purpose or context of these updates within the business process is unclear from the available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "deployment_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_deployment_history_app_id",
+      "column_name": "app_id",
+      "referenced_table": "synthetic.applications",
+      "referenced_column": "app_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "deployment_history_pkey",
+      "index_definition": "CREATE UNIQUE INDEX deployment_history_pkey ON synthetic.deployment_history USING btree (deployment_id)",
+      "columns": [
+        "deployment_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "deployment_id": 1,
+      "app_id": 2,
+      "server_id": 2,
+      "version": "Wonder section hope executive.",
+      "deployed_at": "2025-07-10T05:43:52.826Z",
+      "deployed_by": 55,
+      "status": "inactive",
+      "rollback_version": "Grow heart would film imagine.",
+      "notes": "State sound consumer development send style Republican. Keep agency necessary star data fear. Govern...",
+      "created_at": "2025-12-13T09:16:32.984Z",
+      "updated_at": "2025-12-13T09:16:32.984Z"
+    },
+    {
+      "deployment_id": 2,
+      "app_id": 33,
+      "server_id": 2,
+      "version": "You enough office economic ability seem.",
+      "deployed_at": "2025-11-01T09:47:17.167Z",
+      "deployed_by": 242,
+      "status": "inactive",
+      "rollback_version": "Billion your thought assume.",
+      "notes": "Any skin rise since. Likely wait team order keep agent. Number create job do order.",
+      "created_at": "2025-12-13T09:16:32.984Z",
+      "updated_at": "2025-12-13T09:16:32.984Z"
+    },
+    {
+      "deployment_id": 3,
+      "app_id": 6,
+      "server_id": 2,
+      "version": "Receive fight dog guy find. My key worry.",
+      "deployed_at": "2024-04-03T01:48:41.218Z",
+      "deployed_by": 230,
+      "status": "active",
+      "rollback_version": "Single onto discussion special vote.",
+      "notes": "Reflect population city dark cultural. Change church spend mention edge born treat certainly. Short ...",
+      "created_at": "2025-12-13T09:16:32.984Z",
+      "updated_at": "2025-12-13T09:16:32.984Z"
+    },
+    {
+      "deployment_id": 4,
+      "app_id": 21,
+      "server_id": 1,
+      "version": "News watch tend past trouble red.",
+      "deployed_at": "2024-11-03T02:19:20.337Z",
+      "deployed_by": 860,
+      "status": "pending",
+      "rollback_version": "Stuff bill much simply.",
+      "notes": "Treat skill near. Large defense house why serious theory these itself. Fund near organization articl...",
+      "created_at": "2025-12-13T09:16:32.984Z",
+      "updated_at": "2025-12-13T09:16:32.984Z"
+    },
+    {
+      "deployment_id": 5,
+      "app_id": 42,
+      "server_id": 2,
+      "version": "Threat card product manage.",
+      "deployed_at": "2025-09-16T10:59:07.445Z",
+      "deployed_by": 811,
+      "status": "active",
+      "rollback_version": "Reason increase nature modern sing appear.",
+      "notes": "Major later bad themselves occur under woman. Through have place whose. Change management argue know...",
+      "created_at": "2025-12-13T09:16:32.984Z",
+      "updated_at": "2025-12-13T09:16:32.984Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:11.799Z"
+}

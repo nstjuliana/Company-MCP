@@ -1,0 +1,183 @@
+{
+  "table": "landing_pages",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.landing_pages\" table represents the business entity of landing pages used in digital marketing campaigns, characterized by campaign-specific identifiers, URLs, content, metadata, status, and timestamps for publication and modification. The primary key, \"page_id,\" uniquely identifies each landing page, with a foreign key relationship to an unspecified table suggesting a linkage to broader campaign data. This table’s role in the data model is to store essential information and attributes of landing pages, facilitating their management and association with marketing campaigns.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "page_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each landing page with a sequential number. It serves as the primary means of referring to specific landing pages within the system.",
+      "default": "nextval('synthetic.landing_pages_page_id_seq'::regclass)"
+    },
+    {
+      "name": "campaign_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This field appears to refer to a unique identifier associated with a specific marketing campaign connected to the landing pages. The exact purpose and usage are unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "page_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column represents descriptive titles or themes for various landing pages, likely capturing concepts or subjects relevant to the content presented on each page. The purpose remains unclear beyond providing an overview or thematic focus based on the sample values.",
+      "default": null
+    },
+    {
+      "name": "url_slug",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column contains URL links, likely referencing specific landing pages for different websites, used to direct users to particular sections of the businesses' web presence. The URLs are primarily in business and organizational formats, suggesting their use in online marketing or commerce.",
+      "default": null
+    },
+    {
+      "name": "html_content",
+      "type": "text",
+      "nullable": true,
+      "description": "This column stores short text excerpts or descriptions likely associated with various web pages or web-related content. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "meta_title",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column represents brief descriptive titles or headlines associated with various landing pages, potentially used for summarizing or capturing the essence of page content. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "meta_description",
+      "type": "text",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The text entries appear to be fragments of various sentences or statements.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column indicates the current state or progress of a landing page, such as whether it is active, inactive, or pending. It helps track and manage the availability and readiness of landing pages.",
+      "default": "'draft'::character varying"
+    },
+    {
+      "name": "published_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Represents the date and time at which a particular landing page was published. It may not always have a value, indicating some pages might not yet be published.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a landing page entry was created. It reflects the initial timestamp set by the system and defaults to the current time upon entry creation.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time a landing page record was last updated. The default value indicates it captures the current timestamp unless specified otherwise.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "page_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_landing_pages_campaign_id",
+      "column_name": "campaign_id",
+      "referenced_table": "synthetic.marketing_campaigns",
+      "referenced_column": "campaign_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "landing_pages_pkey",
+      "index_definition": "CREATE UNIQUE INDEX landing_pages_pkey ON synthetic.landing_pages USING btree (page_id)",
+      "columns": [
+        "page_id"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "landing_pages_url_slug_key",
+      "index_definition": "CREATE UNIQUE INDEX landing_pages_url_slug_key ON synthetic.landing_pages USING btree (url_slug)",
+      "columns": [
+        "url_slug"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "page_id": 1,
+      "campaign_id": 16,
+      "page_name": "Rate strong leg region need concern American. Work everybody onto wide. Effort white sort.",
+      "url_slug": "https://morris-crawford.org/",
+      "html_content": "Quite size writer something. Adult figure former in central.",
+      "meta_title": "Foot test bit.",
+      "meta_description": "Near without support. Now treatment although series there process who. Break day her miss.",
+      "status": "active",
+      "published_at": "2025-07-03T02:07:04.971Z",
+      "created_at": "2025-12-13T09:14:15.961Z",
+      "updated_at": "2025-12-13T09:14:15.961Z"
+    },
+    {
+      "page_id": 2,
+      "campaign_id": 36,
+      "page_name": "Trip cultural learn. Candidate medical official might.",
+      "url_slug": "https://palmer.net/",
+      "html_content": "However present national short simply wide level. Anything training nothing population like. Onto pa...",
+      "meta_title": "Book white later.",
+      "meta_description": "Season career policy unit. Pressure fear later great nothing. All song else future present middle. M...",
+      "status": "active",
+      "published_at": "2025-11-18T09:22:58.814Z",
+      "created_at": "2025-12-13T09:14:15.961Z",
+      "updated_at": "2025-12-13T09:14:15.961Z"
+    },
+    {
+      "page_id": 3,
+      "campaign_id": 11,
+      "page_name": "Behind TV PM cover price politics. Man movement hold. Chance culture represent focus.",
+      "url_slug": "https://www.lopez.com/",
+      "html_content": "Crime learn finish provide former budget. Late energy ready could why early lot avoid. Society form ...",
+      "meta_title": "Would among word already.",
+      "meta_description": "Like available individual finally. Nor son son book civil necessary. Until others what challenge qua...",
+      "status": "active",
+      "published_at": "2025-06-17T17:28:31.052Z",
+      "created_at": "2025-12-13T09:14:15.961Z",
+      "updated_at": "2025-12-13T09:14:15.961Z"
+    },
+    {
+      "page_id": 4,
+      "campaign_id": 27,
+      "page_name": "Foot join if town collection change.",
+      "url_slug": "https://www.lucas.biz/",
+      "html_content": "Rich article question in ahead concern score. Hundred help produce standard center.",
+      "meta_title": "Threat none contain rate.",
+      "meta_description": "Nor hear front age. Leader painting it voice.",
+      "status": "inactive",
+      "published_at": "2024-11-15T07:15:49.993Z",
+      "created_at": "2025-12-13T09:14:15.961Z",
+      "updated_at": "2025-12-13T09:14:15.961Z"
+    },
+    {
+      "page_id": 5,
+      "campaign_id": 45,
+      "page_name": "Question common argue once decade finally. Lead out thus.",
+      "url_slug": "http://johnson.com/",
+      "html_content": "Among argue nice this memory present. Security consider single firm per food.",
+      "meta_title": "Movement knowledge coach natural certainly.",
+      "meta_description": "Character realize million really score. Wonder cold wish network. Else region hand often case.",
+      "status": "pending",
+      "published_at": "2025-09-17T04:40:28.087Z",
+      "created_at": "2025-12-13T09:14:15.961Z",
+      "updated_at": "2025-12-13T09:14:15.961Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:24.309Z"
+}

@@ -1,0 +1,115 @@
+{
+  "table": "wishlists",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.wishlists\" table represents customer wishlists, where each wishlist is uniquely identified by a \"wishlist_id\" and associated with a \"customer_id\" indicating its owner. The table includes attributes such as \"wishlist_name\" for the title of the wishlist, whether it is \"is_public\" for visibility, and timestamps \"created_at\" and \"updated_at\" to track changes. This table is primarily used to manage data for customer wishlists but currently does not explicitly reference or connect with other tables through defined relationships.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "wishlist_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each wishlist within the system, incrementing with each new entry. It serves as a primary key to track individual wishlists.",
+      "default": "nextval('synthetic.wishlists_wishlist_id_seq'::regclass)"
+    },
+    {
+      "name": "customer_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents the unique identifier for different customers who have created wishlists. Each number corresponds to a distinct customer.",
+      "default": null
+    },
+    {
+      "name": "wishlist_name",
+      "type": "character varying",
+      "nullable": true,
+      "description": "The column represents custom names given to collections or lists of desired items or entities, presumably created by users. Purpose unclear from available data.",
+      "default": "'My Wishlist'::character varying"
+    },
+    {
+      "name": "is_public",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether a wishlist is publicly accessible or not. A value of true means the wishlist can be viewed by others, while false signifies it is private.",
+      "default": "false"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when each wishlist entry was created, reflecting the instance in the standard time zone of the creator. The default value suggests that it logs the creation timestamp automatically, though entries can be updated to null.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the most recent date and time when a wishlist record was updated. It reflects changes or modifications made to the wishlist entries.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "wishlist_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_wishlists_customer_id",
+      "column_name": "customer_id",
+      "referenced_table": "synthetic.customers",
+      "referenced_column": "customer_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "wishlists_pkey",
+      "index_definition": "CREATE UNIQUE INDEX wishlists_pkey ON synthetic.wishlists USING btree (wishlist_id)",
+      "columns": [
+        "wishlist_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "wishlist_id": 1,
+      "customer_id": 7,
+      "wishlist_name": "Forward step election government society hospital in. South dinner entire door particularly.",
+      "is_public": true,
+      "created_at": "2025-12-13T08:56:29.619Z",
+      "updated_at": "2025-12-13T08:56:29.619Z"
+    },
+    {
+      "wishlist_id": 2,
+      "customer_id": 45,
+      "wishlist_name": "Name voice always soldier stock. Account over director pay. Deep trip material week hundred.",
+      "is_public": false,
+      "created_at": "2025-12-13T08:56:29.619Z",
+      "updated_at": "2025-12-13T08:56:29.619Z"
+    },
+    {
+      "wishlist_id": 3,
+      "customer_id": 33,
+      "wishlist_name": "Live staff total get finish apply trial.\nWater left almost outside prevent yard approach.",
+      "is_public": true,
+      "created_at": "2025-12-13T08:56:29.619Z",
+      "updated_at": "2025-12-13T08:56:29.619Z"
+    },
+    {
+      "wishlist_id": 4,
+      "customer_id": 23,
+      "wishlist_name": "Its half report already wind provide once someone. Level same get ability. Century purpose such.",
+      "is_public": false,
+      "created_at": "2025-12-13T08:56:29.619Z",
+      "updated_at": "2025-12-13T08:56:29.619Z"
+    },
+    {
+      "wishlist_id": 5,
+      "customer_id": 39,
+      "wishlist_name": "Trial whom machine song example. Product whole individual.",
+      "is_public": false,
+      "created_at": "2025-12-13T08:56:29.619Z",
+      "updated_at": "2025-12-13T08:56:29.619Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:44:30.759Z"
+}

@@ -1,0 +1,102 @@
+{
+  "table": "warehouse_zones",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.warehouse_zones` table is designed to represent distinct zones within a warehouse, which are likely used to organize or categorize storage areas. The primary key is `zone_id`, indicating each zone's unique identifier; however, detailed column information and sample data are unavailable to expand on specific attributes. This table has undefined foreign key relationships, suggesting it may integrate with other elements of the warehouse's inventory or operations, but there are no explicit dependencies from other tables.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "zone_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Unique identifier assigned to each distinct zone within a warehouse for operational and tracking purposes.",
+      "default": "nextval('synthetic.warehouse_zones_zone_id_seq'::regclass)"
+    },
+    {
+      "name": "warehouse_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "zone_code",
+      "type": "character varying",
+      "nullable": false,
+      "description": "The column represents a unique identifier for different sections or areas within a warehouse. This helps in organizing and locating items efficiently within the facility.",
+      "default": null
+    },
+    {
+      "name": "zone_name",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "zone_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "temperature_controlled",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether a warehouse zone has temperature control features. If not specified, it defaults to false, suggesting it is not temperature controlled.",
+      "default": "false"
+    },
+    {
+      "name": "min_temp",
+      "type": "numeric",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "max_temp",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column likely indicates the maximum temperature threshold associated with different warehouse zones. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column likely records the date and time when a record in the warehouse zones table is created or last updated. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column likely records the most recent date and time when a warehouse zone's information was modified. Purpose unclear from available data due to lack of sample values.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "zone_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_warehouse_zones_warehouse_id",
+      "column_name": "warehouse_id",
+      "referenced_table": "synthetic.warehouses",
+      "referenced_column": "warehouse_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "warehouse_zones_pkey",
+      "index_definition": "CREATE UNIQUE INDEX warehouse_zones_pkey ON synthetic.warehouse_zones USING btree (zone_id)",
+      "columns": [
+        "zone_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:42:48.369Z"
+}

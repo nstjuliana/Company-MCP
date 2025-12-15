@@ -1,0 +1,159 @@
+{
+  "table": "ATTRIBUTIONS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.ATTRIBUTIONS table represents a business entity for tracking various types of attributions, including attributes related to advertising campaigns, webinars, social interactions, and email engagements, with each record uniquely identified by ATTRIBUTION_ID. This table contains metadata such as creation and update timestamps and current status but does not directly reference or is referenced by other tables, indicating it may serve as an isolated set of descriptors or identifiers within the data model. Through its diverse attributes, the table provides a comprehensive view of different points of attribution related to marketing activities.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "ATTRIBUTION_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column likely represents a unique identifier assigned sequentially to each record in the attributions dataset. It ensures that each attribution entry is distinct and can be individually referenced.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column represents a sequential identifier or label for various attributions within the dataset. The purpose of these identifiers is to distinctly categorize each attribution entry.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains brief textual descriptions or labels for attribution entries, each providing identification or commentary related to a specific attribution instance. Purpose unclear from available data beyond denoting individual attribution details.",
+      "default": null
+    },
+    {
+      "name": "AD_150_ATTR_0",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column likely represents unique identifiers assigned to specific attributions or transactions. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "WEBINAR_150_ATTR_1",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column represents identifiers for specific webinar-related attributions, potentially corresponding to different webinar sessions or categories. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "WEBINAR_150_ATTR_2",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "SOCIAL_150_ATTR_3",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "EMAIL_150_ATTR_4",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column represents a numerical code associated with a specific email attribution. Its precise role within business operations is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "CREATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column stores the exact date and time when each record in the attributions table was created, capturing the creation timestamp for tracking the timeline of data entries. The values are automatically set to the current timestamp when a record is created, ensuring accurate chronological documentation.",
+      "default": "CURRENT_TIMESTAMP()"
+    },
+    {
+      "name": "UPDATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column records the date and time when an attribution record was last updated. The values indicate time-stamped updates localized to the Central Standard Time zone.",
+      "default": null
+    },
+    {
+      "name": "STATUS",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column likely indicates the current operational state or availability of an item or process within the context of the attribution system. Based on the sample values, the primary state appears to be 'active'.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "ATTRIBUTION_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "ATTRIBUTION_ID": 1,
+      "NAME": "ATTRIBUTIONS 1",
+      "DESCRIPTION": "Description for ATTRIBUTIONS 1",
+      "AD_150_ATTR_0": null,
+      "WEBINAR_150_ATTR_1": null,
+      "WEBINAR_150_ATTR_2": null,
+      "SOCIAL_150_ATTR_3": "Sample SOCIAL_150_ATTR_3 1",
+      "EMAIL_150_ATTR_4": null,
+      "CREATED_AT": "2025-12-12 17:25:33.573",
+      "UPDATED_AT": "2026-01-11 00:00:00.000",
+      "STATUS": "ACTIVE"
+    },
+    {
+      "ATTRIBUTION_ID": 2,
+      "NAME": "ATTRIBUTIONS 2",
+      "DESCRIPTION": "Description for ATTRIBUTIONS 2",
+      "AD_150_ATTR_0": 101,
+      "WEBINAR_150_ATTR_1": 101,
+      "WEBINAR_150_ATTR_2": 101,
+      "SOCIAL_150_ATTR_3": "Sample SOCIAL_150_ATTR_3 2",
+      "EMAIL_150_ATTR_4": 101,
+      "CREATED_AT": "2025-12-12 17:25:33.573",
+      "UPDATED_AT": "2026-01-12 00:00:00.000",
+      "STATUS": "ACTIVE"
+    },
+    {
+      "ATTRIBUTION_ID": 3,
+      "NAME": "ATTRIBUTIONS 3",
+      "DESCRIPTION": "Description for ATTRIBUTIONS 3",
+      "AD_150_ATTR_0": 102,
+      "WEBINAR_150_ATTR_1": 102,
+      "WEBINAR_150_ATTR_2": 102,
+      "SOCIAL_150_ATTR_3": "Sample SOCIAL_150_ATTR_3 3",
+      "EMAIL_150_ATTR_4": 102,
+      "CREATED_AT": "2025-12-12 17:25:33.573",
+      "UPDATED_AT": "2026-01-13 00:00:00.000",
+      "STATUS": "ACTIVE"
+    },
+    {
+      "ATTRIBUTION_ID": 4,
+      "NAME": "ATTRIBUTIONS 4",
+      "DESCRIPTION": "Description for ATTRIBUTIONS 4",
+      "AD_150_ATTR_0": null,
+      "WEBINAR_150_ATTR_1": null,
+      "WEBINAR_150_ATTR_2": null,
+      "SOCIAL_150_ATTR_3": "Sample SOCIAL_150_ATTR_3 4",
+      "EMAIL_150_ATTR_4": null,
+      "CREATED_AT": "2025-12-12 17:25:33.573",
+      "UPDATED_AT": "2026-01-14 00:00:00.000",
+      "STATUS": "ACTIVE"
+    },
+    {
+      "ATTRIBUTION_ID": 5,
+      "NAME": "ATTRIBUTIONS 5",
+      "DESCRIPTION": "Description for ATTRIBUTIONS 5",
+      "AD_150_ATTR_0": 104,
+      "WEBINAR_150_ATTR_1": 104,
+      "WEBINAR_150_ATTR_2": 104,
+      "SOCIAL_150_ATTR_3": "Sample SOCIAL_150_ATTR_3 5",
+      "EMAIL_150_ATTR_4": 104,
+      "CREATED_AT": "2025-12-12 17:25:33.573",
+      "UPDATED_AT": "2026-01-15 00:00:00.000",
+      "STATUS": "ACTIVE"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:39.727Z"
+}

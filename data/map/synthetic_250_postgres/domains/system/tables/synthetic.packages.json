@@ -1,0 +1,163 @@
+{
+  "table": "packages",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.packages\" table represents a collection of packages, each uniquely identified by the primary key \"package_id,\" and associated with specific attributes such as \"weight_kg,\" \"length_cm,\" \"width_cm,\" \"height_cm,\" and a unique \"tracking_number.\" While this table is not explicitly related to other tables via foreign keys, each package is likely part of a larger system for tracking shipments or deliveries, as suggested by its inclusion of \"created_at\" and \"updated_at\" timestamps. The table's role appears to be centralized around maintaining descriptive and logistical information about individual packages within the synthetic_250_postgres database.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "package_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each package within the system. It automatically assigns consecutive numbers to new entries, serving as the primary key for package records.",
+      "default": "nextval('synthetic.packages_package_id_seq'::regclass)"
+    },
+    {
+      "name": "pack_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column appears to represent unique identifiers assigned to packages, ensuring each package can be individually distinguished within the system. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "package_number",
+      "type": "integer",
+      "nullable": false,
+      "description": "Numerical identifier assigned to each package to ensure its unique distinction within the system. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "weight_kg",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the weight of individual packages in kilograms for a shipping or logistics context. The values range from around 14 to 96 kilograms, indicating varying sizes of packages.",
+      "default": null
+    },
+    {
+      "name": "length_cm",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the physical length of packages measured in centimeters. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "width_cm",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the width dimension of packages measured in centimeters, as evidenced by the sample values. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "height_cm",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the height of packages measured in centimeters. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "tracking_number",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely represents a unique identifier for packages in a logistics or delivery system, allowing for the tracking of individual packages through various stages of transit. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a package entry is created. It reflects the moment the package was added to the system, with the ability to store unspecified timestamps.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a package record was last modified. The values indicate historical timestamps reflecting updates made to package details.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "package_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_packages_pack_id",
+      "column_name": "pack_id",
+      "referenced_table": "synthetic.pack_orders",
+      "referenced_column": "pack_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "packages_pkey",
+      "index_definition": "CREATE UNIQUE INDEX packages_pkey ON synthetic.packages USING btree (package_id)",
+      "columns": [
+        "package_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "package_id": 1,
+      "pack_id": 17,
+      "package_number": 3576,
+      "weight_kg": "46.822",
+      "length_cm": "31.45",
+      "width_cm": "115.30",
+      "height_cm": "658.33",
+      "tracking_number": "56640860633128098907",
+      "created_at": "2025-12-13T08:58:19.169Z",
+      "updated_at": "2025-12-13T08:58:19.169Z"
+    },
+    {
+      "package_id": 2,
+      "pack_id": 12,
+      "package_number": 7786,
+      "weight_kg": "14.068",
+      "length_cm": "586.82",
+      "width_cm": "372.28",
+      "height_cm": "377.91",
+      "tracking_number": "19411212483889890279",
+      "created_at": "2025-12-13T08:58:19.169Z",
+      "updated_at": "2025-12-13T08:58:19.169Z"
+    },
+    {
+      "package_id": 3,
+      "pack_id": 38,
+      "package_number": 555,
+      "weight_kg": "32.305",
+      "length_cm": "104.61",
+      "width_cm": "358.88",
+      "height_cm": "901.02",
+      "tracking_number": "74510860302625836481",
+      "created_at": "2025-12-13T08:58:19.169Z",
+      "updated_at": "2025-12-13T08:58:19.169Z"
+    },
+    {
+      "package_id": 4,
+      "pack_id": 11,
+      "package_number": 6905,
+      "weight_kg": "47.602",
+      "length_cm": "336.67",
+      "width_cm": "902.98",
+      "height_cm": "187.11",
+      "tracking_number": "90744006300294332096",
+      "created_at": "2025-12-13T08:58:19.169Z",
+      "updated_at": "2025-12-13T08:58:19.169Z"
+    },
+    {
+      "package_id": 5,
+      "pack_id": 23,
+      "package_number": 5019,
+      "weight_kg": "16.358",
+      "length_cm": "546.78",
+      "width_cm": "752.05",
+      "height_cm": "439.01",
+      "tracking_number": "83893566039394158249",
+      "created_at": "2025-12-13T08:58:19.169Z",
+      "updated_at": "2025-12-13T08:58:19.169Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:21.145Z"
+}

@@ -1,0 +1,175 @@
+{
+  "table": "opportunity_products",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.opportunity_products` table represents the products associated with a specific sales opportunity, capturing details like product, quantity, unit price, discount, and total price. The primary key, `op_product_id`, uniquely identifies each product entry linked to an `opportunity_id`, with `product_id` specifying the product involved. This table appears to support calculating revenue forecasts and analyzing the composition of sales opportunities but does not explicitly have defined foreign key relationships in the provided data.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "op_product_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each product associated with specific business opportunities. Each identifier is automatically assigned in a sequential manner.",
+      "default": "nextval('synthetic.opportunity_products_op_product_id_seq'::regclass)"
+    },
+    {
+      "name": "opportunity_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column identifies unique business opportunities associated with product offerings. Each value represents a distinct opportunity to sell or promote products to potential clients or partners.",
+      "default": null
+    },
+    {
+      "name": "product_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column appears to represent identifiers for various products associated with business opportunities. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "product_name",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column appears to represent descriptions or narratives related to varying products, likely offering detailed contextual information or promotional content. The purpose is unclear from available data as the sample values are broad and varied.",
+      "default": null
+    },
+    {
+      "name": "quantity",
+      "type": "numeric",
+      "nullable": true,
+      "description": "The column represents the amount of a particular product associated with a sales opportunity, expressed as a numeric value. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "unit_price",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the monetary value per unit of a product associated with different business opportunities. It reflects the price set for individual units within various sales opportunities.",
+      "default": null
+    },
+    {
+      "name": "discount",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the monetary amount discounted on opportunity products, as evidenced by the sample values which indicate notable reductions from original prices. The range of values suggests variation in discount levels likely corresponding to different promotional strategies or product-specific incentives.",
+      "default": "0"
+    },
+    {
+      "name": "total_price",
+      "type": "numeric",
+      "nullable": true,
+      "description": "Represents the total cost associated with the products linked to a business opportunity, expressed numerically. The figures indicate various monetary values related to distinct business transactions.",
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "nullable": true,
+      "description": "Summarizes key attributes, events, or concepts associated with products in relation to opportunities, highlighting interactions, influences, and strategic elements. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a product opportunity is created. It captures the creation timestamp in relation to the Central Standard Time zone.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column indicates the date and time when records in the opportunity_products table were last modified. The entries are automatically set to the current time if no specific update is provided.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "op_product_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_opportunity_products_opportunity_id",
+      "column_name": "opportunity_id",
+      "referenced_table": "synthetic.opportunities",
+      "referenced_column": "opportunity_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "opportunity_products_pkey",
+      "index_definition": "CREATE UNIQUE INDEX opportunity_products_pkey ON synthetic.opportunity_products USING btree (op_product_id)",
+      "columns": [
+        "op_product_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "op_product_id": 1,
+      "opportunity_id": 16,
+      "product_id": 7,
+      "product_name": "Provide seat eight teach leader. Tell baby thing truth movie join.",
+      "quantity": "260.79",
+      "unit_price": "2362.86",
+      "discount": "753.76",
+      "total_price": "9540.81",
+      "description": "Important relationship manage among very. A cause total total. Nearly near want citizen serve.",
+      "created_at": "2025-12-13T09:18:21.382Z",
+      "updated_at": "2025-12-13T09:18:21.382Z"
+    },
+    {
+      "op_product_id": 2,
+      "opportunity_id": 20,
+      "product_id": 597,
+      "product_name": "Military me move around claim defense.\nWhose song institution think. First worker since thus.",
+      "quantity": "722.88",
+      "unit_price": "124.24",
+      "discount": "653.68",
+      "total_price": "6930.76",
+      "description": "American audience oil. Whom understand late mind. Election kid serve discussion finally many.",
+      "created_at": "2025-12-13T09:18:21.382Z",
+      "updated_at": "2025-12-13T09:18:21.382Z"
+    },
+    {
+      "op_product_id": 3,
+      "opportunity_id": 4,
+      "product_id": 684,
+      "product_name": "Send discussion off wide never everybody. Blue most watch her attack.",
+      "quantity": "118.22",
+      "unit_price": "3075.00",
+      "discount": "405.42",
+      "total_price": "5030.18",
+      "description": "Sense over teacher add family.",
+      "created_at": "2025-12-13T09:18:21.382Z",
+      "updated_at": "2025-12-13T09:18:21.382Z"
+    },
+    {
+      "op_product_id": 4,
+      "opportunity_id": 46,
+      "product_id": 789,
+      "product_name": "Thus sit story admit. Nor stand like design leave. Protect present again beyond cultural.",
+      "quantity": "310.98",
+      "unit_price": "1182.98",
+      "discount": "916.13",
+      "total_price": "2957.43",
+      "description": "Bag for development station black spend meeting. Game stop image laugh.",
+      "created_at": "2025-12-13T09:18:21.382Z",
+      "updated_at": "2025-12-13T09:18:21.382Z"
+    },
+    {
+      "op_product_id": 5,
+      "opportunity_id": 40,
+      "product_id": 227,
+      "product_name": "Carry region them professor need care almost direction. Most work know sound.",
+      "quantity": "219.13",
+      "unit_price": "1344.35",
+      "discount": "153.19",
+      "total_price": "7479.87",
+      "description": "Organization poor entire others. Her game they ask. Example success live else guy reason.",
+      "created_at": "2025-12-13T09:18:21.382Z",
+      "updated_at": "2025-12-13T09:18:21.382Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:41:56.273Z"
+}

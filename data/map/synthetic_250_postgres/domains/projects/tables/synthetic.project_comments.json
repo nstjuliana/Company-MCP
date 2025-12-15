@@ -1,0 +1,151 @@
+{
+  "table": "project_comments",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.project_comments` table represents comments associated with specific projects and tasks, capturing commentary details such as the comment text, author, and timestamps for creation and updates. Each comment is uniquely identified by `comment_id` and may have a hierarchical structure indicated by `parent_comment_id`, linking comments to potential parent comments for threaded discussions. The foreign keys suggest a reference to undefined tables, possibly pointing to related project or task entities, highlighting its role in facilitating collaboration and communication within the larger project management schema.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "comment_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each comment associated with a project, ensuring distinct tracking and management. Each value represents a sequentially generated identifier for a project comment entry.",
+      "default": "nextval('synthetic.project_comments_comment_id_seq'::regclass)"
+    },
+    {
+      "name": "project_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely identifies the specific project associated with each comment entry, with each number corresponding to a unique project. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "task_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents the identification number for tasks associated with project comments. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "parent_comment_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely indicates the identifier of a comment that another comment is responding to, forming a hierarchical or threaded structure for discussions. If the value is null, the comment may be an original post rather than a reply.",
+      "default": null
+    },
+    {
+      "name": "comment_text",
+      "type": "text",
+      "nullable": false,
+      "description": "This column contains written observations or reflections, possibly related to media, culture, education, and other general topics. The purpose is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "author_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents the unique identifier of users who have authored comments on projects. Each integer corresponds to a distinct author, though specific roles or attributes of these authors are not discernible from the available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a comment was created on a project, reflecting the moment of its initial entry into the system. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column captures the date and time when a particular comment on a project was last modified. It helps in tracking the most recent updates to comments within project discussions.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "comment_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_project_comments_parent_comment_id",
+      "column_name": "parent_comment_id",
+      "referenced_table": "synthetic.project_comments",
+      "referenced_column": "comment_id"
+    },
+    {
+      "constraint_name": "fk_project_comments_project_id",
+      "column_name": "project_id",
+      "referenced_table": "synthetic.pm_projects",
+      "referenced_column": "project_id"
+    },
+    {
+      "constraint_name": "fk_project_comments_task_id",
+      "column_name": "task_id",
+      "referenced_table": "synthetic.pm_tasks",
+      "referenced_column": "task_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "project_comments_pkey",
+      "index_definition": "CREATE UNIQUE INDEX project_comments_pkey ON synthetic.project_comments USING btree (comment_id)",
+      "columns": [
+        "comment_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "comment_id": 1,
+      "project_id": 78,
+      "task_id": 62,
+      "parent_comment_id": null,
+      "comment_text": "Able through reflect provide. Data serve quality land public nation teacher. Body young hit or radio...",
+      "author_id": 110,
+      "created_at": "2025-12-13T09:13:14.379Z",
+      "updated_at": "2025-12-13T09:13:14.379Z"
+    },
+    {
+      "comment_id": 2,
+      "project_id": 57,
+      "task_id": 84,
+      "parent_comment_id": 1,
+      "comment_text": "Media nature letter. Fund room off last. Culture wish team authority life.",
+      "author_id": 247,
+      "created_at": "2025-12-13T09:13:14.379Z",
+      "updated_at": "2025-12-13T09:13:14.379Z"
+    },
+    {
+      "comment_id": 3,
+      "project_id": 63,
+      "task_id": 90,
+      "parent_comment_id": 2,
+      "comment_text": "Theory live argue quickly. Art magazine its body. My range laugh likely.",
+      "author_id": 835,
+      "created_at": "2025-12-13T09:13:14.379Z",
+      "updated_at": "2025-12-13T09:13:14.379Z"
+    },
+    {
+      "comment_id": 4,
+      "project_id": 73,
+      "task_id": 68,
+      "parent_comment_id": 2,
+      "comment_text": "Occur money idea economy main Mrs senior. Claim hospital national bed in goal go. Be machine quite d...",
+      "author_id": 81,
+      "created_at": "2025-12-13T09:13:14.379Z",
+      "updated_at": "2025-12-13T09:13:14.379Z"
+    },
+    {
+      "comment_id": 5,
+      "project_id": 74,
+      "task_id": 76,
+      "parent_comment_id": 4,
+      "comment_text": "Beat parent a student year policy science. Order will represent reason.",
+      "author_id": 579,
+      "created_at": "2025-12-13T09:13:14.379Z",
+      "updated_at": "2025-12-13T09:13:14.379Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:42:09.653Z"
+}

@@ -1,0 +1,99 @@
+{
+  "table": "SOCIAL_MEDIA_POSTS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The 'SYNTHETIC.SOCIAL_MEDIA_POSTS' table captures information regarding posts on social media platforms, uniquely identified by the 'SOCIAL_MEDIA_POST_ID' column, likely serving as the primary identifier for each post. The table includes descriptive content ('DESCRIPTION') and other attributes like 'EVENT_137_ATTR_0' and 'WEBINAR_137_ATTR_2', the latter indicating a possible scheduling or timestamp element. As it neither references nor is referenced by other tables, it appears to function independently within the data model, maintaining standalone records of social media posts.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "SOCIAL_MEDIA_POST_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents unique identifiers assigned sequentially to individual social media posts within the dataset. It ensures each post can be distinctly referenced and tracked.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column appears to represent a sequence or label for social media posts, as indicated by the numeric endings in the sample values. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains textual descriptions or notes for individual social media post records, potentially providing context or additional details about each post. The use of sequential numbering in the sample data suggests a placeholder or generic pattern, yet the specific purpose or content remains unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "EVENT_137_ATTR_0",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "EMAIL_137_ATTR_1",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "WEBINAR_137_ATTR_2",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column represents scheduled dates and times for a series of webinars taking place consecutively in December 2025, each at 6:00 PM Central Standard Time. The purpose is to track the timing of these webinars in the context of social media posts.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "SOCIAL_MEDIA_POST_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "SOCIAL_MEDIA_POST_ID": 1,
+      "NAME": "SOCIAL_MEDIA_POSTS 1",
+      "DESCRIPTION": "Description for SOCIAL_MEDIA_POSTS 1",
+      "EVENT_137_ATTR_0": "Sample EVENT_137_ATTR_0 1",
+      "EMAIL_137_ATTR_1": null,
+      "WEBINAR_137_ATTR_2": "2025-12-12 00:00:00.000"
+    },
+    {
+      "SOCIAL_MEDIA_POST_ID": 2,
+      "NAME": "SOCIAL_MEDIA_POSTS 2",
+      "DESCRIPTION": "Description for SOCIAL_MEDIA_POSTS 2",
+      "EVENT_137_ATTR_0": "Sample EVENT_137_ATTR_0 2",
+      "EMAIL_137_ATTR_1": 101,
+      "WEBINAR_137_ATTR_2": "2025-12-13 00:00:00.000"
+    },
+    {
+      "SOCIAL_MEDIA_POST_ID": 3,
+      "NAME": "SOCIAL_MEDIA_POSTS 3",
+      "DESCRIPTION": "Description for SOCIAL_MEDIA_POSTS 3",
+      "EVENT_137_ATTR_0": "Sample EVENT_137_ATTR_0 3",
+      "EMAIL_137_ATTR_1": 102,
+      "WEBINAR_137_ATTR_2": "2025-12-14 00:00:00.000"
+    },
+    {
+      "SOCIAL_MEDIA_POST_ID": 4,
+      "NAME": "SOCIAL_MEDIA_POSTS 4",
+      "DESCRIPTION": "Description for SOCIAL_MEDIA_POSTS 4",
+      "EVENT_137_ATTR_0": "Sample EVENT_137_ATTR_0 4",
+      "EMAIL_137_ATTR_1": null,
+      "WEBINAR_137_ATTR_2": "2025-12-15 00:00:00.000"
+    },
+    {
+      "SOCIAL_MEDIA_POST_ID": 5,
+      "NAME": "SOCIAL_MEDIA_POSTS 5",
+      "DESCRIPTION": "Description for SOCIAL_MEDIA_POSTS 5",
+      "EVENT_137_ATTR_0": "Sample EVENT_137_ATTR_0 5",
+      "EMAIL_137_ATTR_1": 104,
+      "WEBINAR_137_ATTR_2": "2025-12-16 00:00:00.000"
+    }
+  ],
+  "generated_at": "2025-12-14T23:42:34.625Z"
+}

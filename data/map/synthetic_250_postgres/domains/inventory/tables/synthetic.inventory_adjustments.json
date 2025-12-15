@@ -1,0 +1,110 @@
+{
+  "table": "inventory_adjustments",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.inventory_adjustments` table likely represents changes made to inventory levels, tracked by unique `adjustment_id`. With undefined foreign key relationships, specific connections to other tables remain unclear, but this table might serve to log or report inventory changes within the database. The absence of sample data or column names limits further insights into its detailed function.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "adjustment_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "A unique identifier assigned to each inventory adjustment record, ensuring distinct tracking of changes within the inventory system. Purpose unclear from available data.",
+      "default": "nextval('synthetic.inventory_adjustments_adjustment_id_seq'::regclass)"
+    },
+    {
+      "name": "adjustment_number",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "warehouse_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "A unique identifier linking inventory adjustments to their respective warehouses, ensuring that each adjustment is associated with a specific location. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "adjustment_date",
+      "type": "date",
+      "nullable": false,
+      "description": "Indicates the date on which an adjustment was made to the inventory records, reflecting changes in stock levels. This is a mandatory field, requiring an entry for every inventory adjustment made.",
+      "default": null
+    },
+    {
+      "name": "reason",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "The field indicates the current phase of an inventory adjustment process, typically starting with 'pending.' Its purpose beyond initial status designation is unclear from the available data.",
+      "default": "'pending'::character varying"
+    },
+    {
+      "name": "approved_by",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely logs the identification number of a user or system that approved an inventory adjustment. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "total_value_change",
+      "type": "numeric",
+      "nullable": true,
+      "description": "Represents the net change in monetary value associated with inventory adjustments. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column represents the date and time at which a record in the inventory adjustments table was created. It may be used to track when changes or updates to inventory levels are documented.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a record in the inventory adjustments table was last updated. Since it defaults to the current timestamp, it likely tracks when changes to inventory adjustments are made.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "adjustment_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_inventory_adjustments_warehouse_id",
+      "column_name": "warehouse_id",
+      "referenced_table": "synthetic.warehouses",
+      "referenced_column": "warehouse_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "inventory_adjustments_adjustment_number_key",
+      "index_definition": "CREATE UNIQUE INDEX inventory_adjustments_adjustment_number_key ON synthetic.inventory_adjustments USING btree (adjustment_number)",
+      "columns": [
+        "adjustment_number"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "inventory_adjustments_pkey",
+      "index_definition": "CREATE UNIQUE INDEX inventory_adjustments_pkey ON synthetic.inventory_adjustments USING btree (adjustment_id)",
+      "columns": [
+        "adjustment_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:42:22.455Z"
+}

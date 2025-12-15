@@ -1,0 +1,192 @@
+{
+  "table": "tasks",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.tasks\" table represents a collection of tasks, each uniquely identified by \"task_id,\" with attributes such as \"subject,\" \"description,\" \"status,\" \"priority,\" and various timestamps like \"due_date\" and \"created_at.\" It is a standalone table with no foreign key relationships, indicating it likely functions independently to track task-related information within the database. Although it includes fields such as \"related_to_type,\" \"related_to_id,\" \"owner_id,\" and \"assigned_to,\" these fields do not establish direct relational links to other tables, suggesting their use is primarily for internal categorization or task assignment within the system.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "task_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier assigned sequentially to each task within the system. It ensures that each task can be distinctly referenced and managed.",
+      "default": "nextval('synthetic.tasks_task_id_seq'::regclass)"
+    },
+    {
+      "name": "subject",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column represents a brief description or statement related to tasks, characterized by diverse topics such as personal reflections, observations, and decisions. The purpose of this column is to capture succinct narrative or informational content associated with individual tasks.",
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "nullable": true,
+      "description": "This column contains textual summaries or brief descriptions related to various tasks or activities, potentially spanning multiple contexts such as politics, military, or cultural events. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column represents the current phase or condition of a task, indicating whether it is underway, not initiated, halted, in progress, or finished. The default status is set to \"not started,\" suggesting a task management system's approach to tracking tasks from inception to completion.",
+      "default": "'not_started'::character varying"
+    },
+    {
+      "name": "priority",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "due_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column captures the specified deadline or target completion date for tasks, which may vary based on time zones due to regional standards. The purpose is to track task timelines and ensure timely execution, although specific usage context is not completely clear from the sample values.",
+      "default": null
+    },
+    {
+      "name": "reminder_date",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column likely represents the specific date and time when a reminder is set to be triggered for a task. The time zone information suggests these reminders pertain to activities scheduled within the Central Time zone.",
+      "default": null
+    },
+    {
+      "name": "related_to_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely categorizes tasks based on their relation to a specific concept or theme, such as 'service' or 'policy'. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "related_to_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely identifies a task's association or dependency with another task within the same system, indicated by the presence of varied integer values that could represent unique identifiers of related tasks. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "owner_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents the unique identifier assigned to individuals responsible for managing or overseeing specific tasks. The purpose or role of these individuals is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "assigned_to",
+      "type": "integer",
+      "nullable": true,
+      "description": "This field likely identifies the individual or entity responsible for completing a task within the system, represented by unique numeric identifiers. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column captures the date and time when a task is created, defaulting to the current timestamp. It indicates when each task was first recorded in the system.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a task was last modified. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "task_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "tasks_pkey",
+      "index_definition": "CREATE UNIQUE INDEX tasks_pkey ON synthetic.tasks USING btree (task_id)",
+      "columns": [
+        "task_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "task_id": 1,
+      "subject": "Receive key too huge. Life radio argue person. Family off much near eat. Smile describe go everyone....",
+      "description": "Bad huge late sound quite. South job president attack way.",
+      "status": "active",
+      "priority": "Believe.",
+      "due_date": "2024-11-18T06:00:00.000Z",
+      "reminder_date": "2024-04-20T07:08:48.815Z",
+      "related_to_type": "pretty",
+      "related_to_id": 3082,
+      "owner_id": 1462,
+      "assigned_to": 5032,
+      "created_at": "2025-12-13T08:58:41.719Z",
+      "updated_at": "2025-12-13T08:58:41.719Z"
+    },
+    {
+      "task_id": 2,
+      "subject": "Doctor majority amount investment serve happy. Of reveal western officer see.\nThing myself stage suc...",
+      "description": "Source example two few however month various music. Day occur join benefit dream book.",
+      "status": "cancelled",
+      "priority": "President result.",
+      "due_date": "2025-11-24T06:00:00.000Z",
+      "reminder_date": "2025-10-17T21:18:56.937Z",
+      "related_to_type": "woman",
+      "related_to_id": 9360,
+      "owner_id": 8894,
+      "assigned_to": 2841,
+      "created_at": "2025-12-13T08:58:41.719Z",
+      "updated_at": "2025-12-13T08:58:41.719Z"
+    },
+    {
+      "task_id": 3,
+      "subject": "Eye skin soon. Blood good relationship off describe sense discussion. Arm before small experience to...",
+      "description": "Indicate sort cup challenge rate image return structure. Meet defense film fast week charge require ...",
+      "status": "pending",
+      "priority": "Likely employee.",
+      "due_date": "2024-08-20T05:00:00.000Z",
+      "reminder_date": "2025-02-14T02:26:03.510Z",
+      "related_to_type": "service",
+      "related_to_id": 786,
+      "owner_id": 8754,
+      "assigned_to": 459,
+      "created_at": "2025-12-13T08:58:41.719Z",
+      "updated_at": "2025-12-13T08:58:41.719Z"
+    },
+    {
+      "task_id": 4,
+      "subject": "Scene near owner age specific stage. Fish art see identify physical.\nReduce president writer make de...",
+      "description": "So couple military partner certainly mean its thousand. Current Democrat check stop.",
+      "status": "active",
+      "priority": "Happen field stand.",
+      "due_date": "2024-01-18T06:00:00.000Z",
+      "reminder_date": "2023-12-19T05:40:05.056Z",
+      "related_to_type": "example",
+      "related_to_id": 4964,
+      "owner_id": 6307,
+      "assigned_to": 3085,
+      "created_at": "2025-12-13T08:58:41.719Z",
+      "updated_at": "2025-12-13T08:58:41.719Z"
+    },
+    {
+      "task_id": 5,
+      "subject": "Eight ten very hear station enjoy. Nor floor role one. Enter floor international style last directio...",
+      "description": "Lose big during director debate nothing.",
+      "status": "pending",
+      "priority": "Election tell.",
+      "due_date": "2024-11-20T06:00:00.000Z",
+      "reminder_date": "2025-11-15T07:47:53.070Z",
+      "related_to_type": "central",
+      "related_to_id": 8811,
+      "owner_id": 860,
+      "assigned_to": 7108,
+      "created_at": "2025-12-13T08:58:41.719Z",
+      "updated_at": "2025-12-13T08:58:41.719Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:45.216Z"
+}

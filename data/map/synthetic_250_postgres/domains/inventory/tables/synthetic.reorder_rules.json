@@ -1,0 +1,175 @@
+{
+  "table": "reorder_rules",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.reorder_rules` table defines parameters for restocking products, with each rule associated with a specific `product_id`, indicating when and how much to reorder based on `reorder_point`, `reorder_quantity`, `safety_stock`, and `max_stock` levels. The table captures the operational aspect of inventory management, although the relationship columns suggest it references another table which is not defined. The presence of columns like `lead_time_days`, `is_active`, and timestamps (`created_at`, `updated_at`) further detail the mechanism and status of each reorder rule.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "rule_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each reorder rule in the system, ensuring that each rule can be distinctly referenced. It increments sequentially with each new rule entry.",
+      "default": "nextval('synthetic.reorder_rules_rule_id_seq'::regclass)"
+    },
+    {
+      "name": "product_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies products for which reorder rules are applied. Each integer corresponds to a specific product.",
+      "default": null
+    },
+    {
+      "name": "warehouse_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "reorder_point",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents the inventory threshold at which a reorder is triggered, indicating the minimum quantity level of a product before replenishment is necessary. The sample values suggest varying reorder points, which may correspond to different demand rates or stock levels for each product.",
+      "default": null
+    },
+    {
+      "name": "reorder_quantity",
+      "type": "integer",
+      "nullable": false,
+      "description": "The column represents the quantity of items to be reordered when inventory levels reach a specified trigger point. It ensures that a predefined stock level is maintained by replenishing items using the listed quantities.",
+      "default": null
+    },
+    {
+      "name": "safety_stock",
+      "type": "integer",
+      "nullable": true,
+      "description": "Represents the buffer inventory level maintained to prevent stockouts, expressed in units. This value can be adjusted according to demand fluctuations to optimize inventory management.",
+      "default": "0"
+    },
+    {
+      "name": "max_stock",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents the maximum allowable stock quantity for a particular item before a reorder is considered necessary. The purpose of this column is to help manage inventory levels and avoid overstocking.",
+      "default": null
+    },
+    {
+      "name": "lead_time_days",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents the number of days required to replenish inventory after an order is placed. The purpose of this timing information within reorder operations is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "is_active",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether a reorder rule is currently active or not. This status is optional and defaults to being active.",
+      "default": "true"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column indicates the date and time when a record was created in the reorder rules table. The values suggest that the initial timestamp is automatically set to the current date and time when a record is inserted.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the most recent date and time a reorder rule was modified or confirmed. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "rule_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_reorder_rules_warehouse_id",
+      "column_name": "warehouse_id",
+      "referenced_table": "synthetic.warehouses",
+      "referenced_column": "warehouse_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "reorder_rules_pkey",
+      "index_definition": "CREATE UNIQUE INDEX reorder_rules_pkey ON synthetic.reorder_rules USING btree (rule_id)",
+      "columns": [
+        "rule_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "rule_id": 1,
+      "product_id": 4190,
+      "warehouse_id": null,
+      "reorder_point": 6602,
+      "reorder_quantity": 33,
+      "safety_stock": 9361,
+      "max_stock": 1288,
+      "lead_time_days": 21,
+      "is_active": false,
+      "created_at": "2025-12-13T08:58:22.364Z",
+      "updated_at": "2025-12-13T08:58:22.364Z"
+    },
+    {
+      "rule_id": 2,
+      "product_id": 9197,
+      "warehouse_id": null,
+      "reorder_point": 5658,
+      "reorder_quantity": 85,
+      "safety_stock": 3401,
+      "max_stock": 8677,
+      "lead_time_days": 12,
+      "is_active": false,
+      "created_at": "2025-12-13T08:58:22.364Z",
+      "updated_at": "2025-12-13T08:58:22.364Z"
+    },
+    {
+      "rule_id": 3,
+      "product_id": 4782,
+      "warehouse_id": null,
+      "reorder_point": 5167,
+      "reorder_quantity": 462,
+      "safety_stock": 7658,
+      "max_stock": 485,
+      "lead_time_days": 5,
+      "is_active": true,
+      "created_at": "2025-12-13T08:58:22.364Z",
+      "updated_at": "2025-12-13T08:58:22.364Z"
+    },
+    {
+      "rule_id": 4,
+      "product_id": 5762,
+      "warehouse_id": null,
+      "reorder_point": 9256,
+      "reorder_quantity": 441,
+      "safety_stock": 6806,
+      "max_stock": 384,
+      "lead_time_days": 25,
+      "is_active": false,
+      "created_at": "2025-12-13T08:58:22.364Z",
+      "updated_at": "2025-12-13T08:58:22.364Z"
+    },
+    {
+      "rule_id": 5,
+      "product_id": 9117,
+      "warehouse_id": null,
+      "reorder_point": 8041,
+      "reorder_quantity": 240,
+      "safety_stock": 6149,
+      "max_stock": 8808,
+      "lead_time_days": 5,
+      "is_active": false,
+      "created_at": "2025-12-13T08:58:22.364Z",
+      "updated_at": "2025-12-13T08:58:22.364Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:42:29.647Z"
+}

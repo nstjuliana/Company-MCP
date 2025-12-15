@@ -1,0 +1,163 @@
+{
+  "table": "campaign_members",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.campaign_members` table represents entities that are involved in marketing campaigns, identified by a unique `member_id`. Each member is associated with a specific `campaign_id` and optionally linked to leads through `lead_id` and contacts through `contact_id`, capturing their `status` and response dates in the campaign lifecycle. Though it has foreign key placeholders indicating relationships with other tables, the lack of details limits further relationship insights.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "member_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier assigned to each member involved in a campaign. It sequentially increases for each additional member added.",
+      "default": "nextval('synthetic.campaign_members_member_id_seq'::regclass)"
+    },
+    {
+      "name": "campaign_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents the unique identifiers for different marketing or promotional campaigns. It is used to associate members with specific campaigns they are part of.",
+      "default": null
+    },
+    {
+      "name": "lead_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "A unique identifier for each individual lead related to various campaigns. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "contact_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column represents the current standing or progress of individuals within a campaign, indicating whether they are active, pending, inactive, cancelled, or completed. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "responded_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column records the dates on which campaign members responded to a campaign, with values ranging across various dates and time zones. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "first_responded_date",
+      "type": "date",
+      "nullable": true,
+      "description": "The column records the date when a campaign member first responded to a campaign. This information is used to track engagement timelines across different time zones, as evidenced by the sample dates provided with their respective Central Time indicators.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an entry was created in the campaign members table. The purpose or additional context of this timestamp is unclear from the available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column captures the most recent time at which an entry within the campaign members table was modified. It may not always be filled since it's optional, but defaults to the current time when unspecified.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "member_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_campaign_members_campaign_id",
+      "column_name": "campaign_id",
+      "referenced_table": "synthetic.campaigns",
+      "referenced_column": "campaign_id"
+    },
+    {
+      "constraint_name": "fk_campaign_members_contact_id",
+      "column_name": "contact_id",
+      "referenced_table": "synthetic.contacts",
+      "referenced_column": "contact_id"
+    },
+    {
+      "constraint_name": "fk_campaign_members_lead_id",
+      "column_name": "lead_id",
+      "referenced_table": "synthetic.leads",
+      "referenced_column": "lead_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "campaign_members_pkey",
+      "index_definition": "CREATE UNIQUE INDEX campaign_members_pkey ON synthetic.campaign_members USING btree (member_id)",
+      "columns": [
+        "member_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "member_id": 1,
+      "campaign_id": 43,
+      "lead_id": 11,
+      "contact_id": null,
+      "status": "inactive",
+      "responded_date": "2025-08-31T05:00:00.000Z",
+      "first_responded_date": "2025-02-07T06:00:00.000Z",
+      "created_at": "2025-12-13T08:58:57.751Z",
+      "updated_at": "2025-12-13T08:58:57.751Z"
+    },
+    {
+      "member_id": 2,
+      "campaign_id": 44,
+      "lead_id": 46,
+      "contact_id": null,
+      "status": "pending",
+      "responded_date": "2024-12-30T06:00:00.000Z",
+      "first_responded_date": "2024-08-19T05:00:00.000Z",
+      "created_at": "2025-12-13T08:58:57.751Z",
+      "updated_at": "2025-12-13T08:58:57.751Z"
+    },
+    {
+      "member_id": 3,
+      "campaign_id": 32,
+      "lead_id": 8,
+      "contact_id": null,
+      "status": "pending",
+      "responded_date": "2024-05-14T05:00:00.000Z",
+      "first_responded_date": "2025-04-27T05:00:00.000Z",
+      "created_at": "2025-12-13T08:58:57.751Z",
+      "updated_at": "2025-12-13T08:58:57.751Z"
+    },
+    {
+      "member_id": 4,
+      "campaign_id": 47,
+      "lead_id": 24,
+      "contact_id": null,
+      "status": "cancelled",
+      "responded_date": "2025-12-03T06:00:00.000Z",
+      "first_responded_date": "2024-12-28T06:00:00.000Z",
+      "created_at": "2025-12-13T08:58:57.751Z",
+      "updated_at": "2025-12-13T08:58:57.751Z"
+    },
+    {
+      "member_id": 5,
+      "campaign_id": 26,
+      "lead_id": 34,
+      "contact_id": null,
+      "status": "completed",
+      "responded_date": "2024-03-01T06:00:00.000Z",
+      "first_responded_date": "2025-05-20T05:00:00.000Z",
+      "created_at": "2025-12-13T08:58:57.751Z",
+      "updated_at": "2025-12-13T08:58:57.751Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:40:29.735Z"
+}

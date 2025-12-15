@@ -1,0 +1,163 @@
+{
+  "table": "claim_lines",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.claim_lines` table represents individual line items within an insurance claim, capturing details about medical procedures associated with a particular claim. Each entry is uniquely identified by `claim_line_id`, and contains information such as `procedure_code`, `modifier`, `units`, and financial details (`charge_amount` and `allowed_amount`). The table serves as a child to the claims table, as indicated by the `claim_id` foreign key relationship, which it references.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "claim_line_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for individual entries within the claim lines table, ensuring each entry has a distinct reference number.",
+      "default": "nextval('synthetic.claim_lines_claim_line_id_seq'::regclass)"
+    },
+    {
+      "name": "claim_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Each value uniquely identifies a specific claim within the claim lines dataset, serving as a reference to group related claim details.",
+      "default": null
+    },
+    {
+      "name": "procedure_code",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column appears to represent coded information, likely related to procedures, for each claim line entry. The exact purpose of the codes is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "modifier",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "diagnosis_pointer",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "units",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents the number of units involved or affected in each claim line within the claims processing system. The default value suggests that if unspecified, the transaction is assumed to involve a minimum single unit.",
+      "default": "1"
+    },
+    {
+      "name": "charge_amount",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the monetary amounts charged for individual claim lines, which can vary significantly in value. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "allowed_amount",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column likely represents the monetary amount that is permitted or authorized for payment on an individual claim line within the claims data. The values suggest different financial limits applied to various claims.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when each claim line entry was created, providing a historical reference for when the data was initially logged. It captures timestamps in the Central Standard Time zone.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column captures the most recent date and time when a change was made to a claim line entry. It automatically records the current timestamp by default, indicating when entries were last updated.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "claim_line_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_claim_lines_claim_id",
+      "column_name": "claim_id",
+      "referenced_table": "synthetic.medical_claims",
+      "referenced_column": "claim_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "claim_lines_pkey",
+      "index_definition": "CREATE UNIQUE INDEX claim_lines_pkey ON synthetic.claim_lines USING btree (claim_line_id)",
+      "columns": [
+        "claim_line_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "claim_line_id": 1,
+      "claim_id": 20,
+      "procedure_code": "YVTNKZMK",
+      "modifier": "Sense voice answer.",
+      "diagnosis_pointer": "Take bar where name.",
+      "units": 597,
+      "charge_amount": "7231.60",
+      "allowed_amount": "124.24",
+      "created_at": "2025-12-13T09:22:37.527Z",
+      "updated_at": "2025-12-13T09:22:37.527Z"
+    },
+    {
+      "claim_line_id": 2,
+      "claim_id": 42,
+      "procedure_code": "MJQBJLFP",
+      "modifier": "Book one pass raise.",
+      "diagnosis_pointer": "Alone form already.",
+      "units": 369,
+      "charge_amount": "6930.76",
+      "allowed_amount": "630.62",
+      "created_at": "2025-12-13T09:22:37.527Z",
+      "updated_at": "2025-12-13T09:22:37.527Z"
+    },
+    {
+      "claim_line_id": 3,
+      "claim_id": 8,
+      "procedure_code": "TYGOFEPS",
+      "modifier": "Believe writer.",
+      "diagnosis_pointer": "Way seat establish.",
+      "units": 477,
+      "charge_amount": "3075.00",
+      "allowed_amount": "4060.11",
+      "created_at": "2025-12-13T09:22:37.527Z",
+      "updated_at": "2025-12-13T09:22:37.527Z"
+    },
+    {
+      "claim_line_id": 4,
+      "claim_id": 33,
+      "procedure_code": "FRAWXTUF",
+      "modifier": "Sure cover end.",
+      "diagnosis_pointer": "Design world grow.",
+      "units": 946,
+      "charge_amount": "8952.23",
+      "allowed_amount": "7038.53",
+      "created_at": "2025-12-13T09:22:37.527Z",
+      "updated_at": "2025-12-13T09:22:37.527Z"
+    },
+    {
+      "claim_line_id": 5,
+      "claim_id": 20,
+      "procedure_code": "LEAYWTVN",
+      "modifier": "Begin happy reality.",
+      "diagnosis_pointer": "Into daughter agent.",
+      "units": 707,
+      "charge_amount": "1182.98",
+      "allowed_amount": "9162.14",
+      "created_at": "2025-12-13T09:22:37.527Z",
+      "updated_at": "2025-12-13T09:22:37.527Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:41:37.903Z"
+}

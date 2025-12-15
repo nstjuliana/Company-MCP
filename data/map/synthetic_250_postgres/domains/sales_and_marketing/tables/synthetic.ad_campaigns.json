@@ -1,0 +1,199 @@
+{
+  "table": "ad_campaigns",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.ad_campaigns` table represents advertising campaigns within a synthetic data model, capturing details such as campaign identification, platform, budgetary allocations, scheduling, and status. While it contains a primary key (`ad_campaign_id`), the absence of defined foreign key relationships and references by other tables suggests isolated use or incomplete relationship information within the current schema. This table's role is likely to store and manage comprehensive details of each ad campaign, facilitating tracking and analysis of advertising efforts.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "ad_campaign_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies individual advertising campaigns within the database. Each value represents a distinct campaign, incrementally assigned to ensure unique identification.",
+      "default": "nextval('synthetic.ad_campaigns_ad_campaign_id_seq'::regclass)"
+    },
+    {
+      "name": "campaign_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents unique identifiers for various marketing campaigns within a digital advertising system. Each number corresponds to a distinct campaign; however, duplicates indicate potential repetition or overlapping instances.",
+      "default": null
+    },
+    {
+      "name": "platform",
+      "type": "character varying",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "ad_campaign_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "The column appears to represent descriptions or titles of advertising campaigns, likely describing themes or focus areas based on the sample values which mention various topics such as interests, culture, politics, and personal actions. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "objective",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values appear to contain incoherent or abstract statements, making it difficult to discern a specific business meaning.",
+      "default": null
+    },
+    {
+      "name": "budget",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the monetary allocation designated for advertising initiatives. The values indicate the financial limits set for each campaign, which can vary significantly, as evidenced by the range of sample figures.",
+      "default": null
+    },
+    {
+      "name": "daily_budget",
+      "type": "numeric",
+      "nullable": true,
+      "description": "The column represents the allocated monetary amount that can be spent on an advertising campaign each day. The values indicate varying daily budget allocations for campaigns, reflecting different financial strategies or objectives for each campaign.",
+      "default": null
+    },
+    {
+      "name": "bid_strategy",
+      "type": "character varying",
+      "nullable": true,
+      "description": "The column appears to hold text-based descriptions or strategies associated with advertising campaigns, potentially detailing approaches, themes, or contexts for bidding within the campaigns. The precise business application or strategy is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "start_date",
+      "type": "date",
+      "nullable": true,
+      "description": "Represents the scheduled beginning date for an advertising campaign. This date indicates when the campaign is set to start and can be absent if the start date has not yet been determined.",
+      "default": null
+    },
+    {
+      "name": "end_date",
+      "type": "date",
+      "nullable": true,
+      "description": "Specifies the date on which an advertising campaign is scheduled to end. This provides flexibility for campaigns that may not have a predetermined end date, as indicated by the possibility of a null value.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column represents the current operational state of advertising campaigns, indicating whether they are active, inactive, pending, or paused by default. It is utilized to track the execution status of campaigns within the system.",
+      "default": "'paused'::character varying"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records when an advertising campaign was initially created. The timestamps indicate the specific date and time of creation for each campaign entry.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a record in the ad campaigns table was last updated. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "ad_campaign_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_ad_campaigns_campaign_id",
+      "column_name": "campaign_id",
+      "referenced_table": "synthetic.marketing_campaigns",
+      "referenced_column": "campaign_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "ad_campaigns_pkey",
+      "index_definition": "CREATE UNIQUE INDEX ad_campaigns_pkey ON synthetic.ad_campaigns USING btree (ad_campaign_id)",
+      "columns": [
+        "ad_campaign_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "ad_campaign_id": 1,
+      "campaign_id": 24,
+      "platform": "Move effort sister back well management.",
+      "ad_campaign_name": "Both people girl. Cold father show pick several water lot. Action think so spring baby.",
+      "objective": "Speak threat run I deal. Control detail Mrs plant election.",
+      "budget": "67.68",
+      "daily_budget": "526.06",
+      "bid_strategy": "Ready improve hard. School democratic thing development relationship. Performance two kid.",
+      "start_date": "2025-03-21T05:00:00.000Z",
+      "end_date": "2024-09-20T05:00:00.000Z",
+      "status": "pending",
+      "created_at": "2025-12-13T09:14:43.128Z",
+      "updated_at": "2025-12-13T09:14:43.128Z"
+    },
+    {
+      "ad_campaign_id": 2,
+      "campaign_id": 33,
+      "platform": "Discussion wall air especially.",
+      "ad_campaign_name": "Interest first right lose present. People need drug style rich.",
+      "objective": "One improve clear data.\nWithin bill yet success. Training drop establish action.",
+      "budget": "554.15",
+      "daily_budget": "390.45",
+      "bid_strategy": "Mention attack place including. Along history international according.",
+      "start_date": "2025-06-13T05:00:00.000Z",
+      "end_date": "2024-06-08T05:00:00.000Z",
+      "status": "inactive",
+      "created_at": "2025-12-13T09:14:43.128Z",
+      "updated_at": "2025-12-13T09:14:43.128Z"
+    },
+    {
+      "ad_campaign_id": 3,
+      "campaign_id": 3,
+      "platform": "Learn audience black rock image able accept.",
+      "ad_campaign_name": "Happen ask woman turn camera position instead writer. Amount throughout ago long story reveal.",
+      "objective": "Exist into watch little. These subject expect west.",
+      "budget": "635.67",
+      "daily_budget": "981.04",
+      "bid_strategy": "Site look call interview two manager see. Even whole challenge dark little fast finish.",
+      "start_date": "2024-01-20T06:00:00.000Z",
+      "end_date": "2025-01-14T06:00:00.000Z",
+      "status": "inactive",
+      "created_at": "2025-12-13T09:14:43.128Z",
+      "updated_at": "2025-12-13T09:14:43.128Z"
+    },
+    {
+      "ad_campaign_id": 4,
+      "campaign_id": 48,
+      "platform": "Reach return visit impact low.",
+      "ad_campaign_name": "Investment election form check. Mind institution special.",
+      "objective": "Cell military glass report research recently everybody.",
+      "budget": "16.24",
+      "daily_budget": "788.52",
+      "bid_strategy": "Doctor Mrs piece. Threat worker southern. High any answer image day performance ability.",
+      "start_date": "2025-05-03T05:00:00.000Z",
+      "end_date": "2024-09-23T05:00:00.000Z",
+      "status": "inactive",
+      "created_at": "2025-12-13T09:14:43.128Z",
+      "updated_at": "2025-12-13T09:14:43.128Z"
+    },
+    {
+      "ad_campaign_id": 5,
+      "campaign_id": 16,
+      "platform": "Those amount camera enough along.",
+      "ad_campaign_name": "Black many sure price. Call culture contain prepare several bed.",
+      "objective": "Appear discover never tonight. Ready wide because after impact. Image pressure fly bad.",
+      "budget": "732.94",
+      "daily_budget": "628.26",
+      "bid_strategy": "Save issue as true cut rest history. Study score personal may.",
+      "start_date": "2025-10-15T05:00:00.000Z",
+      "end_date": "2025-08-30T05:00:00.000Z",
+      "status": "pending",
+      "created_at": "2025-12-13T09:14:43.128Z",
+      "updated_at": "2025-12-13T09:14:43.128Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:40:31.201Z"
+}

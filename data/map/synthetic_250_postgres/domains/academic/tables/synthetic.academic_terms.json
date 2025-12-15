@@ -1,0 +1,164 @@
+{
+  "table": "academic_terms",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.academic_terms\" table represents periods or sessions within an academic institution, identified by a unique \"term_id\" and characterized by a \"term_code\" and \"term_name.\" It includes date ranges for both the term and its registration period, and indicates whether the term is current, with timestamped entries for creation and last update. As it has no foreign key relationships, this table likely serves as a standalone entity within the database to encapsulate academic scheduling information.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "term_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for academic terms within an educational institution's system. The sequential values suggest an automatic incrementing sequence to ensure each term is distinctly identifiable.",
+      "default": "nextval('synthetic.academic_terms_term_id_seq'::regclass)"
+    },
+    {
+      "name": "term_code",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The values appear to be randomly generated strings and do not provide insight into their meaning or usage.",
+      "default": null
+    },
+    {
+      "name": "term_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "Purpose unclear from available data. The sample values do not provide discernible information connecting them to a specific academic term.",
+      "default": null
+    },
+    {
+      "name": "start_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column records the start dates for academic terms, likely representing when each term begins during different years. The values indicate specific weekdays and account for variations in daylight saving time within the Central time zone.",
+      "default": null
+    },
+    {
+      "name": "end_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column represents the final date by which an academic term concludes within the institution's calendar. The dates indicate variations in end dates presumably due to differing start times or specific term durations.",
+      "default": null
+    },
+    {
+      "name": "registration_start",
+      "type": "date",
+      "nullable": true,
+      "description": "This column represents the start date for when students can begin registering for academic terms. The dates vary, indicating they align with specific term schedules throughout the academic year.",
+      "default": null
+    },
+    {
+      "name": "registration_end",
+      "type": "date",
+      "nullable": true,
+      "description": "This column represents the date by which registration for an academic term must be completed. If not specified, this deadline may not be applicable or determined for every term.",
+      "default": null
+    },
+    {
+      "name": "is_current",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether an academic term is currently active. The default setting suggests that terms are generally not considered active unless specified otherwise.",
+      "default": "false"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Records the date and time when a new academic term entry is created. The timestamp defaults to the current moment when the entry is added.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column represents the timestamp indicating when the academic term record was last updated. It defaults to the current timestamp but may remain null if not explicitly set.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "term_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "academic_terms_pkey",
+      "index_definition": "CREATE UNIQUE INDEX academic_terms_pkey ON synthetic.academic_terms USING btree (term_id)",
+      "columns": [
+        "term_id"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "academic_terms_term_code_key",
+      "index_definition": "CREATE UNIQUE INDEX academic_terms_term_code_key ON synthetic.academic_terms USING btree (term_code)",
+      "columns": [
+        "term_code"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "term_id": 1,
+      "term_code": "RVTEJPBR",
+      "term_name": "Employee shake cell idea card certainly notice. Improve record best school pass at student.",
+      "start_date": "2024-02-20T06:00:00.000Z",
+      "end_date": "2024-07-05T05:00:00.000Z",
+      "registration_start": "2025-02-13T06:00:00.000Z",
+      "registration_end": "2025-07-10T05:00:00.000Z",
+      "is_current": true,
+      "created_at": "2025-12-13T09:16:54.094Z",
+      "updated_at": "2025-12-13T09:16:54.094Z"
+    },
+    {
+      "term_id": 2,
+      "term_code": "FQFCGBTF",
+      "term_name": "Shoulder allow anything beyond wear attention. Husband first daughter candidate social.",
+      "start_date": "2025-04-21T05:00:00.000Z",
+      "end_date": "2024-03-02T06:00:00.000Z",
+      "registration_start": "2024-07-06T05:00:00.000Z",
+      "registration_end": "2024-10-30T05:00:00.000Z",
+      "is_current": true,
+      "created_at": "2025-12-13T09:16:54.094Z",
+      "updated_at": "2025-12-13T09:16:54.094Z"
+    },
+    {
+      "term_id": 3,
+      "term_code": "HTRWZOYI",
+      "term_name": "Fact time instead worry decade. Author type fast. Suddenly window race ability claim so.",
+      "start_date": "2024-09-11T05:00:00.000Z",
+      "end_date": "2024-11-01T05:00:00.000Z",
+      "registration_start": "2024-12-20T06:00:00.000Z",
+      "registration_end": "2025-04-16T05:00:00.000Z",
+      "is_current": false,
+      "created_at": "2025-12-13T09:16:54.094Z",
+      "updated_at": "2025-12-13T09:16:54.094Z"
+    },
+    {
+      "term_id": 4,
+      "term_code": "UKSYQLNP",
+      "term_name": "Debate laugh low everyone. Week itself type lay.",
+      "start_date": "2024-08-21T05:00:00.000Z",
+      "end_date": "2024-03-01T06:00:00.000Z",
+      "registration_start": "2025-09-24T05:00:00.000Z",
+      "registration_end": "2025-05-21T05:00:00.000Z",
+      "is_current": true,
+      "created_at": "2025-12-13T09:16:54.094Z",
+      "updated_at": "2025-12-13T09:16:54.094Z"
+    },
+    {
+      "term_id": 5,
+      "term_code": "ZAGEOHZO",
+      "term_name": "Brother occur learn it song program these. Sing notice speak I along page response.",
+      "start_date": "2025-10-30T05:00:00.000Z",
+      "end_date": "2025-02-21T06:00:00.000Z",
+      "registration_start": "2025-12-08T06:00:00.000Z",
+      "registration_end": "2024-10-15T05:00:00.000Z",
+      "is_current": true,
+      "created_at": "2025-12-13T09:16:54.094Z",
+      "updated_at": "2025-12-13T09:16:54.094Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:40:50.208Z"
+}

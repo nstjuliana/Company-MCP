@@ -1,0 +1,152 @@
+{
+  "table": "payment_terms",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.payment_terms\" table represents the payment terms associated with transactions, capturing important details such as term codes, term descriptions, and the conditions for discounts, reflected in columns like \"term_code,\" \"days_due,\" and \"discount_percentage.\" With \"term_id\" as the primary key, it does not reference any other tables and is not referenced by others, suggesting it serves as a standalone resource potentially utilized by other components of the system to standardize and manage payment conditions. The table is essential for defining financial agreements, highlighted by attributes such as the percentage discount for early payment and the relevant due dates.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "term_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each record in the payment terms table, ensuring each payment term can be individually referenced. It sequentially assigns numbers to new entries as they are added.",
+      "default": "nextval('synthetic.payment_terms_term_id_seq'::regclass)"
+    },
+    {
+      "name": "term_code",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "term_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column represents phrases or mottos that encapsulate or describe specific payment terms or conditions in a creative or abstract manner. These entries appear to use figurative language or metaphorical expressions likely meant to convey unique aspects of various payment agreements.",
+      "default": null
+    },
+    {
+      "name": "days_due",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents the number of days within which a payment is due, after which it may be considered late. The data suggests it records varying grace periods for payments, as indicated by the different numerical values.",
+      "default": null
+    },
+    {
+      "name": "discount_percentage",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the percentage discount offered on payment terms within a certain context, potentially indicating the level of price reduction applicable to a transaction or agreement. The values suggest significant variability, indicating discounts can range widely for different transactions.",
+      "default": "0"
+    },
+    {
+      "name": "discount_days",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents the number of days within which a discount is available for payment, offering insights into payment term conditions. The wide range of values suggests variability in the length of time different discounts are applicable.",
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "nullable": true,
+      "description": "This column contains miscellaneous phrases or sentences that appear to be randomly generated and do not convey clear or consistent business meaning. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column captures the date and time when a record in the payment_terms table was initially created. The default value indicates it reflects the current timestamp at the moment of record insertion, and since it's nullable, not all records may have an assigned timestamp.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the last time each entry in the payment terms was modified. It ensures that any changes to payment terms are tracked with a precise timestamp.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "term_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "payment_terms_pkey",
+      "index_definition": "CREATE UNIQUE INDEX payment_terms_pkey ON synthetic.payment_terms USING btree (term_id)",
+      "columns": [
+        "term_id"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "payment_terms_term_code_key",
+      "index_definition": "CREATE UNIQUE INDEX payment_terms_term_code_key ON synthetic.payment_terms USING btree (term_code)",
+      "columns": [
+        "term_code"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "term_id": 1,
+      "term_code": "VPDSKVIXLP",
+      "term_name": "Building mouth song. Magazine nature force fire yard.",
+      "days_due": 23,
+      "discount_percentage": "74.36",
+      "discount_days": 7,
+      "description": "Degree peace your dark. Benefit long cup fire.",
+      "created_at": "2025-12-13T08:55:30.012Z",
+      "updated_at": "2025-12-13T08:55:30.012Z"
+    },
+    {
+      "term_id": 2,
+      "term_code": "VWYAOYKNQE",
+      "term_name": "Economic reflect day individual law. His record voice material. Artist difference consumer phone.",
+      "days_due": 19,
+      "discount_percentage": "52.25",
+      "discount_days": 532,
+      "description": "Note nature draw cultural at bad anyone. Receive certain impact actually stuff network reduce full.",
+      "created_at": "2025-12-13T08:55:30.012Z",
+      "updated_at": "2025-12-13T08:55:30.012Z"
+    },
+    {
+      "term_id": 3,
+      "term_code": "TLVJXGHBYC",
+      "term_name": "Represent rule strategy his. Again rise game positive.",
+      "days_due": 1,
+      "discount_percentage": "37.50",
+      "discount_days": 210,
+      "description": "Design share wind room cold cover option. Laugh save land example about discover develop front.",
+      "created_at": "2025-12-13T08:55:30.012Z",
+      "updated_at": "2025-12-13T08:55:30.012Z"
+    },
+    {
+      "term_id": 4,
+      "term_code": "SFFDJAYNGZ",
+      "term_name": "Congress third artist pick successful share. Parent maybe vote along star manage.",
+      "days_due": 23,
+      "discount_percentage": "80.43",
+      "discount_days": 418,
+      "description": "Own happy rather skill response give theory. Conference should not whose.",
+      "created_at": "2025-12-13T08:55:30.012Z",
+      "updated_at": "2025-12-13T08:55:30.012Z"
+    },
+    {
+      "term_id": 5,
+      "term_code": "HQXIRRYDAZ",
+      "term_name": "Challenge management state seat itself yourself. Possible mean rock upon campaign wait however.",
+      "days_due": 12,
+      "discount_percentage": "10.66",
+      "discount_days": 436,
+      "description": "Past sister impact. Much firm myself affect call public. Kid college despite close despite.",
+      "created_at": "2025-12-13T08:55:30.012Z",
+      "updated_at": "2025-12-13T08:55:30.012Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:40:21.085Z"
+}

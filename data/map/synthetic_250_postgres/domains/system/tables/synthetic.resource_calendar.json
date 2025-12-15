@@ -1,0 +1,81 @@
+{
+  "table": "resource_calendar",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.resource_calendar` table represents a scheduling or calendar entity, identified uniquely by the `calendar_id` primary key, within a synthetic dataset context. With no foreign key relationships or sample data available, the table appears to function as a standalone entity, potentially designed to manage or track time-related resources or events. Its role in the data model is isolated, suggesting it may serve either as a placeholder for integration with future tables or as an independent component in the synthetic dataset.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "calendar_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each resource calendar entry in the system, ensuring distinctiveness for the scheduling or management process involved.",
+      "default": "nextval('synthetic.resource_calendar_calendar_id_seq'::regclass)"
+    },
+    {
+      "name": "user_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column likely represents the unique identifier assigned to each user interacting with the resource calendar. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "date",
+      "type": "date",
+      "nullable": false,
+      "description": "This column represents specific calendar dates associated with resource-related scheduling or events. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "available_hours",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column likely represents the number of work hours that a resource is available in a day, with a default availability set to 8 hours. Purpose unclear from available data due to lack of sample values.",
+      "default": "8"
+    },
+    {
+      "name": "is_working_day",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether a specific date is considered a working day, where true implies it is a working day by default. Purpose unclear from available data.",
+      "default": "true"
+    },
+    {
+      "name": "notes",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column likely records the date and time when a new entry is initially created in the resource calendar, helping track when records are added. Use of current timestamp as default suggests it captures this moment automatically unless otherwise specified.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column likely records the date and time when an entry in the resource calendar was last modified. It can also serve as a mechanism to track changes over time, enhancing data integrity by reflecting the most recent update.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "calendar_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "resource_calendar_pkey",
+      "index_definition": "CREATE UNIQUE INDEX resource_calendar_pkey ON synthetic.resource_calendar USING btree (calendar_id)",
+      "columns": [
+        "calendar_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:39:30.919Z"
+}

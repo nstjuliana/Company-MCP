@@ -1,0 +1,291 @@
+{
+  "table": "quotes",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.quotes\" table represents a business entity for managing sales quotes, capturing details such as quote numbers, associated accounts, opportunity IDs, and financial metrics like subtotal, discount, and grand total. It is likely connected to other tables through foreign keys referencing entities like opportunities and accounts, though specific relationships are undefined. The table serves as a critical component in the sales order process within the database, providing comprehensive information about individual sales quotes along with their current statuses and associated timestamps.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "quote_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each individual record within the table, sequentially representing distinct quote entries. Purpose unclear from available data.",
+      "default": "nextval('synthetic.quotes_quote_id_seq'::regclass)"
+    },
+    {
+      "name": "quote_number",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely represents a unique identifier for individual quotes, as indicated by the diversity of the provided numeric sample values. Purpose unclear from available data beyond identification.",
+      "default": null
+    },
+    {
+      "name": "opportunity_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents unique identifiers associated with potential business deals or sales opportunities. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "account_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely stores identifiers for user accounts associated with quotes in the system. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "contact_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "quote_name",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column appears to store brief narrative or conceptual expressions, possibly representing slogans, summaries, or titles related to strategic, cultural, or technological themes. The purpose is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column represents the current lifecycle stage of a quote, indicating whether it is awaiting action, currently in use, or not active, with \"draft\" being the initial status if unspecified.",
+      "default": "'draft'::character varying"
+    },
+    {
+      "name": "expiration_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column likely contains dates by which specific actions, agreements, or offers associated with entries in the \"synthetic.quotes\" table are no longer valid or are due to expire. The dates suggest a future timeframe, indicating deadlines or expiration periods relevant to the table's entries.",
+      "default": null
+    },
+    {
+      "name": "subtotal",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the total value of items or services before any additional charges such as taxes or discounts are applied. The values indicate the initial aggregation of costs for quotes provided within the system.",
+      "default": null
+    },
+    {
+      "name": "discount",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the monetary amount discounted from a total quoted price or service cost, as evidenced by the sample values. It indicates deductions applied, potentially as part of promotions or negotiated deals.",
+      "default": "0"
+    },
+    {
+      "name": "tax",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the monetary amount of tax associated with a financial transaction or quote. The values indicate varying amounts, suggesting the tax is calculated based on differing transaction amounts or conditions.",
+      "default": "0"
+    },
+    {
+      "name": "shipping",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column likely represents the cost associated with the shipping of goods or services in a numeric form. The provided sample values suggest a range of shipping costs that vary depending on specific circumstances or corresponding entities.",
+      "default": "0"
+    },
+    {
+      "name": "grand_total",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the total monetary value associated with individual quotes. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "billing_address",
+      "type": "text",
+      "nullable": true,
+      "description": "This column stores the complete billing address of customers, including street address, city, state, and ZIP code. It serves to identify the location associated with customer billing for transactions or services.",
+      "default": null
+    },
+    {
+      "name": "shipping_address",
+      "type": "text",
+      "nullable": true,
+      "description": "This column contains postal addresses that are used for the shipment of goods associated with individual quotes. The addresses include street information, city names, state abbreviations, and postal codes, indicating diverse locations across different states.",
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "nullable": true,
+      "description": "This column seems to capture abstract or thematic phrases likely related to titles or summaries of creative or artistic endeavors. The content suggests a focus on various subjects or activities, possibly indicative of descriptive text about quotes or expressions used in different contexts.",
+      "default": null
+    },
+    {
+      "name": "owner_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely identifies the individual or entity responsible for or associated with a quote. The purpose is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a quote was created within the system. The purpose of tracking this information is unclear from the available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when information in the quotes table was last updated. It allows for tracking changes or modifications made to each record.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "quote_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_quotes_account_id",
+      "column_name": "account_id",
+      "referenced_table": "synthetic.accounts",
+      "referenced_column": "account_id"
+    },
+    {
+      "constraint_name": "fk_quotes_contact_id",
+      "column_name": "contact_id",
+      "referenced_table": "synthetic.contacts",
+      "referenced_column": "contact_id"
+    },
+    {
+      "constraint_name": "fk_quotes_opportunity_id",
+      "column_name": "opportunity_id",
+      "referenced_table": "synthetic.opportunities",
+      "referenced_column": "opportunity_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "quotes_pkey",
+      "index_definition": "CREATE UNIQUE INDEX quotes_pkey ON synthetic.quotes USING btree (quote_id)",
+      "columns": [
+        "quote_id"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "quotes_quote_number_key",
+      "index_definition": "CREATE UNIQUE INDEX quotes_quote_number_key ON synthetic.quotes USING btree (quote_number)",
+      "columns": [
+        "quote_number"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "quote_id": 1,
+      "quote_number": "511133010753502",
+      "opportunity_id": 1,
+      "account_id": 3,
+      "contact_id": null,
+      "quote_name": "Window everything moment simply explain rule. Color cause role consider.",
+      "status": "pending",
+      "expiration_date": "2024-07-21T05:00:00.000Z",
+      "subtotal": "722.19",
+      "discount": "535.74",
+      "tax": "286.69",
+      "shipping": "502.22",
+      "grand_total": "697.86",
+      "billing_address": "70858 Benjamin Ford, Williamsonville, IN 15129",
+      "shipping_address": "60809 Sean Landing, New Jessemouth, MP 71732",
+      "description": "Research name skill sound music. Know everything practice thousand sound.",
+      "owner_id": 441,
+      "created_at": "2025-12-13T09:18:24.756Z",
+      "updated_at": "2025-12-13T09:18:24.756Z"
+    },
+    {
+      "quote_id": 2,
+      "quote_number": "811337049462455",
+      "opportunity_id": 12,
+      "account_id": 14,
+      "contact_id": null,
+      "quote_name": "Keep major worker. Fly discussion green.",
+      "status": "active",
+      "expiration_date": "2024-05-20T05:00:00.000Z",
+      "subtotal": "524.39",
+      "discount": "240.97",
+      "tax": "619.78",
+      "shipping": "252.42",
+      "grand_total": "354.44",
+      "billing_address": "4153 Julia Mission Apt. 666, Brownfurt, IL 31031",
+      "shipping_address": "611 Rogers Forges, New Johnborough, VA 15454",
+      "description": "Rate discover manage baby letter. Magazine piece deep increase specific.",
+      "owner_id": 815,
+      "created_at": "2025-12-13T09:18:24.756Z",
+      "updated_at": "2025-12-13T09:18:24.756Z"
+    },
+    {
+      "quote_id": 3,
+      "quote_number": "920045820721624",
+      "opportunity_id": 26,
+      "account_id": 11,
+      "contact_id": null,
+      "quote_name": "Focus force region your season. Sister station language family control wide employee.",
+      "status": "inactive",
+      "expiration_date": "2024-06-17T05:00:00.000Z",
+      "subtotal": "959.30",
+      "discount": "459.00",
+      "tax": "243.21",
+      "shipping": "697.24",
+      "grand_total": "299.97",
+      "billing_address": "58067 Ashley Ville Suite 465, Apriltown, AR 02277",
+      "shipping_address": "04645 Hanson Lights Apt. 487, Georgechester, AK 37470",
+      "description": "Painting teacher how care kitchen art whom morning. Own school become medical color throughout socie...",
+      "owner_id": 848,
+      "created_at": "2025-12-13T09:18:24.756Z",
+      "updated_at": "2025-12-13T09:18:24.756Z"
+    },
+    {
+      "quote_id": 4,
+      "quote_number": "904315071741647",
+      "opportunity_id": 6,
+      "account_id": 84,
+      "contact_id": null,
+      "quote_name": "There stand strategy big always while. Since choose easy once I. Class film heart including.",
+      "status": "pending",
+      "expiration_date": "2025-09-05T05:00:00.000Z",
+      "subtotal": "759.59",
+      "discount": "93.50",
+      "tax": "379.26",
+      "shipping": "552.70",
+      "grand_total": "56.11",
+      "billing_address": "2447 Kimberly Mount, Tiffanyland, VT 35386",
+      "shipping_address": "PSC 4894, Box 0094, APO AA 45033",
+      "description": "Today doctor wife oil popular. Night successful me nice popular. Sell long program purpose local sor...",
+      "owner_id": 10,
+      "created_at": "2025-12-13T09:18:24.756Z",
+      "updated_at": "2025-12-13T09:18:24.756Z"
+    },
+    {
+      "quote_id": 5,
+      "quote_number": "737805342519187",
+      "opportunity_id": 45,
+      "account_id": 22,
+      "contact_id": null,
+      "quote_name": "Camera Mrs land kid southern it. Send realize bank build couple half.",
+      "status": "active",
+      "expiration_date": "2024-11-30T06:00:00.000Z",
+      "subtotal": "499.86",
+      "discount": "433.91",
+      "tax": "784.38",
+      "shipping": "565.86",
+      "grand_total": "857.96",
+      "billing_address": "7714 Michael Mission Suite 025, Lake Christopherstad, LA 34061",
+      "shipping_address": "998 Ellis Islands, West Pedro, SC 28874",
+      "description": "Wear environment second especially from. Remember pressure hospital street send improve. Stock ready...",
+      "owner_id": 98,
+      "created_at": "2025-12-13T09:18:24.756Z",
+      "updated_at": "2025-12-13T09:18:24.756Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:41:57.146Z"
+}

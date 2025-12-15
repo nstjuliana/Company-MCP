@@ -1,0 +1,147 @@
+{
+  "table": "ANALYTICS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.ANALYTICS table represents an analytics entity in the \"synthetic_250_snowflake\" database, capturing various attributes related to events, campaigns, webinars, and emails as indicated by the column names like EVENT_138_ATTR_0, CAMPAIGN_138_ATTR_1, and EMAIL_138_ATTR_5. The table does not have relationships with other tables, suggesting it serves as a standalone entity for analytical purposes within the data model. The primary key, ANALYTIC_ID, uniquely identifies each record, providing essential details such as creation timestamps and descriptions.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "ANALYTIC_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column uniquely identifies each entry or record within the analytics table, serving as a sequential count or reference number.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column likely categorizes or enumerates analytics instances or reports within a sequential framework. Each entry appears to identify a unique analytics record in a series.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains brief textual summaries or identifiers for analytics entries, indicating they are part of a sequential series. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "EVENT_138_ATTR_0",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column likely represents the date and time of specific events or activities, possibly tracking when they are scheduled to occur or have occurred. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CAMPAIGN_138_ATTR_1",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "WEBINAR_138_ATTR_2",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "WEBINAR_138_ATTR_3",
+      "type": "DATE",
+      "nullable": true,
+      "description": "This column likely records the scheduled dates for a series of webinars occurring in December 2025. Purpose unclear from available data regarding the significance of \"138_ATTR_3\".",
+      "default": null
+    },
+    {
+      "name": "EVENT_138_ATTR_4",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "EMAIL_138_ATTR_5",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column represents a sequence of dates and times, likely corresponding to scheduled events or transactions occurring in the Central Standard Time zone. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CREATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column records the exact date and time when each entry in the ANALYTICS table is created, with each timestamp reflecting the Central Standard Time zone. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP()"
+    }
+  ],
+  "primary_key": [
+    "ANALYTIC_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "ANALYTIC_ID": 1,
+      "NAME": "ANALYTICS 1",
+      "DESCRIPTION": "Description for ANALYTICS 1",
+      "EVENT_138_ATTR_0": "2025-12-12 00:00:00.000",
+      "CAMPAIGN_138_ATTR_1": "Sample CAMPAIGN_138_ATTR_1 1",
+      "WEBINAR_138_ATTR_2": "Sample WEBINAR_138_ATTR_2 1",
+      "WEBINAR_138_ATTR_3": "2025-12-12",
+      "EVENT_138_ATTR_4": "Sample EVENT_138_ATTR_4 1",
+      "EMAIL_138_ATTR_5": "2025-12-12 00:00:00.000",
+      "CREATED_AT": "2025-12-12 17:25:25.255"
+    },
+    {
+      "ANALYTIC_ID": 2,
+      "NAME": "ANALYTICS 2",
+      "DESCRIPTION": "Description for ANALYTICS 2",
+      "EVENT_138_ATTR_0": "2025-12-13 00:00:00.000",
+      "CAMPAIGN_138_ATTR_1": "Sample CAMPAIGN_138_ATTR_1 2",
+      "WEBINAR_138_ATTR_2": "Sample WEBINAR_138_ATTR_2 2",
+      "WEBINAR_138_ATTR_3": "2025-12-13",
+      "EVENT_138_ATTR_4": "Sample EVENT_138_ATTR_4 2",
+      "EMAIL_138_ATTR_5": "2025-12-13 00:00:00.000",
+      "CREATED_AT": "2025-12-12 17:25:25.255"
+    },
+    {
+      "ANALYTIC_ID": 3,
+      "NAME": "ANALYTICS 3",
+      "DESCRIPTION": "Description for ANALYTICS 3",
+      "EVENT_138_ATTR_0": "2025-12-14 00:00:00.000",
+      "CAMPAIGN_138_ATTR_1": "Sample CAMPAIGN_138_ATTR_1 3",
+      "WEBINAR_138_ATTR_2": "Sample WEBINAR_138_ATTR_2 3",
+      "WEBINAR_138_ATTR_3": "2025-12-14",
+      "EVENT_138_ATTR_4": "Sample EVENT_138_ATTR_4 3",
+      "EMAIL_138_ATTR_5": "2025-12-14 00:00:00.000",
+      "CREATED_AT": "2025-12-12 17:25:25.255"
+    },
+    {
+      "ANALYTIC_ID": 4,
+      "NAME": "ANALYTICS 4",
+      "DESCRIPTION": "Description for ANALYTICS 4",
+      "EVENT_138_ATTR_0": "2025-12-15 00:00:00.000",
+      "CAMPAIGN_138_ATTR_1": "Sample CAMPAIGN_138_ATTR_1 4",
+      "WEBINAR_138_ATTR_2": "Sample WEBINAR_138_ATTR_2 4",
+      "WEBINAR_138_ATTR_3": "2025-12-15",
+      "EVENT_138_ATTR_4": "Sample EVENT_138_ATTR_4 4",
+      "EMAIL_138_ATTR_5": "2025-12-15 00:00:00.000",
+      "CREATED_AT": "2025-12-12 17:25:25.255"
+    },
+    {
+      "ANALYTIC_ID": 5,
+      "NAME": "ANALYTICS 5",
+      "DESCRIPTION": "Description for ANALYTICS 5",
+      "EVENT_138_ATTR_0": "2025-12-16 00:00:00.000",
+      "CAMPAIGN_138_ATTR_1": "Sample CAMPAIGN_138_ATTR_1 5",
+      "WEBINAR_138_ATTR_2": "Sample WEBINAR_138_ATTR_2 5",
+      "WEBINAR_138_ATTR_3": "2025-12-16",
+      "EVENT_138_ATTR_4": "Sample EVENT_138_ATTR_4 5",
+      "EMAIL_138_ATTR_5": "2025-12-16 00:00:00.000",
+      "CREATED_AT": "2025-12-12 17:25:25.255"
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:17.015Z"
+}

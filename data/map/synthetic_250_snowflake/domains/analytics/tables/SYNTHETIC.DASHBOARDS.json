@@ -1,0 +1,111 @@
+{
+  "table": "DASHBOARDS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.DASHBOARDS table represents a collection of dashboard configurations, each uniquely identified by the DASHBOARD_ID, which serves as the primary key. The table stores details about each dashboard including its name, a description, visualization attributes, and associated metrics, as illustrated by columns such as NAME, DESCRIPTION, VISUALIZATION_172_ATTR_0, and METRIC_172_ATTR_1. Since there are no foreign keys or relationships with other tables, this table appears to stand independently within the data model, acting as a repository for dashboard-related metadata.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "DASHBOARD_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents a unique identifier assigned to each entry within the dashboards table, ensuring each dashboard can be distinctly referenced.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column represents the names of individual dashboards within a system, uniquely identifying each dashboard in a sequence. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains textual descriptions or labels that provide insights or identifiers for different dashboard entries within the table. Each value appears to be a generic description linked to a numerical sequence for dashboards, though the specific purpose of each description is unclear from the sample values.",
+      "default": null
+    },
+    {
+      "name": "VISUALIZATION_172_ATTR_0",
+      "type": "DATE",
+      "nullable": true,
+      "description": "This column likely represents a series of consecutive dates, possibly related to scheduled events or data updates. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "METRIC_172_ATTR_1",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "METRIC_172_ATTR_2",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "Purpose unclear from available data, but the values suggest a sequential or categorical arrangement that might be used for classification or identification within the context of dashboards.",
+      "default": null
+    },
+    {
+      "name": "VISUALIZATION_172_ATTR_3",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "This column likely indicates a binary setting or feature toggle for a certain aspect of a dashboard visualization, potentially turning a specific attribute on or off. Purpose unclear from available data.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "DASHBOARD_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "DASHBOARD_ID": 1,
+      "NAME": "DASHBOARDS 1",
+      "DESCRIPTION": "Description for DASHBOARDS 1",
+      "VISUALIZATION_172_ATTR_0": "2025-12-12",
+      "METRIC_172_ATTR_1": "Sample METRIC_172_ATTR_1 1",
+      "METRIC_172_ATTR_2": null,
+      "VISUALIZATION_172_ATTR_3": true
+    },
+    {
+      "DASHBOARD_ID": 2,
+      "NAME": "DASHBOARDS 2",
+      "DESCRIPTION": "Description for DASHBOARDS 2",
+      "VISUALIZATION_172_ATTR_0": "2025-12-13",
+      "METRIC_172_ATTR_1": "Sample METRIC_172_ATTR_1 2",
+      "METRIC_172_ATTR_2": 101,
+      "VISUALIZATION_172_ATTR_3": false
+    },
+    {
+      "DASHBOARD_ID": 3,
+      "NAME": "DASHBOARDS 3",
+      "DESCRIPTION": "Description for DASHBOARDS 3",
+      "VISUALIZATION_172_ATTR_0": "2025-12-14",
+      "METRIC_172_ATTR_1": "Sample METRIC_172_ATTR_1 3",
+      "METRIC_172_ATTR_2": 102,
+      "VISUALIZATION_172_ATTR_3": true
+    },
+    {
+      "DASHBOARD_ID": 4,
+      "NAME": "DASHBOARDS 4",
+      "DESCRIPTION": "Description for DASHBOARDS 4",
+      "VISUALIZATION_172_ATTR_0": "2025-12-15",
+      "METRIC_172_ATTR_1": "Sample METRIC_172_ATTR_1 4",
+      "METRIC_172_ATTR_2": null,
+      "VISUALIZATION_172_ATTR_3": false
+    },
+    {
+      "DASHBOARD_ID": 5,
+      "NAME": "DASHBOARDS 5",
+      "DESCRIPTION": "Description for DASHBOARDS 5",
+      "VISUALIZATION_172_ATTR_0": "2025-12-16",
+      "METRIC_172_ATTR_1": "Sample METRIC_172_ATTR_1 5",
+      "METRIC_172_ATTR_2": 104,
+      "VISUALIZATION_172_ATTR_3": true
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:17.373Z"
+}

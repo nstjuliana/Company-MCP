@@ -1,0 +1,88 @@
+{
+  "table": "order_status_history",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.order_status_history` table is designed to capture the chronological history of order statuses, identified uniquely by the `history_id` primary key, although it currently contains no rows. It likely plays a role in tracking changes or updates to order status over time, referencing a specific order within another table, as indicated by an undefined foreign key relationship. Despite the lack of available column information and sample data, its inclusion in the database suggests its function in maintaining an audit trail for order status transitions.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "history_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each entry in the order status history, ensuring each status change is distinctly recorded in sequence.",
+      "default": "nextval('synthetic.order_status_history_history_id_seq'::regclass)"
+    },
+    {
+      "name": "order_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Identifies each order uniquely within the history of order statuses. Essential for tracking the progression of individual orders in the system.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "changed_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an order's status was modified. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "changed_by",
+      "type": "integer",
+      "nullable": true,
+      "description": "The column likely records the identifier of the user or system responsible for changing the status of an order. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "notes",
+      "type": "text",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a change in the order status was noted. It allows tracking the sequence of status updates over time for order management processes.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column indicates the date and time when a record in the order status history was last modified, reflecting changes to an order's status over time. Purpose unclear from available data due to lack of sample values.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "history_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_order_status_history_order_id",
+      "column_name": "order_id",
+      "referenced_table": "synthetic.orders",
+      "referenced_column": "order_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "order_status_history_pkey",
+      "index_definition": "CREATE UNIQUE INDEX order_status_history_pkey ON synthetic.order_status_history USING btree (history_id)",
+      "columns": [
+        "history_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:41:56.365Z"
+}

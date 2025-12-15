@@ -1,0 +1,94 @@
+{
+  "table": "return_items",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The table \"synthetic.return_items\" likely represents the business entity related to the management or tracking of returned items, as evidenced by its name and the presence of a primary key \"return_item_id.\" It appears to have undefined foreign key relationships, suggesting it connects or relates to other entities within the database, though the specific connections are not detailed. Its role in the data model could involve logging details, processing returns, or linking to other transaction tables, but further specifics cannot be determined from the available metadata.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "return_item_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "A unique identifier assigned to each returned item within the system, ensuring distinct tracking and record-keeping for each return transaction.",
+      "default": "nextval('synthetic.return_items_return_item_id_seq'::regclass)"
+    },
+    {
+      "name": "return_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column likely represents a unique identifier for each item returned in a business process, ensuring traceability and record-keeping within the return items dataset.",
+      "default": null
+    },
+    {
+      "name": "order_item_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "The column represents a unique identifier for individual items within an order that have been returned. Each entry links a returned item to its specific line item in the original order.",
+      "default": null
+    },
+    {
+      "name": "quantity_returned",
+      "type": "integer",
+      "nullable": false,
+      "description": "Represents the number of items returned by a customer for a specific order. This information helps in tracking and managing product returns within the business.",
+      "default": null
+    },
+    {
+      "name": "condition",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "refund_amount",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column likely captures the financial amount refunded to customers for returned items. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "The column likely records the date and time when an entry is added to the return items table, capturing when returns are initiated or processed. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "return_item_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_return_items_order_item_id",
+      "column_name": "order_item_id",
+      "referenced_table": "synthetic.order_items",
+      "referenced_column": "order_item_id"
+    },
+    {
+      "constraint_name": "fk_return_items_return_id",
+      "column_name": "return_id",
+      "referenced_table": "synthetic.order_returns",
+      "referenced_column": "return_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "return_items_pkey",
+      "index_definition": "CREATE UNIQUE INDEX return_items_pkey ON synthetic.return_items USING btree (return_item_id)",
+      "columns": [
+        "return_item_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:42:00.169Z"
+}

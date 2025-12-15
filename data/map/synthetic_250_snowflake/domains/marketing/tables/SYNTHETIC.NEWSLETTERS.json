@@ -1,0 +1,111 @@
+{
+  "table": "NEWSLETTERS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.NEWSLETTERS table represents a collection of newsletters identified by a unique NEWSLETTER_ID, with each newsletter having an associated name and description. The table includes columns for attributes related to campaigns, webinars, and advertisements, indicating potential ties to marketing and promotional activities, though it has no explicit foreign key relationships to other tables. It functions as a standalone entity in the data model that catalogs newsletter details and their relevant attributes.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "NEWSLETTER_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column uniquely identifies individual newsletters within the dataset, serving as a distinct reference number for each entry. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column contains identifiers for different editions of newsletters, sequentially numbered to distinguish each one. The purpose is unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains narrative descriptions or summaries for individual newsletters, which are sequentially numbered. These descriptions likely detail the content or purpose of each newsletter issue within the dataset.",
+      "default": null
+    },
+    {
+      "name": "CAMPAIGN_134_ATTR_0",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column appears to represent identifiers for specific marketing campaigns. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "WEBINAR_134_ATTR_1",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column likely represents unique identifiers associated with specific webinars linked to newsletters. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "AD_134_ATTR_2",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "This column indicates a binary attribute related to newsletters, likely representing whether a specific condition or feature is active. The exact business purpose is unclear from the available data.",
+      "default": "FALSE"
+    },
+    {
+      "name": "AD_134_ATTR_3",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column appears to categorize or identify specific entities or activities within the context of newsletters, using numerical codes such as 101, 102, and 104. Purpose unclear from available data.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "NEWSLETTER_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "NEWSLETTER_ID": 1,
+      "NAME": "NEWSLETTERS 1",
+      "DESCRIPTION": "Description for NEWSLETTERS 1",
+      "CAMPAIGN_134_ATTR_0": null,
+      "WEBINAR_134_ATTR_1": null,
+      "AD_134_ATTR_2": true,
+      "AD_134_ATTR_3": null
+    },
+    {
+      "NEWSLETTER_ID": 2,
+      "NAME": "NEWSLETTERS 2",
+      "DESCRIPTION": "Description for NEWSLETTERS 2",
+      "CAMPAIGN_134_ATTR_0": 101,
+      "WEBINAR_134_ATTR_1": 101,
+      "AD_134_ATTR_2": false,
+      "AD_134_ATTR_3": 101
+    },
+    {
+      "NEWSLETTER_ID": 3,
+      "NAME": "NEWSLETTERS 3",
+      "DESCRIPTION": "Description for NEWSLETTERS 3",
+      "CAMPAIGN_134_ATTR_0": 102,
+      "WEBINAR_134_ATTR_1": 102,
+      "AD_134_ATTR_2": true,
+      "AD_134_ATTR_3": 102
+    },
+    {
+      "NEWSLETTER_ID": 4,
+      "NAME": "NEWSLETTERS 4",
+      "DESCRIPTION": "Description for NEWSLETTERS 4",
+      "CAMPAIGN_134_ATTR_0": null,
+      "WEBINAR_134_ATTR_1": null,
+      "AD_134_ATTR_2": false,
+      "AD_134_ATTR_3": null
+    },
+    {
+      "NEWSLETTER_ID": 5,
+      "NAME": "NEWSLETTERS 5",
+      "DESCRIPTION": "Description for NEWSLETTERS 5",
+      "CAMPAIGN_134_ATTR_0": 104,
+      "WEBINAR_134_ATTR_1": 104,
+      "AD_134_ATTR_2": true,
+      "AD_134_ATTR_3": 104
+    }
+  ],
+  "generated_at": "2025-12-14T23:42:34.847Z"
+}

@@ -1,0 +1,102 @@
+{
+  "table": "shipments",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.shipments` table likely represents records of shipments within the business, each identified uniquely by `shipment_id` as the primary key. Without specific column names or data, the business context and relationships to other tables remain undefined, limiting insight into its precise role in the broader data model or relationships with other entities. The absence of data and defined foreign keys suggests this table is either a placeholder or poised for future development.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "shipment_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each shipment record within the database. It automatically generates a new identifier for every new shipment entry.",
+      "default": "nextval('synthetic.shipments_shipment_id_seq'::regclass)"
+    },
+    {
+      "name": "order_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents the unique identifier for each order associated with a shipment. It ensures that each shipment can be directly linked to its corresponding order in the business process.",
+      "default": null
+    },
+    {
+      "name": "tracking_number",
+      "type": "character varying",
+      "nullable": true,
+      "description": "A unique identifier assigned to each shipment to facilitate its tracking and monitoring throughout the delivery process.",
+      "default": null
+    },
+    {
+      "name": "carrier",
+      "type": "character varying",
+      "nullable": true,
+      "description": "The column indicates the name or identifier of the company responsible for transporting goods in shipments. Purpose unclear from available data due to lack of sample values.",
+      "default": null
+    },
+    {
+      "name": "shipped_date",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column indicates when the shipment process was initiated. Its purpose is unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "delivered_date",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when shipments are confirmed as delivered. It is optional, indicating shipments may not always have delivery data entered.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This field likely indicates the current condition or progress of a shipment and defaults to a preliminary state of being unprocessed or awaiting further action. Purpose unclear from available data due to lack of sample values.",
+      "default": "'pending'::character varying"
+    },
+    {
+      "name": "shipping_cost",
+      "type": "numeric",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a shipment entry was initially created in the database. Given its default value, it likely reflects the system time at the moment each record is added.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Records the date and time when a shipment record was last modified.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "shipment_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_shipments_order_id",
+      "column_name": "order_id",
+      "referenced_table": "synthetic.orders",
+      "referenced_column": "order_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "shipments_pkey",
+      "index_definition": "CREATE UNIQUE INDEX shipments_pkey ON synthetic.shipments USING btree (shipment_id)",
+      "columns": [
+        "shipment_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:42:47.976Z"
+}

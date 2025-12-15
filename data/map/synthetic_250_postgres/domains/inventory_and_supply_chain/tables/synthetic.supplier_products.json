@@ -1,0 +1,102 @@
+{
+  "table": "supplier_products",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.supplier_products\" table is designed to represent the association between suppliers and their respective products, likely detailing the inventory or offerings managed by suppliers. As indicated by its primary key, \"supplier_product_id,\" this table uniquely identifies each supplier-product relationship. Though no specific column details or data are available, its role likely involves facilitating the linkage of suppliers to product data, possibly referencing a table of undefined structure.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "supplier_product_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each product provided by suppliers within the system. It serves as a primary key for linking suppliers to their respective products.",
+      "default": "nextval('synthetic.supplier_products_supplier_product_id_seq'::regclass)"
+    },
+    {
+      "name": "supplier_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column identifies the unique identifier for each supplier associated with the products, serving as a reference to distinguish between different suppliers.",
+      "default": null
+    },
+    {
+      "name": "product_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies products in relation to their suppliers. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "supplier_sku",
+      "type": "character varying",
+      "nullable": true,
+      "description": "The purpose of this column is unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "unit_cost",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column likely represents the cost associated with a single unit of a product supplied by a vendor. It may be used for pricing analysis or inventory cost management, although specific applications are unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "minimum_order_qty",
+      "type": "integer",
+      "nullable": true,
+      "description": "Specifies the smallest quantity of a product that can be ordered from a supplier. If not explicitly set, it defaults to a quantity of one.",
+      "default": "1"
+    },
+    {
+      "name": "lead_time_days",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents the estimated number of days from order placement to delivery for products supplied. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "is_preferred",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether a supplier's product is marked as preferred. Purpose unclear from available data.",
+      "default": "false"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a supplier product entry is created. It helps in tracking the addition of new products to the supplier list.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time of the most recent update to the supplier product information. It helps track changes to ensure data remains current and accurate.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "supplier_product_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_supplier_products_supplier_id",
+      "column_name": "supplier_id",
+      "referenced_table": "synthetic.suppliers",
+      "referenced_column": "supplier_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "supplier_products_pkey",
+      "index_definition": "CREATE UNIQUE INDEX supplier_products_pkey ON synthetic.supplier_products USING btree (supplier_product_id)",
+      "columns": [
+        "supplier_product_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:42:47.196Z"
+}

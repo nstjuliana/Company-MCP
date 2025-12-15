@@ -1,0 +1,157 @@
+{
+  "table": "office_hours",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.office_hours` table represents scheduled office hours for instructors, detailing the timing, location, and specific term in which these hours are available. It includes columns for key identifiers such as `office_hour_id` (the primary key), `instructor_id`, and `term_id`, along with temporal and locational details like `day_of_week`, `start_time`, `end_time`, and `location`. Although the table currently does not have any established foreign key relationships, it likely interacts with other tables pertaining to instructors and academic terms.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "office_hour_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each entry in the office hours record. It ensures that each office hour can be distinctly referenced within the system.",
+      "default": "nextval('synthetic.office_hours_office_hour_id_seq'::regclass)"
+    },
+    {
+      "name": "instructor_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This field identifies specific instructors who are associated with office hours within the dataset, with each number potentially representing a unique instructor. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "day_of_week",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "start_time",
+      "type": "time without time zone",
+      "nullable": true,
+      "description": "This column represents the time at which office hours begin, indicating various starting times throughout a typical day. Specific start times are flexible based on the data, suggesting adaptability or varying schedules.",
+      "default": null
+    },
+    {
+      "name": "end_time",
+      "type": "time without time zone",
+      "nullable": true,
+      "description": "This column represents the time when office hours conclude for a particular day. The values indicate that closing times can vary throughout the day, possibly aligning with different shifts or flexible schedules.",
+      "default": null
+    },
+    {
+      "name": "location",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values do not clearly indicate the business context or specific meaning of this column.",
+      "default": null
+    },
+    {
+      "name": "term_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "Represents an identifier associated with different terms or periods, as demonstrated by the various sample values. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column captures the date and time when an entry was initially recorded in the office hours table, with entries defaulting to the moment they are registered. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a record in the office_hours table was last modified. This information is stored using a standardized format, allowing for the tracking of updates or changes to the data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "office_hour_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_office_hours_instructor_id",
+      "column_name": "instructor_id",
+      "referenced_table": "synthetic.instructors",
+      "referenced_column": "instructor_id"
+    },
+    {
+      "constraint_name": "fk_office_hours_term_id",
+      "column_name": "term_id",
+      "referenced_table": "synthetic.academic_terms",
+      "referenced_column": "term_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "office_hours_pkey",
+      "index_definition": "CREATE UNIQUE INDEX office_hours_pkey ON synthetic.office_hours USING btree (office_hour_id)",
+      "columns": [
+        "office_hour_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "office_hour_id": 1,
+      "instructor_id": 41,
+      "day_of_week": "Purpose brother ago.",
+      "start_time": "04:38:34",
+      "end_time": "06:52:37",
+      "location": "Democratic shake bill here. Suggest page southern role movie win.",
+      "term_id": 8,
+      "created_at": "2025-12-13T09:19:27.717Z",
+      "updated_at": "2025-12-13T09:19:27.717Z"
+    },
+    {
+      "office_hour_id": 2,
+      "instructor_id": 2,
+      "day_of_week": "Write result raise.",
+      "start_time": "12:34:49",
+      "end_time": "04:46:50",
+      "location": "Left establish understand read. Range successful simply director allow.",
+      "term_id": 48,
+      "created_at": "2025-12-13T09:19:27.717Z",
+      "updated_at": "2025-12-13T09:19:27.717Z"
+    },
+    {
+      "office_hour_id": 3,
+      "instructor_id": 18,
+      "day_of_week": "Claim product.",
+      "start_time": "01:17:02",
+      "end_time": "19:00:16",
+      "location": "High you more wife team activity. Race Mr environment political.",
+      "term_id": 16,
+      "created_at": "2025-12-13T09:19:27.717Z",
+      "updated_at": "2025-12-13T09:19:27.717Z"
+    },
+    {
+      "office_hour_id": 4,
+      "instructor_id": 15,
+      "day_of_week": "Hour sound color.",
+      "start_time": "15:51:54",
+      "end_time": "20:06:08",
+      "location": "Food affect upon these story film around there.",
+      "term_id": 9,
+      "created_at": "2025-12-13T09:19:27.717Z",
+      "updated_at": "2025-12-13T09:19:27.717Z"
+    },
+    {
+      "office_hour_id": 5,
+      "instructor_id": 48,
+      "day_of_week": "Turn policy land.",
+      "start_time": "05:50:53",
+      "end_time": "18:14:32",
+      "location": "Human public health tonight later. Different full open discover detail.",
+      "term_id": 7,
+      "created_at": "2025-12-13T09:19:27.717Z",
+      "updated_at": "2025-12-13T09:19:27.717Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:13.465Z"
+}

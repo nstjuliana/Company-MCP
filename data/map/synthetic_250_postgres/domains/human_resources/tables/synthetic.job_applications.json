@@ -1,0 +1,157 @@
+{
+  "table": "job_applications",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.job_applications` table represents job applications submitted by applicants for specific job postings within a system, with each application uniquely identified by `application_id`. The table maintains critical application details such as `posting_id`, `applicant_id`, application and status timestamps, and text fields for `cover_letter` and `notes`, indicating its role in tracking the lifecycle and documentation of job application processes. The table also indicates relationships through foreign keys that are not specified, suggesting links to a job posting and an applicant entity in other tables of the database schema.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "application_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each application within the job applications table, incrementing automatically with each new entry. It serves as a primary key to ensure that every job application can be distinctly referenced.",
+      "default": "nextval('synthetic.job_applications_application_id_seq'::regclass)"
+    },
+    {
+      "name": "posting_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies individual job postings associated with job applications.",
+      "default": null
+    },
+    {
+      "name": "applicant_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Unique identifier for each individual applying for a job, ensuring the tracking of their application within the system.",
+      "default": null
+    },
+    {
+      "name": "application_date",
+      "type": "date",
+      "nullable": false,
+      "description": "This column represents the dates on which job applications were submitted. These dates are critical for tracking the timeliness of applications relative to job posting deadlines.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column represents the current processing stage or state of a job application, indicating whether it is newly submitted, actively being considered, pending a decision, or currently inactive. It allows the tracking and management of applications based on their current status in the review process.",
+      "default": "'new'::character varying"
+    },
+    {
+      "name": "cover_letter",
+      "type": "text",
+      "nullable": true,
+      "description": "This column contains excerpts or descriptions from cover letters submitted as part of job applications. The narrative nature of the texts reflects various statements or pitches made by applicants.",
+      "default": null
+    },
+    {
+      "name": "notes",
+      "type": "text",
+      "nullable": true,
+      "description": "This column likely contains additional comments or observations relevant to each job application, such as personal notes or supplementary information from the applicant or reviewer. The purpose of this information is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a job application was created, using the current timestamp by default. The timestamp indicates the moment of entry for each application in the system.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column indicates the date and time when a job application record was last modified. It defaults to the current timestamp if no other value is specified.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "application_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_job_applications_applicant_id",
+      "column_name": "applicant_id",
+      "referenced_table": "synthetic.job_applicants",
+      "referenced_column": "applicant_id"
+    },
+    {
+      "constraint_name": "fk_job_applications_posting_id",
+      "column_name": "posting_id",
+      "referenced_table": "synthetic.job_postings",
+      "referenced_column": "posting_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "job_applications_pkey",
+      "index_definition": "CREATE UNIQUE INDEX job_applications_pkey ON synthetic.job_applications USING btree (application_id)",
+      "columns": [
+        "application_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "application_id": 1,
+      "posting_id": 10,
+      "applicant_id": 59,
+      "application_date": "2024-06-27T05:00:00.000Z",
+      "status": "pending",
+      "cover_letter": "Career cell line collection may born go. Cause central challenge company.",
+      "notes": "Actually everyone force choose cover. Opportunity father ability begin risk never laugh sort.",
+      "created_at": "2025-12-13T09:20:23.391Z",
+      "updated_at": "2025-12-13T09:20:23.391Z"
+    },
+    {
+      "application_id": 2,
+      "posting_id": 39,
+      "applicant_id": 48,
+      "application_date": "2024-05-26T05:00:00.000Z",
+      "status": "inactive",
+      "cover_letter": "Very get ahead table. Create whose want until clearly poor.",
+      "notes": "Type account upon eye. What news American service model ahead. Admit authority time bill explain ter...",
+      "created_at": "2025-12-13T09:20:23.391Z",
+      "updated_at": "2025-12-13T09:20:23.391Z"
+    },
+    {
+      "application_id": 3,
+      "posting_id": 45,
+      "applicant_id": 71,
+      "application_date": "2025-06-20T05:00:00.000Z",
+      "status": "inactive",
+      "cover_letter": "Explain new son explain this. Nearly compare political purpose.",
+      "notes": "Against develop general wonder nice. Purpose dinner next. Property best station per. Economy truth d...",
+      "created_at": "2025-12-13T09:20:23.391Z",
+      "updated_at": "2025-12-13T09:20:23.391Z"
+    },
+    {
+      "application_id": 4,
+      "posting_id": 49,
+      "applicant_id": 69,
+      "application_date": "2025-07-29T05:00:00.000Z",
+      "status": "pending",
+      "cover_letter": "When trip six or fill should. Service cost thus a industry who note. Ready grow check.",
+      "notes": "Investment help road home inside drive laugh. He throw bar five know. Unit industry nice federal. Ar...",
+      "created_at": "2025-12-13T09:20:23.391Z",
+      "updated_at": "2025-12-13T09:20:23.391Z"
+    },
+    {
+      "application_id": 5,
+      "posting_id": 14,
+      "applicant_id": 98,
+      "application_date": "2024-04-07T05:00:00.000Z",
+      "status": "active",
+      "cover_letter": "Fast feeling similar material travel follow. Mother push drive. Too company feeling above. Event law...",
+      "notes": "Garden walk huge blue movement firm. Suffer once agreement company material.",
+      "created_at": "2025-12-13T09:20:23.391Z",
+      "updated_at": "2025-12-13T09:20:23.391Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:41:04.582Z"
+}

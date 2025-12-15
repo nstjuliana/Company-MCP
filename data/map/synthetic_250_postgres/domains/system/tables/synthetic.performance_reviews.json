@@ -1,0 +1,122 @@
+{
+  "table": "performance_reviews",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.performance_reviews` table is designed to store evaluations of employee performance, identifiable by the primary key `review_id`. This table is intended to interact with other unidentified tables through foreign key relationships, potentially linking employee details or departmental data. Despite its current lack of row data and column details, its primary function seems to organize and reference performance-related metrics within the broader database schema.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "review_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Represents the unique identifier assigned to each record in the employee performance reviews table.",
+      "default": "nextval('synthetic.performance_reviews_review_id_seq'::regclass)"
+    },
+    {
+      "name": "employee_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents unique identifiers assigned to employees whose performance reviews are recorded in the database. The purpose of this column is to link each performance review to the specific employee it evaluates.",
+      "default": null
+    },
+    {
+      "name": "reviewer_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies individuals responsible for conducting performance reviews. Purpose unclear from available data beyond serving as an identifier.",
+      "default": null
+    },
+    {
+      "name": "review_period_start",
+      "type": "date",
+      "nullable": true,
+      "description": "This column indicates the starting date of the period covered in an employee's performance review. It is used to specify when the evaluation timeframe begins.",
+      "default": null
+    },
+    {
+      "name": "review_period_end",
+      "type": "date",
+      "nullable": true,
+      "description": "This column indicates the concluding date of an evaluated period for an employee's performance review. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "review_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column represents the date on which an individual's performance review was conducted. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "overall_rating",
+      "type": "numeric",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "goals_met_percentage",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents the percentage of goals achieved by an individual or team during a performance evaluation period. Purpose unclear from available data due to lack of sample values.",
+      "default": null
+    },
+    {
+      "name": "comments",
+      "type": "text",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely indicates the progress or approval stage of performance reviews, with the initial status being 'draft'. Note that further specifics about the stages are not available.",
+      "default": "'draft'::character varying"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "The column records the date and time when a new entry is added to the performance reviews table, capturing when the performance review was created. The purpose of tracking this information in the context of performance reviews may involve monitoring the timeliness and recency of evaluations.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a performance review entry was last modified, allowing for tracking updates to employee evaluations. If no updates have occurred, it captures the initial creation timestamp.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "review_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_performance_reviews_employee_id",
+      "column_name": "employee_id",
+      "referenced_table": "synthetic.employees",
+      "referenced_column": "employee_id"
+    },
+    {
+      "constraint_name": "fk_performance_reviews_reviewer_id",
+      "column_name": "reviewer_id",
+      "referenced_table": "synthetic.employees",
+      "referenced_column": "employee_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "performance_reviews_pkey",
+      "index_definition": "CREATE UNIQUE INDEX performance_reviews_pkey ON synthetic.performance_reviews USING btree (review_id)",
+      "columns": [
+        "review_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:39:23.623Z"
+}

@@ -1,0 +1,241 @@
+{
+  "table": "vital_signs",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The synthetic.vital_signs table depicts patient vital sign measurements with each row representing a set of recorded vitals for a patient, denoted by a unique vital_id. This table is pivotal for capturing vital statistics such as temperature, blood pressure, heart rate, and more, likely linked to patient entities via patient_id and encounter_id, though specific relationships are unclear. It plays a critical role in storing clinical measurements necessary for patient monitoring and assessment, maintaining records enhanced by timestamped entries for creation and updates.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "vital_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each record in the vital signs table, ensuring that each entry is distinguishable from others. The sequential integer values suggest it serves as a primary key for organizing data entries.",
+      "default": "nextval('synthetic.vital_signs_vital_id_seq'::regclass)"
+    },
+    {
+      "name": "patient_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for patients. Each value corresponds to a specific individual within the database, ensuring that vital sign records are associated with the correct patient.",
+      "default": null
+    },
+    {
+      "name": "encounter_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely identifies a specific interaction or visit between a patient and healthcare provider within the record of vital signs. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "recorded_at",
+      "type": "timestamp without time zone",
+      "nullable": false,
+      "description": "This column records the date and time when vital signs data is captured. It ensures accurate tracking of when each measurement is taken, though the specific significance of the timestamp to the business process is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "temperature_f",
+      "type": "numeric",
+      "nullable": true,
+      "description": "The column appears to represent some form of measurement typically captured in Fahrenheit, but the sample values indicate it may be stored in an unconventional scale or context. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "blood_pressure_systolic",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data as sample values greatly exceed typical human systolic blood pressure ranges.",
+      "default": null
+    },
+    {
+      "name": "blood_pressure_diastolic",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents recorded measurements of diastolic blood pressure, but the values seem unusually high, suggesting the data might not represent typical physiological ranges. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "heart_rate",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column might represent a numerical identifier or event count related to vital signs rather than a traditional heart rate, given the atypically high values observed. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "respiratory_rate",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "oxygen_saturation",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column records some measure related to oxygen saturation levels; however, the unusually high sample values suggest they may not represent standard physiological percentages. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "weight_kg",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the weight of individuals measured in kilograms. The values appear to range widely, suggesting inclusion of data from a diverse population or varied entities.",
+      "default": null
+    },
+    {
+      "name": "height_cm",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column appears to represent unusually large numerical values that could indicate a data entry or scaling error, as these figures do not correspond to typical human heights when measured in centimeters. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "bmi",
+      "type": "numeric",
+      "nullable": true,
+      "description": "The column represents a measured value related to an individual's biometrics or health data, with unusually high values suggesting these are not standard Body Mass Index measurements. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "recorded_by",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely references unique identifiers for individuals who have recorded the vital signs, such as healthcare professionals or data entry personnel. The purpose of these identifiers is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a vital sign entry was created, capturing the moment of data entry or generation. It reflects the initial logging time rather than any subsequent updates.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a record in the vital signs table was last updated. Its purpose is unclear from the available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "vital_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_vital_signs_encounter_id",
+      "column_name": "encounter_id",
+      "referenced_table": "synthetic.encounters",
+      "referenced_column": "encounter_id"
+    },
+    {
+      "constraint_name": "fk_vital_signs_patient_id",
+      "column_name": "patient_id",
+      "referenced_table": "synthetic.patients",
+      "referenced_column": "patient_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "vital_signs_pkey",
+      "index_definition": "CREATE UNIQUE INDEX vital_signs_pkey ON synthetic.vital_signs USING btree (vital_id)",
+      "columns": [
+        "vital_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "vital_id": 1,
+      "patient_id": 42,
+      "encounter_id": null,
+      "recorded_at": "2024-10-07T06:57:25.288Z",
+      "temperature_f": "358.67",
+      "blood_pressure_systolic": 408,
+      "blood_pressure_diastolic": 283,
+      "heart_rate": 195,
+      "respiratory_rate": 992,
+      "oxygen_saturation": "122.16",
+      "weight_kg": "848.03",
+      "height_cm": "454.7",
+      "bmi": "662.77",
+      "recorded_by": 658,
+      "created_at": "2025-12-13T09:22:23.934Z",
+      "updated_at": "2025-12-13T09:22:23.934Z"
+    },
+    {
+      "vital_id": 2,
+      "patient_id": 41,
+      "encounter_id": null,
+      "recorded_at": "2024-06-21T00:10:09.534Z",
+      "temperature_f": "597.15",
+      "blood_pressure_systolic": 22,
+      "blood_pressure_diastolic": 52,
+      "heart_rate": 806,
+      "respiratory_rate": 342,
+      "oxygen_saturation": "243.57",
+      "weight_kg": "125.92",
+      "height_cm": "564.6",
+      "bmi": "68.61",
+      "recorded_by": 784,
+      "created_at": "2025-12-13T09:22:23.934Z",
+      "updated_at": "2025-12-13T09:22:23.934Z"
+    },
+    {
+      "vital_id": 3,
+      "patient_id": 36,
+      "encounter_id": null,
+      "recorded_at": "2025-07-30T22:45:03.666Z",
+      "temperature_f": "207.16",
+      "blood_pressure_systolic": 222,
+      "blood_pressure_diastolic": 833,
+      "heart_rate": 891,
+      "respiratory_rate": 239,
+      "oxygen_saturation": "328.56",
+      "weight_kg": "147.55",
+      "height_cm": "900.5",
+      "bmi": "2.84",
+      "recorded_by": 880,
+      "created_at": "2025-12-13T09:22:23.934Z",
+      "updated_at": "2025-12-13T09:22:23.934Z"
+    },
+    {
+      "vital_id": 4,
+      "patient_id": 10,
+      "encounter_id": null,
+      "recorded_at": "2025-11-16T19:07:36.903Z",
+      "temperature_f": "987.53",
+      "blood_pressure_systolic": 554,
+      "blood_pressure_diastolic": 257,
+      "heart_rate": 818,
+      "respiratory_rate": 179,
+      "oxygen_saturation": "109.93",
+      "weight_kg": "866.45",
+      "height_cm": "131.8",
+      "bmi": "358.24",
+      "recorded_by": 808,
+      "created_at": "2025-12-13T09:22:23.934Z",
+      "updated_at": "2025-12-13T09:22:23.934Z"
+    },
+    {
+      "vital_id": 5,
+      "patient_id": 16,
+      "encounter_id": null,
+      "recorded_at": "2023-12-17T00:05:38.772Z",
+      "temperature_f": "588.85",
+      "blood_pressure_systolic": 17,
+      "blood_pressure_diastolic": 179,
+      "heart_rate": 272,
+      "respiratory_rate": 54,
+      "oxygen_saturation": "126.76",
+      "weight_kg": "420.96",
+      "height_cm": "113.7",
+      "bmi": "63.56",
+      "recorded_by": 460,
+      "created_at": "2025-12-13T09:22:23.934Z",
+      "updated_at": "2025-12-13T09:22:23.934Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:32.725Z"
+}

@@ -1,0 +1,175 @@
+{
+  "table": "bank_transactions",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.bank_transactions` table represents records of transactions occurring in bank accounts, uniquely identified by `transaction_id`. Each transaction includes details such as the associated `bank_account_id`, `transaction_date`, `transaction_type`, `amount`, and transaction metadata like `description`, `reference_number`, and reconciliation status with `is_reconciled` and `reconciled_date`. This table plays a central role in tracking individual bank transactions and, although it is not currently linked to other tables via foreign keys, it might relate to account management data in a broader financial data model.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "transaction_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier assigned sequentially to each transaction in the bank transactions table. It ensures that every transaction can be distinctly referenced within the system.",
+      "default": "nextval('synthetic.bank_transactions_transaction_id_seq'::regclass)"
+    },
+    {
+      "name": "bank_account_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column identifies individual bank accounts associated with transactions using unique numerical identifiers. Each integer represents a specific bank account involved in the recorded financial activities.",
+      "default": null
+    },
+    {
+      "name": "transaction_date",
+      "type": "date",
+      "nullable": false,
+      "description": "This column represents the specific date on which each bank transaction occurred, capturing both standard and daylight saving time variations in the Central time zone. It is a mandatory field, as evident from the absence of null values.",
+      "default": null
+    },
+    {
+      "name": "transaction_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "amount",
+      "type": "numeric",
+      "nullable": false,
+      "description": "This column represents the monetary amounts involved in individual bank transactions. The values indicate sums handled in these transactions, typically represented in a currency format without any apparent decimal restrictions.",
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column seems to capture brief narrative summaries or statements, possibly related to transaction details or context descriptions. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "reference_number",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely contains unique identifiers assigned to individual bank transactions, serving as a reference for tracking and managing transaction records. The purpose of these identifiers is to facilitate the retrieval and verification of transaction details.",
+      "default": null
+    },
+    {
+      "name": "is_reconciled",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether a bank transaction has been reconciled in the financial records. Reconciliation status is often necessary to ensure transaction accuracy and integrity.",
+      "default": "false"
+    },
+    {
+      "name": "reconciled_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column captures the date on which a bank transaction has been reconciled, indicating the confirmation of transaction accuracy between records. The values suggest it can represent dates across different months and years, highlighting the periodic nature of reconciliation in banking activities.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column indicates the date and time when a bank transaction record was created. It defaults to the current timestamp, capturing when the transaction entry is logged.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a bank transaction record was last updated. The default value indicates that it is automatically set to the current time when any updates occur.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "transaction_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_bank_transactions_bank_account_id",
+      "column_name": "bank_account_id",
+      "referenced_table": "synthetic.bank_accounts",
+      "referenced_column": "bank_account_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "bank_transactions_pkey",
+      "index_definition": "CREATE UNIQUE INDEX bank_transactions_pkey ON synthetic.bank_transactions USING btree (transaction_id)",
+      "columns": [
+        "transaction_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "transaction_id": 1,
+      "bank_account_id": 38,
+      "transaction_date": "2024-12-02T06:00:00.000Z",
+      "transaction_type": "great",
+      "amount": "35354.22",
+      "description": "Wife guess production nothing employee. Side audience carry policy. Mean program ability later east....",
+      "reference_number": "00468797521008486542",
+      "is_reconciled": true,
+      "reconciled_date": "2024-08-21T05:00:00.000Z",
+      "created_at": "2025-12-13T08:54:38.840Z",
+      "updated_at": "2025-12-13T08:54:38.840Z"
+    },
+    {
+      "transaction_id": 2,
+      "bank_account_id": 19,
+      "transaction_date": "2025-10-30T05:00:00.000Z",
+      "transaction_type": "second",
+      "amount": "49539.93",
+      "description": "Himself central close area second focus entire. Least adult white him. Over century describe test po...",
+      "reference_number": "90706487235838951752",
+      "is_reconciled": false,
+      "reconciled_date": "2024-01-20T06:00:00.000Z",
+      "created_at": "2025-12-13T08:54:38.840Z",
+      "updated_at": "2025-12-13T08:54:38.840Z"
+    },
+    {
+      "transaction_id": 3,
+      "bank_account_id": 19,
+      "transaction_date": "2024-11-15T06:00:00.000Z",
+      "transaction_type": "agency",
+      "amount": "53715.41",
+      "description": "Minute recently reach land can.",
+      "reference_number": "32553827438326225063",
+      "is_reconciled": true,
+      "reconciled_date": "2024-07-21T05:00:00.000Z",
+      "created_at": "2025-12-13T08:54:38.840Z",
+      "updated_at": "2025-12-13T08:54:38.840Z"
+    },
+    {
+      "transaction_id": 4,
+      "bank_account_id": 28,
+      "transaction_date": "2024-05-14T05:00:00.000Z",
+      "transaction_type": "eat",
+      "amount": "13480.10",
+      "description": "Task author time improve interest. Until we eat argue own force.",
+      "reference_number": "41852039710104433050",
+      "is_reconciled": false,
+      "reconciled_date": "2025-02-10T06:00:00.000Z",
+      "created_at": "2025-12-13T08:54:38.840Z",
+      "updated_at": "2025-12-13T08:54:38.840Z"
+    },
+    {
+      "transaction_id": 5,
+      "bank_account_id": 47,
+      "transaction_date": "2024-01-20T06:00:00.000Z",
+      "transaction_type": "partner",
+      "amount": "36641.19",
+      "description": "Star American oil important after. Type theory identify factor money health miss. Choice goal suppor...",
+      "reference_number": "75019325267494222166",
+      "is_reconciled": false,
+      "reconciled_date": "2024-01-23T06:00:00.000Z",
+      "created_at": "2025-12-13T08:54:38.840Z",
+      "updated_at": "2025-12-13T08:54:38.840Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:40:03.349Z"
+}

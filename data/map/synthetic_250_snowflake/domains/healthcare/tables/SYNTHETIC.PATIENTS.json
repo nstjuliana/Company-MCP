@@ -1,0 +1,147 @@
+{
+  "table": "PATIENTS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.PATIENTS table represents a business entity of patient records, capturing information such as first name, last name, date of birth, insurance identification, and several anonymized attributes related to prescriptions, billing, and records. With PATIENT_ID as the primary key and no indicated foreign key dependencies, the table functions as an isolated entity within the data model, primarily focusing on storing synthetic patient demographic and administrative data. This table encapsulates critical patient information but lacks direct relational ties to other tables, as evidenced by the sample data.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "PATIENT_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column uniquely identifies each entry in the patients table, serving as a sequential identifier for individuals in the dataset.",
+      "default": null
+    },
+    {
+      "name": "FIRST_NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column contains given names of patients, representing the first part of a person's full name used for identification. These names are essential personal identifiers within the patient dataset.",
+      "default": null
+    },
+    {
+      "name": "LAST_NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column represents the last names of individuals within the synthetic patient records. It is used to identify or refer to patients in the dataset.",
+      "default": null
+    },
+    {
+      "name": "DATE_OF_BIRTH",
+      "type": "DATE",
+      "nullable": true,
+      "description": "This column represents the recorded dates of birth for individuals within the patient dataset. The values indicate specific birth dates associated with each patient entry, though some entries may not have this information available.",
+      "default": null
+    },
+    {
+      "name": "INSURANCE_ID",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column represents unique identifiers relating to insurance coverage associated with patients, which can be selectively recorded for some entries. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "PRESCRIPTION_206_ATTR_0",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "Purpose unclear from available data. The sample values do not provide sufficient information to determine the column's business meaning.",
+      "default": null
+    },
+    {
+      "name": "BILLING_206_ATTR_1",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "This column indicates whether a specific billing-related attribute is present for the patient. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "RECORD_206_ATTR_2",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents a sequential identifier or code, potentially used to uniquely identify or categorize patient records. Each value is a distinct, non-null number starting from 100.",
+      "default": "1"
+    },
+    {
+      "name": "RECORD_206_ATTR_3",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "PATIENT_206_ATTR_4",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "PATIENT_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "PATIENT_ID": 1,
+      "FIRST_NAME": "Sample FIRST_NAME 1",
+      "LAST_NAME": "Sample LAST_NAME 1",
+      "DATE_OF_BIRTH": "2025-12-12",
+      "INSURANCE_ID": "1",
+      "PRESCRIPTION_206_ATTR_0": "Sample PRESCRIPTION_206_ATTR_0 1",
+      "BILLING_206_ATTR_1": true,
+      "RECORD_206_ATTR_2": 100,
+      "RECORD_206_ATTR_3": "Sample RECORD_206_ATTR_3 1",
+      "PATIENT_206_ATTR_4": "Sample PATIENT_206_ATTR_4 1"
+    },
+    {
+      "PATIENT_ID": 2,
+      "FIRST_NAME": "Sample FIRST_NAME 2",
+      "LAST_NAME": "Sample LAST_NAME 2",
+      "DATE_OF_BIRTH": "2025-12-13",
+      "INSURANCE_ID": "2",
+      "PRESCRIPTION_206_ATTR_0": "Sample PRESCRIPTION_206_ATTR_0 2",
+      "BILLING_206_ATTR_1": false,
+      "RECORD_206_ATTR_2": 101,
+      "RECORD_206_ATTR_3": "Sample RECORD_206_ATTR_3 2",
+      "PATIENT_206_ATTR_4": "Sample PATIENT_206_ATTR_4 2"
+    },
+    {
+      "PATIENT_ID": 3,
+      "FIRST_NAME": "Sample FIRST_NAME 3",
+      "LAST_NAME": "Sample LAST_NAME 3",
+      "DATE_OF_BIRTH": "2025-12-14",
+      "INSURANCE_ID": "3",
+      "PRESCRIPTION_206_ATTR_0": "Sample PRESCRIPTION_206_ATTR_0 3",
+      "BILLING_206_ATTR_1": true,
+      "RECORD_206_ATTR_2": 102,
+      "RECORD_206_ATTR_3": "Sample RECORD_206_ATTR_3 3",
+      "PATIENT_206_ATTR_4": "Sample PATIENT_206_ATTR_4 3"
+    },
+    {
+      "PATIENT_ID": 4,
+      "FIRST_NAME": "Sample FIRST_NAME 4",
+      "LAST_NAME": "Sample LAST_NAME 4",
+      "DATE_OF_BIRTH": "2025-12-15",
+      "INSURANCE_ID": "4",
+      "PRESCRIPTION_206_ATTR_0": "Sample PRESCRIPTION_206_ATTR_0 4",
+      "BILLING_206_ATTR_1": false,
+      "RECORD_206_ATTR_2": 103,
+      "RECORD_206_ATTR_3": "Sample RECORD_206_ATTR_3 4",
+      "PATIENT_206_ATTR_4": "Sample PATIENT_206_ATTR_4 4"
+    },
+    {
+      "PATIENT_ID": 5,
+      "FIRST_NAME": "Sample FIRST_NAME 5",
+      "LAST_NAME": "Sample LAST_NAME 5",
+      "DATE_OF_BIRTH": "2025-12-16",
+      "INSURANCE_ID": "5",
+      "PRESCRIPTION_206_ATTR_0": "Sample PRESCRIPTION_206_ATTR_0 5",
+      "BILLING_206_ATTR_1": true,
+      "RECORD_206_ATTR_2": 104,
+      "RECORD_206_ATTR_3": "Sample RECORD_206_ATTR_3 5",
+      "PATIENT_206_ATTR_4": "Sample PATIENT_206_ATTR_4 5"
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:02.903Z"
+}

@@ -1,0 +1,88 @@
+{
+  "table": "email_clicks",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.email_clicks\" table is intended to represent records of interactions where users have clicked on emails, as indicated by its name. It is expected to contain details of email click events, uniquely identified by the primary key \"click_id,\" although the absence of defined columns or sample data limits further detail. This table has no defined relationships with other tables, suggesting it is potentially a standalone log of email interactions within the \"synthetic_250_postgres\" database.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "click_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "A unique identifier for each recorded instance of a user clicking on an email, ensuring each click event is tracked distinctly within the dataset.",
+      "default": "nextval('synthetic.email_clicks_click_id_seq'::regclass)"
+    },
+    {
+      "name": "send_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "link_url",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "clicked_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "The column likely records the date and time when an email was clicked by a recipient. However, its specific purpose and application are unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "user_agent",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "ip_address",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely captures the unique digital identifier assigned to the user's device when interacting with email content. Purpose unclear from available data due to the absence of sample values.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an email click event is logged. It helps track user interactions with emails over time.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column indicates the most recent timestamp when an update was made to a record in the email clicks table. It allows tracking of changes to email click data over time.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "click_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_email_clicks_send_id",
+      "column_name": "send_id",
+      "referenced_table": "synthetic.email_sends",
+      "referenced_column": "send_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "email_clicks_pkey",
+      "index_definition": "CREATE UNIQUE INDEX email_clicks_pkey ON synthetic.email_clicks USING btree (click_id)",
+      "columns": [
+        "click_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:40:30.016Z"
+}

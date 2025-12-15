@@ -1,0 +1,135 @@
+{
+  "table": "SEGMENTS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.SEGMENTS table represents a set of distinct segments, each identified by a unique SEGMENT_ID, which may be related to various marketing or user engagement activities based on attributes related to webinars, emails, events, and social activities. Each segment includes descriptive metadata such as a name and description, alongside contact information and timestamps, suggesting a role in organizing or categorizing marketing initiatives or user groups. The table is self-contained with no explicit relationships with other tables, indicating standalone functionality in managing segment-specific data.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "SEGMENT_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column uniquely identifies individual segments within the dataset, with each number representing a distinct segment. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column represents identifiers or labels for individual segments within the dataset, following a sequential naming convention based on numeric order. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains brief narratives or identifiers that categorize or explain distinct segments within a dataset. The descriptions appear to follow a sequential naming convention, indicating different segment iterations or versions.",
+      "default": null
+    },
+    {
+      "name": "WEBINAR_141_ATTR_0",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "EMAIL_141_ATTR_1",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column contains email addresses associated with users or entities. Each entry is unique and serves as a means of identifying and contacting specific users.",
+      "default": null
+    },
+    {
+      "name": "EVENT_141_ATTR_2",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values suggest this column holds labeled text, possibly representing sequential or categorized information, but its specific business purpose is not evident.",
+      "default": null
+    },
+    {
+      "name": "SOCIAL_141_ATTR_3",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column likely categorizes or labels entities related to social segments or attributes, possibly representing a ordered or sequential identifier. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "SOCIAL_141_ATTR_4",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column records a sequence of daily timestamps, likely representing scheduled events or checkpoints occurring at a consistent evening time. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CREATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column records the date and time when a segment entry is created, as reflected by the consistent timestamp values. Each entry is automatically timestamped with the current date and time upon creation, indicating its inception within the database.",
+      "default": "CURRENT_TIMESTAMP()"
+    }
+  ],
+  "primary_key": [
+    "SEGMENT_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "SEGMENT_ID": 1,
+      "NAME": "SEGMENTS 1",
+      "DESCRIPTION": "Description for SEGMENTS 1",
+      "WEBINAR_141_ATTR_0": "Sample WEBINAR_141_ATTR_0 1",
+      "EMAIL_141_ATTR_1": "user1@example.com",
+      "EVENT_141_ATTR_2": "Sample EVENT_141_ATTR_2 1",
+      "SOCIAL_141_ATTR_3": null,
+      "SOCIAL_141_ATTR_4": "2025-12-12 00:00:00.000",
+      "CREATED_AT": "2025-12-12 17:27:19.434"
+    },
+    {
+      "SEGMENT_ID": 2,
+      "NAME": "SEGMENTS 2",
+      "DESCRIPTION": "Description for SEGMENTS 2",
+      "WEBINAR_141_ATTR_0": "Sample WEBINAR_141_ATTR_0 2",
+      "EMAIL_141_ATTR_1": "user2@example.com",
+      "EVENT_141_ATTR_2": "Sample EVENT_141_ATTR_2 2",
+      "SOCIAL_141_ATTR_3": 101,
+      "SOCIAL_141_ATTR_4": "2025-12-13 00:00:00.000",
+      "CREATED_AT": "2025-12-12 17:27:19.434"
+    },
+    {
+      "SEGMENT_ID": 3,
+      "NAME": "SEGMENTS 3",
+      "DESCRIPTION": "Description for SEGMENTS 3",
+      "WEBINAR_141_ATTR_0": "Sample WEBINAR_141_ATTR_0 3",
+      "EMAIL_141_ATTR_1": "user3@example.com",
+      "EVENT_141_ATTR_2": "Sample EVENT_141_ATTR_2 3",
+      "SOCIAL_141_ATTR_3": 102,
+      "SOCIAL_141_ATTR_4": "2025-12-14 00:00:00.000",
+      "CREATED_AT": "2025-12-12 17:27:19.434"
+    },
+    {
+      "SEGMENT_ID": 4,
+      "NAME": "SEGMENTS 4",
+      "DESCRIPTION": "Description for SEGMENTS 4",
+      "WEBINAR_141_ATTR_0": "Sample WEBINAR_141_ATTR_0 4",
+      "EMAIL_141_ATTR_1": "user4@example.com",
+      "EVENT_141_ATTR_2": "Sample EVENT_141_ATTR_2 4",
+      "SOCIAL_141_ATTR_3": null,
+      "SOCIAL_141_ATTR_4": "2025-12-15 00:00:00.000",
+      "CREATED_AT": "2025-12-12 17:27:19.434"
+    },
+    {
+      "SEGMENT_ID": 5,
+      "NAME": "SEGMENTS 5",
+      "DESCRIPTION": "Description for SEGMENTS 5",
+      "WEBINAR_141_ATTR_0": "Sample WEBINAR_141_ATTR_0 5",
+      "EMAIL_141_ATTR_1": "user5@example.com",
+      "EVENT_141_ATTR_2": "Sample EVENT_141_ATTR_2 5",
+      "SOCIAL_141_ATTR_3": 104,
+      "SOCIAL_141_ATTR_4": "2025-12-16 00:00:00.000",
+      "CREATED_AT": "2025-12-12 17:27:19.434"
+    }
+  ],
+  "generated_at": "2025-12-14T23:42:35.223Z"
+}

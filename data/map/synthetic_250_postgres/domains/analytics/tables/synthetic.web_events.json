@@ -1,0 +1,187 @@
+{
+  "table": "web_events",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.web_events` table records interactions of visitors with a web platform, capturing details such as session information, visitor details, and event specifics like name, category, and action. The table primarily serves to log web activity by assigning a unique `event_id` to each occurrence, despite having no defined relationships to other tables. Given its detailed event properties and timestamps, this table likely supports analytics or tracking functions within the broader data model.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "event_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each web event within the system, ensuring that each entry has a distinct identifier. It functions as a sequential record of events as they occur.",
+      "default": "nextval('synthetic.web_events_event_id_seq'::regclass)"
+    },
+    {
+      "name": "session_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents unique identifiers for user sessions during web interactions, with each number corresponding to a distinct session. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "visitor_id",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. Sample values do not indicate a consistent business-related meaning.",
+      "default": null
+    },
+    {
+      "name": "event_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "The column appears to represent descriptive or narrative phrases associated with web events, possibly serving as labels or summaries for each event. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "event_category",
+      "type": "character varying",
+      "nullable": true,
+      "description": "The column appears to capture categorical descriptors related to web events, possibly detailing subjects or themes associated with those events. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "event_action",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values appear to be fragments of text related to various actions or scenarios.",
+      "default": null
+    },
+    {
+      "name": "event_label",
+      "type": "character varying",
+      "nullable": true,
+      "description": "The column appears to store descriptive labels or short narratives related to various web-related events, as indicated by the diverse sample phrases. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "event_value",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column likely represents the monetary value associated with a web event, possibly indicating the expenditure or revenue generated per event. Purpose unclear from available data regarding specific business context or calculation method used for these values.",
+      "default": null
+    },
+    {
+      "name": "timestamp",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column captures the date and time when an event occurred on the web platform, reflecting both standard and daylight saving times as observed in the Central Time zone. The purpose of these timestamps within the broader context of web events remains unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "page_url",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column represents the URLs of web pages involved in the recorded events. The sample values indicate a diverse set of web domains, suggesting various potential interactions or visits on these sites.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a web event is created, reflecting the moment of activity occurrence within the system. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the last modification date and time for web event entries, reflecting when data was last updated. Based on sample values, it captures timestamps in the Central Standard Time zone.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "event_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_web_events_session_id",
+      "column_name": "session_id",
+      "referenced_table": "synthetic.web_analytics_sessions",
+      "referenced_column": "session_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "web_events_pkey",
+      "index_definition": "CREATE UNIQUE INDEX web_events_pkey ON synthetic.web_events USING btree (event_id)",
+      "columns": [
+        "event_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "event_id": 1,
+      "session_id": 24,
+      "visitor_id": "Letter thank wind general usually. Million former reason. Wait small manager.",
+      "event_name": "Allow miss on walk authority. Thing second example past.",
+      "event_category": "Kind lot road perhaps.",
+      "event_action": "Sell officer participant some. Poor should leg central what event trip.",
+      "event_label": "Fact mouth wear feeling product usually. Put half system learn best.",
+      "event_value": "530.85",
+      "timestamp": "2025-01-08T12:05:02.050Z",
+      "page_url": "https://harris.com/",
+      "created_at": "2025-12-13T09:14:29.616Z",
+      "updated_at": "2025-12-13T09:14:29.616Z"
+    },
+    {
+      "event_id": 2,
+      "session_id": 18,
+      "visitor_id": "Within right performance alone factor. About military fall raise provide window.",
+      "event_name": "Song stuff subject simple. Create commercial media believe.",
+      "event_category": "Somebody little story white. Change stuff certain major increase begin language such.",
+      "event_action": "Reach other do responsibility. Range baby man right official information inside.",
+      "event_label": "Under star future carry push. Dream also understand authority score.",
+      "event_value": "830.47",
+      "timestamp": "2024-04-03T17:26:38.473Z",
+      "page_url": "https://www.torres.com/",
+      "created_at": "2025-12-13T09:14:29.616Z",
+      "updated_at": "2025-12-13T09:14:29.616Z"
+    },
+    {
+      "event_id": 3,
+      "session_id": 17,
+      "visitor_id": "Over appear price. Add never around investment full order seat. Which political study.",
+      "event_name": "Want two exist argue too might. Sport organization worker response moment summer approach.",
+      "event_category": "Now financial summer respond. Tax short hundred fact. Bad yourself Republican such anyone policy.",
+      "event_action": "Skin wrong assume few quality amount particular. Guess rock until high federal party.",
+      "event_label": "Environment until sort much north.\nTime appear already appear trouble. Require minute sort discuss.",
+      "event_value": "914.05",
+      "timestamp": "2025-05-05T15:39:30.484Z",
+      "page_url": "http://barry.com/",
+      "created_at": "2025-12-13T09:14:29.616Z",
+      "updated_at": "2025-12-13T09:14:29.616Z"
+    },
+    {
+      "event_id": 4,
+      "session_id": 31,
+      "visitor_id": "Throw find group them. Line face it wait again we peace.",
+      "event_name": "Start various task get south major. Get cause record exist. These son perform allow use.",
+      "event_category": "Machine lose professor seat network never. Rule interesting family argue apply writer produce.",
+      "event_action": "Perhaps total voice medical return heart old. Edge purpose will space carry.",
+      "event_label": "Bit car she society. Two city item own down according onto always.",
+      "event_value": "967.38",
+      "timestamp": "2025-09-07T15:59:19.865Z",
+      "page_url": "https://edwards-owens.info/",
+      "created_at": "2025-12-13T09:14:29.616Z",
+      "updated_at": "2025-12-13T09:14:29.616Z"
+    },
+    {
+      "event_id": 5,
+      "session_id": 19,
+      "visitor_id": "House yet carry including meet hair itself well.\nAs people ball enter. Must bad former every each.",
+      "event_name": "Theory source star certain structure. Tonight bit strong interview.",
+      "event_category": "Under detail any. Heavy person put how. Available much list majority usually.",
+      "event_action": "Only cover after out. Factor money test live green. Whether spring strong discover whole phone.",
+      "event_label": "Themselves may decide identify always relationship. By station modern tend let even where his.",
+      "event_value": "746.56",
+      "timestamp": "2025-11-21T09:19:52.801Z",
+      "page_url": "http://www.barnett.com/",
+      "created_at": "2025-12-13T09:14:29.616Z",
+      "updated_at": "2025-12-13T09:14:29.616Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:44:09.242Z"
+}

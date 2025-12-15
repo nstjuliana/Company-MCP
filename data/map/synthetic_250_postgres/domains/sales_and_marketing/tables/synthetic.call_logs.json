@@ -1,0 +1,180 @@
+{
+  "table": "call_logs",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.call_logs` table represents a record of communication activities, capturing details of each call such as the subject, type, result, and duration. It stores metadata about the call's timing and associations with other entities, indicated by `related_to_type` and `related_to_id`, without any explicit foreign key relationships to other tables. Primarily serving as a log for tracking interactions, this table plays a crucial role in monitoring communication patterns and outcomes within the specified context.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "call_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each individual call record within the call logs table. It ensures that each call entry can be distinctly referenced and tracked.",
+      "default": "nextval('synthetic.call_logs_call_id_seq'::regclass)"
+    },
+    {
+      "name": "subject",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column contains narrative or descriptive entries which may represent summaries or overviews related to individual call logs. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "call_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "call_result",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column captures a summary or outcome of phone interactions, possibly reflecting topics, actions, or results related to various fields like economy, work, science, and agreements. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "call_date",
+      "type": "timestamp without time zone",
+      "nullable": false,
+      "description": "This column records the date and time when each call occurred, capturing details of individual call logs. It provides chronological context for the call activities in the dataset.",
+      "default": null
+    },
+    {
+      "name": "duration_minutes",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents the length of time, measured in minutes, for individual call logs within the database. The values indicate varying durations of calls, suggesting a record of call activity possibly for billing or usage analysis purposes.",
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "nullable": true,
+      "description": "This column appears to contain miscellaneous narrative or commentary entries that are part of call logs, detailing aspects of interactions or transactions. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "related_to_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "related_to_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents an identifier linking related records within a system, such as connections between different calls or entries. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "owner_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents the unique identifiers for individuals or entities who own or are associated with specific call records in the call logs. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when each call log entry was created, reflecting the moment these entries were generated in the system. Its purpose is to track the timestamp of call log creation for historical or operational analysis.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column represents the date and time when a record in the call logs table was last updated. Typically, it automatically initializes or updates to the current timestamp when changes occur in the table.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "call_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "call_logs_pkey",
+      "index_definition": "CREATE UNIQUE INDEX call_logs_pkey ON synthetic.call_logs USING btree (call_id)",
+      "columns": [
+        "call_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "call_id": 1,
+      "subject": "Far foot cover growth. White president their rest.\nAgo tree culture deep. Stage inside pay measure s...",
+      "call_type": "future",
+      "call_result": "Economy decide difficult hit.",
+      "call_date": "2024-05-06T18:28:35.038Z",
+      "duration_minutes": 40,
+      "description": "Bag increase value difficult style. Think air interest vote. Power act knowledge yard.",
+      "related_to_type": "citizen",
+      "related_to_id": 4314,
+      "owner_id": 2358,
+      "created_at": "2025-12-13T08:58:51.284Z",
+      "updated_at": "2025-12-13T08:58:51.284Z"
+    },
+    {
+      "call_id": 2,
+      "subject": "Expert network those likely team vote middle modern. Mouth strategy later rich.\nType property focus ...",
+      "call_type": "morning",
+      "call_result": "Work mission Congress increase sing site.",
+      "call_date": "2024-05-16T06:09:04.869Z",
+      "duration_minutes": 84,
+      "description": "Few yourself house social own. Civil food education gun should summer. Quality type difference tough...",
+      "related_to_type": "beyond",
+      "related_to_id": 9428,
+      "owner_id": 3103,
+      "created_at": "2025-12-13T08:58:51.284Z",
+      "updated_at": "2025-12-13T08:58:51.284Z"
+    },
+    {
+      "call_id": 3,
+      "subject": "Cut rock create test husband into. Wish account build country chance heavy whose.\nProfessional PM un...",
+      "call_type": "set",
+      "call_result": "Star side sometimes treatment place seven.",
+      "call_date": "2025-07-18T10:15:42.524Z",
+      "duration_minutes": 104,
+      "description": "Live point ok common nor factor control. Boy same thank project later discussion enough. Call appear...",
+      "related_to_type": "country",
+      "related_to_id": 2032,
+      "owner_id": 1242,
+      "created_at": "2025-12-13T08:58:51.284Z",
+      "updated_at": "2025-12-13T08:58:51.284Z"
+    },
+    {
+      "call_id": 4,
+      "subject": "Much stop hand education executive article affect. Include across PM key manage. Know discuss exampl...",
+      "call_type": "industry",
+      "call_result": "Subject represent real as base do certainly.",
+      "call_date": "2024-06-05T19:59:35.448Z",
+      "duration_minutes": 39,
+      "description": "Put not behavior technology. Although future sort explain family those lay.",
+      "related_to_type": "physical",
+      "related_to_id": 3065,
+      "owner_id": 5266,
+      "created_at": "2025-12-13T08:58:51.284Z",
+      "updated_at": "2025-12-13T08:58:51.284Z"
+    },
+    {
+      "call_id": 5,
+      "subject": "Must democratic girl. Interesting choose process public material play available.\nHe before explain. ...",
+      "call_type": "strategy",
+      "call_result": "Spring science television accept money amount.",
+      "call_date": "2024-04-13T10:45:39.171Z",
+      "duration_minutes": 111,
+      "description": "No short suffer dream stuff leg. Change hospital listen front voice door.",
+      "related_to_type": "again",
+      "related_to_id": 3731,
+      "owner_id": 2662,
+      "created_at": "2025-12-13T08:58:51.284Z",
+      "updated_at": "2025-12-13T08:58:51.284Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:40:30.662Z"
+}

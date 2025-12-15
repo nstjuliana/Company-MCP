@@ -1,0 +1,80 @@
+{
+  "table": "shipment_items",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.shipment_items\" table is intended to represent individual items within a shipment, uniquely identified by the primary key \"shipment_item_id\". Although no column names or sample data are available, the table is designed to reference other entities, suggesting relationships with at least two undefined external tables. Despite having no rows or specific data, the table likely plays a crucial role in tracking and managing shipment components within the database.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "shipment_item_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "A unique identifier assigned to each item in a shipment. It ensures that each item can be individually referenced and tracked within the shipment records.",
+      "default": "nextval('synthetic.shipment_items_shipment_item_id_seq'::regclass)"
+    },
+    {
+      "name": "shipment_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier that links individual shipment items to their respective shipments, ensuring items are correctly associated with specific shipment records.",
+      "default": null
+    },
+    {
+      "name": "order_item_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "quantity_shipped",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column indicates the number of units for each specific item included in a shipment, representing how many of these items were dispatched to their destination.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column captures the date and time when a shipment item record was initially created, aligning with when the data entry occurs. If not explicitly provided, it defaults to the current timestamp at the point of entry.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column likely records the last date and time when a shipment item entry was modified. It helps track changes and updates to shipment items over time.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "shipment_item_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_shipment_items_order_item_id",
+      "column_name": "order_item_id",
+      "referenced_table": "synthetic.order_items",
+      "referenced_column": "order_item_id"
+    },
+    {
+      "constraint_name": "fk_shipment_items_shipment_id",
+      "column_name": "shipment_id",
+      "referenced_table": "synthetic.shipments",
+      "referenced_column": "shipment_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "shipment_items_pkey",
+      "index_definition": "CREATE UNIQUE INDEX shipment_items_pkey ON synthetic.shipment_items USING btree (shipment_item_id)",
+      "columns": [
+        "shipment_item_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:42:46.344Z"
+}

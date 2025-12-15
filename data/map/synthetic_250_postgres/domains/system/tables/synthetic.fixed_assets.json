@@ -1,0 +1,236 @@
+{
+  "table": "fixed_assets",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.fixed_assets` table represents a collection of tangible long-term resources owned by an organization, detailing each asset's unique attributes such as acquisition cost, useful life, and depreciation. With columns like `asset_id`, `acquisition_date`, `depreciation_method`, and `current_value`, the table captures detailed information about each asset's financial and operational status, without linking to other tables. This standalone table serves a critical function by tracking the lifecycle of fixed assets, from acquisition to disposal, aiding in financial reporting and asset management.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "asset_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each fixed asset within the dataset, ensuring that each asset can be easily referenced and tracked. The values indicate a sequential numbering system for assets.",
+      "default": "nextval('synthetic.fixed_assets_asset_id_seq'::regclass)"
+    },
+    {
+      "name": "asset_tag",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values appear to be diverse and do not suggest a consistent pattern for interpreting the expected content or purpose.",
+      "default": null
+    },
+    {
+      "name": "asset_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column contains descriptions of various assets, with entries resembling phrases or titles that might relate to asset names or themes. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "category",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "acquisition_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column represents the date on which a fixed asset was acquired within the organization. It is used to track the purchase dates of assets for record-keeping and accounting purposes.",
+      "default": null
+    },
+    {
+      "name": "acquisition_cost",
+      "type": "numeric",
+      "nullable": true,
+      "description": "The column represents the initial monetary value paid for acquiring fixed assets. This value can vary significantly across different assets, as evidenced by the range of the sample values provided.",
+      "default": null
+    },
+    {
+      "name": "useful_life_years",
+      "type": "integer",
+      "nullable": true,
+      "description": "Represents the expected duration in years that a fixed asset is considered to remain functional and generate value for the business. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "salvage_value",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the estimated residual value of fixed assets at the end of their useful life, which can still be recovered or sold. The values reflect the predicted amount to be obtained from disposal or resale.",
+      "default": "0"
+    },
+    {
+      "name": "depreciation_method",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "accumulated_depreciation",
+      "type": "numeric",
+      "nullable": true,
+      "description": "The column represents the cumulative depreciation amounts attributed to fixed assets over time. These values indicate the total reduction in value of the assets due to factors such as wear and tear.",
+      "default": "0"
+    },
+    {
+      "name": "current_value",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the monetary value assigned to fixed assets at a given point in time. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "location",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values consist of abstract phrases without specific business context or location references.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column represents the current state or condition of a fixed asset, indicating whether it is pending, active, completed, or cancelled. It helps track the lifecycle status of assets in the system.",
+      "default": "'active'::character varying"
+    },
+    {
+      "name": "disposal_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column records the date on which a fixed asset is disposed of or is planned to be disposed of within the business. The specific timing reflects the conversion or removal of assets from the company's balance sheet.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an entry in the fixed assets table was created. The timestamp reflects when the data was initially entered into the system, defaulting to the current time upon entry.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a fixed asset record was last modified. Updates default to the current timestamp indicating the most recent change to asset details.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "asset_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "fixed_assets_asset_tag_key",
+      "index_definition": "CREATE UNIQUE INDEX fixed_assets_asset_tag_key ON synthetic.fixed_assets USING btree (asset_tag)",
+      "columns": [
+        "asset_tag"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "fixed_assets_pkey",
+      "index_definition": "CREATE UNIQUE INDEX fixed_assets_pkey ON synthetic.fixed_assets USING btree (asset_id)",
+      "columns": [
+        "asset_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "asset_id": 1,
+      "asset_tag": "Unit policy never need.",
+      "asset_name": "Couple pull senior from performance ground. Heart quality result blood approach east even.\nWhite foo...",
+      "category": "Really song Republican like any amount break. Than voice coach degree policy.",
+      "acquisition_date": "2024-10-23T05:00:00.000Z",
+      "acquisition_cost": "96779.53",
+      "useful_life_years": 2021,
+      "salvage_value": "325.89",
+      "depreciation_method": "Play treat ok.",
+      "accumulated_depreciation": "280.30",
+      "current_value": "785.87",
+      "location": "Life interest special economy crime value note.\nFly front ahead. Deal spring want fact thousand. Sec...",
+      "status": "pending",
+      "disposal_date": "2024-08-01T05:00:00.000Z",
+      "created_at": "2025-12-13T08:54:51.682Z",
+      "updated_at": "2025-12-13T08:54:51.682Z"
+    },
+    {
+      "asset_id": 2,
+      "asset_tag": "High total debate base.",
+      "asset_name": "Industry whom he face adult. Bed information themselves common. Human sea animal sister.\nExecutive j...",
+      "category": "Kind campaign couple. Mention raise right former establish something. Store keep operation option.",
+      "acquisition_date": "2025-09-22T05:00:00.000Z",
+      "acquisition_cost": "11477.39",
+      "useful_life_years": 2024,
+      "salvage_value": "199.80",
+      "depreciation_method": "Later serious wall rest may also administration.",
+      "accumulated_depreciation": "997.26",
+      "current_value": "179.93",
+      "location": "Opportunity mind free imagine above quickly image. Trial will reach occur state not. Management Mr v...",
+      "status": "cancelled",
+      "disposal_date": "2025-09-11T05:00:00.000Z",
+      "created_at": "2025-12-13T08:54:51.682Z",
+      "updated_at": "2025-12-13T08:54:51.682Z"
+    },
+    {
+      "asset_id": 3,
+      "asset_tag": "In those road style certain popular.",
+      "asset_name": "Their successful station sell thus official energy. Congress agreement mouth now chance.\nProduct ten...",
+      "category": "Very activity case station. Someone quickly plant answer his concern.",
+      "acquisition_date": "2025-09-12T05:00:00.000Z",
+      "acquisition_cost": "2788.92",
+      "useful_life_years": 2025,
+      "salvage_value": "461.62",
+      "depreciation_method": "Arrive Mr act.",
+      "accumulated_depreciation": "708.37",
+      "current_value": "438.45",
+      "location": "Keep only compare. Also remain morning. Soon feel race responsibility.\nAlways himself big memory fis...",
+      "status": "pending",
+      "disposal_date": "2024-06-07T05:00:00.000Z",
+      "created_at": "2025-12-13T08:54:51.682Z",
+      "updated_at": "2025-12-13T08:54:51.682Z"
+    },
+    {
+      "asset_id": 4,
+      "asset_tag": "There citizen will specific describe.",
+      "asset_name": "Do already case require sit space be. Appear set outside suggest.\nRadio white a particular maybe. Yo...",
+      "category": "Everybody TV rule sport real yourself. Property body under voice.",
+      "acquisition_date": "2025-01-26T06:00:00.000Z",
+      "acquisition_cost": "83145.05",
+      "useful_life_years": 2020,
+      "salvage_value": "818.97",
+      "depreciation_method": "Particular capital worry role call.",
+      "accumulated_depreciation": "795.66",
+      "current_value": "409.14",
+      "location": "Throw central stage well. Financial even affect direction give office candidate something. Possible ...",
+      "status": "completed",
+      "disposal_date": "2024-06-24T05:00:00.000Z",
+      "created_at": "2025-12-13T08:54:51.682Z",
+      "updated_at": "2025-12-13T08:54:51.682Z"
+    },
+    {
+      "asset_id": 5,
+      "asset_tag": "Idea begin tell size.",
+      "asset_name": "Million performance adult actually forward. Myself relationship near executive listen along professi...",
+      "category": "Prepare decide anyone Republican travel wall me. Analysis guy else pass. Word election appear.",
+      "acquisition_date": "2025-06-15T05:00:00.000Z",
+      "acquisition_cost": "14003.99",
+      "useful_life_years": 2022,
+      "salvage_value": "242.02",
+      "depreciation_method": "Or evidence half.",
+      "accumulated_depreciation": "658.66",
+      "current_value": "715.24",
+      "location": "Tough training contain message cell. Friend may learn their choice wear trade. Stay improve detail s...",
+      "status": "completed",
+      "disposal_date": "2024-09-11T05:00:00.000Z",
+      "created_at": "2025-12-13T08:54:51.682Z",
+      "updated_at": "2025-12-13T08:54:51.682Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:07.298Z"
+}

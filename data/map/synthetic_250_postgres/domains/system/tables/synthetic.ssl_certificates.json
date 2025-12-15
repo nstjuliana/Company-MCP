@@ -1,0 +1,156 @@
+{
+  "table": "ssl_certificates",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.ssl_certificates` table represents records of SSL certificates, capturing details such as the domain associated with the certificate, the issuing authority, issuance and expiry dates, and the current status of the certificate. The primary key is `cert_id`, and while there are no foreign key relationships, the table appears to track the lifecycle of SSL certificates, likely for managing web security compliance. The `server_id` suggests a linkage to server entities, although not explicitly connected through this schema, indicating the certificates' assignment to specific servers.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "cert_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Uniquely identifies each SSL certificate in the system. The purpose is to ensure each certificate is distinct and can be referenced independently.",
+      "default": "nextval('synthetic.ssl_certificates_cert_id_seq'::regclass)"
+    },
+    {
+      "name": "domain",
+      "type": "character varying",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "issuer",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "issued_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column records the date on which an SSL certificate was issued. The purpose of the issuance data is to track the starting point of an SSL certificate's validity period.",
+      "default": null
+    },
+    {
+      "name": "expiry_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This data represents the expiration dates of SSL certificates within the system, indicating when each certificate will no longer be valid. The dates are in the future, suggesting upcoming expirations that may require renewal or replacement actions.",
+      "default": null
+    },
+    {
+      "name": "cert_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "server_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column identifies different servers associated with SSL certificates, with each integer representing a unique server. Its purpose remains unclear beyond indicating server identifiers.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Indicates the current operational state of an SSL certificate, categorizing it as active, inactive, or pending. Purpose unclear from available data.",
+      "default": "'active'::character varying"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when each SSL certificate record was initially created. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column tracks the date and time when the information regarding SSL certificates was last updated. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "cert_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "ssl_certificates_pkey",
+      "index_definition": "CREATE UNIQUE INDEX ssl_certificates_pkey ON synthetic.ssl_certificates USING btree (cert_id)",
+      "columns": [
+        "cert_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "cert_id": 1,
+      "domain": "Turn appear this pull official. Only training investment customer.",
+      "issuer": "Majority each risk instead lot attack. Hear kitchen hold leader agent their. Loss per other father.",
+      "issued_date": "2024-12-04T06:00:00.000Z",
+      "expiry_date": "2024-03-02T06:00:00.000Z",
+      "cert_type": "Bar player quality might.",
+      "server_id": 1,
+      "status": "active",
+      "created_at": "2025-12-13T09:16:37.197Z",
+      "updated_at": "2025-12-13T09:16:37.197Z"
+    },
+    {
+      "cert_id": 2,
+      "domain": "Partner door although thought last general last. Job your rise now field movie.",
+      "issuer": "Hundred ahead interest range seven lose.",
+      "issued_date": "2025-03-01T06:00:00.000Z",
+      "expiry_date": "2025-09-26T05:00:00.000Z",
+      "cert_type": "Morning sing take instead reduce box owner.",
+      "server_id": 2,
+      "status": "inactive",
+      "created_at": "2025-12-13T09:16:37.197Z",
+      "updated_at": "2025-12-13T09:16:37.197Z"
+    },
+    {
+      "cert_id": 3,
+      "domain": "Those it before myself all stay contain force.",
+      "issuer": "Us operation she certain capital get. They dark culture participant rather.",
+      "issued_date": "2024-05-08T05:00:00.000Z",
+      "expiry_date": "2025-05-01T05:00:00.000Z",
+      "cert_type": "Hundred authority career word throw.",
+      "server_id": 2,
+      "status": "pending",
+      "created_at": "2025-12-13T09:16:37.197Z",
+      "updated_at": "2025-12-13T09:16:37.197Z"
+    },
+    {
+      "cert_id": 4,
+      "domain": "Painting return big. Style know policy.",
+      "issuer": "Medical we animal cup. Test daughter defense relationship for instead.",
+      "issued_date": "2025-07-27T05:00:00.000Z",
+      "expiry_date": "2024-04-12T05:00:00.000Z",
+      "cert_type": "Actually environment practice southern six.",
+      "server_id": 1,
+      "status": "pending",
+      "created_at": "2025-12-13T09:16:37.197Z",
+      "updated_at": "2025-12-13T09:16:37.197Z"
+    },
+    {
+      "cert_id": 5,
+      "domain": "Threat participant wall late PM less. Continue few add onto.",
+      "issuer": "Ask then also claim or six. Fear result blue nation say.",
+      "issued_date": "2024-09-11T05:00:00.000Z",
+      "expiry_date": "2024-04-28T05:00:00.000Z",
+      "cert_type": "Other radio ok that.",
+      "server_id": 1,
+      "status": "pending",
+      "created_at": "2025-12-13T09:16:37.197Z",
+      "updated_at": "2025-12-13T09:16:37.197Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:30.699Z"
+}

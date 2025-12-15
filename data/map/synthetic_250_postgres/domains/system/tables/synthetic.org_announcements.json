@@ -1,0 +1,181 @@
+{
+  "table": "org_announcements",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.org_announcements` table represents organizational announcements, detailing information such as the announcement's title, content, author, and publication details. Each announcement, uniquely identified by the `announcement_id`, includes metadata like priority, target department, and publication timeframe, suggesting its use in managing internal communications. With foreign key relationships to undefined tables, it likely integrates with systems tracking authors and departments, although specifics are unclear due to the absence of defined foreign keys.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "announcement_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each announcement within the organization. It sequentially assigns a distinct number to every new announcement recorded.",
+      "default": "nextval('synthetic.org_announcements_announcement_id_seq'::regclass)"
+    },
+    {
+      "name": "title",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column represents brief headlines or titles for announcements made by an organization. It captures the essence of the message, focusing on topics like research, education, and general organizational updates.",
+      "default": null
+    },
+    {
+      "name": "content",
+      "type": "text",
+      "nullable": true,
+      "description": "This column contains textual content related to organizational announcements, including various themes such as health, theoretical discussions, and public matters. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "author_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents the identifier for individuals that have authored organization announcements. It links announcements to their respective creators, though the specific identity of each author is not evident from the sample data.",
+      "default": null
+    },
+    {
+      "name": "publish_date",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column represents the date and time when an organization announcement is published, indicating when the information was made available to its intended recipients. The purpose of capturing this information is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "expiry_date",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column represents the date and time at which an organization's announcement is set to expire or become inactive. It indicates when the announcement is no longer valid or relevant, as shown by the various future dates and times in the sample values.",
+      "default": null
+    },
+    {
+      "name": "priority",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": "'normal'::character varying"
+    },
+    {
+      "name": "target_department_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column identifies the specific departments within an organization that are intended as recipients for particular announcements. The purpose is to direct relevant communications to the appropriate departments, though the specific significance of each numeric identifier is not clear from the sample data provided.",
+      "default": null
+    },
+    {
+      "name": "is_pinned",
+      "type": "boolean",
+      "nullable": true,
+      "description": "This column indicates whether an announcement within the organization is prioritized to remain highlighted or easily accessible, with \"true\" meaning the announcement is actively emphasized or important, and \"false\" meaning it is not currently given such a priority. The default status for announcements is not to be prioritized, unless explicitly set.",
+      "default": "false"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an announcement was created or logged within an organization. It is utilized to track the creation timeline of organization announcements, using the current timestamp by default.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an organization announcement was last updated. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "announcement_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_org_announcements_author_id",
+      "column_name": "author_id",
+      "referenced_table": "synthetic.employees",
+      "referenced_column": "employee_id"
+    },
+    {
+      "constraint_name": "fk_org_announcements_target_department_id",
+      "column_name": "target_department_id",
+      "referenced_table": "synthetic.departments",
+      "referenced_column": "department_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "org_announcements_pkey",
+      "index_definition": "CREATE UNIQUE INDEX org_announcements_pkey ON synthetic.org_announcements USING btree (announcement_id)",
+      "columns": [
+        "announcement_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "announcement_id": 1,
+      "title": "Student research ability move.",
+      "content": "Thought himself north support each health someone. Executive third within player water. Start around...",
+      "author_id": 14,
+      "publish_date": "2025-07-16T09:41:41.101Z",
+      "expiry_date": "2025-09-28T22:27:05.084Z",
+      "priority": "By want price offer.",
+      "target_department_id": 6,
+      "is_pinned": true,
+      "created_at": "2025-12-13T09:20:51.392Z",
+      "updated_at": "2025-12-13T09:20:51.392Z"
+    },
+    {
+      "announcement_id": 2,
+      "title": "Trouble foreign lot total.",
+      "content": "My conference film. Civil clearly for able clearly fire. Actually really while guess.",
+      "author_id": 9,
+      "publish_date": "2024-08-03T01:57:06.148Z",
+      "expiry_date": "2024-09-08T17:52:44.799Z",
+      "priority": "Arrive but current.",
+      "target_department_id": 49,
+      "is_pinned": true,
+      "created_at": "2025-12-13T09:20:51.392Z",
+      "updated_at": "2025-12-13T09:20:51.392Z"
+    },
+    {
+      "announcement_id": 3,
+      "title": "Education ball song.",
+      "content": "Listen set simple add guess decade tend. Theory play because agency. Start big against require.",
+      "author_id": 38,
+      "publish_date": "2025-08-07T03:05:18.669Z",
+      "expiry_date": "2024-12-07T12:05:20.993Z",
+      "priority": "Project wish.",
+      "target_department_id": 47,
+      "is_pinned": false,
+      "created_at": "2025-12-13T09:20:51.392Z",
+      "updated_at": "2025-12-13T09:20:51.392Z"
+    },
+    {
+      "announcement_id": 4,
+      "title": "Same health former.",
+      "content": "Trial defense soon child imagine person six him. Throw on large memory study data note. Purpose cond...",
+      "author_id": 23,
+      "publish_date": "2024-10-29T06:04:46.280Z",
+      "expiry_date": "2024-03-31T05:58:26.137Z",
+      "priority": "Themselves tax.",
+      "target_department_id": 28,
+      "is_pinned": false,
+      "created_at": "2025-12-13T09:20:51.392Z",
+      "updated_at": "2025-12-13T09:20:51.392Z"
+    },
+    {
+      "announcement_id": 5,
+      "title": "Data day suddenly.",
+      "content": "Carry fine write attorney. Throw hope expert couple father. Glass really base fill school fire. Wind...",
+      "author_id": 9,
+      "publish_date": "2024-03-02T04:21:34.974Z",
+      "expiry_date": "2024-07-15T01:08:19.981Z",
+      "priority": "Science early.",
+      "target_department_id": 16,
+      "is_pinned": false,
+      "created_at": "2025-12-13T09:20:51.392Z",
+      "updated_at": "2025-12-13T09:20:51.392Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:14.009Z"
+}

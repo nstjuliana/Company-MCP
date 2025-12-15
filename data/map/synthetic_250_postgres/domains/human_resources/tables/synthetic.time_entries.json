@@ -1,0 +1,163 @@
+{
+  "table": "time_entries",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.time_entries` table represents records of time tracked against specific tasks for users, capturing details such as hours worked and billing information. Each entry is uniquely identified by `entry_id` and includes information on the task (`task_id`), the user performing it (`user_id`), as well as whether the time is billable and the relevant billing rate. The table tracks changes through timestamps (`created_at`, `updated_at`) and seems to support billing processes by allowing the association of labor with specific tasks and users, although specific relationships to other tables are undefined.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "entry_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each record within the time entries table, providing a sequential number for tracking individual time entry entries. Purpose unclear from available data.",
+      "default": "nextval('synthetic.time_entries_entry_id_seq'::regclass)"
+    },
+    {
+      "name": "task_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column likely represents a unique identifier for tasks associated with time entries. Each integer value corresponds to a specific task tracked within the system.",
+      "default": null
+    },
+    {
+      "name": "user_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column likely represents unique identifiers assigned to users who have logged time entries. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "entry_date",
+      "type": "date",
+      "nullable": false,
+      "description": "This column represents the specific calendar date associated with each time entry record. The values indicate the date on which events or activities were logged in the system.",
+      "default": null
+    },
+    {
+      "name": "hours_worked",
+      "type": "numeric",
+      "nullable": false,
+      "description": "This column records the number of hours logged by individuals for work or projects, reflecting substantial variations indicative of different work durations. The values suggest entries could represent total hours accumulated over extended periods rather than daily inputs.",
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "nullable": true,
+      "description": "This column likely contains brief, narrative descriptions or summaries of various activities, events, or tasks. The purpose is unclear from the available data, as the entries are diverse and seem to lack a specific, consistent focus.",
+      "default": null
+    },
+    {
+      "name": "is_billable",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether a recorded time entry is eligible for billing purposes to clients or projects. The default status is set to true, suggesting most entries are billable unless specified otherwise.",
+      "default": "true"
+    },
+    {
+      "name": "billing_rate",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the hourly rate charged for billed time entries, typically expressed in a specific currency. The values suggest typical rates for professional services.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column captures the date and time when a time entry record was initially created. It defaults to the current timestamp upon record insertion, allowing for tracking the creation time of each entry.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when each time entry record was last updated. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "entry_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_time_entries_task_id",
+      "column_name": "task_id",
+      "referenced_table": "synthetic.pm_tasks",
+      "referenced_column": "task_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "time_entries_pkey",
+      "index_definition": "CREATE UNIQUE INDEX time_entries_pkey ON synthetic.time_entries USING btree (entry_id)",
+      "columns": [
+        "entry_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "entry_id": 1,
+      "task_id": 17,
+      "user_id": 8130,
+      "entry_date": "2024-03-23T05:00:00.000Z",
+      "hours_worked": "29.68",
+      "description": "Performance kid late really.",
+      "is_billable": true,
+      "billing_rate": "56.13",
+      "created_at": "2025-12-13T09:00:11.979Z",
+      "updated_at": "2025-12-13T09:00:11.979Z"
+    },
+    {
+      "entry_id": 2,
+      "task_id": 22,
+      "user_id": 3260,
+      "entry_date": "2025-12-04T06:00:00.000Z",
+      "hours_worked": "999.76",
+      "description": "Case yes rise around cell season. Draw yes page ability.",
+      "is_billable": true,
+      "billing_rate": "60.70",
+      "created_at": "2025-12-13T09:00:11.979Z",
+      "updated_at": "2025-12-13T09:00:11.979Z"
+    },
+    {
+      "entry_id": 3,
+      "task_id": 11,
+      "user_id": 7201,
+      "entry_date": "2024-10-08T05:00:00.000Z",
+      "hours_worked": "921.97",
+      "description": "Draw amount fund third toward reach find.",
+      "is_billable": false,
+      "billing_rate": "88.96",
+      "created_at": "2025-12-13T09:00:11.979Z",
+      "updated_at": "2025-12-13T09:00:11.979Z"
+    },
+    {
+      "entry_id": 4,
+      "task_id": 28,
+      "user_id": 2440,
+      "entry_date": "2023-12-22T06:00:00.000Z",
+      "hours_worked": "78.93",
+      "description": "Hard modern thank. But third investment share citizen policy news.",
+      "is_billable": true,
+      "billing_rate": "52.46",
+      "created_at": "2025-12-13T09:00:11.979Z",
+      "updated_at": "2025-12-13T09:00:11.979Z"
+    },
+    {
+      "entry_id": 5,
+      "task_id": 9,
+      "user_id": 7783,
+      "entry_date": "2025-06-17T05:00:00.000Z",
+      "hours_worked": "18.98",
+      "description": "Develop tend democratic billion. Step always government foot picture behind under.",
+      "is_billable": true,
+      "billing_rate": "97.98",
+      "created_at": "2025-12-13T09:00:11.979Z",
+      "updated_at": "2025-12-13T09:00:11.979Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:41:11.182Z"
+}

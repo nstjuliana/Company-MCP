@@ -1,0 +1,183 @@
+{
+  "table": "pack_orders",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.pack_orders` table represents the packing operations associated with orders in a logistics or warehouse management system. Each row corresponds to a unique packing instance identified by `pack_id`, capturing details such as the `pack_number`, `order_id`, `status`, `packed_by`, and timestamps like `packed_at`, `created_at`, and `updated_at`. While the table references the `order_id` suggesting a link to an orders table, it serves as a detailed log for tracking the packing progress and related attributes like `total_weight_kg` and `num_packages`.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "pack_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each order in the packaging process. Each value is a sequential identifier, ensuring that every order is distinct within the system.",
+      "default": "nextval('synthetic.pack_orders_pack_id_seq'::regclass)"
+    },
+    {
+      "name": "pack_number",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely represents unique identifiers assigned to individual orders in a packaging process. Each value serves as a distinct reference number for tracking or managing packaged orders.",
+      "default": null
+    },
+    {
+      "name": "pick_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "order_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents a unique identifier assigned to each order within the packaging department, allowing for tracking and management of orders. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column indicates the current state of an order within the packing process, with possible states including pending, completed, inactive, and cancelled. These states likely reflect the progress or outcome of order handling.",
+      "default": "'pending'::character varying"
+    },
+    {
+      "name": "packed_by",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely identifies employees or agents responsible for packing orders using unique numeric identifiers. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "packed_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an order was packed, reflecting various instances of order processing throughout different times of the year. The exact time zone context may vary as it is not stored with the data itself.",
+      "default": null
+    },
+    {
+      "name": "total_weight_kg",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the aggregate weight of items within a package order expressed in kilograms. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "num_packages",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents the quantity of packages involved in individual orders within a packaging process. The values indicate large numbers typically ranging from a few thousand to several thousand, suggesting substantial orders.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column indicates the date and time when a pack order was created. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a pack order in the synthetic.pack_orders table was last updated. The information indicates all recorded values fall on the same specific date and time, December 13, 2025, suggesting this may reflect either a test dataset or batch update scenario.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "pack_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_pack_orders_pick_id",
+      "column_name": "pick_id",
+      "referenced_table": "synthetic.pick_orders",
+      "referenced_column": "pick_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "pack_orders_pack_number_key",
+      "index_definition": "CREATE UNIQUE INDEX pack_orders_pack_number_key ON synthetic.pack_orders USING btree (pack_number)",
+      "columns": [
+        "pack_number"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "pack_orders_pkey",
+      "index_definition": "CREATE UNIQUE INDEX pack_orders_pkey ON synthetic.pack_orders USING btree (pack_id)",
+      "columns": [
+        "pack_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "pack_id": 1,
+      "pack_number": "87686242641094578917",
+      "pick_id": null,
+      "order_id": 8811,
+      "status": "completed",
+      "packed_by": 5424,
+      "packed_at": "2025-01-13T17:07:01.589Z",
+      "total_weight_kg": "9.562",
+      "num_packages": 7680,
+      "created_at": "2025-12-13T08:58:15.975Z",
+      "updated_at": "2025-12-13T08:58:15.975Z"
+    },
+    {
+      "pack_id": 2,
+      "pack_number": "34671690986345536448",
+      "pick_id": null,
+      "order_id": 9740,
+      "status": "inactive",
+      "packed_by": 1094,
+      "packed_at": "2025-07-11T14:01:08.493Z",
+      "total_weight_kg": "35.110",
+      "num_packages": 9162,
+      "created_at": "2025-12-13T08:58:15.975Z",
+      "updated_at": "2025-12-13T08:58:15.975Z"
+    },
+    {
+      "pack_id": 3,
+      "pack_number": "03010047188754967430",
+      "pick_id": null,
+      "order_id": 3704,
+      "status": "pending",
+      "packed_by": 232,
+      "packed_at": "2024-05-31T12:26:44.425Z",
+      "total_weight_kg": "92.795",
+      "num_packages": 4499,
+      "created_at": "2025-12-13T08:58:15.975Z",
+      "updated_at": "2025-12-13T08:58:15.975Z"
+    },
+    {
+      "pack_id": 4,
+      "pack_number": "88982050858785263355",
+      "pick_id": null,
+      "order_id": 4657,
+      "status": "completed",
+      "packed_by": 9576,
+      "packed_at": "2025-10-04T02:59:12.329Z",
+      "total_weight_kg": "72.959",
+      "num_packages": 6018,
+      "created_at": "2025-12-13T08:58:15.975Z",
+      "updated_at": "2025-12-13T08:58:15.975Z"
+    },
+    {
+      "pack_id": 5,
+      "pack_number": "07327502551807377954",
+      "pick_id": null,
+      "order_id": 6608,
+      "status": "pending",
+      "packed_by": 9194,
+      "packed_at": "2024-05-05T22:32:05.397Z",
+      "total_weight_kg": "54.148",
+      "num_packages": 3320,
+      "created_at": "2025-12-13T08:58:15.975Z",
+      "updated_at": "2025-12-13T08:58:15.975Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:22.530Z"
+}

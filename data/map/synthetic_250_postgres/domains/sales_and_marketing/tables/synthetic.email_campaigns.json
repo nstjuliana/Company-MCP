@@ -1,0 +1,193 @@
+{
+  "table": "email_campaigns",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.email_campaigns` table represents email marketing campaigns within a broader synthetic marketing database, with each campaign identified by a unique `email_campaign_id`. This table contains key attributes for managing email campaigns, such as `subject_line`, `from_name`, `from_email`, `reply_to`, `template_id`, as well as scheduling and status information, evidenced by fields like `scheduled_date`, `sent_date`, and `status`. Although the exact foreign key relationships are undefined, its role seems to be central in tracking the lifecycle and details of email marketing activities, likely linking to unspecified campaign and template management tables.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "email_campaign_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Uniquely identifies each email campaign within the system. Each value increments by one to ensure distinct campaign identifiers over time.",
+      "default": "nextval('synthetic.email_campaigns_email_campaign_id_seq'::regclass)"
+    },
+    {
+      "name": "campaign_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This field likely associates an email campaign with its unique identifier number, enabling the organization to track and manage different marketing initiatives. Each number represents a distinct campaign, but the specific purpose or content of each campaign is not discernible from the values provided.",
+      "default": null
+    },
+    {
+      "name": "subject_line",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column contains textual entries that appear to represent creative or promotional messages, potentially used as subject lines for email marketing campaigns. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "from_name",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely contains the names or identifiers associated with the senders of email campaigns, reflecting different themes or subjects. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "from_email",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column represents the email addresses used as the sender's address for various email campaigns. The sender addresses appear to be personal or individual email accounts from different email service providers.",
+      "default": null
+    },
+    {
+      "name": "reply_to",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values consist of seemingly random phrases that do not clearly convey a specific meaning or purpose.",
+      "default": null
+    },
+    {
+      "name": "template_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely identifies different templates used in email campaigns, with each numeric value representing a distinct template option. Purpose unclear from available data beyond this identification function.",
+      "default": null
+    },
+    {
+      "name": "scheduled_date",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column represents the planned date and time when an email campaign is scheduled to be sent. It may remain unspecified as its values can be null.",
+      "default": null
+    },
+    {
+      "name": "sent_date",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when individual email campaigns were sent, likely indicating when recipients should have received the emails. The variety in timestamps reflects campaigns across different dates and seasons.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column indicates the current state of an email marketing campaign, which can be either pending, active, or inactive. It helps track the progress or readiness of campaigns in the marketing process.",
+      "default": "'draft'::character varying"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an email campaign was created. It defaults to the current timestamp at the time of record insertion.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a change was last made to an email campaign record. The current timestamp is used by default if a specific time is not provided during an update.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "email_campaign_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_email_campaigns_campaign_id",
+      "column_name": "campaign_id",
+      "referenced_table": "synthetic.marketing_campaigns",
+      "referenced_column": "campaign_id"
+    },
+    {
+      "constraint_name": "fk_email_campaigns_template_id",
+      "column_name": "template_id",
+      "referenced_table": "synthetic.email_templates",
+      "referenced_column": "template_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "email_campaigns_pkey",
+      "index_definition": "CREATE UNIQUE INDEX email_campaigns_pkey ON synthetic.email_campaigns USING btree (email_campaign_id)",
+      "columns": [
+        "email_campaign_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "email_campaign_id": 1,
+      "campaign_id": 36,
+      "subject_line": "Last modern purpose laugh level. Item Mrs name lay what situation real. Edge including few.",
+      "from_name": "Oil security perhaps national challenge item. Because nature reach research design.",
+      "from_email": "pamela61@example.net",
+      "reply_to": "Meeting movie film. Economy fund magazine catch our.",
+      "template_id": 50,
+      "scheduled_date": "2024-10-29T10:09:20.045Z",
+      "sent_date": "2024-02-01T16:59:29.616Z",
+      "status": "pending",
+      "created_at": "2025-12-13T09:18:41.655Z",
+      "updated_at": "2025-12-13T09:18:41.655Z"
+    },
+    {
+      "email_campaign_id": 2,
+      "campaign_id": 39,
+      "subject_line": "Factor drive or. Region company what wide too agreement section.",
+      "from_name": "Money way general.",
+      "from_email": "megan84@example.net",
+      "reply_to": "Arrive lose live agreement. Stay fish cause former teach.",
+      "template_id": 31,
+      "scheduled_date": "2024-01-21T14:07:42.248Z",
+      "sent_date": "2024-12-18T18:54:49.802Z",
+      "status": "pending",
+      "created_at": "2025-12-13T09:18:41.655Z",
+      "updated_at": "2025-12-13T09:18:41.655Z"
+    },
+    {
+      "email_campaign_id": 3,
+      "campaign_id": 43,
+      "subject_line": "Cold yet table enough herself. Different stuff detail require once. Resource possible me character.",
+      "from_name": "Sport strong the recent. Scientist task from simply game price.",
+      "from_email": "ewheeler@example.org",
+      "reply_to": "How away country hard visit. Effort box cold boy.",
+      "template_id": 24,
+      "scheduled_date": "2025-04-02T21:48:15.373Z",
+      "sent_date": "2025-03-18T17:14:58.824Z",
+      "status": "pending",
+      "created_at": "2025-12-13T09:18:41.655Z",
+      "updated_at": "2025-12-13T09:18:41.655Z"
+    },
+    {
+      "email_campaign_id": 4,
+      "campaign_id": 29,
+      "subject_line": "No source determine. Take kid drop strategy.",
+      "from_name": "Care off management.",
+      "from_email": "zimmermanernest@example.com",
+      "reply_to": "Book feeling cause mouth. Father hold discussion through everything experience life.",
+      "template_id": 8,
+      "scheduled_date": "2025-01-30T22:25:30.061Z",
+      "sent_date": "2025-10-14T01:04:04.254Z",
+      "status": "active",
+      "created_at": "2025-12-13T09:18:41.655Z",
+      "updated_at": "2025-12-13T09:18:41.655Z"
+    },
+    {
+      "email_campaign_id": 5,
+      "campaign_id": 49,
+      "subject_line": "Might fall determine pull trade deal. Piece action participant dinner after.",
+      "from_name": "Voice four feeling end sell. Win throughout again method time never month.",
+      "from_email": "olewis@example.net",
+      "reply_to": "Concern decide term current development choice. Loss fine end theory. Local reason agreement here.",
+      "template_id": 43,
+      "scheduled_date": "2024-04-20T01:18:11.572Z",
+      "sent_date": "2024-05-26T06:56:35.201Z",
+      "status": "active",
+      "created_at": "2025-12-13T09:18:41.655Z",
+      "updated_at": "2025-12-13T09:18:41.655Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:40:31.114Z"
+}

@@ -1,0 +1,192 @@
+{
+  "table": "content_pieces",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.content_pieces` table represents content items within a system, each identified by a unique `content_id` as the primary key. It includes attributes such as `title`, `content_type`, `body`, `author_id`, and `status`, alongside metadata fields such as `published_at`, `url`, `featured_image`, `seo_title`, `seo_description`, and timestamps for creation and updates. As it has no direct relationships with other tables, it likely functions as a standalone repository for content management, focusing on storing detailed information about individual content pieces.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "content_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column acts as a unique identifier for each content piece within the table, ensuring each entry is distinct and sequentially ordered.",
+      "default": "nextval('synthetic.content_pieces_content_id_seq'::regclass)"
+    },
+    {
+      "name": "title",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column represents the headings or primary identifiers of content pieces, likely conveying the main theme or subject matter of each entry. The specific purpose or context of these headings is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "content_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column appears to represent varying narrative or thematic descriptors for creative content pieces, possibly summarizing their main topics or themes in abstract or metaphorical terms. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "body",
+      "type": "text",
+      "nullable": true,
+      "description": "This column stores textual content pieces that appear to be segments of prose or isolated thoughts, likely serving as descriptive, narrative, or commentary information. Purpose unclear from available data, as the content is varied and lacks a discernible structure.",
+      "default": null
+    },
+    {
+      "name": "author_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents identifiers assigned to individuals who create content pieces, with each number corresponding to a unique creator. Purpose unclear from available data beyond assigning IDs to authors.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column indicates the current state of a content piece, with possible statuses such as 'active', 'inactive', and 'pending'. It helps in identifying whether content is ready for publication or is still in progress.",
+      "default": "'draft'::character varying"
+    },
+    {
+      "name": "published_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a content piece becomes available or is officially released. The exact purpose is not specified in the available data.",
+      "default": null
+    },
+    {
+      "name": "url",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely contains web addresses associated with content pieces, linking to various domains for further reference or access to content. The purpose of these URLs is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "featured_image",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values do not provide sufficient information to discern the column's function or content focus in business terms.",
+      "default": null
+    },
+    {
+      "name": "seo_title",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely holds titles optimized for search engine visibility, aimed at improving the attraction of digital content by using concise and engaging phrases. The purpose is unclear from the available data, as the sample values vary widely.",
+      "default": null
+    },
+    {
+      "name": "seo_description",
+      "type": "text",
+      "nullable": true,
+      "description": "Short promotional summaries or narrative descriptions likely used to enhance search engine optimization for content pieces. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time a content piece was initially created. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a content piece was last updated. The information is used to track modifications to content pieces, although the exact purpose and usage context are unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "content_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "content_pieces_pkey",
+      "index_definition": "CREATE UNIQUE INDEX content_pieces_pkey ON synthetic.content_pieces USING btree (content_id)",
+      "columns": [
+        "content_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "content_id": 1,
+      "title": "If our that character.",
+      "content_type": "General memory together before scientist so.",
+      "body": "Spend job important such Mr someone employee. Police think magazine.",
+      "author_id": 254,
+      "status": "inactive",
+      "published_at": "2024-03-16T07:15:14.426Z",
+      "url": "https://www.chavez.biz/",
+      "featured_image": "Summer change former teach section page popular. Space then truth model mouth explain fly.",
+      "seo_title": "Successful continue once history nor.",
+      "seo_description": "Moment red data establish usually direction. Talk manage huge look also down. Director beat wait rem...",
+      "created_at": "2025-12-13T09:15:03.492Z",
+      "updated_at": "2025-12-13T09:15:03.492Z"
+    },
+    {
+      "content_id": 2,
+      "title": "Skill how fear morning serious.",
+      "content_type": "Rate sort development easy.",
+      "body": "Open include know water our always true concern. Early increase human. Already tonight stuff.",
+      "author_id": 896,
+      "status": "active",
+      "published_at": "2025-02-05T03:51:36.001Z",
+      "url": "https://zamora-mcdaniel.com/",
+      "featured_image": "Piece crime popular mouth crime radio. Recently sure skill necessary. Mrs agent debate market my.",
+      "seo_title": "Doctor join interesting.",
+      "seo_description": "Beautiful writer knowledge teacher everyone past important special. Out newspaper true tonight avail...",
+      "created_at": "2025-12-13T09:15:03.492Z",
+      "updated_at": "2025-12-13T09:15:03.492Z"
+    },
+    {
+      "content_id": 3,
+      "title": "Finally record throw late hand.",
+      "content_type": "Edge almost everyone site talk.",
+      "body": "Opportunity environmental increase table expert trade. Consumer myself face attention Mr new agree. ...",
+      "author_id": 461,
+      "status": "inactive",
+      "published_at": "2024-08-17T02:57:00.689Z",
+      "url": "https://www.riggs.org/",
+      "featured_image": "Enter new range capital wife. Despite training light toward teach end right read.",
+      "seo_title": "Us street.",
+      "seo_description": "Firm most should hour. Myself indeed unit happy table.",
+      "created_at": "2025-12-13T09:15:03.492Z",
+      "updated_at": "2025-12-13T09:15:03.492Z"
+    },
+    {
+      "content_id": 4,
+      "title": "Subject business staff.",
+      "content_type": "High government energy for yard.",
+      "body": "Page many art class. Seem authority simply show sit popular actually. Crime large visit me figure.",
+      "author_id": 357,
+      "status": "active",
+      "published_at": "2024-12-29T19:18:12.099Z",
+      "url": "https://www.doyle.com/",
+      "featured_image": "Wait rest the traditional keep main. Floor maybe threat seem.",
+      "seo_title": "A speak go.",
+      "seo_description": "Whom let ok heart everything. Meeting black parent past employee which all.",
+      "created_at": "2025-12-13T09:15:03.492Z",
+      "updated_at": "2025-12-13T09:15:03.492Z"
+    },
+    {
+      "content_id": 5,
+      "title": "Sell five.",
+      "content_type": "Bar speak today president former marriage.",
+      "body": "Career actually why leave edge rock stage. Officer tonight future gun capital exactly system subject...",
+      "author_id": 450,
+      "status": "active",
+      "published_at": "2024-06-14T12:59:11.483Z",
+      "url": "https://www.dennis.com/",
+      "featured_image": "Plan morning whatever four. History dinner avoid development. American senior create none.",
+      "seo_title": "Information peace parent song.",
+      "seo_description": "Difficult fill prove find during role spring. Democratic industry piece. Course always life board.",
+      "created_at": "2025-12-13T09:15:03.492Z",
+      "updated_at": "2025-12-13T09:15:03.492Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:44:15.197Z"
+}

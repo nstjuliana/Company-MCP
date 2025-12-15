@@ -1,0 +1,120 @@
+{
+  "table": "product_attributes",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.product_attributes` table represents the various attributes associated with products, detailing their characteristics and specifications. Each attribute, identified by a unique `attribute_id`, includes information such as the attribute name, type, and flags indicating whether the attribute can be filtered by or is required. Since this table lacks foreign key constraints and is neither referenced nor references other tables, it appears to serve as a standalone entity in the data model that stores static metadata about product characteristics.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "attribute_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each attribute associated with products in the dataset. It ensures distinct tracking and referencing of product attributes within the system.",
+      "default": "nextval('synthetic.product_attributes_attribute_id_seq'::regclass)"
+    },
+    {
+      "name": "attribute_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "The column represents textual descriptions or titles of specific features or characteristics associated with a product. These entries reflect abstract and varied thematic content, possibly denoting aspects such as functionality, design, usage, or other product-related attributes.",
+      "default": null
+    },
+    {
+      "name": "attribute_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column categorizes products based on specific characteristics or themes, such as wealth, organization, or quantity. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "is_filterable",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether a product attribute can be used as a filter in search or navigation features. This feature is optional and defaults to being unavailable unless specified otherwise.",
+      "default": "false"
+    },
+    {
+      "name": "is_required",
+      "type": "boolean",
+      "nullable": true,
+      "description": "This column indicates whether a specific product attribute is mandatory for defining a product. The default setting suggests that most attributes are not mandatory unless specified otherwise.",
+      "default": "false"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when each product attribute entry was initially created. It captures the precise moment of creation, reflecting the timestamp in Central Standard Time.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a change or update was last made to a product attribute in the records. If no specific time is provided during an update, it defaults to the current timestamp.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "attribute_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "product_attributes_pkey",
+      "index_definition": "CREATE UNIQUE INDEX product_attributes_pkey ON synthetic.product_attributes USING btree (attribute_id)",
+      "columns": [
+        "attribute_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "attribute_id": 1,
+      "attribute_name": "Store able protect federal him next. Ahead decide leave that mention.",
+      "attribute_type": "rich",
+      "is_filterable": false,
+      "is_required": false,
+      "created_at": "2025-12-13T08:56:02.752Z",
+      "updated_at": "2025-12-13T08:56:02.752Z"
+    },
+    {
+      "attribute_id": 2,
+      "attribute_name": "Subject training feel add school. Air able policy eye history.",
+      "attribute_type": "sort",
+      "is_filterable": true,
+      "is_required": true,
+      "created_at": "2025-12-13T08:56:02.752Z",
+      "updated_at": "2025-12-13T08:56:02.752Z"
+    },
+    {
+      "attribute_id": 3,
+      "attribute_name": "Understand paper participant. Stage man very care three turn. Respond state type baby assume.",
+      "attribute_type": "party",
+      "is_filterable": false,
+      "is_required": false,
+      "created_at": "2025-12-13T08:56:02.752Z",
+      "updated_at": "2025-12-13T08:56:02.752Z"
+    },
+    {
+      "attribute_id": 4,
+      "attribute_name": "Program prepare number out anyone against relate. Store case goal east.",
+      "attribute_type": "step",
+      "is_filterable": true,
+      "is_required": false,
+      "created_at": "2025-12-13T08:56:02.752Z",
+      "updated_at": "2025-12-13T08:56:02.752Z"
+    },
+    {
+      "attribute_id": 5,
+      "attribute_name": "Less draw consumer arrive husband just cause. Seat must thought.",
+      "attribute_type": "career",
+      "is_filterable": false,
+      "is_required": true,
+      "created_at": "2025-12-13T08:56:02.752Z",
+      "updated_at": "2025-12-13T08:56:02.752Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:38:57.144Z"
+}

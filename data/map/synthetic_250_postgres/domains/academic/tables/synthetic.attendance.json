@@ -1,0 +1,94 @@
+{
+  "table": "attendance",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.attendance` table represents an entity likely related to tracking attendance or presence information, identifiable by the primary key `attendance_id`. This table has eight columns, although no further details or sample data are available to ascertain specific attributes or columns. It references at least two other entities in the database, as indicated by unspecified foreign keys, but currently has no outgoing foreign key relationships from other tables.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "attendance_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This field serves as a unique identifier for each entry within the attendance records, ensuring distinct tracking of individual attendance events. It automatically increments with each new record.",
+      "default": "nextval('synthetic.attendance_attendance_id_seq'::regclass)"
+    },
+    {
+      "name": "section_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "student_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each student within the attendance records, ensuring accurate tracking of individual attendance data. It serves as a key reference for associating attendance entries with specific students.",
+      "default": null
+    },
+    {
+      "name": "class_date",
+      "type": "date",
+      "nullable": false,
+      "description": "This column records the specific date each class session occurred. It is a mandatory entry for tracking attendance on scheduled class dates.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "notes",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when each record was created in the attendance table. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a record in the attendance table was last updated, reflecting the most recent modification to that data entry.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "attendance_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_attendance_section_id",
+      "column_name": "section_id",
+      "referenced_table": "synthetic.course_sections",
+      "referenced_column": "section_id"
+    },
+    {
+      "constraint_name": "fk_attendance_student_id",
+      "column_name": "student_id",
+      "referenced_table": "synthetic.students",
+      "referenced_column": "student_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "attendance_pkey",
+      "index_definition": "CREATE UNIQUE INDEX attendance_pkey ON synthetic.attendance USING btree (attendance_id)",
+      "columns": [
+        "attendance_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:40:49.545Z"
+}

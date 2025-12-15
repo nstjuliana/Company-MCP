@@ -1,0 +1,147 @@
+{
+  "table": "DEPARTMENTS_213",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.DEPARTMENTS_213 table represents departmental entities within the synthetic_250_snowflake database, identified uniquely by the DEPARTMENT_ID column. Lacking any foreign key constraints or references to other tables, it appears to function as a standalone component in the database, likely detailing attributes like NAME and DESCRIPTION along with various PATIENT, CLAIM, BILLING, and APPOINTMENT attributes for each department. The sample data suggests this table primarily governs descriptive and operational metadata for each department without directly interacting with other relational tables.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "DEPARTMENT_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents a unique identifier assigned to each department within the database. Each number corresponds to a specific department.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains identifiers for different department entries in the dataset, each labeled as \"DEPARTMENTS_213\" followed by a unique number. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column contains textual descriptions for specific records within the DEPARTMENTS_213 table. Each entry provides a department-specific identifier and a corresponding description.",
+      "default": null
+    },
+    {
+      "name": "PATIENT_233_ATTR_0",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column captures the timestamp of when a certain event related to a patient occurred, defaulting to the current time if no specific time is provided. The exact purpose of this event tracking is unclear from the available data.",
+      "default": "CURRENT_TIMESTAMP()"
+    },
+    {
+      "name": "PATIENT_233_ATTR_1",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column likely represents an identifier or code associated with patients within the departments, as suggested by the sequential numerical values. Purpose unclear from available data beyond identifying patients numerically.",
+      "default": null
+    },
+    {
+      "name": "PATIENT_233_ATTR_2",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "This column indicates a binary status related to a specific attribute associated with patients. The exact purpose of this attribute is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "CLAIM_233_ATTR_3",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values do not provide sufficient information to determine the business context of this column.",
+      "default": null
+    },
+    {
+      "name": "CLAIM_233_ATTR_4",
+      "type": "BOOLEAN",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "BILLING_233_ATTR_5",
+      "type": "DATE",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The column contains date values but its business relevance is not evident from the information provided.",
+      "default": null
+    },
+    {
+      "name": "APPOINTMENT_233_ATTR_6",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column contains timestamps that likely represent scheduled or recorded appointments for various dates in December 2025, set at a consistent time in the evening. Specific details or purpose of the appointments are unclear from the available data.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "DEPARTMENT_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "DEPARTMENT_ID": 1,
+      "NAME": "DEPARTMENTS_213 1",
+      "DESCRIPTION": "Description for DEPARTMENTS_213 1",
+      "PATIENT_233_ATTR_0": "2025-12-12 17:26:11.329",
+      "PATIENT_233_ATTR_1": 100,
+      "PATIENT_233_ATTR_2": true,
+      "CLAIM_233_ATTR_3": "Sample CLAIM_233_ATTR_3 1",
+      "CLAIM_233_ATTR_4": true,
+      "BILLING_233_ATTR_5": "2025-12-12",
+      "APPOINTMENT_233_ATTR_6": "2025-12-12 00:00:00.000"
+    },
+    {
+      "DEPARTMENT_ID": 2,
+      "NAME": "DEPARTMENTS_213 2",
+      "DESCRIPTION": "Description for DEPARTMENTS_213 2",
+      "PATIENT_233_ATTR_0": "2025-12-12 17:26:11.329",
+      "PATIENT_233_ATTR_1": 101,
+      "PATIENT_233_ATTR_2": false,
+      "CLAIM_233_ATTR_3": "Sample CLAIM_233_ATTR_3 2",
+      "CLAIM_233_ATTR_4": false,
+      "BILLING_233_ATTR_5": "2025-12-13",
+      "APPOINTMENT_233_ATTR_6": "2025-12-13 00:00:00.000"
+    },
+    {
+      "DEPARTMENT_ID": 3,
+      "NAME": "DEPARTMENTS_213 3",
+      "DESCRIPTION": "Description for DEPARTMENTS_213 3",
+      "PATIENT_233_ATTR_0": "2025-12-12 17:26:11.329",
+      "PATIENT_233_ATTR_1": 102,
+      "PATIENT_233_ATTR_2": true,
+      "CLAIM_233_ATTR_3": "Sample CLAIM_233_ATTR_3 3",
+      "CLAIM_233_ATTR_4": true,
+      "BILLING_233_ATTR_5": "2025-12-14",
+      "APPOINTMENT_233_ATTR_6": "2025-12-14 00:00:00.000"
+    },
+    {
+      "DEPARTMENT_ID": 4,
+      "NAME": "DEPARTMENTS_213 4",
+      "DESCRIPTION": "Description for DEPARTMENTS_213 4",
+      "PATIENT_233_ATTR_0": "2025-12-12 17:26:11.329",
+      "PATIENT_233_ATTR_1": 103,
+      "PATIENT_233_ATTR_2": false,
+      "CLAIM_233_ATTR_3": "Sample CLAIM_233_ATTR_3 4",
+      "CLAIM_233_ATTR_4": false,
+      "BILLING_233_ATTR_5": "2025-12-15",
+      "APPOINTMENT_233_ATTR_6": "2025-12-15 00:00:00.000"
+    },
+    {
+      "DEPARTMENT_ID": 5,
+      "NAME": "DEPARTMENTS_213 5",
+      "DESCRIPTION": "Description for DEPARTMENTS_213 5",
+      "PATIENT_233_ATTR_0": "2025-12-12 17:26:11.329",
+      "PATIENT_233_ATTR_1": 104,
+      "PATIENT_233_ATTR_2": true,
+      "CLAIM_233_ATTR_3": "Sample CLAIM_233_ATTR_3 5",
+      "CLAIM_233_ATTR_4": true,
+      "BILLING_233_ATTR_5": "2025-12-16",
+      "APPOINTMENT_233_ATTR_6": "2025-12-16 00:00:00.000"
+    }
+  ],
+  "generated_at": "2025-12-14T23:44:26.895Z"
+}

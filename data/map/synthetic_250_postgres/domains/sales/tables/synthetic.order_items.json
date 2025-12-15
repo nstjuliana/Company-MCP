@@ -1,0 +1,135 @@
+{
+  "table": "order_items",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.order_items\" table is designed to represent individual items associated with orders, uniquely identified by the \"order_item_id\" primary key. It establishes relationships with at least three other entities, as inferred from foreign key references, although the specific entities are undefined in the provided data. This table likely serves as a junction table in the data model, detailing the components of an order within the synthetic_250_postgres database.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "order_item_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each item within an order, ensuring that every entry is distinct and traceable in the context of an order's details.",
+      "default": "nextval('synthetic.order_items_order_item_id_seq'::regclass)"
+    },
+    {
+      "name": "order_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Unique identifier for an individual order associated with items in a transaction.",
+      "default": null
+    },
+    {
+      "name": "product_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column identifies the specific product associated with each order item in the system, ensuring accurate tracking and management of products within customer orders. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "variant_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "product_name",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely represents the name or title of a product in an order, but its specific role within the order is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "sku",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "quantity",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column records the number of units of a specific item included in a single order. It is a mandatory field and does not have a default value.",
+      "default": null
+    },
+    {
+      "name": "unit_price",
+      "type": "numeric",
+      "nullable": false,
+      "description": "Represents the cost assigned to a single unit of an item within an order in the order_items table.",
+      "default": null
+    },
+    {
+      "name": "discount_amount",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the monetary amount deducted from the original price in the form of a discount for an order item. The value can be absent, indicating no discount was applied.",
+      "default": "0"
+    },
+    {
+      "name": "tax_amount",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the monetary amount collected as tax for each order item in a transactional context. The amount can be null, implying that tax information might be optional or not applicable in certain cases.",
+      "default": "0"
+    },
+    {
+      "name": "line_total",
+      "type": "numeric",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an order item entry is created. It defaults to the current timestamp, indicating the moment of record entry.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Records the date and time when each order item record was last modified. This may include updates to any details within the order item.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "order_item_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_order_items_order_id",
+      "column_name": "order_id",
+      "referenced_table": "synthetic.orders",
+      "referenced_column": "order_id"
+    },
+    {
+      "constraint_name": "fk_order_items_product_id",
+      "column_name": "product_id",
+      "referenced_table": "synthetic.products",
+      "referenced_column": "product_id"
+    },
+    {
+      "constraint_name": "fk_order_items_variant_id",
+      "column_name": "variant_id",
+      "referenced_table": "synthetic.product_variants",
+      "referenced_column": "variant_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "order_items_pkey",
+      "index_definition": "CREATE UNIQUE INDEX order_items_pkey ON synthetic.order_items USING btree (order_item_id)",
+      "columns": [
+        "order_item_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:41:57.099Z"
+}

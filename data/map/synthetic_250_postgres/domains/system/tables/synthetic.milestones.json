@@ -1,0 +1,169 @@
+{
+  "table": "milestones",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.milestones\" table represents milestones within projects, where each entry includes information such as the project ID, associated phase, milestone name, due date, and status. It appears to link projects and phases through foreign key relationships, although the specific references are undefined, indicating its role as a project management tool focused on tracking progress and deadlines. With 100 entries and timestamps for creation and updates, it facilitates monitoring milestone completions and status changes over time.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "milestone_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each milestone entry in the data, ensuring that each milestone is distinct and easily referable by its sequential number.",
+      "default": "nextval('synthetic.milestones_milestone_id_seq'::regclass)"
+    },
+    {
+      "name": "project_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies different projects associated with specific milestones. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "phase_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents different stages or steps that a project or process might progress through. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "milestone_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column contains brief descriptions or summaries of various milestones, which could relate to events, processes, or achievements. The purpose of these entries is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "due_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column represents the scheduled completion date for various milestones within a project or plan. The dates provided correspond to specific days on which these milestones are expected to be achieved.",
+      "default": null
+    },
+    {
+      "name": "completed_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This field records the date when a specific milestone was completed, reflecting both standard and daylight saving time zones. It may be left empty if the milestone has not yet been achieved.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column represents the current state of a milestone or task within a project's lifecycle. The various states such as \"pending,\" \"completed,\" \"active,\" \"cancelled,\" and \"inactive\" indicate the progression or status of these milestones.",
+      "default": "'pending'::character varying"
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "nullable": true,
+      "description": "This column contains narrative or illustrative text that describes various activities, events, or considerations related to milestones. The content suggests summaries or outlines of goals, actions, or evaluations connected with specific time-bound achievements.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a milestone was created. Purpose is unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Represents the date and time when a record in the milestones table was last modified or updated. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "milestone_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_milestones_phase_id",
+      "column_name": "phase_id",
+      "referenced_table": "synthetic.project_phases",
+      "referenced_column": "phase_id"
+    },
+    {
+      "constraint_name": "fk_milestones_project_id",
+      "column_name": "project_id",
+      "referenced_table": "synthetic.pm_projects",
+      "referenced_column": "project_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "milestones_pkey",
+      "index_definition": "CREATE UNIQUE INDEX milestones_pkey ON synthetic.milestones USING btree (milestone_id)",
+      "columns": [
+        "milestone_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "milestone_id": 1,
+      "project_id": 25,
+      "phase_id": 47,
+      "milestone_name": "Nation reach wish describe. Various certain financial herself.\nTend often usually science example co...",
+      "due_date": "2025-10-23T05:00:00.000Z",
+      "completed_date": "2024-04-12T05:00:00.000Z",
+      "status": "cancelled",
+      "description": "Machine place boy minute game. Amount executive stock member.",
+      "created_at": "2025-12-13T08:59:58.611Z",
+      "updated_at": "2025-12-13T08:59:58.611Z"
+    },
+    {
+      "milestone_id": 2,
+      "project_id": 22,
+      "phase_id": 44,
+      "milestone_name": "Whether listen you four. Watch past home tell off magazine. Cost cup idea.\nWin by bit best if. White...",
+      "due_date": "2025-11-02T05:00:00.000Z",
+      "completed_date": "2024-05-18T05:00:00.000Z",
+      "status": "completed",
+      "description": "Big already political. Election box his side identify size mother detail. Gun say culture full. Far ...",
+      "created_at": "2025-12-13T08:59:58.611Z",
+      "updated_at": "2025-12-13T08:59:58.611Z"
+    },
+    {
+      "milestone_id": 3,
+      "project_id": 37,
+      "phase_id": 3,
+      "milestone_name": "Inside beat couple news or technology. Foot change eat safe house single decade into. Six month coun...",
+      "due_date": "2025-07-31T05:00:00.000Z",
+      "completed_date": "2023-12-18T06:00:00.000Z",
+      "status": "active",
+      "description": "Hit four perform perhaps these middle including. Room treatment science stop. Someone understand ago...",
+      "created_at": "2025-12-13T08:59:58.611Z",
+      "updated_at": "2025-12-13T08:59:58.611Z"
+    },
+    {
+      "milestone_id": 4,
+      "project_id": 44,
+      "phase_id": 8,
+      "milestone_name": "Help sure likely positive try cut continue. Can find room kid.",
+      "due_date": "2024-02-06T06:00:00.000Z",
+      "completed_date": "2024-10-09T05:00:00.000Z",
+      "status": "inactive",
+      "description": "Boy consider push ability cost side movement. Win join star charge.",
+      "created_at": "2025-12-13T08:59:58.611Z",
+      "updated_at": "2025-12-13T08:59:58.611Z"
+    },
+    {
+      "milestone_id": 5,
+      "project_id": 18,
+      "phase_id": 35,
+      "milestone_name": "Quite generation standard treat turn. She those top question.\nEat couple explain. Assume the heavy m...",
+      "due_date": "2024-03-06T06:00:00.000Z",
+      "completed_date": "2025-06-12T05:00:00.000Z",
+      "status": "inactive",
+      "description": "Receive mention family customer hundred. Mean system part international white. By debate long what.",
+      "created_at": "2025-12-13T08:59:58.611Z",
+      "updated_at": "2025-12-13T08:59:58.611Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:12.809Z"
+}

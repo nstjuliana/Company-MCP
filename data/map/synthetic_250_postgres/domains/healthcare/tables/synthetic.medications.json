@@ -1,0 +1,168 @@
+{
+  "table": "medications",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.medications` table stores information related to pharmaceutical products, capturing essential details such as the National Drug Code (ndc_code), medication's commercial and generic names, classification (drug_class), formulation (form), and manufacturer. It includes metadata for tracking creation and updates, but does not have any direct foreign key relationships to other tables, indicating it operates independently within the database. The table likely functions as a reference for medication information, serving data needs for applications that require comprehensive pharmaceutical details.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "medication_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each medication entry in the dataset, ensuring that each medication can be distinctly recognized.",
+      "default": "nextval('synthetic.medications_medication_id_seq'::regclass)"
+    },
+    {
+      "name": "ndc_code",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "medication_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "Purpose unclear from available data. The sample values do not reflect recognizable medication names or relevant information.",
+      "default": null
+    },
+    {
+      "name": "generic_name",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values do not provide sufficient insight into what is represented.",
+      "default": null
+    },
+    {
+      "name": "drug_class",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "form",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data as the sample values do not provide sufficient context or consistency to determine a specific business meaning.",
+      "default": null
+    },
+    {
+      "name": "strength",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. Sample values do not provide a coherent representation of medication strength.",
+      "default": null
+    },
+    {
+      "name": "manufacturer",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "is_controlled",
+      "type": "boolean",
+      "nullable": true,
+      "description": "This column indicates whether a medication is classified as a controlled substance, with a true value meaning it is controlled and false meaning it is not.",
+      "default": "false"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a medication entry is created, reflecting the initial timestamp of data entry. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a medication record was last updated. It is set to the current timestamp by default, indicating recent modifications to medication data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "medication_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "medications_pkey",
+      "index_definition": "CREATE UNIQUE INDEX medications_pkey ON synthetic.medications USING btree (medication_id)",
+      "columns": [
+        "medication_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "medication_id": 1,
+      "ndc_code": "ONWIWJKJRV",
+      "medication_name": "Avoid role say one bit without leader. Cover section meet book political carry.\nOut decide skill fly...",
+      "generic_name": "Quickly us no remain school should lawyer state. However simple do. Ok shoulder perform join some en...",
+      "drug_class": "Thus bill nature perhaps. Again draw public trouble significant behind.",
+      "form": "Money machine enter although note financial with.",
+      "strength": "Chair chair rate leader of.",
+      "manufacturer": "Finally early method nearly. Such something run travel.\nMy trouble recently agree off eye maybe.",
+      "is_controlled": false,
+      "created_at": "2025-12-13T08:59:42.610Z",
+      "updated_at": "2025-12-13T08:59:42.610Z"
+    },
+    {
+      "medication_id": 2,
+      "ndc_code": "SAGGCMFTUD",
+      "medication_name": "Own fire do similar compare remain prove yeah. Value price material radio national matter. Everythin...",
+      "generic_name": "Early model difficult with. Accept debate world raise hear interview. Return wrong former idea colle...",
+      "drug_class": "Democratic increase where police pay. American yes always agree father.",
+      "form": "Scientist drop traditional visit fast step radio.",
+      "strength": "Manager include view building phone blue. Toward respond road. Long so choose.",
+      "manufacturer": "Behavior simple indicate size black but morning. Describe continue study believe point box. Could be...",
+      "is_controlled": true,
+      "created_at": "2025-12-13T08:59:42.610Z",
+      "updated_at": "2025-12-13T08:59:42.610Z"
+    },
+    {
+      "medication_id": 3,
+      "ndc_code": "GCPKAUNBUW",
+      "medication_name": "Nature star time already. Maintain director sing can. They man public lay describe amount this.\nNor ...",
+      "generic_name": "Modern age role quite reality little more. Learn material author another teach me. Social need groun...",
+      "drug_class": "Major young to maybe again day population like. Our five purpose expert watch.",
+      "form": "Could do television current.",
+      "strength": "Allow figure street marriage. Same shoulder use. Seem wife east per message middle general.",
+      "manufacturer": "College chance strategy happy. Law market support inside wide television.\nStrategy forward avoid nex...",
+      "is_controlled": true,
+      "created_at": "2025-12-13T08:59:42.610Z",
+      "updated_at": "2025-12-13T08:59:42.610Z"
+    },
+    {
+      "medication_id": 4,
+      "ndc_code": "BVRDADNTNQ",
+      "medication_name": "Commercial record radio tell mean happen network. Manager science save imagine let organization move...",
+      "generic_name": "Wind simple character reduce. Half life account pull fine kitchen base change. Crime bar section gro...",
+      "drug_class": "Health project degree computer citizen. Money perhaps rock during base charge particularly miss.",
+      "form": "Threat cut minute truth station appear suggest.",
+      "strength": "Down write ask their help.",
+      "manufacturer": "Which million PM that ok movie. Service thing walk stop fill dinner. Boy billion law beyond stuff fo...",
+      "is_controlled": true,
+      "created_at": "2025-12-13T08:59:42.610Z",
+      "updated_at": "2025-12-13T08:59:42.610Z"
+    },
+    {
+      "medication_id": 5,
+      "ndc_code": "RXTHYLPHOD",
+      "medication_name": "Instead break employee century whom road. Strategy bed service strong dream store know.\nFear artist ...",
+      "generic_name": "Plan one possible dinner usually focus. According however work team budget late. Point song our put ...",
+      "drug_class": "Expect such result about end. Family seat radio me produce teacher.\nIndustry off could that.",
+      "form": "Manage sort idea evening much order.",
+      "strength": "Skill though glass various.\nWhatever beat be view kind mention admit.",
+      "manufacturer": "Suffer meeting through thought discussion series. Person yard past coach.",
+      "is_controlled": false,
+      "created_at": "2025-12-13T08:59:42.610Z",
+      "updated_at": "2025-12-13T08:59:42.610Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:41:39.725Z"
+}

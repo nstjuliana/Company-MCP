@@ -1,0 +1,193 @@
+{
+  "table": "expense_reports",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.expense_reports` table represents the collection of expense reports filed by employees within an organization, with each report uniquely identified by the `report_id`. The table includes essential details about each report such as the employee who filed it (`employee_id`), the title, submission date, total amount and currency, status, as well as information about approval, including the approver and approval date. It references key information from other unidentified tables, likely those containing employee and approver details, emphasizing its role in tracking and managing financial report submissions and approvals.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "report_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents unique identifiers assigned incrementally to individual expense reports within the system, ensuring that each report can be distinctly recognized.",
+      "default": "nextval('synthetic.expense_reports_report_id_seq'::regclass)"
+    },
+    {
+      "name": "employee_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Represents a unique identifier for employees associated with expense reports. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "report_title",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column appears to contain titles or brief descriptions summarizing or naming individual expense reports. The purpose of the phrases seems to be to create a simple reference or theme for the expense reports, although the exact context or relevance is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "submission_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column represents the date on which an expense report was submitted. It may indicate a process interaction timeframe, with submissions potentially spanning a variety of dates throughout the year.",
+      "default": null
+    },
+    {
+      "name": "total_amount",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the monetary amounts associated with individual expense reports. The values indicate various totals, which suggest it may capture the overall cost recorded in financial records submitted for reimbursement or accounting purposes.",
+      "default": null
+    },
+    {
+      "name": "currency",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column specifies the currency in which expenses are reported, such as British Pounds (GBP), US Dollars (USD), and Euros (EUR). It indicates the monetary unit applicable to each expense record.",
+      "default": "'USD'::character varying"
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column indicates the current state of an expense report, signifying whether it is active, inactive, or pending. The default status is pending, suggesting a report is awaiting further action or review.",
+      "default": "'pending'::character varying"
+    },
+    {
+      "name": "approved_by",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely identifies an individual, such as a manager or administrator, who approves expense reports, using an integer that corresponds to a specific ID. The purpose of mapping these values to specific roles or individuals is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "approved_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column records the date on which an expense report was approved. The approval dates range across various months and years, indicating a timeline for expense approval activities.",
+      "default": null
+    },
+    {
+      "name": "notes",
+      "type": "text",
+      "nullable": true,
+      "description": "This column contains free-form textual comments or descriptions that accompany expense reports and provide additional context or miscellaneous details related to the expenses. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column indicates the date and time when an expense report was initially created. The purpose of tracking this timestamp is likely for monitoring or record-keeping of expense report submissions.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an expense report was last modified. It is used to track updates to records within the expense reports.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "report_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_expense_reports_approved_by",
+      "column_name": "approved_by",
+      "referenced_table": "synthetic.employees",
+      "referenced_column": "employee_id"
+    },
+    {
+      "constraint_name": "fk_expense_reports_employee_id",
+      "column_name": "employee_id",
+      "referenced_table": "synthetic.employees",
+      "referenced_column": "employee_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "expense_reports_pkey",
+      "index_definition": "CREATE UNIQUE INDEX expense_reports_pkey ON synthetic.expense_reports USING btree (report_id)",
+      "columns": [
+        "report_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "report_id": 1,
+      "employee_id": 47,
+      "report_title": "Economy free at without lawyer.",
+      "submission_date": "2024-05-04T05:00:00.000Z",
+      "total_amount": "4621.61",
+      "currency": "GBP",
+      "status": "active",
+      "approved_by": 29,
+      "approved_date": "2025-06-23T05:00:00.000Z",
+      "notes": "Morning after at year institution city. Visit indicate become everyone heavy.",
+      "created_at": "2025-12-13T09:20:41.984Z",
+      "updated_at": "2025-12-13T09:20:41.984Z"
+    },
+    {
+      "report_id": 2,
+      "employee_id": 19,
+      "report_title": "Chance record trouble show.",
+      "submission_date": "2024-06-10T05:00:00.000Z",
+      "total_amount": "8314.51",
+      "currency": "USD",
+      "status": "inactive",
+      "approved_by": 44,
+      "approved_date": "2025-07-27T05:00:00.000Z",
+      "notes": "Total similar although put believe. Blue month board.",
+      "created_at": "2025-12-13T09:20:41.984Z",
+      "updated_at": "2025-12-13T09:20:41.984Z"
+    },
+    {
+      "report_id": 3,
+      "employee_id": 32,
+      "report_title": "Result authority next evening similar.",
+      "submission_date": "2025-01-21T06:00:00.000Z",
+      "total_amount": "1400.40",
+      "currency": "EUR",
+      "status": "active",
+      "approved_by": 17,
+      "approved_date": "2025-09-15T05:00:00.000Z",
+      "notes": "Language so few program true. Special thus middle maintain.",
+      "created_at": "2025-12-13T09:20:41.984Z",
+      "updated_at": "2025-12-13T09:20:41.984Z"
+    },
+    {
+      "report_id": 4,
+      "employee_id": 43,
+      "report_title": "Economic road miss adult middle.",
+      "submission_date": "2025-07-23T05:00:00.000Z",
+      "total_amount": "1549.89",
+      "currency": "EUR",
+      "status": "inactive",
+      "approved_by": 5,
+      "approved_date": "2025-02-28T06:00:00.000Z",
+      "notes": "Table training meet national environmental cover.",
+      "created_at": "2025-12-13T09:20:41.984Z",
+      "updated_at": "2025-12-13T09:20:41.984Z"
+    },
+    {
+      "report_id": 5,
+      "employee_id": 29,
+      "report_title": "Republican agent yes.",
+      "submission_date": "2025-01-19T06:00:00.000Z",
+      "total_amount": "9907.10",
+      "currency": "EUR",
+      "status": "pending",
+      "approved_by": 26,
+      "approved_date": "2025-06-05T05:00:00.000Z",
+      "notes": "Heavy we determine whatever million statement.",
+      "created_at": "2025-12-13T09:20:41.984Z",
+      "updated_at": "2025-12-13T09:20:41.984Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:40:15.381Z"
+}

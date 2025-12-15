@@ -1,0 +1,248 @@
+{
+  "table": "customers",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.customers\" table represents customer profiles within a business entity, capturing essential information such as personal details (e.g., name, email, and phone), authentication (password hash), and activity metrics (e.g., registration and last login dates). It tracks customer status with fields like \"is_verified\" and \"is_active,\" financial interaction through \"total_orders\" and \"total_spent,\" and timestamps for record management. This table serves as a standalone entity holding customer-centric data with no direct relationships to other tables in the database.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "customer_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each customer, used to differentiate them within the database. The values indicate sequential numbering for customer records.",
+      "default": "nextval('synthetic.customers_customer_id_seq'::regclass)"
+    },
+    {
+      "name": "email",
+      "type": "character varying",
+      "nullable": false,
+      "description": "The column contains the email addresses of customers, serving as a unique identifier and primary means of electronic communication for each customer within the database.",
+      "default": null
+    },
+    {
+      "name": "password_hash",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column stores the hashed version of customers' passwords, ensuring security by not retaining their actual passwords. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "first_name",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column contains the given names of individuals, likely representing customers. The purpose appears to be storing first names for identification or personalization purposes in a business context.",
+      "default": null
+    },
+    {
+      "name": "last_name",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Represents the family or surname of individuals within the customer dataset. This information is used to identify and organize customer records systematically.",
+      "default": null
+    },
+    {
+      "name": "phone",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column contains contact numbers for customers, which may include international dialing codes and extension numbers. The variety in formatting suggests the data encompasses both domestic and international phone numbers.",
+      "default": null
+    },
+    {
+      "name": "date_of_birth",
+      "type": "date",
+      "nullable": true,
+      "description": "This column represents the birth dates of individuals in the customers table, indicating when they were born. The inclusion of date values in both standard and daylight saving time reflects time zone variations.",
+      "default": null
+    },
+    {
+      "name": "gender",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column represents the gender identity of customers, with possible values including female, male, and other. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "registration_date",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column stores the date and time when a customer completed their registration process. It helps track customer onboarding by capturing the moment they become registered users on the system.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "last_login",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column indicates the most recent date and time a customer accessed their account, reflecting both daylight saving and standard time adjustments. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "is_verified",
+      "type": "boolean",
+      "nullable": true,
+      "description": "This column indicates whether a customer's status has been confirmed and approved. The default assumption is that a customer is not verified unless explicitly marked as verified.",
+      "default": "false"
+    },
+    {
+      "name": "is_active",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether a customer is currently considered active or inactive, with \"true\" representing active status. A significant portion of customers appear to be inactive based on the provided sample values.",
+      "default": "true"
+    },
+    {
+      "name": "customer_tier",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": "'standard'::character varying"
+    },
+    {
+      "name": "total_orders",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents the total number of orders made by a customer, where higher values indicate more frequent purchases. The purpose of these recorded values is not explicitly clear from the available data.",
+      "default": "0"
+    },
+    {
+      "name": "total_spent",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the total monetary value that each customer has spent over their purchasing history. Purpose unclear from available data.",
+      "default": "0"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a customer's record was first created in the system. The exact purpose of storing the creation timestamp is unclear from the available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Indicates the most recent date and time when a customer's record was modified. The purpose is to track updates to customer information.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "customer_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "customers_email_key",
+      "index_definition": "CREATE UNIQUE INDEX customers_email_key ON synthetic.customers USING btree (email)",
+      "columns": [
+        "email"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "customers_pkey",
+      "index_definition": "CREATE UNIQUE INDEX customers_pkey ON synthetic.customers USING btree (customer_id)",
+      "columns": [
+        "customer_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "customer_id": 1,
+      "email": "fmorales@example.org",
+      "password_hash": "34aae1fb33bb7c3ca07197ee015b2011aea544942373ce758b5bb759f252fd2f",
+      "first_name": "Debra",
+      "last_name": "Snow",
+      "phone": "001-897-970-3127x271",
+      "date_of_birth": "2025-02-20T06:00:00.000Z",
+      "gender": "female",
+      "registration_date": "2024-08-21T18:47:55.855Z",
+      "last_login": "2025-06-20T01:16:58.271Z",
+      "is_verified": true,
+      "is_active": true,
+      "customer_tier": "On minute candidate.",
+      "total_orders": 8982,
+      "total_spent": "373.64",
+      "created_at": "2025-12-13T08:55:39.599Z",
+      "updated_at": "2025-12-13T08:55:39.599Z"
+    },
+    {
+      "customer_id": 2,
+      "email": "samanthaboyd@example.org",
+      "password_hash": "f0b174a56ad64c914a3218f5b90dcb96e10e3db292012c31a86bae7a1700b9b4",
+      "first_name": "Brian",
+      "last_name": "Hudson",
+      "phone": "756-767-6845x3811",
+      "date_of_birth": "2025-04-24T05:00:00.000Z",
+      "gender": "female",
+      "registration_date": "2025-06-26T21:45:53.680Z",
+      "last_login": "2025-11-09T21:29:36.764Z",
+      "is_verified": false,
+      "is_active": false,
+      "customer_tier": "Likely close bit.",
+      "total_orders": 4095,
+      "total_spent": "163.27",
+      "created_at": "2025-12-13T08:55:39.599Z",
+      "updated_at": "2025-12-13T08:55:39.599Z"
+    },
+    {
+      "customer_id": 3,
+      "email": "garciaronnie@example.org",
+      "password_hash": "d5ce6234b88bfdeeda9e0a1012d8ff16ae53de0425e4e91fbacac0163439ab6f",
+      "first_name": "Ryan",
+      "last_name": "Smith",
+      "phone": "+1-787-612-8849x640",
+      "date_of_birth": "2024-05-02T05:00:00.000Z",
+      "gender": "other",
+      "registration_date": "2024-08-26T12:47:00.865Z",
+      "last_login": "2023-12-15T02:53:00.785Z",
+      "is_verified": false,
+      "is_active": false,
+      "customer_tier": "My point financial.",
+      "total_orders": 3615,
+      "total_spent": "262.98",
+      "created_at": "2025-12-13T08:55:39.599Z",
+      "updated_at": "2025-12-13T08:55:39.599Z"
+    },
+    {
+      "customer_id": 4,
+      "email": "xphillips@example.net",
+      "password_hash": "59dad8d593d0a89bf72a02d9f57ce969e69011dc2f8d28a334f5acfb9e9db219",
+      "first_name": "Trevor",
+      "last_name": "Rodriguez",
+      "phone": "(630)762-7432x92201",
+      "date_of_birth": "2025-03-14T05:00:00.000Z",
+      "gender": "female",
+      "registration_date": "2024-10-18T18:20:43.074Z",
+      "last_login": "2024-06-24T04:12:53.635Z",
+      "is_verified": true,
+      "is_active": false,
+      "customer_tier": "Three rate.",
+      "total_orders": 4665,
+      "total_spent": "648.46",
+      "created_at": "2025-12-13T08:55:39.599Z",
+      "updated_at": "2025-12-13T08:55:39.599Z"
+    },
+    {
+      "customer_id": 5,
+      "email": "joyflores@example.org",
+      "password_hash": "df0bdc2c5ba0c5bb7dbd6e94c1445d1b8a0f1815d98afc3e4f4354063b6f59b3",
+      "first_name": "Sherry",
+      "last_name": "Arroyo",
+      "phone": "448-291-2478x530",
+      "date_of_birth": "2025-02-05T06:00:00.000Z",
+      "gender": "other",
+      "registration_date": "2024-03-20T12:40:46.724Z",
+      "last_login": "2025-11-25T03:36:51.885Z",
+      "is_verified": false,
+      "is_active": false,
+      "customer_tier": "Establish player.",
+      "total_orders": 3081,
+      "total_spent": "853.48",
+      "created_at": "2025-12-13T08:55:39.599Z",
+      "updated_at": "2025-12-13T08:55:39.599Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:07.064Z"
+}

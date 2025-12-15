@@ -1,0 +1,207 @@
+{
+  "table": "gift_cards",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The synthetic.gift_cards table represents the business entity of gift card transactions, capturing essential details such as the unique gift card identifier (gift_card_id), card code, balances (initial and current), currency, and customer-related information (purchaser_customer_id, recipient_email, message). This table also tracks the lifecycle of a gift card with timestamps for creation and updates, alongside the purchase and expiry dates, and its activation status (is_active). As the primary key is gift_card_id and there are no foreign keys defined, this table primarily functions to manage gift card data independently within the synthetic_250_postgres database.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "gift_card_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Represents an identifier for gift cards, ensuring each gift card is uniquely recognized within the system. Purpose unclear from available data.",
+      "default": "nextval('synthetic.gift_cards_gift_card_id_seq'::regclass)"
+    },
+    {
+      "name": "card_code",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column represents unique identification codes assigned to gift cards. The codes appear to be alphanumeric and consistently have a fixed length, indicating a standardized format for card identification.",
+      "default": null
+    },
+    {
+      "name": "initial_balance",
+      "type": "numeric",
+      "nullable": false,
+      "description": "This column represents the initial monetary value assigned to gift cards at the time of issuance. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "current_balance",
+      "type": "numeric",
+      "nullable": false,
+      "description": "This column represents the remaining monetary amount available on a gift card for use. The values indicate the current spending capacity associated with each gift card in the system.",
+      "default": null
+    },
+    {
+      "name": "currency",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column specifies the type of currency associated with the gift cards, with examples including Japanese Yen, US Dollar, Euro, British Pound, and Canadian Dollar. It defaults to US Dollar if not explicitly stated.",
+      "default": "'USD'::character varying"
+    },
+    {
+      "name": "purchaser_customer_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents the unique identifier for customers who purchase gift cards. The purpose of this identifier is to link gift card transactions to specific customer accounts, allowing for tracking and analysis of purchasing behavior.",
+      "default": null
+    },
+    {
+      "name": "recipient_email",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column contains the email addresses of individuals who are designated to receive gift cards. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "message",
+      "type": "text",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The entries appear to contain fragmented sentences or abstract phrases without a clear cohesive theme.",
+      "default": null
+    },
+    {
+      "name": "purchase_date",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column captures the date and time when a gift card was purchased, allowing tracking of transactions over different time periods, particularly around when they occur in relation to Central Standard and Central Daylight Time. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "expiry_date",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "The column records the date and time when a gift card is no longer valid for use. The values indicate expiration dates for gift cards across different years, acknowledging potential variations in expiration policies.",
+      "default": null
+    },
+    {
+      "name": "is_active",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether a gift card is currently valid and can be used. Default is that all gift cards are active unless specified otherwise.",
+      "default": "true"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a gift card entry is created, indicating the initiation of each gift card record. The values suggest that these timestamps are automatically set at the moment of creation, typically reflecting the current time.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column captures the most recent date and time when the record was updated. The default setting suggests updates are automatically timestamped upon modification, but the specific business context for updates is unclear from the available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "gift_card_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_gift_cards_purchaser_customer_id",
+      "column_name": "purchaser_customer_id",
+      "referenced_table": "synthetic.customers",
+      "referenced_column": "customer_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "gift_cards_card_code_key",
+      "index_definition": "CREATE UNIQUE INDEX gift_cards_card_code_key ON synthetic.gift_cards USING btree (card_code)",
+      "columns": [
+        "card_code"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "gift_cards_pkey",
+      "index_definition": "CREATE UNIQUE INDEX gift_cards_pkey ON synthetic.gift_cards USING btree (gift_card_id)",
+      "columns": [
+        "gift_card_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "gift_card_id": 1,
+      "card_code": "IKXUSJQRXH",
+      "initial_balance": "389.94",
+      "current_balance": "320.04",
+      "currency": "JPY",
+      "purchaser_customer_id": 21,
+      "recipient_email": "ttyler@example.net",
+      "message": "Anything medical vote down Republican water discussion may. Space to only many performance exist. Ap...",
+      "purchase_date": "2024-01-21T11:09:46.435Z",
+      "expiry_date": "2025-11-17T17:34:06.467Z",
+      "is_active": false,
+      "created_at": "2025-12-13T08:56:46.767Z",
+      "updated_at": "2025-12-13T08:56:46.767Z"
+    },
+    {
+      "gift_card_id": 2,
+      "card_code": "HZEUSLNFKM",
+      "initial_balance": "375.51",
+      "current_balance": "827.74",
+      "currency": "USD",
+      "purchaser_customer_id": 4,
+      "recipient_email": "sanderselizabeth@example.net",
+      "message": "Grow usually art no think sign big perhaps. Region modern executive note start image at.",
+      "purchase_date": "2024-05-02T00:22:32.962Z",
+      "expiry_date": "2025-01-27T21:22:48.610Z",
+      "is_active": true,
+      "created_at": "2025-12-13T08:56:46.767Z",
+      "updated_at": "2025-12-13T08:56:46.767Z"
+    },
+    {
+      "gift_card_id": 3,
+      "card_code": "KJMRAXBJHP",
+      "initial_balance": "239.62",
+      "current_balance": "597.00",
+      "currency": "EUR",
+      "purchaser_customer_id": 32,
+      "recipient_email": "damonyoder@example.com",
+      "message": "Here environmental expert organization. Town administration learn kid treatment feel.",
+      "purchase_date": "2025-08-05T02:22:25.616Z",
+      "expiry_date": "2024-09-20T16:42:12.194Z",
+      "is_active": false,
+      "created_at": "2025-12-13T08:56:46.767Z",
+      "updated_at": "2025-12-13T08:56:46.767Z"
+    },
+    {
+      "gift_card_id": 4,
+      "card_code": "TAZOZLMHKJ",
+      "initial_balance": "949.36",
+      "current_balance": "269.29",
+      "currency": "GBP",
+      "purchaser_customer_id": 30,
+      "recipient_email": "jared39@example.com",
+      "message": "See statement forward different teach management. Month some responsibility decision wife happy.",
+      "purchase_date": "2024-06-09T15:01:09.321Z",
+      "expiry_date": "2025-10-27T01:47:50.605Z",
+      "is_active": false,
+      "created_at": "2025-12-13T08:56:46.767Z",
+      "updated_at": "2025-12-13T08:56:46.767Z"
+    },
+    {
+      "gift_card_id": 5,
+      "card_code": "ELPEIYINZL",
+      "initial_balance": "65.46",
+      "current_balance": "28.91",
+      "currency": "EUR",
+      "purchaser_customer_id": 2,
+      "recipient_email": "benjaminlambert@example.org",
+      "message": "Suffer appear knowledge worry. Unit light some experience high. Enter billion poor likely explain.",
+      "purchase_date": "2025-07-11T01:21:21.270Z",
+      "expiry_date": "2024-05-17T10:08:52.752Z",
+      "is_active": false,
+      "created_at": "2025-12-13T08:56:46.767Z",
+      "updated_at": "2025-12-13T08:56:46.767Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:40:16.628Z"
+}

@@ -1,0 +1,100 @@
+{
+  "table": "stock_transfer_lines",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.stock_transfer_lines` table appears to represent the details of individual line items involved in stock transfer transactions, identified uniquely by `transfer_line_id`. The table does not currently hold data and lacks defined column names or relationships, limiting detailed insight into its specific role or connections within the database. Nevertheless, it potentially functions as a component in a broader inventory management or logistics system, documenting each item in a stock transfer operation.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "transfer_line_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each line item or entry within the context of stock transfers, ensuring that each transfer line can be distinctly referenced and tracked in the system.",
+      "default": "nextval('synthetic.stock_transfer_lines_transfer_line_id_seq'::regclass)"
+    },
+    {
+      "name": "transfer_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "product_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each product involved in stock transfers. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "quantity",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents the number of items being moved or transferred in a specific transaction. It is a required field for tracking item quantities in stock transfer operations.",
+      "default": null
+    },
+    {
+      "name": "from_location_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "to_location_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "Destination identifier for a stock transfer, indicating where the stock is being moved to. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column indicates the date and time when a stock transfer line was created, capturing the moment of entry into the system. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Indicates the most recent date and time when a stock transfer record was updated, reflecting the currency of information within the system.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "transfer_line_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_stock_transfer_lines_from_location_id",
+      "column_name": "from_location_id",
+      "referenced_table": "synthetic.storage_locations",
+      "referenced_column": "location_id"
+    },
+    {
+      "constraint_name": "fk_stock_transfer_lines_to_location_id",
+      "column_name": "to_location_id",
+      "referenced_table": "synthetic.storage_locations",
+      "referenced_column": "location_id"
+    },
+    {
+      "constraint_name": "fk_stock_transfer_lines_transfer_id",
+      "column_name": "transfer_id",
+      "referenced_table": "synthetic.stock_transfers",
+      "referenced_column": "transfer_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "stock_transfer_lines_pkey",
+      "index_definition": "CREATE UNIQUE INDEX stock_transfer_lines_pkey ON synthetic.stock_transfer_lines USING btree (transfer_line_id)",
+      "columns": [
+        "transfer_line_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:42:47.751Z"
+}

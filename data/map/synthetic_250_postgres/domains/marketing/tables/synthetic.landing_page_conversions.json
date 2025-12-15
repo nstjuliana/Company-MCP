@@ -1,0 +1,175 @@
+{
+  "table": "landing_page_conversions",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.landing_page_conversions` table records interactions where website visitors convert by performing a predefined action on a landing page, such as a purchase or signup. Key columns such as `page_id` and `visitor_id` indicate the specific page and visitor involved in the conversion event, and the `conversion_type`, `conversion_value`, and timestamps provide further details on the context and timing of these conversions. The table's primary role in the data model is to track conversion metrics linked to marketing efforts, offering insights into the effectiveness of campaigns, as denoted by columns like `source`, `medium`, and `campaign`.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "conversion_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each record of a conversion on a landing page. Each value is a distinct sequence number that indicates the order of conversions.",
+      "default": "nextval('synthetic.landing_page_conversions_conversion_id_seq'::regclass)"
+    },
+    {
+      "name": "page_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents unique identifiers for different landing pages involved in conversion tracking activities. Each integer associates a distinct landing page with conversion data.",
+      "default": null
+    },
+    {
+      "name": "visitor_id",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values resemble textual information that doesn't provide insights into its specific function.",
+      "default": null
+    },
+    {
+      "name": "converted_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column captures the date and time when a conversion event occurred on a landing page, reflecting customer interactions and engagement changes. The timestamps indicate various moments in Central Time, showing both standard and daylight saving periods.",
+      "default": null
+    },
+    {
+      "name": "conversion_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values suggest a range of arbitrary phrases and sentences that do not indicate a specific business context or conversion type.",
+      "default": null
+    },
+    {
+      "name": "conversion_value",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the monetary value generated from individual conversions on a landing page. It reflects the financial worth of items or services purchased or actions taken that result in revenue, expressed as a numeric amount.",
+      "default": null
+    },
+    {
+      "name": "source",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The variety in sample values suggests diverse textual data, possibly representing user comments or feedback during landing page interactions.",
+      "default": null
+    },
+    {
+      "name": "medium",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "campaign",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column represents a descriptor or title for different advertising or promotional campaigns related to website landing page activities. The specific purpose or detail conveyed by each campaign entry is unclear from the available data, as the values appear abstract or metaphorical.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a conversion event occurred on a landing page. The events are likely timestamped automatically at the moment they happen, reflecting Central Standard Time.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a landing page conversion record was most recently updated. The timestamp reflects the Central Standard Time zone, but the specific purpose of these updates is unclear from the available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "conversion_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_landing_page_conversions_page_id",
+      "column_name": "page_id",
+      "referenced_table": "synthetic.landing_pages",
+      "referenced_column": "page_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "landing_page_conversions_pkey",
+      "index_definition": "CREATE UNIQUE INDEX landing_page_conversions_pkey ON synthetic.landing_page_conversions USING btree (conversion_id)",
+      "columns": [
+        "conversion_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "conversion_id": 1,
+      "page_id": 43,
+      "visitor_id": "Hard move especially partner stage prevent whose consumer. Card girl have discover girl.",
+      "converted_at": "2025-02-13T15:35:57.494Z",
+      "conversion_type": "Hair half debate leg direction though young. Tough tend president here old cause.",
+      "conversion_value": "945.19",
+      "source": "Itself begin its of yard take sport center. Sea light key century weight guess visit soldier.",
+      "medium": "Keep blood direction sure. Total claim outside decade television.",
+      "campaign": "Measure whatever who go visit. Mother owner also simple. Quickly full ground soldier usually.",
+      "created_at": "2025-12-13T09:14:19.362Z",
+      "updated_at": "2025-12-13T09:14:19.362Z"
+    },
+    {
+      "conversion_id": 2,
+      "page_id": 49,
+      "visitor_id": "Mind democratic industry second cost station. Build activity here majority series attack.",
+      "converted_at": "2024-08-29T17:37:42.668Z",
+      "conversion_type": "Nothing create new develop professor nothing guess.",
+      "conversion_value": "550.10",
+      "source": "Change name adult parent line common night.",
+      "medium": "Moment arm its able painting voice let.\nWestern safe business determine.",
+      "campaign": "Red machine future must we above full. Field amount peace training. Top hospital perform quality.",
+      "created_at": "2025-12-13T09:14:19.362Z",
+      "updated_at": "2025-12-13T09:14:19.362Z"
+    },
+    {
+      "conversion_id": 3,
+      "page_id": 30,
+      "visitor_id": "Trade certainly main history production.",
+      "converted_at": "2025-06-03T01:59:15.003Z",
+      "conversion_type": "Scientist ground prove miss chair throw. Worry just address key fall.",
+      "conversion_value": "88.06",
+      "source": "Child eat agree sister. Process television give only happen center figure.",
+      "medium": "Open follow run movie. Three own teacher tend sort staff agree marriage.",
+      "campaign": "Year six run. Role produce yeah through. Culture nice bar rock stay.",
+      "created_at": "2025-12-13T09:14:19.362Z",
+      "updated_at": "2025-12-13T09:14:19.362Z"
+    },
+    {
+      "conversion_id": 4,
+      "page_id": 17,
+      "visitor_id": "Finish size add recognize. Deep wide product according.",
+      "converted_at": "2024-07-31T04:33:20.319Z",
+      "conversion_type": "Job forget fly continue make artist of Mr. More order may you life federal every.",
+      "conversion_value": "323.27",
+      "source": "Star dream star to board born than. Protect hundred edge mother gas.",
+      "medium": "Outside seek year simple.",
+      "campaign": "Training image black through. Oil sometimes officer thank parent.",
+      "created_at": "2025-12-13T09:14:19.362Z",
+      "updated_at": "2025-12-13T09:14:19.362Z"
+    },
+    {
+      "conversion_id": 5,
+      "page_id": 50,
+      "visitor_id": "Environment economy statement see nor some. Behavior challenge real wonder remain place leg change.",
+      "converted_at": "2025-03-20T20:05:29.460Z",
+      "conversion_type": "Method team population live land former. Hard including look need finally leg.",
+      "conversion_value": "404.18",
+      "source": "Civil wife campaign begin enter good truth.",
+      "medium": "Employee leave it position option foreign owner. Life value process prevent seem idea reach.",
+      "campaign": "Issue hot parent reach develop upon. Quite north finally.",
+      "created_at": "2025-12-13T09:14:19.362Z",
+      "updated_at": "2025-12-13T09:14:19.362Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:25.344Z"
+}

@@ -20,6 +20,15 @@ app = Flask(__name__)
 app.secret_key = os.getenv('FLASK_SECRET_KEY', os.urandom(24).hex())
 CORS(app)
 
+# Disable caching for all responses
+@app.after_request
+def set_no_cache(response):
+    """Set no-cache headers for all responses to prevent browser caching."""
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
+
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
@@ -102,9 +111,9 @@ try:
     )
     
     # Try to import SQL functions directly from sql_service (bypasses server.py dependency on fastmcp)
-    # First try from server (if available), then try direct import from sql_service
+    # Note: answer_question tool has been removed from MCP - SQL operations now handled by ai_agent internally
     try:
-        from server import answer_question, generate_sql, execute_sql
+        from server import generate_sql, execute_sql
         print("Successfully imported SQL functions from server")
     except (ImportError, AttributeError) as server_error:
         # If server import fails, try importing directly from sql_service
@@ -118,172 +127,10 @@ try:
             from pathlib import Path
             import json
             import re
-            
+
             # We need to implement the MCP tool wrappers ourselves
             def _normalize_sql(text: str) -> list:
                 return re.findall(r"[a-z0-9]+", text.lower())
-            
-            def answer_question(question: str, database: str = ""):
-                """Answer a natural language question by generating and executing SQL."""
-                # Valid database names
-                VALID_DATABASES = {"postgres_production", "snowflake_production"}
-                
-                if not database:
-                    # Auto-detect database from question
-                    search_result = search_tables(question, limit=5)
-                    for table in search_result.get("tables", []):
-                        seg = _find_table(table["name"])
-                        if seg and seg.get("database"):
-                            candidate_db = seg.get("database")
-                            # Only use if it's a valid database name (not a domain)
-                            if candidate_db in VALID_DATABASES:
-                                database = candidate_db
-                                break
-                    
-                    if not database:
-                        databases = {seg.get("database") for seg in DB_SEGMENTS if seg.get("database")}
-                        # Filter to only valid database names
-                        valid_found = [db for db in databases if db in VALID_DATABASES]
-                        database = "postgres_production" if "postgres_production" in valid_found else (valid_found[0] if valid_found else "")
-                
-                # Validate database name
-                if database not in VALID_DATABASES:
-                    logger.error(f"Invalid database name detected: '{database}'. Valid databases: {VALID_DATABASES}")
-                    # Try to find the correct database by searching for tables
-                    search_result = search_tables(question, limit=10)
-                    for table in search_result.get("tables", []):
-                        seg = _find_table(table["name"])
-                        if seg and seg.get("database") in VALID_DATABASES:
-                            database = seg.get("database")
-                            logger.info(f"Corrected database to: {database}")
-                            break
-                    
-                    if database not in VALID_DATABASES:
-                        # Default to postgres_production if available
-                        databases = {seg.get("database") for seg in DB_SEGMENTS if seg.get("database")}
-                        if "postgres_production" in databases:
-                            database = "postgres_production"
-                            logger.info(f"Defaulting to postgres_production")
-                        else:
-                            return {
-                                "success": False,
-                                "error": f"Invalid database name '{database}'. Valid databases are: {', '.join(VALID_DATABASES)}. Could not auto-detect correct database.",
-                                "answer": None,
-                                "data": [],
-                                "columns": [],
-                                "row_count": 0,
-                                "sql": None
-                            }
-                
-                if not database:
-                    return {
-                        "success": False,
-                        "error": "Could not determine target database. Please specify database parameter (postgres_production or snowflake_production).",
-                        "answer": None,
-                        "data": [],
-                        "columns": [],
-                        "row_count": 0,
-                        "sql": None
-                    }
-                
-                # Build schema context
-                schema_context = {"database": database, "tables": []}
-                logger.info(f"Searching for tables matching question: '{question}' in database: '{database}'")
-                search_result = search_tables(question, database=database, limit=5)
-                logger.debug(f"Search result: {len(search_result.get('tables', []))} tables found")
-                
-                # If no results with database filter, try without filter to see what's available
-                if not search_result.get("tables"):
-                    logger.warning(f"No tables found with database filter '{database}'. Trying search without database filter...")
-                    search_result_no_filter = search_tables(question, limit=10)
-                    logger.info(f"Found {len(search_result_no_filter.get('tables', []))} tables without database filter")
-                    for table in search_result_no_filter.get("tables", [])[:5]:
-                        logger.debug(f"  - Table: {table.get('name')}, Database: {table.get('database')}, Domain: {table.get('domain')}")
-                
-                for table in search_result.get("tables", [])[:3]:
-                    logger.debug(f"Processing table: {table.get('name')} from database: {table.get('database')}")
-                    seg = _find_table(table["name"], database)
-                    if seg:
-                        logger.debug(f"Found segment for table: {seg.get('id')}, database: {seg.get('database')}")
-                        table_info = {
-                            "name": seg["id"],
-                            "description": seg.get("summary", ""),
-                            "columns": seg.get("columns", []),
-                            "primary_key": seg.get("keys", {}).get("primary", []),
-                            "foreign_keys": seg.get("keys", {}).get("foreign", [])
-                        }
-                        schema_context["tables"].append(table_info)
-                    else:
-                        logger.warning(f"Could not find segment for table: {table.get('name')} in database: {database}")
-                
-                if not schema_context["tables"]:
-                    # Try a more direct search for "merchants" table
-                    logger.warning(f"No relevant tables found. Attempting direct search for 'merchants' table...")
-                    merchants_seg = _find_table("merchants", database)
-                    if merchants_seg:
-                        logger.info(f"Found merchants table directly: {merchants_seg.get('id')}, database: {merchants_seg.get('database')}")
-                        schema_context["tables"].append({
-                            "name": merchants_seg["id"],
-                            "description": merchants_seg.get("summary", ""),
-                            "columns": merchants_seg.get("columns", []),
-                            "primary_key": merchants_seg.get("keys", {}).get("primary", []),
-                            "foreign_keys": merchants_seg.get("keys", {}).get("foreign", [])
-                        })
-                    else:
-                        # List all available tables in this database for debugging
-                        all_tables = [seg for seg in DB_SEGMENTS if seg.get("database") == database]
-                        logger.error(f"No tables found. Available tables in database '{database}': {[t.get('id') for t in all_tables[:10]]}")
-                        return {
-                            "success": False,
-                            "error": f"No relevant tables found for question in database '{database}'. Available tables: {', '.join([t.get('id') for t in all_tables[:5]])}",
-                            "answer": None,
-                            "data": [],
-                            "columns": [],
-                            "row_count": 0,
-                            "sql": None
-                        }
-                
-                # Generate and execute SQL
-                result = generate_and_execute_sql(question, schema_context, database)
-                
-                if not result.get("success"):
-                    return {
-                        "success": False,
-                        "error": result.get("error", "Unknown error"),
-                        "answer": None,
-                        "data": [],
-                        "columns": [],
-                        "row_count": 0,
-                        "sql": result.get("sql")
-                    }
-                
-                # Format answer
-                data = result.get("data", [])
-                row_count = result.get("row_count", 0)
-                columns = result.get("columns", [])
-                
-                if row_count == 0:
-                    answer = "No results found."
-                elif row_count == 1 and len(columns) == 1:
-                    answer = f"The answer is: {data[0].get(columns[0])}"
-                elif row_count == 1:
-                    row = data[0]
-                    parts = [f"{col}: {row.get(col)}" for col in columns]
-                    answer = ", ".join(parts)
-                elif "count" in question.lower() or "how many" in question.lower():
-                    answer = f"Found {row_count} results."
-                else:
-                    answer = f"Found {row_count} results. Showing data below."
-                
-                return {
-                    "success": True,
-                    "answer": answer,
-                    "data": data,
-                    "columns": columns,
-                    "row_count": row_count,
-                    "execution_time": result.get("execution_time", 0),
-                    "sql": result.get("sql")
-                }
             
             def generate_sql(query: str, database: str = "", context_tables: List[str] = []):
                 """Generate SQL query from natural language question."""
@@ -396,7 +243,6 @@ try:
         # Explicitly assign to module namespace to ensure they're available
         import sys
         current_module = sys.modules[__name__]
-        current_module.answer_question = answer_question
         current_module.generate_sql = generate_sql
         current_module.execute_sql = execute_sql
 
@@ -485,10 +331,19 @@ try:
                 continue
             seg_tokens = _segment_tokens(seg)
             overlap = len(q_tokens & seg_tokens)
-            # Light boost for substring matches
-            text_blob = " ".join([seg.get("id", ""), seg.get("title", ""), seg.get("summary", "")]).lower()
-            if any(tok in text_blob for tok in q_tokens):
-                overlap += 0.5
+            
+            # Only apply substring boost if there's at least one exact token match
+            # This prevents false positives from substring-only matches (e.g., "test" matching "testing")
+            if overlap > 0:
+                # Light boost for whole-word substring matches in id/title/summary
+                text_blob = " ".join([seg.get("id", ""), seg.get("title", ""), seg.get("summary", "")]).lower()
+                # Use word boundary matching to avoid matching substrings within words
+                for tok in q_tokens:
+                    # Check if token appears as a whole word (word boundary match)
+                    if re.search(r'\b' + re.escape(tok) + r'\b', text_blob):
+                        overlap += 0.3  # Smaller boost for whole-word matches
+                        break
+            
             scored.append(
                 {
                     "name": seg["id"],
@@ -501,6 +356,8 @@ try:
             )
 
         scored.sort(key=lambda x: x["relevance_score"], reverse=True)
+        # Filter out results with very low relevance (< 0.1) to avoid noise
+        scored = [s for s in scored if s["relevance_score"] >= 0.1]
         results = scored[:limit]
         return {
             "tables": results,
@@ -597,36 +454,37 @@ except ImportError as e:
         from pathlib import Path
 
         # Load data directly from JSON files
+        # ONLY load from synthetic_250_postgres and synthetic_250_snowflake directories
         DATA_DIR = Path(__file__).parent.parent / "data" / "map"
         DB_SEGMENTS = []
+        
+        # Only load these specific databases
+        ALLOWED_DATABASES = {"synthetic_250_postgres", "synthetic_250_snowflake"}
 
         if DATA_DIR.exists():
             for json_file in DATA_DIR.rglob("*.json"):
                 try:
+                    # Path structure: data/map/{database}/domains/{domain}/tables/{table}.json
+                    rel_path = json_file.relative_to(DATA_DIR)
+                    parts = rel_path.parts
+                    
+                    # Skip if not in allowed databases
+                    if len(parts) == 0 or parts[0] not in ALLOWED_DATABASES:
+                        continue
+                    
                     with open(json_file, 'r', encoding='utf-8') as f:
                         data = json.load(f)
 
                     # Create segment from JSON data
                     table_name = json_file.stem
-                    
-                    # Path structure: data/map/{database}/domains/{domain}/tables/{table}.json
-                    # So we need to extract database from the path correctly
-                    rel_path = json_file.relative_to(DATA_DIR)
-                    parts = rel_path.parts
-                    
-                    # First part is database (postgres_production, snowflake_production)
-                    database = parts[0] if len(parts) > 0 else data.get("database", "default")
-                    
-                    # Find domain - should be after "domains" folder
+                    database = parts[0]  # synthetic_250_postgres or synthetic_250_snowflake
                     domain = "default"
+                    
+                    # Find domain after "domains" folder
                     for i, part in enumerate(parts):
                         if part == "domains" and i + 1 < len(parts):
                             domain = parts[i + 1]
                             break
-                    
-                    # Prefer database from JSON if available
-                    if data.get("database"):
-                        database = data.get("database")
 
                     segment = {
                         "id": table_name,
@@ -776,10 +634,19 @@ except ImportError as e:
                     continue
                 seg_tokens = _segment_tokens(seg)
                 overlap = len(q_tokens & seg_tokens)
-                # Light boost for substring matches
-                text_blob = " ".join([seg.get("id", ""), seg.get("title", ""), seg.get("summary", "")]).lower()
-                if any(tok in text_blob for tok in q_tokens):
-                    overlap += 0.5
+                
+                # Only apply substring boost if there's at least one exact token match
+                # This prevents false positives from substring-only matches (e.g., "test" matching "testing")
+                if overlap > 0:
+                    # Light boost for whole-word substring matches in id/title/summary
+                    text_blob = " ".join([seg.get("id", ""), seg.get("title", ""), seg.get("summary", "")]).lower()
+                    # Use word boundary matching to avoid matching substrings within words
+                    for tok in q_tokens:
+                        # Check if token appears as a whole word (word boundary match)
+                        if re.search(r'\b' + re.escape(tok) + r'\b', text_blob):
+                            overlap += 0.3  # Smaller boost for whole-word matches
+                            break
+                
                 scored.append(
                     {
                         "name": seg["id"],
@@ -792,6 +659,8 @@ except ImportError as e:
                 )
 
             scored.sort(key=lambda x: x["relevance_score"], reverse=True)
+            # Filter out results with very low relevance (< 0.1) to avoid noise
+            scored = [s for s in scored if s["relevance_score"] >= 0.1]
             results = scored[:limit]
             return {
                 "tables": results,
@@ -892,8 +761,11 @@ except ImportError as e:
             # Implement MCP tool wrappers
             def answer_question(question: str, database: str = ""):
                 """Answer a natural language question by generating and executing SQL."""
-                # Valid database names
-                VALID_DATABASES = {"postgres_production", "snowflake_production"}
+                # Valid database names - ONLY synthetic databases
+                VALID_DATABASES = {
+                    "synthetic_250_snowflake",  # Synthetic Snowflake database
+                    "synthetic_250_postgres",   # Synthetic PostgreSQL database
+                }
                 
                 if not database:
                     search_result = search_tables(question, limit=5)
@@ -909,7 +781,7 @@ except ImportError as e:
                         databases = {seg.get("database") for seg in DB_SEGMENTS if seg.get("database")}
                         # Filter to only valid database names
                         valid_found = [db for db in databases if db in VALID_DATABASES]
-                        database = "postgres_production" if "postgres_production" in valid_found else (valid_found[0] if valid_found else "")
+                        database = "synthetic_250_postgres" if "synthetic_250_postgres" in valid_found else (valid_found[0] if valid_found else "synthetic_250_postgres")
                 
                 # Validate database name
                 if database not in VALID_DATABASES:
@@ -924,11 +796,14 @@ except ImportError as e:
                             break
                     
                     if database not in VALID_DATABASES:
-                        # Default to postgres_production if available
+                        # Default to synthetic_250_postgres if available
                         databases = {seg.get("database") for seg in DB_SEGMENTS if seg.get("database")}
-                        if "postgres_production" in databases:
-                            database = "postgres_production"
-                            logger.info(f"Defaulting to postgres_production")
+                        if "synthetic_250_postgres" in databases:
+                            database = "synthetic_250_postgres"
+                            logger.info(f"Defaulting to synthetic_250_postgres")
+                        elif "synthetic_250_snowflake" in databases:
+                            database = "synthetic_250_snowflake"
+                            logger.info(f"Defaulting to synthetic_250_snowflake")
                         else:
                             return {
                                 "success": False,
@@ -1173,6 +1048,9 @@ HTML_TEMPLATE = """
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Database Context Assistant</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2383,7 +2261,12 @@ HTML_TEMPLATE = """
                 try {
                     const response = await fetch('/chat', {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'Cache-Control': 'no-cache',
+                            'Pragma': 'no-cache'
+                        },
+                        cache: 'no-store',
                         body: JSON.stringify({ message: message })
                     });
 
@@ -2576,7 +2459,14 @@ HTML_TEMPLATE = """
             if (newChatBtn) {
                 newChatBtn.addEventListener('click', async function() {
                     try {
-                        await fetch('/clear-context', { method: 'POST' });
+                        await fetch('/clear-context', { 
+                            method: 'POST',
+                            headers: {
+                                'Cache-Control': 'no-cache',
+                                'Pragma': 'no-cache'
+                            },
+                            cache: 'no-store'
+                        });
                     } catch (e) {
                         console.error('Error clearing context:', e);
                     }
@@ -2656,10 +2546,55 @@ def call_mcp_tool(tool_name: str, **kwargs) -> Dict[str, Any]:
             available = list(tool_functions.keys())
             return {"error": f"Critical MCP tools not available: {', '.join(missing_critical)}. Available: {available}"}
 
+        # #region agent log
+        import json as _json_debug; open('/Users/user/Desktop/Github/Company-MCP/.cursor/debug.log','a').write(_json_debug.dumps({"location":"web_app.py:call_mcp_tool","message":"call_mcp_tool called","data":{"tool_name":tool_name,"kwargs_keys":list(kwargs.keys())},"timestamp":__import__('time').time()*1000,"sessionId":"debug-session","hypothesisId":"B"})+'\n')
+        # #endregion
+        # FIRST: Handle deprecated SQL tools BEFORE checking tool_functions
+        # This ensures we intercept these calls even if local fallback functions exist
+        if tool_name == "answer_question":
+            # #region agent log
+            import json as _json_debug; open('/Users/user/Desktop/Github/Company-MCP/.cursor/debug.log','a').write(_json_debug.dumps({"location":"web_app.py:answer_question_intercept","message":"Intercepted answer_question call","data":{"ai_available":AI_AGENT_AVAILABLE,"ai_agent_exists":ai_agent is not None,"ai_is_available":ai_agent.is_available() if ai_agent else False},"timestamp":__import__('time').time()*1000,"sessionId":"debug-session","hypothesisId":"A"})+'\n')
+            # #endregion
+            # Redirect answer_question calls to use the AI agent
+            logger.info("Intercepting answer_question call - redirecting to AI agent")
+            if AI_AGENT_AVAILABLE and ai_agent and ai_agent.is_available():
+                try:
+                    question = kwargs.get("question", "")
+                    database = kwargs.get("database", "")
+
+                    def mcp_tool_caller(redirect_tool_name, **redirect_kwargs):
+                        return call_mcp_tool(redirect_tool_name, **redirect_kwargs)
+
+                    result = ai_agent.process_query(
+                        user_query=question,
+                        conversation_history=[],
+                        mcp_tool_caller=mcp_tool_caller,
+                        context_manager=conversation_manager
+                    )
+
+                    # Convert AI agent result to expected format
+                    response_text = result.get("response", "I couldn't process that query.")
+                    sql_queries = result.get("sql_queries", [])
+
+                    return {
+                        "success": True,
+                        "response": response_text,
+                        "sql_queries": sql_queries
+                    }
+                except Exception as e:
+                    logger.error(f"Error redirecting answer_question to AI agent: {e}")
+                    return {"error": f"Failed to process question with AI agent: {str(e)}"}
+            else:
+                logger.warning("AI agent not available for answer_question redirect")
+                # #region agent log
+                import json as _json_debug; open('/Users/user/Desktop/Github/Company-MCP/.cursor/debug.log','a').write(_json_debug.dumps({"location":"web_app.py:answer_question_no_ai","message":"AI agent not available for redirect","data":{"AI_AGENT_AVAILABLE":AI_AGENT_AVAILABLE},"timestamp":__import__('time').time()*1000,"sessionId":"debug-session","hypothesisId":"A"})+'\n')
+                # #endregion
+                return {"error": "The 'answer_question' tool requires the AI agent, but it's not available. Please ensure OPENROUTER_API_KEY is configured in your .env file."}
+        
+        if tool_name in ["generate_sql", "execute_sql"]:
+            return {"error": f"Tool '{tool_name}' has been removed. SQL operations are now handled by the AI agent internally via the 'data_question' tool."}
+
         if tool_name not in tool_functions:
-            # Check if it's a removed SQL tool
-            if tool_name in ["answer_question", "generate_sql", "execute_sql"]:
-                return {"error": f"Tool '{tool_name}' has been removed from MCP. SQL operations are now handled by ai_agent internally."}
             return {"error": f"Unknown tool: {tool_name}. Available: {list(tool_functions.keys())}"}
 
         # Call the function directly
@@ -2732,54 +2667,38 @@ def process_natural_language_query(query: str) -> Dict[str, Any]:
             "search", "find", "look for", "related to"
         ])
         
-        # If it's a data question (not a schema question), use answer_question tool
+        # If it's a data question (not a schema question), use AI agent
         if not is_schema_question and any(indicator in query_lower for indicator in data_question_indicators):
-            result = call_mcp_tool("answer_question", question=query)
-            
-            if "error" in result or not result.get("success"):
-                error_msg = result.get("error", "Failed to answer question")
-                return {"response": f"Error: {error_msg}", "is_json": False}
-            
-            # Format response with answer and table if applicable
-            response = ""
-            
-            # Add natural language answer
-            if result.get("answer"):
-                response += f"{result['answer']}\n\n"
-            
-            # Add table if there's data
-            data = result.get("data", [])
-            columns = result.get("columns", [])
-            row_count = result.get("row_count", 0)
-            
-            if row_count > 0 and data:
-                # Format as table
-                response += "**Results:**\n\n"
-                
-                # Create markdown table
-                if row_count <= 100:  # Only show table for reasonable number of rows
-                    # Header
-                    response += "| " + " | ".join(columns) + " |\n"
-                    response += "| " + " | ".join(["---"] * len(columns)) + " |\n"
-                    
-                    # Rows
-                    for row in data:
-                        values = [str(row.get(col, "")) for col in columns]
-                        response += "| " + " | ".join(values) + " |\n"
-                else:
-                    # Too many rows, just show summary
-                    response += f"*Showing {row_count} rows. First few results:*\n\n"
-                    response += "| " + " | ".join(columns) + " |\n"
-                    response += "| " + " | ".join(["---"] * len(columns)) + " |\n"
-                    for row in data[:10]:  # Show first 10
-                        values = [str(row.get(col, "")) for col in columns]
-                        response += "| " + " | ".join(values) + " |\n"
-                    response += f"\n*... and {row_count - 10} more rows*"
-            
-            if result.get("execution_time"):
-                response += f"\n\n*Query executed in {result['execution_time']}s*"
-            
-            return {"response": response, "is_json": False}
+            # Use AI agent for data questions - it handles SQL generation and execution internally
+            if AI_AGENT_AVAILABLE and ai_agent and ai_agent.is_available():
+                try:
+                    def mcp_tool_caller(tool_name, **kwargs):
+                        return call_mcp_tool(tool_name, **kwargs)
+
+                    result = ai_agent.process_query(
+                        user_query=query,
+                        conversation_history=[],
+                        mcp_tool_caller=mcp_tool_caller,
+                        context_manager=conversation_manager
+                    )
+
+                    response_text = result.get("response", "I couldn't process that query.")
+                    sql_queries = result.get("sql_queries", [])
+
+                    # Format response with SQL query info if available
+                    if sql_queries:
+                        response_text += "\n\n**SQL Queries Executed:**\n"
+                        for i, sql_info in enumerate(sql_queries, 1):
+                            response_text += f"{i}. Database: {sql_info.get('database', 'unknown')}\n"
+                            response_text += f"   Query: {sql_info.get('sql', 'N/A')[:200]}...\n\n"
+
+                    return {"response": response_text, "is_json": False}
+
+                except Exception as e:
+                    logger.error(f"AI agent error for data question: {e}")
+                    return {"response": f"I encountered an error processing your data question: {str(e)}", "is_json": False}
+            else:
+                return {"response": "I'm sorry, but the AI agent is not available to process data questions. Please ensure the AI agent is properly configured with OPENROUTER_API_KEY.", "is_json": False}
         
         # List databases
         if any(phrase in query_lower for phrase in ["what databases", "list databases", "show databases", "available databases"]):
@@ -2851,7 +2770,7 @@ def process_natural_language_query(query: str) -> Dict[str, Any]:
             if "error" in result:
                 return {"response": f"Error: {result['error']}", "is_json": False}
 
-            tables = result
+            tables = result.get("data", [])
             if not tables:
                 filters = []
                 if database: filters.append(f"database: {database}")
@@ -3034,6 +2953,9 @@ def favicon():
 @app.route('/chat', methods=['POST'])
 def chat():
     """Handle chat messages using AI agent with fallback to pattern matching."""
+    # #region agent log
+    import json as _json_debug; open('/Users/user/Desktop/Github/Company-MCP/.cursor/debug.log','a').write(_json_debug.dumps({"location":"web_app.py:chat_entry","message":"Chat endpoint called","data":{"ai_available":AI_AGENT_AVAILABLE,"ai_agent_exists":ai_agent is not None},"timestamp":__import__('time').time()*1000,"sessionId":"debug-session","hypothesisId":"D"})+'\n')
+    # #endregion
     try:
         data = request.get_json()
         if not data or 'message' not in data:
@@ -3081,6 +3003,9 @@ def chat():
                 context.add_message("assistant", response_text)
                 
                 logger.info(f"AI agent response generated (length: {len(response_text)}), SQL queries: {len(sql_queries)}")
+                # #region agent log
+                import json as _json_debug; open('/Users/user/Desktop/Github/Company-MCP/.cursor/debug.log','a').write(_json_debug.dumps({"location":"web_app.py:chat_response","message":"Returning AI response","data":{"response_preview":response_text[:200] if response_text else "","has_error":"error" in response_text.lower() if response_text else False},"timestamp":__import__('time').time()*1000,"sessionId":"debug-session","hypothesisId":"E"})+'\n')
+                # #endregion
                 return jsonify({
                     "response": response_text,
                     "is_json": False,
@@ -3093,7 +3018,13 @@ def chat():
 
         # Fallback to pattern matching
         logger.debug("Using pattern matching fallback for query processing")
+        # #region agent log
+        import json as _json_debug; open('/Users/user/Desktop/Github/Company-MCP/.cursor/debug.log','a').write(_json_debug.dumps({"location":"web_app.py:chat_fallback","message":"Using pattern matching fallback","data":{"message_preview":message[:100]},"timestamp":__import__('time').time()*1000,"sessionId":"debug-session","hypothesisId":"D"})+'\n')
+        # #endregion
         result = process_natural_language_query(message)
+        # #region agent log
+        import json as _json_debug; open('/Users/user/Desktop/Github/Company-MCP/.cursor/debug.log','a').write(_json_debug.dumps({"location":"web_app.py:chat_fallback_result","message":"Pattern matching result","data":{"result_keys":list(result.keys()) if isinstance(result,dict) else "not_dict","has_error":"error" in str(result).lower()},"timestamp":__import__('time').time()*1000,"sessionId":"debug-session","hypothesisId":"D"})+'\n')
+        # #endregion
         return jsonify(result)
 
     except Exception as e:

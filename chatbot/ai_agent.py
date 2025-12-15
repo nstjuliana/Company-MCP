@@ -429,7 +429,9 @@ class AIAgent:
 
 CRITICAL RULES FOR TOOL USAGE:
 
-1. DATA QUESTIONS → Use data_question tool
+1. DATA QUESTIONS → Use data_question tool ONLY
+   - IMPORTANT: The tools 'answer_question', 'generate_sql', and 'execute_sql' DO NOT EXIST
+   - You can ONLY use the tools listed in your available functions
    - "How many merchants?" → data_question
    - "Name all 30" (after asking how many merchants) → data_question with expanded query "list all merchant names"
    - "Show me all payments" → data_question
@@ -565,7 +567,8 @@ Remember: Your goal is to ANSWER the user's question, not just show them where t
 
         # Auto-detect database if not specified
         if not database:
-            database = "postgres_production"  # Default
+            # Default to synthetic_250_postgres
+            database = "synthetic_250_postgres"
 
         logger.info(f"Data question: {question[:100]}... | Database: {database}")
 
@@ -1087,6 +1090,9 @@ Remember: Your goal is to ANSWER the user's question, not just show them where t
                             logger.warning(f"Failed to parse tool arguments for {function_name}: {e}")
                             function_args = {}
                         
+                        # #region agent log
+                        import json as _json_debug; open('/Users/user/Desktop/Github/Company-MCP/.cursor/debug.log','a').write(_json_debug.dumps({"location":"ai_agent.py:tool_call","message":"AI requesting tool call","data":{"function_name":function_name,"function_args_keys":list(function_args.keys()) if function_args else []},"timestamp":__import__('time').time()*1000,"sessionId":"debug-session","hypothesisId":"A"})+'\n')
+                        # #endregion
                         # Handle data_question and paginate_query internally (not via MCP)
                         if function_name == "data_question":
                             if step_updater:
@@ -1105,7 +1111,7 @@ Remember: Your goal is to ANSWER the user's question, not just show them where t
                                 database_name = function_args.get("database", "")
                                 # Auto-detect database if not specified
                                 if not database_name:
-                                    database_name = "postgres_production"  # Default
+                                    database_name = "synthetic_250_postgres"  # Default
                                 sql_queries.append({
                                     "sql": tool_result["sql"],
                                     "database": database_name

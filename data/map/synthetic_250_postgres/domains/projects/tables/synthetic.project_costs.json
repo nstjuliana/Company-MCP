@@ -1,0 +1,163 @@
+{
+  "table": "project_costs",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.project_costs` table represents a record of financial expenditures associated with various projects, identified by the unique `cost_id`. Each entry logs details such as the project identifier (`project_id`), date of cost incurred, category, description of the costs, and whether the cost is billable, supported by additional columns like `amount`, and invoice identification (`invoice_id`). This table likely plays a crucial role in tracking and managing the financial aspects of projects within the database, though it does not explicitly relate to other tables based on the provided information.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "cost_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each record in the project costs table, ensuring each project cost entry has a distinct and sequentially assigned number. Purpose unclear from available data.",
+      "default": "nextval('synthetic.project_costs_cost_id_seq'::regclass)"
+    },
+    {
+      "name": "project_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents unique identifiers for various projects within the dataset. These identifiers enable linking project-related costs to their respective projects.",
+      "default": null
+    },
+    {
+      "name": "cost_date",
+      "type": "date",
+      "nullable": false,
+      "description": "This column represents the specific date on which the project costs were incurred or recorded. It ensures that each expense entry in the project costs table is associated with its corresponding calendar date.",
+      "default": null
+    },
+    {
+      "name": "cost_category",
+      "type": "character varying",
+      "nullable": true,
+      "description": "The column represents descriptions or narratives related to various aspects or activities within a project, which could include tasks, strategies, or discussions. Purpose unclear from available data as the sample values do not specify distinct categories or labels.",
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely contains textual descriptions or summaries related to various aspects of projects, such as project goals, operations, or other associated activities. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "amount",
+      "type": "numeric",
+      "nullable": false,
+      "description": "This column represents the monetary values associated with the costs of various projects. Each entry reflects the financial expenditure for a specific project within the dataset.",
+      "default": null
+    },
+    {
+      "name": "is_billable",
+      "type": "boolean",
+      "nullable": true,
+      "description": "This field indicates whether the costs associated with a project can be billed to the client. If the value is true, the costs are chargeable; if false, they are not.",
+      "default": "true"
+    },
+    {
+      "name": "invoice_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "Represents unique identifiers for invoices related to project expenses. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a project cost entry was initially recorded in the system. The purpose of capturing this information is to track when financial entries related to projects are created, helping in auditing and timeline analysis.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when the project cost data was last updated. Values default to the current timestamp when no other value is provided.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "cost_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_project_costs_project_id",
+      "column_name": "project_id",
+      "referenced_table": "synthetic.projects_financial",
+      "referenced_column": "project_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "project_costs_pkey",
+      "index_definition": "CREATE UNIQUE INDEX project_costs_pkey ON synthetic.project_costs USING btree (cost_id)",
+      "columns": [
+        "cost_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "cost_id": 1,
+      "project_id": 1,
+      "cost_date": "2024-10-18T05:00:00.000Z",
+      "cost_category": "Describe thank animal job. Various write yet check billion.",
+      "description": "Minute heart real in. By instead agreement operation.",
+      "amount": "70486.36",
+      "is_billable": true,
+      "invoice_id": 5543,
+      "created_at": "2025-12-13T08:55:14.096Z",
+      "updated_at": "2025-12-13T08:55:14.096Z"
+    },
+    {
+      "cost_id": 2,
+      "project_id": 34,
+      "cost_date": "2024-12-15T06:00:00.000Z",
+      "cost_category": "Modern doctor ask line. It far opportunity various within.",
+      "description": "Serious organization hope way rock those. Low home third. Movement rise difficult move especially.",
+      "amount": "52358.01",
+      "is_billable": true,
+      "invoice_id": 7092,
+      "created_at": "2025-12-13T08:55:14.096Z",
+      "updated_at": "2025-12-13T08:55:14.096Z"
+    },
+    {
+      "cost_id": 3,
+      "project_id": 43,
+      "cost_date": "2025-06-26T05:00:00.000Z",
+      "cost_category": "You number girl strategy.\nThus have project apply firm reduce threat quickly. Child since head.",
+      "description": "End possible if science serve. International require marriage office.",
+      "amount": "72692.53",
+      "is_billable": false,
+      "invoice_id": 5665,
+      "created_at": "2025-12-13T08:55:14.096Z",
+      "updated_at": "2025-12-13T08:55:14.096Z"
+    },
+    {
+      "cost_id": 4,
+      "project_id": 43,
+      "cost_date": "2024-06-30T05:00:00.000Z",
+      "cost_category": "Use increase degree story lay better. Billion mind his.",
+      "description": "Grow future explain officer light. Because central final deep pay between. Guy manager democratic ne...",
+      "amount": "67661.93",
+      "is_billable": false,
+      "invoice_id": 2436,
+      "created_at": "2025-12-13T08:55:14.096Z",
+      "updated_at": "2025-12-13T08:55:14.096Z"
+    },
+    {
+      "cost_id": 5,
+      "project_id": 36,
+      "cost_date": "2024-10-08T05:00:00.000Z",
+      "cost_category": "Trial evidence lose early have PM. As yard medical ability maybe effect rate.",
+      "description": "Design talk mention their rate fact. Science become style enter small would teacher old. Wonder afte...",
+      "amount": "89216.98",
+      "is_billable": true,
+      "invoice_id": 191,
+      "created_at": "2025-12-13T08:55:14.096Z",
+      "updated_at": "2025-12-13T08:55:14.096Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:42:10.266Z"
+}

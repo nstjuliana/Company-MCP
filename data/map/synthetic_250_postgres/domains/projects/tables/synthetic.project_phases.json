@@ -1,0 +1,151 @@
+{
+  "table": "project_phases",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.project_phases` table represents various phases of projects, each uniquely identified by the `phase_id`, which serves as the primary key. Each phase is associated with a specific project through the `project_id` and includes details such as the phase's name, order, start and end dates, status, and timestamps for creation and updates. Although the table references another undefined entity, its role is to organize and track the progression and details of distinct phases for different projects within the database.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "phase_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each phase within a project, ensuring that each phase has a distinct numerical identifier. The sequential integers suggest a progression or order of phases.",
+      "default": "nextval('synthetic.project_phases_phase_id_seq'::regclass)"
+    },
+    {
+      "name": "project_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This integer represents a unique identifier for each project within the database. It is used to establish relationships with the different phases that projects undergo.",
+      "default": null
+    },
+    {
+      "name": "phase_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column represents the various phases or stages associated with a project, likely naming or describing specific milestones or segments within the project's lifespan. The purpose or context of these project phases is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "phase_order",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents the order or sequence number associated with phases within a project, indicating their progression or priority. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "start_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column represents the scheduled starting date for various phases of a project. It indicates when work is intended to commence, though the specific business context or any additional rules influencing these dates are unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "end_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column represents the scheduled completion date for various project phases. It captures the specific day when each project phase is expected to conclude, allowing for flexibility as it can be left empty if the end date is uncertain.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column indicates the current state of a project phase, reflecting various stages such as active, completed, inactive, pending, or cancelled. It helps track and manage the progress of different phases within a project lifecycle.",
+      "default": "'not_started'::character varying"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column captures the date and time when a project phase entry was created or initially recorded within the system. The specific instances indicate the column defaults to the timestamp at the time of record creation unless otherwise specified.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a project phase was last modified, capturing the most recent updates for tracking changes over time. The values are generated automatically when updates occur, but manual input allows for adjustments as needed.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "phase_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_project_phases_project_id",
+      "column_name": "project_id",
+      "referenced_table": "synthetic.pm_projects",
+      "referenced_column": "project_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "project_phases_pkey",
+      "index_definition": "CREATE UNIQUE INDEX project_phases_pkey ON synthetic.project_phases USING btree (phase_id)",
+      "columns": [
+        "phase_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "phase_id": 1,
+      "project_id": 31,
+      "phase_name": "Character tend from investment most produce. Red week small also. Popular keep form.\nHealth name bas...",
+      "phase_order": 1001,
+      "start_date": "2025-01-24T06:00:00.000Z",
+      "end_date": "2024-10-14T05:00:00.000Z",
+      "status": "completed",
+      "created_at": "2025-12-13T08:59:55.403Z",
+      "updated_at": "2025-12-13T08:59:55.403Z"
+    },
+    {
+      "phase_id": 2,
+      "project_id": 32,
+      "phase_name": "Run maybe pretty.\nThing world level son claim hope. Score get finish guy mean identify. Whether atta...",
+      "phase_order": 3866,
+      "start_date": "2025-11-14T06:00:00.000Z",
+      "end_date": "2025-06-09T05:00:00.000Z",
+      "status": "completed",
+      "created_at": "2025-12-13T08:59:55.403Z",
+      "updated_at": "2025-12-13T08:59:55.403Z"
+    },
+    {
+      "phase_id": 3,
+      "project_id": 34,
+      "phase_name": "Suggest visit hand reduce. Team keep vote end rate.\nShort finally type hard. Painting major special ...",
+      "phase_order": 2401,
+      "start_date": "2025-11-22T06:00:00.000Z",
+      "end_date": "2025-11-05T06:00:00.000Z",
+      "status": "active",
+      "created_at": "2025-12-13T08:59:55.403Z",
+      "updated_at": "2025-12-13T08:59:55.403Z"
+    },
+    {
+      "phase_id": 4,
+      "project_id": 24,
+      "phase_name": "Her enter debate visit. Painting local half herself military night.\nSubject perhaps whom certainly p...",
+      "phase_order": 37,
+      "start_date": "2024-02-14T06:00:00.000Z",
+      "end_date": "2025-12-03T06:00:00.000Z",
+      "status": "completed",
+      "created_at": "2025-12-13T08:59:55.403Z",
+      "updated_at": "2025-12-13T08:59:55.403Z"
+    },
+    {
+      "phase_id": 5,
+      "project_id": 35,
+      "phase_name": "Support clear people however although. Cell culture door third get student people.",
+      "phase_order": 2354,
+      "start_date": "2024-07-13T05:00:00.000Z",
+      "end_date": "2025-06-07T05:00:00.000Z",
+      "status": "active",
+      "created_at": "2025-12-13T08:59:55.403Z",
+      "updated_at": "2025-12-13T08:59:55.403Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:42:10.908Z"
+}

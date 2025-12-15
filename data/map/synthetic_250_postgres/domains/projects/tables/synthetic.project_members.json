@@ -1,0 +1,95 @@
+{
+  "table": "project_members",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.project_members\" table in the \"synthetic_250_postgres\" database is designed to store membership information for projects, identified uniquely by \"member_id\". Although it holds no current rows or detailed column data, its role likely involves linking members to specific projects, potentially containing attributes like member details and project roles. It is currently not linked to any defined foreign keys or referenced by other tables, thus its relational role in the data model remains independent.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "member_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "A unique identifier automatically assigned to each individual in the project membership register. This ensures each project member can be distinctly referenced.",
+      "default": "nextval('synthetic.project_members_member_id_seq'::regclass)"
+    },
+    {
+      "name": "project_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Unique identifier for projects that associates each member with a specific project.",
+      "default": null
+    },
+    {
+      "name": "user_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies users participating in projects within the organization. Each entry corresponds to an individual member associated with a project.",
+      "default": null
+    },
+    {
+      "name": "role",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "join_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column records the date on which a member joined a project within the organization. It helps to track membership duration or historical involvement in projects.",
+      "default": null
+    },
+    {
+      "name": "leave_date",
+      "type": "date",
+      "nullable": true,
+      "description": "The column captures the date when a team member left a project. If no date is recorded, the member may still be actively engaged with the project or the information is unknown.",
+      "default": null
+    },
+    {
+      "name": "hourly_rate",
+      "type": "numeric",
+      "nullable": true,
+      "description": "Represents the payment rate per hour for a member of a project. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a member was added to a project. If not specified, the current date and time are automatically used.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Records the last modification date and time for each entry in the project members table.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "member_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_project_members_project_id",
+      "column_name": "project_id",
+      "referenced_table": "synthetic.pm_projects",
+      "referenced_column": "project_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "project_members_pkey",
+      "index_definition": "CREATE UNIQUE INDEX project_members_pkey ON synthetic.project_members USING btree (member_id)",
+      "columns": [
+        "member_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:42:10.612Z"
+}

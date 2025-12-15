@@ -1,0 +1,102 @@
+{
+  "table": "keyword_performance",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.keyword_performance` table appears to represent business data related to the performance metrics of specific keywords, likely in a marketing or search engine optimization context. The primary key is `kw_perf_id`, which uniquely identifies each record within the table, indicating it potentially serves as a detailed record of keyword performance data but lacks relationship-specific details due to missing column names and foreign key references. The table presently has no rows, so its specific attributes and relationships within the data model remain undefined.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "kw_perf_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each record in the keyword performance table, ensuring that every entry has a distinct identifier for tracking and analysis purposes.",
+      "default": "nextval('synthetic.keyword_performance_kw_perf_id_seq'::regclass)"
+    },
+    {
+      "name": "keyword_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "date",
+      "type": "date",
+      "nullable": false,
+      "description": "This column likely captures the specific day on which the keyword performance data was recorded or is relevant. It ensures the time-specific tracking of keyword performance metrics.",
+      "default": null
+    },
+    {
+      "name": "impressions",
+      "type": "integer",
+      "nullable": true,
+      "description": "Represents the number of times a keyword was displayed to users. Purpose unclear from available data.",
+      "default": "0"
+    },
+    {
+      "name": "clicks",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely tracks the number of times users have selected or engaged with a keyword from the table. The default value of 0 suggests that no interactions have occurred if the field remains empty.",
+      "default": "0"
+    },
+    {
+      "name": "conversions",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents the number of successful actions or outcomes achieved, such as sales or registrations, resulting from a keyword campaign. Purpose unclear from available data due to lack of sample values.",
+      "default": "0"
+    },
+    {
+      "name": "spend",
+      "type": "numeric",
+      "nullable": true,
+      "description": "Represents the monetary expenditure associated with keyword marketing activities within the performance dataset. Purpose unclear from available data.",
+      "default": "0"
+    },
+    {
+      "name": "avg_position",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column likely represents the average rank or position of keywords in search results or other performance metrics. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This field records the date and time when a keyword performance entry is created or logged, potentially indicating when the associated data was initially captured or added to the system.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column likely indicates the last time a record in the keyword performance table was updated, reflecting the most recent changes to the data relevant to keyword analysis.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "kw_perf_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_keyword_performance_keyword_id",
+      "column_name": "keyword_id",
+      "referenced_table": "synthetic.keywords",
+      "referenced_column": "keyword_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "keyword_performance_pkey",
+      "index_definition": "CREATE UNIQUE INDEX keyword_performance_pkey ON synthetic.keyword_performance USING btree (kw_perf_id)",
+      "columns": [
+        "kw_perf_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:43:23.851Z"
+}

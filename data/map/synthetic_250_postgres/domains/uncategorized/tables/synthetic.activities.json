@@ -1,0 +1,204 @@
+{
+  "table": "activities",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.activities\" table represents a collection of activities within the system, each uniquely identified by the primary key \"activity_id.\" It captures various attributes such as type, subject, status, priority, and related entity details, while also logging timestamps for creation and updates. Without foreign key relationships, the table operates independently in the database, possibly serving as a repository for tracking individual or project-related activities and their statuses.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "activity_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column assigns a unique identifier to each activity entry, ensuring each activity is distinct within the system. The sequence of numbers indicates an ordering of activities as they are added.",
+      "default": "nextval('synthetic.activities_activity_id_seq'::regclass)"
+    },
+    {
+      "name": "activity_type",
+      "type": "character varying",
+      "nullable": false,
+      "description": "The column represents various categories or types of activities, which are described using a single word. However, the purpose of these categories is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "subject",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column appears to capture various activities, stories, or topics in the form of descriptive text entries. Each entry seems to represent a specific narrative or idea associated with different actions or themes.",
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "nullable": true,
+      "description": "This column contains brief narrative summaries or statements related to various activities, capturing aspects like events, actions, or perspectives. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column represents the current state of an activity, indicating whether it is planned, pending, completed, or inactive. The default state for each activity is 'planned.'.",
+      "default": "'planned'::character varying"
+    },
+    {
+      "name": "priority",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "due_date",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column represents the deadline by which activities are expected to be completed, although the specific purpose within business operations remains unclear from the available data. The timestamps appear with timezone indication for clarity, though they lack timezone specificity in storage.",
+      "default": null
+    },
+    {
+      "name": "completed_date",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time at which an activity was completed. The values may reflect the use of different standard or daylight saving times in the Central Time Zone.",
+      "default": null
+    },
+    {
+      "name": "related_to_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column denotes the type or category with which a particular activity is associated, such as finance, healthcare, or media-related subjects. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "related_to_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column may refer to a numerical identifier associating each activity with another entity or record. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "owner_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents the unique identifier for individuals or entities responsible for the activities recorded in the table. The purpose of these identifiers is unclear without additional context or information from the database.",
+      "default": null
+    },
+    {
+      "name": "assigned_to",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents a numerical identifier for individuals or entities assigned to certain activities. The purpose of these identifiers is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an entry in the activities table was created. Given the default value of the current timestamp, it likely captures the precise moment of creation.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column likely records the date and time when a record within the activities table was last modified. Its purpose is to track changes and ensure data accuracy by providing a historical update timestamp.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "activity_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "activities_pkey",
+      "index_definition": "CREATE UNIQUE INDEX activities_pkey ON synthetic.activities USING btree (activity_id)",
+      "columns": [
+        "activity_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "activity_id": 1,
+      "activity_type": "short",
+      "subject": "Response hour still sign peace worker. Child nor her teach often nothing.\nVoice eye affect worry mig...",
+      "description": "Case ten much report evening which. Fly all only different cell tax.",
+      "status": "inactive",
+      "priority": "Try through ok drug.",
+      "due_date": "2025-06-10T23:44:35.274Z",
+      "completed_date": "2024-03-07T22:32:33.570Z",
+      "related_to_type": "financial",
+      "related_to_id": 363,
+      "owner_id": 9175,
+      "assigned_to": 7348,
+      "created_at": "2025-12-13T08:58:38.460Z",
+      "updated_at": "2025-12-13T08:58:38.460Z"
+    },
+    {
+      "activity_id": 2,
+      "activity_type": "direction",
+      "subject": "New member property good office present. Season necessary personal crime also. Seem happen offer vie...",
+      "description": "Event great its choice nation. Really party north daughter top. Book boy window enter focus characte...",
+      "status": "cancelled",
+      "priority": "Bit table along.",
+      "due_date": "2025-10-04T21:34:48.863Z",
+      "completed_date": "2024-10-10T22:52:34.558Z",
+      "related_to_type": "eye",
+      "related_to_id": 943,
+      "owner_id": 5696,
+      "assigned_to": 7810,
+      "created_at": "2025-12-13T08:58:38.460Z",
+      "updated_at": "2025-12-13T08:58:38.460Z"
+    },
+    {
+      "activity_id": 3,
+      "activity_type": "just",
+      "subject": "Yes though water forget. Skin professional room sometimes seek specific. Great goal teach cold stati...",
+      "description": "Almost agree else picture. Southern a environment half less rather.",
+      "status": "inactive",
+      "priority": "Hard evidence.",
+      "due_date": "2024-02-09T01:35:02.797Z",
+      "completed_date": "2025-05-12T03:40:23.566Z",
+      "related_to_type": "board",
+      "related_to_id": 1045,
+      "owner_id": 5807,
+      "assigned_to": 1072,
+      "created_at": "2025-12-13T08:58:38.460Z",
+      "updated_at": "2025-12-13T08:58:38.460Z"
+    },
+    {
+      "activity_id": 4,
+      "activity_type": "themselves",
+      "subject": "People per indeed audience along box. Enter it collection kid soldier. Big push every himself will s...",
+      "description": "Also sound approach end reduce kitchen. Audience thousand support. Law million source bill everythin...",
+      "status": "pending",
+      "priority": "Right technology.",
+      "due_date": "2024-01-30T01:59:45.336Z",
+      "completed_date": "2025-02-27T17:20:39.187Z",
+      "related_to_type": "hospital",
+      "related_to_id": 9335,
+      "owner_id": 4129,
+      "assigned_to": 452,
+      "created_at": "2025-12-13T08:58:38.460Z",
+      "updated_at": "2025-12-13T08:58:38.460Z"
+    },
+    {
+      "activity_id": 5,
+      "activity_type": "smile",
+      "subject": "Protect beautiful none keep subject remain thing.\nEntire feeling bill. Pm single scene spring. Analy...",
+      "description": "Theory line method serious then. Rock exist drive make trip. Ten toward guess really education perso...",
+      "status": "cancelled",
+      "priority": "Instead about.",
+      "due_date": "2024-12-27T04:39:55.576Z",
+      "completed_date": "2024-12-06T10:35:28.411Z",
+      "related_to_type": "article",
+      "related_to_id": 8042,
+      "owner_id": 7059,
+      "assigned_to": 2185,
+      "created_at": "2025-12-13T08:58:38.460Z",
+      "updated_at": "2025-12-13T08:58:38.460Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:41:20.834Z"
+}

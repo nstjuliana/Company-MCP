@@ -1,0 +1,199 @@
+{
+  "table": "invoices_payable",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.invoices_payable` table represents accounts payable invoices within a business entity that tracks financial obligations to vendors. With `invoice_id` as the primary key, it captures details such as invoice numbers, vendor identifiers, invoice and due dates, and financial amounts like total and tax in specific currencies, which indicates its role in managing vendor payments. Its relationship with other tables is minimal, featuring an undefined foreign key relationship, suggesting a focus on internal financial transaction recording rather than wider data model integration.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "invoice_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each payable invoice in the invoices database through sequential numbering. Each number corresponds to a specific invoice, ensuring distinct traceability and reference for financial transactions.",
+      "default": "nextval('synthetic.invoices_payable_invoice_id_seq'::regclass)"
+    },
+    {
+      "name": "invoice_number",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column represents unique identifiers assigned to invoices awaiting payment, each consisting of a large, distinct numerical sequence to ensure identification. These identifiers are essential for tracking and managing invoice-related transactions in the accounts payable process.",
+      "default": null
+    },
+    {
+      "name": "vendor_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column likely represents a unique identifier assigned to various vendors involved in transactions related to invoices payable. These identifiers allow for distinguishing and referencing specific vendors within the financial operations of the entity.",
+      "default": null
+    },
+    {
+      "name": "invoice_date",
+      "type": "date",
+      "nullable": false,
+      "description": "Represents the date an invoice is issued or becomes payable. This field is always populated and indicates the timeline for payment obligations.",
+      "default": null
+    },
+    {
+      "name": "due_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column represents the date by which an invoice is expected to be paid. The values suggest that the dates are adjusted for Central Time, accounting for both standard and daylight savings time changes.",
+      "default": null
+    },
+    {
+      "name": "total_amount",
+      "type": "numeric",
+      "nullable": false,
+      "description": "This column represents the total monetary value owed for each invoice that the business needs to pay. It reflects sizable amounts that suggest these are significant financial obligations, likely involving substantial purchases or services.",
+      "default": null
+    },
+    {
+      "name": "tax_amount",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the monetary value of taxes that are associated with each payable invoice. The amounts typically reach into tens of thousands, indicating possibly substantial business transactions or a high tax rate.",
+      "default": "0"
+    },
+    {
+      "name": "currency",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column denotes the currency used for each transaction, indicating the type of money in which the payable invoice is recorded. The default currency is US Dollars, though other currencies like Japanese Yen, British Pounds, and Canadian Dollars are also present.",
+      "default": "'USD'::character varying"
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column indicates the current processing state of an invoice, such as whether it is pending, completed, or cancelled. It helps track the invoice's lifecycle status in the payment process for payable accounts.",
+      "default": "'pending'::character varying"
+    },
+    {
+      "name": "payment_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column indicates the scheduled date on which outstanding invoices are expected to be paid. It accommodates instances where no payment date has been determined yet, as it allows for null values.",
+      "default": null
+    },
+    {
+      "name": "notes",
+      "type": "text",
+      "nullable": true,
+      "description": "This column contains free-form annotations or comments pertaining to invoices that may include descriptions of events, actions, or thoughts related to the invoice processing. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an invoice was created or recorded in the system. The time reflects the Central Standard Time zone.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time of the most recent update to an invoice entry. The value defaults to the current time when an update occurs, indicating the last modification timestamp.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "invoice_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_invoices_payable_vendor_id",
+      "column_name": "vendor_id",
+      "referenced_table": "synthetic.vendors",
+      "referenced_column": "vendor_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "invoices_payable_pkey",
+      "index_definition": "CREATE UNIQUE INDEX invoices_payable_pkey ON synthetic.invoices_payable USING btree (invoice_id)",
+      "columns": [
+        "invoice_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "invoice_id": 1,
+      "invoice_number": "51374028265652936756",
+      "vendor_id": 15,
+      "invoice_date": "2024-04-20T05:00:00.000Z",
+      "due_date": "2024-09-07T05:00:00.000Z",
+      "total_amount": "41439.98",
+      "tax_amount": "82759.18",
+      "currency": "JPY",
+      "status": "completed",
+      "payment_date": "2024-06-13T05:00:00.000Z",
+      "notes": "Doctor figure plant. Series wife east large per forget human.",
+      "created_at": "2025-12-13T08:54:29.127Z",
+      "updated_at": "2025-12-13T08:54:29.127Z"
+    },
+    {
+      "invoice_id": 2,
+      "invoice_number": "42209470544765839018",
+      "vendor_id": 47,
+      "invoice_date": "2025-05-27T05:00:00.000Z",
+      "due_date": "2024-11-18T06:00:00.000Z",
+      "total_amount": "9599.08",
+      "tax_amount": "42733.72",
+      "currency": "GBP",
+      "status": "pending",
+      "payment_date": "2025-06-28T05:00:00.000Z",
+      "notes": "Strong artist tax memory. Toward chair that late surface good. Do prepare possible entire agency sta...",
+      "created_at": "2025-12-13T08:54:29.127Z",
+      "updated_at": "2025-12-13T08:54:29.127Z"
+    },
+    {
+      "invoice_id": 3,
+      "invoice_number": "94804688698908763427",
+      "vendor_id": 10,
+      "invoice_date": "2024-04-11T05:00:00.000Z",
+      "due_date": "2024-10-28T05:00:00.000Z",
+      "total_amount": "68713.42",
+      "tax_amount": "47479.36",
+      "currency": "USD",
+      "status": "active",
+      "payment_date": "2024-11-16T06:00:00.000Z",
+      "notes": "Knowledge lay lose wall be threat. Stuff idea assume major.",
+      "created_at": "2025-12-13T08:54:29.127Z",
+      "updated_at": "2025-12-13T08:54:29.127Z"
+    },
+    {
+      "invoice_id": 4,
+      "invoice_number": "67138731403191666162",
+      "vendor_id": 6,
+      "invoice_date": "2024-07-26T05:00:00.000Z",
+      "due_date": "2025-04-17T05:00:00.000Z",
+      "total_amount": "43244.46",
+      "tax_amount": "74484.44",
+      "currency": "GBP",
+      "status": "inactive",
+      "payment_date": "2024-09-27T05:00:00.000Z",
+      "notes": "Rich poor it they hotel very away. Conference less wind picture. Election if window up.",
+      "created_at": "2025-12-13T08:54:29.127Z",
+      "updated_at": "2025-12-13T08:54:29.127Z"
+    },
+    {
+      "invoice_id": 5,
+      "invoice_number": "67071671489579257852",
+      "vendor_id": 36,
+      "invoice_date": "2024-04-30T05:00:00.000Z",
+      "due_date": "2024-07-29T05:00:00.000Z",
+      "total_amount": "6092.10",
+      "tax_amount": "95666.80",
+      "currency": "CAD",
+      "status": "pending",
+      "payment_date": "2024-03-31T05:00:00.000Z",
+      "notes": "Wonder ago per factor. Development kid economy especially. Long the series who generation.",
+      "created_at": "2025-12-13T08:54:29.127Z",
+      "updated_at": "2025-12-13T08:54:29.127Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:40:03.105Z"
+}

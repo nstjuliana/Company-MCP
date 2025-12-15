@@ -1,0 +1,95 @@
+{
+  "table": "transcripts",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.transcripts` table is designed to represent transcript records, which are uniquely identified by the primary key `transcript_id`. Although the specific columns and data are not available, this table likely captures information pertaining to individual transcripts, potentially including data relevant to academia or other formal records requiring transcripts. This table serves as an isolated entity within the database model, interacting with another table through an undefined foreign key relationship but not being directly referenced by any other tables.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "transcript_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier assigned to each transcript record. Purpose unclear from available data.",
+      "default": "nextval('synthetic.transcripts_transcript_id_seq'::regclass)"
+    },
+    {
+      "name": "student_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies a student within the educational records of transcripts. It is essential for associating academic performance data with individual students.",
+      "default": null
+    },
+    {
+      "name": "request_date",
+      "type": "date",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "issue_date",
+      "type": "date",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "transcript_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "recipient",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "The column represents the current processing stage or condition of the transcripts within the system. The default value suggests that entries are initially set to 'pending,' indicating they await further action or review.",
+      "default": "'pending'::character varying"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column likely records the date and time when each entry in the transcripts table is created. Its default value suggests that it captures the moment of data entry automatically.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column likely indicates the date and time when a record in the transcripts table was last modified or updated. Purpose unclear from available data due to absence of sample values and lack of additional context.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "transcript_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_transcripts_student_id",
+      "column_name": "student_id",
+      "referenced_table": "synthetic.students",
+      "referenced_column": "student_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "transcripts_pkey",
+      "index_definition": "CREATE UNIQUE INDEX transcripts_pkey ON synthetic.transcripts USING btree (transcript_id)",
+      "columns": [
+        "transcript_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:43:30.448Z"
+}

@@ -1,0 +1,159 @@
+{
+  "table": "SATISFACTION_SURVEYS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The \"SYNTHETIC.SATISFACTION_SURVEYS\" table represents survey data intended to gauge customer satisfaction levels based on various interactions and escalations. Each entry is uniquely identified by the primary key \"SATISFACTION_SURVEY_ID\" and includes details such as interaction descriptions, escalation dates, and case handling updates. With no foreign key relationships, the table appears to function independently within the database, serving as a repository for distinct satisfaction survey outcomes.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "SATISFACTION_SURVEY_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents unique identifiers for individual entries in a satisfaction survey dataset. Each number corresponds to a different survey response.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column represents a sequential identifier or label for satisfaction surveys. Each value denotes a different instance of a survey without specific details about its content or purpose.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values indicate a sequential labeling pattern rather than descriptive information about satisfaction surveys.",
+      "default": null
+    },
+    {
+      "name": "KNOWLEDGE_155_ATTR_0",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column appears to represent categorical data related to a survey metric, potentially serving as a code or identifier for different levels or attributes of knowledge. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "SURVEY_155_ATTR_1",
+      "type": "BOOLEAN",
+      "nullable": false,
+      "description": "This column records a binary response indicating the presence or absence of a specific attribute in a satisfaction survey. The exact nature of the attribute is unclear from the available data.",
+      "default": "FALSE"
+    },
+    {
+      "name": "INTERACTION_155_ATTR_2",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data. Sample values are generic and do not provide context for the column's content.",
+      "default": null
+    },
+    {
+      "name": "ESCALATION_155_ATTR_3",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column records the date and time of specific escalation-related events related to satisfaction surveys. Purpose unclear from available data as the context of these timestamps is not provided.",
+      "default": null
+    },
+    {
+      "name": "KNOWLEDGE_155_ATTR_4",
+      "type": "DATE",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "ESCALATION_155_ATTR_5",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CASE_155_ATTR_6",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column likely represents the dates and times when satisfaction surveys were completed or recorded, as indicated by the consistent daily timestamps shown in the sample values. Purpose unclear from available data beyond indicating survey-related timing.",
+      "default": null
+    },
+    {
+      "name": "UPDATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column records the date and time when entries in the satisfaction surveys table were last updated. The timestamps are consistently set in the Central Standard Time zone.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "SATISFACTION_SURVEY_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "SATISFACTION_SURVEY_ID": 1,
+      "NAME": "SATISFACTION_SURVEYS 1",
+      "DESCRIPTION": "Description for SATISFACTION_SURVEYS 1",
+      "KNOWLEDGE_155_ATTR_0": null,
+      "SURVEY_155_ATTR_1": true,
+      "INTERACTION_155_ATTR_2": "Sample INTERACTION_155_ATTR_2 1",
+      "ESCALATION_155_ATTR_3": "2025-12-12 00:00:00.000",
+      "KNOWLEDGE_155_ATTR_4": "2025-12-12",
+      "ESCALATION_155_ATTR_5": "Sample ESCALATION_155_ATTR_5 1",
+      "CASE_155_ATTR_6": "2025-12-12 00:00:00.000",
+      "UPDATED_AT": "2026-01-11 00:00:00.000"
+    },
+    {
+      "SATISFACTION_SURVEY_ID": 2,
+      "NAME": "SATISFACTION_SURVEYS 2",
+      "DESCRIPTION": "Description for SATISFACTION_SURVEYS 2",
+      "KNOWLEDGE_155_ATTR_0": 101,
+      "SURVEY_155_ATTR_1": false,
+      "INTERACTION_155_ATTR_2": "Sample INTERACTION_155_ATTR_2 2",
+      "ESCALATION_155_ATTR_3": "2025-12-13 00:00:00.000",
+      "KNOWLEDGE_155_ATTR_4": "2025-12-13",
+      "ESCALATION_155_ATTR_5": "Sample ESCALATION_155_ATTR_5 2",
+      "CASE_155_ATTR_6": "2025-12-13 00:00:00.000",
+      "UPDATED_AT": "2026-01-12 00:00:00.000"
+    },
+    {
+      "SATISFACTION_SURVEY_ID": 3,
+      "NAME": "SATISFACTION_SURVEYS 3",
+      "DESCRIPTION": "Description for SATISFACTION_SURVEYS 3",
+      "KNOWLEDGE_155_ATTR_0": 102,
+      "SURVEY_155_ATTR_1": true,
+      "INTERACTION_155_ATTR_2": "Sample INTERACTION_155_ATTR_2 3",
+      "ESCALATION_155_ATTR_3": "2025-12-14 00:00:00.000",
+      "KNOWLEDGE_155_ATTR_4": "2025-12-14",
+      "ESCALATION_155_ATTR_5": "Sample ESCALATION_155_ATTR_5 3",
+      "CASE_155_ATTR_6": "2025-12-14 00:00:00.000",
+      "UPDATED_AT": "2026-01-13 00:00:00.000"
+    },
+    {
+      "SATISFACTION_SURVEY_ID": 4,
+      "NAME": "SATISFACTION_SURVEYS 4",
+      "DESCRIPTION": "Description for SATISFACTION_SURVEYS 4",
+      "KNOWLEDGE_155_ATTR_0": null,
+      "SURVEY_155_ATTR_1": false,
+      "INTERACTION_155_ATTR_2": "Sample INTERACTION_155_ATTR_2 4",
+      "ESCALATION_155_ATTR_3": "2025-12-15 00:00:00.000",
+      "KNOWLEDGE_155_ATTR_4": "2025-12-15",
+      "ESCALATION_155_ATTR_5": "Sample ESCALATION_155_ATTR_5 4",
+      "CASE_155_ATTR_6": "2025-12-15 00:00:00.000",
+      "UPDATED_AT": "2026-01-14 00:00:00.000"
+    },
+    {
+      "SATISFACTION_SURVEY_ID": 5,
+      "NAME": "SATISFACTION_SURVEYS 5",
+      "DESCRIPTION": "Description for SATISFACTION_SURVEYS 5",
+      "KNOWLEDGE_155_ATTR_0": 104,
+      "SURVEY_155_ATTR_1": true,
+      "INTERACTION_155_ATTR_2": "Sample INTERACTION_155_ATTR_2 5",
+      "ESCALATION_155_ATTR_3": "2025-12-16 00:00:00.000",
+      "KNOWLEDGE_155_ATTR_4": "2025-12-16",
+      "ESCALATION_155_ATTR_5": "Sample ESCALATION_155_ATTR_5 5",
+      "CASE_155_ATTR_6": "2025-12-16 00:00:00.000",
+      "UPDATED_AT": "2026-01-15 00:00:00.000"
+    }
+  ],
+  "generated_at": "2025-12-14T23:42:55.021Z"
+}

@@ -1,0 +1,108 @@
+{
+  "table": "financial_aid",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.financial_aid` table is designed to represent financial aid information within an educational or financial institution, uniquely identified by the primary key `aid_id`. It is related to other tables through two undefined foreign key relationships, suggesting connections to tables that may manage associated entities such as students or financial accounts. The absence of column names, data, and defined relationships limits detailed understanding, but its role is likely central to managing or reporting financial aid transactions within the database.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "aid_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column serves as a unique identifier for each financial aid record in the system, ensuring distinct tracking and management of aid allocations.",
+      "default": "nextval('synthetic.financial_aid_aid_id_seq'::regclass)"
+    },
+    {
+      "name": "student_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each student within the financial aid table, ensuring that financial aid data can be accurately associated with the respective student.",
+      "default": null
+    },
+    {
+      "name": "term_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "aid_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "aid_name",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "amount",
+      "type": "numeric",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Represents the current state of a financial aid decision, indicating whether it is incomplete, under review, approved, or otherwise categorized. Default state is 'pending', suggesting that initial status is an undecided or in-progress evaluation.",
+      "default": "'pending'::character varying"
+    },
+    {
+      "name": "disbursed_date",
+      "type": "date",
+      "nullable": true,
+      "description": "The date indicates when financial aid was released or made available to the recipient. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a financial aid entry was created in the system. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "The moment when the financial aid record was last modified is recorded here, reflecting updates or changes related to the data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "aid_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_financial_aid_student_id",
+      "column_name": "student_id",
+      "referenced_table": "synthetic.students",
+      "referenced_column": "student_id"
+    },
+    {
+      "constraint_name": "fk_financial_aid_term_id",
+      "column_name": "term_id",
+      "referenced_table": "synthetic.academic_terms",
+      "referenced_column": "term_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "financial_aid_pkey",
+      "index_definition": "CREATE UNIQUE INDEX financial_aid_pkey ON synthetic.financial_aid USING btree (aid_id)",
+      "columns": [
+        "aid_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:40:12.791Z"
+}

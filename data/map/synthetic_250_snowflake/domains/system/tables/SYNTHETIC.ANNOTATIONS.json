@@ -1,0 +1,123 @@
+{
+  "table": "ANNOTATIONS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.ANNOTATIONS table represents a collection of annotated data points, each uniquely identified by ANNOTATION_ID, used for tracking specific metrics and key performance indicators (KPIs). The table includes descriptive information, various attributes tied to annotations, and a versioning mechanism, but it does not participate in any relationships with other tables. Its role within the data model appears to be standalone, likely serving as a record-keeping mechanism for annotations related to specific KPIs and metrics, as indicated by columns like KPI_182_ATTR_0 and METRIC_182_ATTR_1.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "ANNOTATION_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each entry in the annotations table, ensuring that every annotation can be distinctly referenced. Purpose unclear from available data beyond identifying annotations.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column represents a sequential labeling or categorization of items referred to as annotations within the dataset. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains detailed explanations or summaries associated with individual annotation entries. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "KPI_182_ATTR_0",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values suggest that this column contains text entries related to a specific KPI attribute, but further context is needed for precise interpretation.",
+      "default": null
+    },
+    {
+      "name": "METRIC_182_ATTR_1",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column records specific dates and times, likely representing scheduled or observed events within the annotations data. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "KPI_182_ATTR_2",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "The column appears to hold descriptive or categorical information related to Key Performance Indicator 182, possibly offering qualitative details or classifications to further annotate KPI metrics. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "KPI_182_ATTR_3",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "This column indicates a binary state or condition related to a specific key performance indicator. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "VERSION",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents a sequential numbering of annotation versions, indicating updates or iterations. The numeric values suggest a version control system for managing changes to annotations.",
+      "default": "1"
+    }
+  ],
+  "primary_key": [
+    "ANNOTATION_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "ANNOTATION_ID": 1,
+      "NAME": "ANNOTATIONS 1",
+      "DESCRIPTION": "Description for ANNOTATIONS 1",
+      "KPI_182_ATTR_0": "Sample KPI_182_ATTR_0 1",
+      "METRIC_182_ATTR_1": "2025-12-12 00:00:00.000",
+      "KPI_182_ATTR_2": "Sample KPI_182_ATTR_2 1",
+      "KPI_182_ATTR_3": true,
+      "VERSION": 100
+    },
+    {
+      "ANNOTATION_ID": 2,
+      "NAME": "ANNOTATIONS 2",
+      "DESCRIPTION": "Description for ANNOTATIONS 2",
+      "KPI_182_ATTR_0": "Sample KPI_182_ATTR_0 2",
+      "METRIC_182_ATTR_1": "2025-12-13 00:00:00.000",
+      "KPI_182_ATTR_2": "Sample KPI_182_ATTR_2 2",
+      "KPI_182_ATTR_3": false,
+      "VERSION": 101
+    },
+    {
+      "ANNOTATION_ID": 3,
+      "NAME": "ANNOTATIONS 3",
+      "DESCRIPTION": "Description for ANNOTATIONS 3",
+      "KPI_182_ATTR_0": "Sample KPI_182_ATTR_0 3",
+      "METRIC_182_ATTR_1": "2025-12-14 00:00:00.000",
+      "KPI_182_ATTR_2": "Sample KPI_182_ATTR_2 3",
+      "KPI_182_ATTR_3": true,
+      "VERSION": 102
+    },
+    {
+      "ANNOTATION_ID": 4,
+      "NAME": "ANNOTATIONS 4",
+      "DESCRIPTION": "Description for ANNOTATIONS 4",
+      "KPI_182_ATTR_0": "Sample KPI_182_ATTR_0 4",
+      "METRIC_182_ATTR_1": "2025-12-15 00:00:00.000",
+      "KPI_182_ATTR_2": "Sample KPI_182_ATTR_2 4",
+      "KPI_182_ATTR_3": false,
+      "VERSION": 103
+    },
+    {
+      "ANNOTATION_ID": 5,
+      "NAME": "ANNOTATIONS 5",
+      "DESCRIPTION": "Description for ANNOTATIONS 5",
+      "KPI_182_ATTR_0": "Sample KPI_182_ATTR_0 5",
+      "METRIC_182_ATTR_1": "2025-12-16 00:00:00.000",
+      "KPI_182_ATTR_2": "Sample KPI_182_ATTR_2 5",
+      "KPI_182_ATTR_3": true,
+      "VERSION": 104
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:37.759Z"
+}

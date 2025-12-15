@@ -1,0 +1,199 @@
+{
+  "table": "email_sends",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The table \"synthetic.email_sends\" represents individual records of email communications sent within a campaign, capturing details such as the recipient's email, the timing of key events (e.g., sent, delivered, opened, clicked), and status indicators (e.g., bounced, unsubscribed). It is primarily linked to an \"email_campaign_id\" indicating it references an undefined table that likely details different email campaigns. This table serves as a log of email interactions, capturing the lifecycle of each send attempt for analysis and tracking purposes.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "send_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each email send event in the system. It sequentially tracks individual email dispatches within the database.",
+      "default": "nextval('synthetic.email_sends_send_id_seq'::regclass)"
+    },
+    {
+      "name": "email_campaign_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents unique identifiers for different email campaigns, allowing each campaign to be distinctly tracked or referenced within the system.",
+      "default": null
+    },
+    {
+      "name": "recipient_email",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column represents the email addresses of individuals to whom messages have been sent. It captures the unique electronic identifiers within a messaging or communication system.",
+      "default": null
+    },
+    {
+      "name": "contact_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This field likely represents a unique identifier for contacts related to email sends. Its specific purpose is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "sent_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column indicates the date and time when an email was sent within the specified timezone. The purpose is related to tracking communication events, but further details are unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "delivered_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an email was successfully delivered. The timing of delivery may vary between standard and daylight saving time, reflecting different time zones within Central Time.",
+      "default": null
+    },
+    {
+      "name": "opened_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an email was opened by the recipient. The timestamp indicates the specific moment of interaction in the recipient's local timezone.",
+      "default": null
+    },
+    {
+      "name": "clicked_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an email recipient clicked on a link within the sent email. The information helps track engagement by indicating when recipients interact with email content.",
+      "default": null
+    },
+    {
+      "name": "bounced",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether an email sent has failed to be delivered to the recipient. A value of true means the email bounced, while false means it was successfully delivered or its delivery status is unknown.",
+      "default": "false"
+    },
+    {
+      "name": "bounce_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "unsubscribed",
+      "type": "boolean",
+      "nullable": true,
+      "description": "This column indicates whether an individual has opted out of receiving further emails. A value of \"true\" denotes that the individual has unsubscribed, while \"false\" indicates they are still subscribed.",
+      "default": "false"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an email was initially sent or logged in the system. The purpose is unclear from the available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an email send record was last updated, defaulting to the current timestamp. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "send_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_email_sends_email_campaign_id",
+      "column_name": "email_campaign_id",
+      "referenced_table": "synthetic.email_campaigns",
+      "referenced_column": "email_campaign_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "email_sends_pkey",
+      "index_definition": "CREATE UNIQUE INDEX email_sends_pkey ON synthetic.email_sends USING btree (send_id)",
+      "columns": [
+        "send_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "send_id": 1,
+      "email_campaign_id": 43,
+      "recipient_email": "bjohnson@example.net",
+      "contact_id": 58,
+      "sent_at": "2024-06-20T12:35:04.879Z",
+      "delivered_at": "2024-02-07T14:49:44.675Z",
+      "opened_at": "2025-12-05T20:40:02.107Z",
+      "clicked_at": "2024-12-08T13:39:52.859Z",
+      "bounced": true,
+      "bounce_type": "Enjoy attorney former trouble.",
+      "unsubscribed": false,
+      "created_at": "2025-12-13T09:18:45.027Z",
+      "updated_at": "2025-12-13T09:18:45.027Z"
+    },
+    {
+      "send_id": 2,
+      "email_campaign_id": 49,
+      "recipient_email": "benjamin51@example.com",
+      "contact_id": 805,
+      "sent_at": "2025-02-13T07:03:22.094Z",
+      "delivered_at": "2025-02-27T15:26:55.219Z",
+      "opened_at": "2024-10-07T11:41:06.584Z",
+      "clicked_at": "2024-01-26T23:54:55.050Z",
+      "bounced": true,
+      "bounce_type": "Information situation claim within through away.",
+      "unsubscribed": false,
+      "created_at": "2025-12-13T09:18:45.027Z",
+      "updated_at": "2025-12-13T09:18:45.027Z"
+    },
+    {
+      "send_id": 3,
+      "email_campaign_id": 44,
+      "recipient_email": "john28@example.org",
+      "contact_id": 257,
+      "sent_at": "2024-11-14T13:46:52.033Z",
+      "delivered_at": "2025-12-09T21:13:06.328Z",
+      "opened_at": "2024-06-22T01:36:34.539Z",
+      "clicked_at": "2025-01-24T06:16:51.772Z",
+      "bounced": true,
+      "bounce_type": "Modern list kid prevent avoid quite brother.",
+      "unsubscribed": true,
+      "created_at": "2025-12-13T09:18:45.027Z",
+      "updated_at": "2025-12-13T09:18:45.027Z"
+    },
+    {
+      "send_id": 4,
+      "email_campaign_id": 45,
+      "recipient_email": "aprilyoung@example.com",
+      "contact_id": 804,
+      "sent_at": "2025-11-18T20:59:56.373Z",
+      "delivered_at": "2024-01-12T06:23:05.477Z",
+      "opened_at": "2024-11-10T02:43:14.251Z",
+      "clicked_at": "2025-08-24T09:28:31.921Z",
+      "bounced": false,
+      "bounce_type": "Nature necessary case need thousand yard make.",
+      "unsubscribed": true,
+      "created_at": "2025-12-13T09:18:45.027Z",
+      "updated_at": "2025-12-13T09:18:45.027Z"
+    },
+    {
+      "send_id": 5,
+      "email_campaign_id": 49,
+      "recipient_email": "brettgonzales@example.net",
+      "contact_id": 555,
+      "sent_at": "2025-10-19T01:37:12.822Z",
+      "delivered_at": "2025-08-10T22:55:10.354Z",
+      "opened_at": "2025-08-10T01:12:49.585Z",
+      "clicked_at": "2024-10-05T19:32:17.515Z",
+      "bounced": true,
+      "bounce_type": "Here teacher edge sea.",
+      "unsubscribed": false,
+      "created_at": "2025-12-13T09:18:45.027Z",
+      "updated_at": "2025-12-13T09:18:45.027Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:40:38.218Z"
+}

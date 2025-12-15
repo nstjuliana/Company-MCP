@@ -1,0 +1,135 @@
+{
+  "table": "AGENTS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.AGENTS table represents a collection of agents, each uniquely identified by a primary key AGENT_ID, with attributes indicating their knowledge, interactions, and ticket handling capabilities. The table is focused on capturing data related to various attributes of these agents, such as their name, description, and specific interaction or ticket handling attributes, without referencing or being referenced by any other tables. It serves as a standalone record of agent information with timestamps marking when each entry was created.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "AGENT_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column uniquely identifies each agent within the system with a distinct numerical identifier. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column likely represents identifiers or labels for agents in a series or sequence, indicated by the numbered format of the sample values. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains textual descriptions associated with agents, likely indicating their roles or characteristics. The specific nature or purpose of the descriptions remains unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "KNOWLEDGE_159_ATTR_0",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "INTERACTION_159_ATTR_1",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values suggest sequential identifiers or placeholders, but their actual meaning or usage is not evident.",
+      "default": null
+    },
+    {
+      "name": "TICKET_159_ATTR_2",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "This column likely indicates a binary status or condition related to a certain attribute within an agent's ticket, where the values are either true or false. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "TICKET_159_ATTR_3",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "KNOWLEDGE_159_ATTR_4",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values do not provide sufficient context for determining the business relevance of this column.",
+      "default": null
+    },
+    {
+      "name": "CREATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column records the exact date and time when an entry for an agent is created in the database. It reflects the Central Standard Time zone and is automatically filled with the current timestamp at the time of creation.",
+      "default": "CURRENT_TIMESTAMP()"
+    }
+  ],
+  "primary_key": [
+    "AGENT_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "AGENT_ID": 1,
+      "NAME": "AGENTS 1",
+      "DESCRIPTION": "Description for AGENTS 1",
+      "KNOWLEDGE_159_ATTR_0": true,
+      "INTERACTION_159_ATTR_1": "Sample INTERACTION_159_ATTR_1 1",
+      "TICKET_159_ATTR_2": true,
+      "TICKET_159_ATTR_3": "Sample TICKET_159_ATTR_3 1",
+      "KNOWLEDGE_159_ATTR_4": "Sample KNOWLEDGE_159_ATTR_4 1",
+      "CREATED_AT": "2025-12-12 17:25:19.616"
+    },
+    {
+      "AGENT_ID": 2,
+      "NAME": "AGENTS 2",
+      "DESCRIPTION": "Description for AGENTS 2",
+      "KNOWLEDGE_159_ATTR_0": false,
+      "INTERACTION_159_ATTR_1": "Sample INTERACTION_159_ATTR_1 2",
+      "TICKET_159_ATTR_2": false,
+      "TICKET_159_ATTR_3": "Sample TICKET_159_ATTR_3 2",
+      "KNOWLEDGE_159_ATTR_4": "Sample KNOWLEDGE_159_ATTR_4 2",
+      "CREATED_AT": "2025-12-12 17:25:19.616"
+    },
+    {
+      "AGENT_ID": 3,
+      "NAME": "AGENTS 3",
+      "DESCRIPTION": "Description for AGENTS 3",
+      "KNOWLEDGE_159_ATTR_0": true,
+      "INTERACTION_159_ATTR_1": "Sample INTERACTION_159_ATTR_1 3",
+      "TICKET_159_ATTR_2": true,
+      "TICKET_159_ATTR_3": "Sample TICKET_159_ATTR_3 3",
+      "KNOWLEDGE_159_ATTR_4": "Sample KNOWLEDGE_159_ATTR_4 3",
+      "CREATED_AT": "2025-12-12 17:25:19.616"
+    },
+    {
+      "AGENT_ID": 4,
+      "NAME": "AGENTS 4",
+      "DESCRIPTION": "Description for AGENTS 4",
+      "KNOWLEDGE_159_ATTR_0": false,
+      "INTERACTION_159_ATTR_1": "Sample INTERACTION_159_ATTR_1 4",
+      "TICKET_159_ATTR_2": false,
+      "TICKET_159_ATTR_3": "Sample TICKET_159_ATTR_3 4",
+      "KNOWLEDGE_159_ATTR_4": "Sample KNOWLEDGE_159_ATTR_4 4",
+      "CREATED_AT": "2025-12-12 17:25:19.616"
+    },
+    {
+      "AGENT_ID": 5,
+      "NAME": "AGENTS 5",
+      "DESCRIPTION": "Description for AGENTS 5",
+      "KNOWLEDGE_159_ATTR_0": true,
+      "INTERACTION_159_ATTR_1": "Sample INTERACTION_159_ATTR_1 5",
+      "TICKET_159_ATTR_2": true,
+      "TICKET_159_ATTR_3": "Sample TICKET_159_ATTR_3 5",
+      "KNOWLEDGE_159_ATTR_4": "Sample KNOWLEDGE_159_ATTR_4 5",
+      "CREATED_AT": "2025-12-12 17:25:19.616"
+    }
+  ],
+  "generated_at": "2025-12-14T23:44:26.128Z"
+}

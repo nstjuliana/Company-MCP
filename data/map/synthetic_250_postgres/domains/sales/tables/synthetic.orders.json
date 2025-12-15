@@ -1,0 +1,191 @@
+{
+  "table": "orders",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.orders\" table represents an entity for tracking order transactions within the database, identified uniquely by the primary key \"order_id\". It is designed to establish undefined relationships with other entities, likely capturing dependencies or breaking down components associated with each order. Despite the absence of concrete column details or sample data, the table likely plays a central role in handling transactional information, influencing or interfacing with other parts of the overall data model.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "order_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each order within the system, automatically generating a new identifier for every new entry to ensure no duplicates.",
+      "default": "nextval('synthetic.orders_order_id_seq'::regclass)"
+    },
+    {
+      "name": "order_number",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This field represents the unique identifier assigned to each order in the system, ensuring that every transaction can be distinctly recognized and referenced.",
+      "default": null
+    },
+    {
+      "name": "customer_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This field likely identifies a specific customer associated with an order. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "order_date",
+      "type": "timestamp without time zone",
+      "nullable": false,
+      "description": "This column captures the precise date and time when an order is recorded in the system. It is automatically populated with the current date and time at the moment of order entry, ensuring accurate order tracking.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Represents the current progress state of an order, with a common initial setting as pending.",
+      "default": "'pending'::character varying"
+    },
+    {
+      "name": "subtotal",
+      "type": "numeric",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "discount_total",
+      "type": "numeric",
+      "nullable": true,
+      "description": "The column represents the total discount amount applied to an order. It captures any reductions or special offers reducing the order's overall price, defaulting to zero if no discount is applied.",
+      "default": "0"
+    },
+    {
+      "name": "shipping_total",
+      "type": "numeric",
+      "nullable": true,
+      "description": "Represents the total cost charged for shipping an order. The amount can be null, indicating shipping details may not be applicable or available.",
+      "default": "0"
+    },
+    {
+      "name": "tax_total",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the total tax amount applied to an order. Purpose unclear from available data due to lack of sample values.",
+      "default": "0"
+    },
+    {
+      "name": "grand_total",
+      "type": "numeric",
+      "nullable": false,
+      "description": "This field represents the total monetary amount of an order, inclusive of any additional charges such as taxes or fees. It is mandatory to have a value, indicating it is essential for completing an order transaction.",
+      "default": null
+    },
+    {
+      "name": "currency",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely indicates the currency in which an order is transacted or reported. The default value suggests that transactions typically occur in U.S. dollars.",
+      "default": "'USD'::character varying"
+    },
+    {
+      "name": "shipping_address_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely identifies the specific location to which an order should be shipped. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "billing_address_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This field likely represents the identifier for the address associated with the billing information for an order, allowing reference to specific billing addresses. Purpose unclear from available data due to lack of sample values.",
+      "default": null
+    },
+    {
+      "name": "shipping_method_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "The identifier for the method used to ship an order. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "payment_method",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column records how customers choose to pay for their orders. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "notes",
+      "type": "text",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "ip_address",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an order is created. It helps track the timing of order placements within the system.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an order record was last modified. This information is used to track updates or changes made to each order entry.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "order_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_orders_billing_address_id",
+      "column_name": "billing_address_id",
+      "referenced_table": "synthetic.customer_addresses",
+      "referenced_column": "address_id"
+    },
+    {
+      "constraint_name": "fk_orders_customer_id",
+      "column_name": "customer_id",
+      "referenced_table": "synthetic.customers",
+      "referenced_column": "customer_id"
+    },
+    {
+      "constraint_name": "fk_orders_shipping_address_id",
+      "column_name": "shipping_address_id",
+      "referenced_table": "synthetic.customer_addresses",
+      "referenced_column": "address_id"
+    },
+    {
+      "constraint_name": "fk_orders_shipping_method_id",
+      "column_name": "shipping_method_id",
+      "referenced_table": "synthetic.shipping_methods",
+      "referenced_column": "shipping_method_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "orders_order_number_key",
+      "index_definition": "CREATE UNIQUE INDEX orders_order_number_key ON synthetic.orders USING btree (order_number)",
+      "columns": [
+        "order_number"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "orders_pkey",
+      "index_definition": "CREATE UNIQUE INDEX orders_pkey ON synthetic.orders USING btree (order_id)",
+      "columns": [
+        "order_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:41:55.871Z"
+}

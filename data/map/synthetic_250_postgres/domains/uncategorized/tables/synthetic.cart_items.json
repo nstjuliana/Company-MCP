@@ -1,0 +1,163 @@
+{
+  "table": "cart_items",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.cart_items` table represents individual items within a customer's shopping cart, where each row corresponds to a specific product variant added to a cart. Key columns include `cart_item_id` as the primary key, `cart_id` linking to a cart, `product_id` and `variant_id` identifying the product details, and `quantity` and `unit_price` capturing the purchase specifics. This table plays a central role in e-commerce operations by cataloging customer selections and providing pricing details for cart management and order processing.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "cart_item_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each item added to a cart with a sequential integer. Each value represents a distinct entry and is generated automatically as new items are added.",
+      "default": "nextval('synthetic.cart_items_cart_item_id_seq'::regclass)"
+    },
+    {
+      "name": "cart_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each shopping cart within the system, ensuring that items are correctly associated with the appropriate cart. The purpose is to track and manage items that have been added to various shopping carts by different users.",
+      "default": null
+    },
+    {
+      "name": "product_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column likely represents unique identifiers for products included in customer shopping carts. Each integer corresponds to a specific product that a customer is interested in purchasing.",
+      "default": null
+    },
+    {
+      "name": "variant_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents a numeric identifier associated with specific product variants in a shopping cart. Each number corresponds to a different variant option selected by customers.",
+      "default": null
+    },
+    {
+      "name": "quantity",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents the number of items included in a customer's shopping cart for a specific line item. It is a mandatory entry that defaults to a single item per line if not otherwise specified.",
+      "default": "1"
+    },
+    {
+      "name": "unit_price",
+      "type": "numeric",
+      "nullable": false,
+      "description": "This column represents the price per unit for items included in customer shopping carts. These prices indicate the cost assigned to individual units before the final purchase.",
+      "default": null
+    },
+    {
+      "name": "added_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "The column records the date and time when an item was added to a shopping cart. Dates and times are represented in both Central Standard and Daylight Time.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when each item was added to the cart. It helps track cart activity chronologically, although the specific purpose or usage context is unclear from the available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an item in the shopping cart was last updated. It reflects the most recent modification made to the cart item.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "cart_item_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_cart_items_cart_id",
+      "column_name": "cart_id",
+      "referenced_table": "synthetic.shopping_carts",
+      "referenced_column": "cart_id"
+    },
+    {
+      "constraint_name": "fk_cart_items_product_id",
+      "column_name": "product_id",
+      "referenced_table": "synthetic.products",
+      "referenced_column": "product_id"
+    },
+    {
+      "constraint_name": "fk_cart_items_variant_id",
+      "column_name": "variant_id",
+      "referenced_table": "synthetic.product_variants",
+      "referenced_column": "variant_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "cart_items_pkey",
+      "index_definition": "CREATE UNIQUE INDEX cart_items_pkey ON synthetic.cart_items USING btree (cart_item_id)",
+      "columns": [
+        "cart_item_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "cart_item_id": 1,
+      "cart_id": 49,
+      "product_id": 43,
+      "variant_id": 22,
+      "quantity": 170,
+      "unit_price": "61521.30",
+      "added_at": "2025-02-22T17:17:27.174Z",
+      "created_at": "2025-12-13T08:56:25.242Z",
+      "updated_at": "2025-12-13T08:56:25.242Z"
+    },
+    {
+      "cart_item_id": 2,
+      "cart_id": 24,
+      "product_id": 28,
+      "variant_id": 13,
+      "quantity": 508,
+      "unit_price": "63580.88",
+      "added_at": "2025-09-27T08:44:25.519Z",
+      "created_at": "2025-12-13T08:56:25.242Z",
+      "updated_at": "2025-12-13T08:56:25.242Z"
+    },
+    {
+      "cart_item_id": 3,
+      "cart_id": 5,
+      "product_id": 35,
+      "variant_id": 14,
+      "quantity": 294,
+      "unit_price": "26588.99",
+      "added_at": "2024-03-18T19:10:01.126Z",
+      "created_at": "2025-12-13T08:56:25.242Z",
+      "updated_at": "2025-12-13T08:56:25.242Z"
+    },
+    {
+      "cart_item_id": 4,
+      "cart_id": 20,
+      "product_id": 37,
+      "variant_id": 26,
+      "quantity": 823,
+      "unit_price": "22666.01",
+      "added_at": "2024-06-15T15:23:04.986Z",
+      "created_at": "2025-12-13T08:56:25.242Z",
+      "updated_at": "2025-12-13T08:56:25.242Z"
+    },
+    {
+      "cart_item_id": 5,
+      "cart_id": 48,
+      "product_id": 6,
+      "variant_id": 46,
+      "quantity": 864,
+      "unit_price": "57861.51",
+      "added_at": "2025-06-13T22:51:06.409Z",
+      "created_at": "2025-12-13T08:56:25.242Z",
+      "updated_at": "2025-12-13T08:56:25.242Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:41:20.401Z"
+}

@@ -1,0 +1,176 @@
+{
+  "table": "training_courses",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.training_courses` table represents a catalog of training courses, including their key attributes such as course name, code, description, category, duration, and cost. This table does not participate in any foreign key relationships, indicating that it functions independently in the data model, possibly acting as a reference for other unlisted entities. Each course entry is identified by a unique `course_id` and contains metadata about the course's creation and updates.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "course_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each training course within the system. It uses sequential integers to assign a distinct identifier to each course record.",
+      "default": "nextval('synthetic.training_courses_course_id_seq'::regclass)"
+    },
+    {
+      "name": "course_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column contains descriptive phrases that likely represent titles or themes of various training courses. The exact purpose of each entry is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "course_code",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column appears to contain unique identifiers or codes for training courses, used to distinguish one course from another. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "nullable": true,
+      "description": "This column contains brief, fragmented textual descriptions associated with training courses, reflecting various concepts or themes potentially related to course content or objectives. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "category",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column appears to categorize training courses with descriptive summaries or themes, although the exact purpose and structure of these descriptions are unclear based on the sample values.",
+      "default": null
+    },
+    {
+      "name": "duration_hours",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the duration of training courses measured in hours, suggesting variability in course lengths. Courses can have diverse durations ranging from under 100 hours to nearly 1,000 hours, reflecting different training intensities or comprehensive coverage.",
+      "default": null
+    },
+    {
+      "name": "is_mandatory",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether a training course is required for participants, with true signifying mandatory courses. Most courses appear to be optional, as reflected by the predominance of false values.",
+      "default": "false"
+    },
+    {
+      "name": "provider",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "cost",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the financial amount associated with training courses offered by the organization. The values indicate varying costs, suggesting that different courses or categories may have different pricing structures.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a training course entry was created in the system. The timestamp is typically set to the current date and time at the moment of entry creation, but it may be null.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Indicates the most recent date and time when a record in the training courses table was updated. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "course_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "training_courses_course_code_key",
+      "index_definition": "CREATE UNIQUE INDEX training_courses_course_code_key ON synthetic.training_courses USING btree (course_code)",
+      "columns": [
+        "course_code"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "training_courses_pkey",
+      "index_definition": "CREATE UNIQUE INDEX training_courses_pkey ON synthetic.training_courses USING btree (course_id)",
+      "columns": [
+        "course_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "course_id": 1,
+      "course_name": "Me off nature individual run summer month. Parent process minute.\nCrime offer treat forget sometimes...",
+      "course_code": "JTEVGICBBS",
+      "description": "Car term truth toward. Camera recent drop fall front station.",
+      "category": "Explain main difference college. Writer send under project cell.",
+      "duration_hours": "278.60",
+      "is_mandatory": true,
+      "provider": "Interview know call law truth respond try. Know it enjoy ten.",
+      "cost": "96692.22",
+      "created_at": "2025-12-13T08:54:00.447Z",
+      "updated_at": "2025-12-13T08:54:00.447Z"
+    },
+    {
+      "course_id": 2,
+      "course_name": "Religious fire under item. Fish success produce there along play account. Only the detail cultural.\n...",
+      "course_code": "SGOHWWSACU",
+      "description": "Break let five box recent relate. Style tell over reach ahead environmental Democrat.",
+      "category": "No follow push in. Interesting end area magazine despite player. Final important occur.",
+      "duration_hours": "279.12",
+      "is_mandatory": false,
+      "provider": "Really Mrs former article light. At player third general.\nEver star test once figure.",
+      "cost": "67983.86",
+      "created_at": "2025-12-13T08:54:00.447Z",
+      "updated_at": "2025-12-13T08:54:00.447Z"
+    },
+    {
+      "course_id": 3,
+      "course_name": "Follow time appear. Southern international line few service drive hotel. Relationship great stuff fi...",
+      "course_code": "RCPRPEZCST",
+      "description": "Personal wife statement tell until. Place make list themselves seek space although ahead.",
+      "category": "That capital information suffer. Kitchen report fire teach.",
+      "duration_hours": "843.66",
+      "is_mandatory": false,
+      "provider": "Study prove assume stay may rock. Common and part read. Common section study about event go.",
+      "cost": "93929.79",
+      "created_at": "2025-12-13T08:54:00.447Z",
+      "updated_at": "2025-12-13T08:54:00.447Z"
+    },
+    {
+      "course_id": 4,
+      "course_name": "Study politics top course sense. Financial here expert everything.",
+      "course_code": "PZRYSNVSGJ",
+      "description": "Message decision design end. Military piece little level.",
+      "category": "Nor probably top follow bit grow. City little from. Cost group clear national.",
+      "duration_hours": "115.34",
+      "is_mandatory": false,
+      "provider": "Over lot husband always upon doctor. Blue international especially officer or clearly coach.",
+      "cost": "17938.92",
+      "created_at": "2025-12-13T08:54:00.447Z",
+      "updated_at": "2025-12-13T08:54:00.447Z"
+    },
+    {
+      "course_id": 5,
+      "course_name": "A challenge third feeling ball door data. Right child new simply.\nCity beyond near hour defense line...",
+      "course_code": "GANMWZEPOI",
+      "description": "Analysis few behavior himself conference. Expect hit start alone. Conference huge military blood sou...",
+      "category": "Behind risk plan issue ever will ready. Try tough usually star notice.",
+      "duration_hours": "962.53",
+      "is_mandatory": false,
+      "provider": "Mention rise front PM few husband. Wear either present third.",
+      "cost": "3921.89",
+      "created_at": "2025-12-13T08:54:00.447Z",
+      "updated_at": "2025-12-13T08:54:00.447Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:41:11.174Z"
+}

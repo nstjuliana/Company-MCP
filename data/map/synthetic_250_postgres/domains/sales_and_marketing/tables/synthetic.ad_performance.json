@@ -1,0 +1,123 @@
+{
+  "table": "ad_performance",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The table \"synthetic.ad_performance\" represents the performance metrics of advertisements, with each entry uniquely identified by the \"performance_id\" primary key. Although there are no defined relationships, it may serve as a central entity for storing performance data, potentially referencing other tables for more specific details per advertisement. Without column names or data, specific metrics and their roles remain unspecified.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "performance_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each record of advertisement performance data, ensuring that each entry can be separately tracked and referenced within the dataset.",
+      "default": "nextval('synthetic.ad_performance_performance_id_seq'::regclass)"
+    },
+    {
+      "name": "ad_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each advertisement within the ad performance data. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "date",
+      "type": "date",
+      "nullable": false,
+      "description": "This column records the specific day associated with the performance metrics of advertising campaigns. It ensures that each performance entry is tied to a precise date for accurate tracking and analysis over time.",
+      "default": null
+    },
+    {
+      "name": "impressions",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely tracks the number of times an advertisement is displayed to users. Purpose unclear from available data beyond measuring ad visibility.",
+      "default": "0"
+    },
+    {
+      "name": "clicks",
+      "type": "integer",
+      "nullable": true,
+      "description": "The column represents the number of times an advertisement has been clicked by users. It may contain missing values, indicating that the click count is not always recorded.",
+      "default": "0"
+    },
+    {
+      "name": "conversions",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely tracks the number of successful customer actions resulting from advertisements, such as purchases or sign-ups. It reflects business outcomes attributed to ad campaigns.",
+      "default": "0"
+    },
+    {
+      "name": "spend",
+      "type": "numeric",
+      "nullable": true,
+      "description": "The column represents the amount of financial resources allocated to advertising activities, which can be left unspecified if zero. Purpose unclear from available data.",
+      "default": "0"
+    },
+    {
+      "name": "cpc",
+      "type": "numeric",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "cpm",
+      "type": "numeric",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "ctr",
+      "type": "numeric",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "conversion_rate",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column likely quantifies the proportion of successful outcomes or actions in relation to the total number of interactions within an advertising context. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a record in the ad performance table was created, indicating the inception of the data entry. It helps in tracking the timing of ad performance reports for analysis and auditing purposes.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Indicates the most recent date and time this advertisement performance record was updated. Purpose unclear from available data due to lack of sample values.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "performance_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_ad_performance_ad_id",
+      "column_name": "ad_id",
+      "referenced_table": "synthetic.ads",
+      "referenced_column": "ad_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "ad_performance_pkey",
+      "index_definition": "CREATE UNIQUE INDEX ad_performance_pkey ON synthetic.ad_performance USING btree (performance_id)",
+      "columns": [
+        "performance_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:40:30.469Z"
+}

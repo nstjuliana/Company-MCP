@@ -1,0 +1,147 @@
+{
+  "table": "SCHEDULES_179",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The table 'SCHEDULES_179' in the 'synthetic_250_snowflake' database represents scheduled entities characterized by specific attributes such as a unique identifier, name, description, and various date and string metrics related to visualization, dashboard, and key performance indicators (KPIs). With no foreign keys or external references, this table functions as an isolated dataset storing meta-information about scheduled events. The primary key, SCHEDULE_ID, ensures each schedule entry is distinct and traceable.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "SCHEDULE_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each schedule entry within the database, ensuring that each schedule can be distinctly referenced. Purpose unclear from available data beyond identifying individual schedules.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column appears to list unique schedule identifiers composed of a fixed base text followed by a numeric sequence. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column contains descriptive identifiers for items in the SCHEDULES_179 table, uniquely distinguishing each schedule with a specific numeric suffix. The purpose of these descriptions is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "QUERY_199_ATTR_0",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column likely represents a sequential identifier or index for scheduling entries, as indicated by the continuous series of numerical values.",
+      "default": null
+    },
+    {
+      "name": "VISUALIZATION_199_ATTR_1",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "DASHBOARD_199_ATTR_2",
+      "type": "DATE",
+      "nullable": false,
+      "description": "This column represents the scheduled dates for a recurring event or activity, occurring daily starting from December 11, 2025. The format suggests a focus on specific days with time detail included, aligning with Central Standard Time.",
+      "default": null
+    },
+    {
+      "name": "METRIC_199_ATTR_3",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "METRIC_199_ATTR_4",
+      "type": "DATE",
+      "nullable": false,
+      "description": "This column represents scheduled dates for specific events or activities that occur consecutively day by day. The dates indicate when an event is set to happen, though its exact nature is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "KPI_199_ATTR_5",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "KPI_199_ATTR_6",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column represents scheduled dates and times, likely used for tracking or planning purposes, as evidenced by the sequential daily timestamps. Purpose unclear from available data.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "SCHEDULE_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "SCHEDULE_ID": 1,
+      "NAME": "SCHEDULES_179 1",
+      "DESCRIPTION": "Description for SCHEDULES_179 1",
+      "QUERY_199_ATTR_0": 100,
+      "VISUALIZATION_199_ATTR_1": "Sample VISUALIZATION_199_ATTR_1 1",
+      "DASHBOARD_199_ATTR_2": "2025-12-12",
+      "METRIC_199_ATTR_3": "Sample METRIC_199_ATTR_3 1",
+      "METRIC_199_ATTR_4": "2025-12-12",
+      "KPI_199_ATTR_5": "Sample KPI_199_ATTR_5 1",
+      "KPI_199_ATTR_6": "2025-12-12 00:00:00.000"
+    },
+    {
+      "SCHEDULE_ID": 2,
+      "NAME": "SCHEDULES_179 2",
+      "DESCRIPTION": "Description for SCHEDULES_179 2",
+      "QUERY_199_ATTR_0": 101,
+      "VISUALIZATION_199_ATTR_1": "Sample VISUALIZATION_199_ATTR_1 2",
+      "DASHBOARD_199_ATTR_2": "2025-12-13",
+      "METRIC_199_ATTR_3": "Sample METRIC_199_ATTR_3 2",
+      "METRIC_199_ATTR_4": "2025-12-13",
+      "KPI_199_ATTR_5": "Sample KPI_199_ATTR_5 2",
+      "KPI_199_ATTR_6": "2025-12-13 00:00:00.000"
+    },
+    {
+      "SCHEDULE_ID": 3,
+      "NAME": "SCHEDULES_179 3",
+      "DESCRIPTION": "Description for SCHEDULES_179 3",
+      "QUERY_199_ATTR_0": 102,
+      "VISUALIZATION_199_ATTR_1": "Sample VISUALIZATION_199_ATTR_1 3",
+      "DASHBOARD_199_ATTR_2": "2025-12-14",
+      "METRIC_199_ATTR_3": "Sample METRIC_199_ATTR_3 3",
+      "METRIC_199_ATTR_4": "2025-12-14",
+      "KPI_199_ATTR_5": "Sample KPI_199_ATTR_5 3",
+      "KPI_199_ATTR_6": "2025-12-14 00:00:00.000"
+    },
+    {
+      "SCHEDULE_ID": 4,
+      "NAME": "SCHEDULES_179 4",
+      "DESCRIPTION": "Description for SCHEDULES_179 4",
+      "QUERY_199_ATTR_0": 103,
+      "VISUALIZATION_199_ATTR_1": "Sample VISUALIZATION_199_ATTR_1 4",
+      "DASHBOARD_199_ATTR_2": "2025-12-15",
+      "METRIC_199_ATTR_3": "Sample METRIC_199_ATTR_3 4",
+      "METRIC_199_ATTR_4": "2025-12-15",
+      "KPI_199_ATTR_5": "Sample KPI_199_ATTR_5 4",
+      "KPI_199_ATTR_6": "2025-12-15 00:00:00.000"
+    },
+    {
+      "SCHEDULE_ID": 5,
+      "NAME": "SCHEDULES_179 5",
+      "DESCRIPTION": "Description for SCHEDULES_179 5",
+      "QUERY_199_ATTR_0": 104,
+      "VISUALIZATION_199_ATTR_1": "Sample VISUALIZATION_199_ATTR_1 5",
+      "DASHBOARD_199_ATTR_2": "2025-12-16",
+      "METRIC_199_ATTR_3": "Sample METRIC_199_ATTR_3 5",
+      "METRIC_199_ATTR_4": "2025-12-16",
+      "KPI_199_ATTR_5": "Sample KPI_199_ATTR_5 5",
+      "KPI_199_ATTR_6": "2025-12-16 00:00:00.000"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:49.425Z"
+}

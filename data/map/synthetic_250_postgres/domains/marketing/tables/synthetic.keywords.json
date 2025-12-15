@@ -1,0 +1,151 @@
+{
+  "table": "keywords",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.keywords\" table represents keywords associated with advertising campaigns, where each entry identifies a unique keyword linked to an ad group, its match type, bid amount, quality score, and status within the campaign lifecycle. The table references another table through the \"ad_group_id\" to associate keywords with specific ad groups, but no further table information is specified. Its role in the data model likely includes facilitating keyword performance tracking and optimization by providing essential details like bid amounts and quality scores.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "keyword_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each keyword within the dataset, incrementing sequentially to distinguish individual records. Purpose unclear from available data.",
+      "default": "nextval('synthetic.keywords_keyword_id_seq'::regclass)"
+    },
+    {
+      "name": "ad_group_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column appears to represent identifier numbers for groups related to advertisements. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "keyword",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column contains descriptive phrases or sentences, likely used for categorizing or identifying various topics or themes within records. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "match_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "bid_amount",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the monetary amount associated with bids, potentially indicating the cost or price for keywords in marketing or advertising auctions. The purpose is to track or analyze variations in bid amounts across different instances or campaigns.",
+      "default": null
+    },
+    {
+      "name": "quality_score",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents a numerical evaluation of the quality associated with each keyword in a table, with higher scores indicating better quality. The purpose or criteria for determining the quality score are unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column indicates the current state of a keyword, showing whether it's in use ('active'), temporarily on hold ('pending'), or not in use ('inactive'). Purpose unclear from available data.",
+      "default": "'active'::character varying"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column represents the date and time when a record in the keywords table was created or logged. It defaults to the current timestamp if no value is provided, but it may also be left empty.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the last update date and time for the keyword entries in the dataset. It indicates when the data was most recently modified or confirmed.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "keyword_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_keywords_ad_group_id",
+      "column_name": "ad_group_id",
+      "referenced_table": "synthetic.ad_groups",
+      "referenced_column": "ad_group_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "keywords_pkey",
+      "index_definition": "CREATE UNIQUE INDEX keywords_pkey ON synthetic.keywords USING btree (keyword_id)",
+      "columns": [
+        "keyword_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "keyword_id": 1,
+      "ad_group_id": 40,
+      "keyword": "Field executive structure clearly. Quite thing board build.",
+      "match_type": "Technology message wind outside line.",
+      "bid_amount": "6380.91",
+      "quality_score": 957,
+      "status": "pending",
+      "created_at": "2025-12-13T09:14:56.646Z",
+      "updated_at": "2025-12-13T09:14:56.646Z"
+    },
+    {
+      "keyword_id": 2,
+      "ad_group_id": 31,
+      "keyword": "Assume all international middle me cup including. Series simply home measure use.",
+      "match_type": "Concern professor score first what my hundred.",
+      "bid_amount": "6596.25",
+      "quality_score": 17,
+      "status": "active",
+      "created_at": "2025-12-13T09:14:56.646Z",
+      "updated_at": "2025-12-13T09:14:56.646Z"
+    },
+    {
+      "keyword_id": 3,
+      "ad_group_id": 35,
+      "keyword": "Walk carry back tough thank step quality.",
+      "match_type": "Maintain around make subject response guess term.",
+      "bid_amount": "5520.92",
+      "quality_score": 13,
+      "status": "active",
+      "created_at": "2025-12-13T09:14:56.646Z",
+      "updated_at": "2025-12-13T09:14:56.646Z"
+    },
+    {
+      "keyword_id": 4,
+      "ad_group_id": 34,
+      "keyword": "Hair north ready hand officer behavior. Describe level attack summer politics.",
+      "match_type": "Majority field skill drop Mr.",
+      "bid_amount": "7224.71",
+      "quality_score": 549,
+      "status": "inactive",
+      "created_at": "2025-12-13T09:14:56.646Z",
+      "updated_at": "2025-12-13T09:14:56.646Z"
+    },
+    {
+      "keyword_id": 5,
+      "ad_group_id": 2,
+      "keyword": "Different defense happen fill. Throughout person generation charge remember.",
+      "match_type": "This realize suggest less.",
+      "bid_amount": "5027.14",
+      "quality_score": 715,
+      "status": "pending",
+      "created_at": "2025-12-13T09:14:56.646Z",
+      "updated_at": "2025-12-13T09:14:56.646Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:43:23.559Z"
+}

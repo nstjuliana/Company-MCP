@@ -1,0 +1,187 @@
+{
+  "table": "utm_tracking",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.utm_tracking` table stores information about UTM tracking parameters for digital marketing campaigns, capturing data such as the source (`utm_source`), medium (`utm_medium`), campaign (`utm_campaign`), term (`utm_term`), and content (`utm_content`) associated with various campaigns identified by `campaign_id`. The table plays a key role in tracking the performance of marketing campaigns through generated URLs (`destination_url` and `short_url`) and records metrics such as `clicks`. It serves as a reference for analyzing campaign effectiveness, though it currently has no defined relationships with other tables.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "tracking_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "An incrementing identifier used to uniquely distinguish individual records within the tracking system. Purpose unclear from available data.",
+      "default": "nextval('synthetic.utm_tracking_tracking_id_seq'::regclass)"
+    },
+    {
+      "name": "campaign_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents unique identifiers for different marketing campaigns associated with UTM tracking. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "utm_source",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column may capture text data related to various sources or origins of traffic, messages, or actions, as suggested by phrases like \"prevent voice,\" \"share site,\" and \"change a.\" However, the specific purpose is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "utm_medium",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values do not provide a clear indication of what this column specifically represents in business terms.",
+      "default": null
+    },
+    {
+      "name": "utm_campaign",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "utm_term",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column contains text data that appears to represent various phrases or keywords, potentially used to track marketing or campaign terms related to user engagement or content interactions. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "utm_content",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The content appears to be a varied and unstructured set of phrases or statements.",
+      "default": null
+    },
+    {
+      "name": "destination_url",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely contains URLs that serve as target web addresses for tracking purposes. These links may be used to redirect users from various marketing or campaign sources to the intended webpage.",
+      "default": null
+    },
+    {
+      "name": "short_url",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column contains shortened versions of URLs that are likely used for tracking purposes in marketing campaigns. These URLs redirect users to specific web pages within different business domains.",
+      "default": null
+    },
+    {
+      "name": "clicks",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents the number of times users have clicked on tracked links or advertisements, which is useful for analyzing the effectiveness and engagement of digital marketing campaigns. Purpose unclear from available data.",
+      "default": "0"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column captures the timestamp for when a UTM tracking entity was recorded or updated. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column likely records the most recent timestamp when a row in the utm_tracking table was modified. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "tracking_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_utm_tracking_campaign_id",
+      "column_name": "campaign_id",
+      "referenced_table": "synthetic.marketing_campaigns",
+      "referenced_column": "campaign_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "utm_tracking_pkey",
+      "index_definition": "CREATE UNIQUE INDEX utm_tracking_pkey ON synthetic.utm_tracking USING btree (tracking_id)",
+      "columns": [
+        "tracking_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "tracking_id": 1,
+      "campaign_id": 8,
+      "utm_source": "Everybody each prevent voice none. Picture compare line you.",
+      "utm_medium": "Contain huge begin. Commercial like than beyond quite reality situation time.",
+      "utm_campaign": "Scene discover kid assume mother trouble. Hospital evening prevent require.",
+      "utm_term": "History firm somebody condition deal. Lay table century staff within operation.",
+      "utm_content": "Audience discuss employee surface. Especially cold discuss.",
+      "destination_url": "https://estrada.com/",
+      "short_url": "http://www.robinson.com/",
+      "clicks": 247,
+      "created_at": "2025-12-13T09:15:13.617Z",
+      "updated_at": "2025-12-13T09:15:13.617Z"
+    },
+    {
+      "tracking_id": 2,
+      "campaign_id": 32,
+      "utm_source": "If talk table. Start detail bring fill mention office.\nOffice set property both.",
+      "utm_medium": "Compare white herself statement usually short. Become center right glass.",
+      "utm_campaign": "Hear news head say certainly home. Eat rock treatment involve discussion.",
+      "utm_term": "Ready gun study individual. Film respond ever allow recently home. Sort popular this also.",
+      "utm_content": "Wrong interesting two pick. Address why this minute.\nLearn Democrat condition open quality hope.",
+      "destination_url": "https://www.barnett.com/",
+      "short_url": "http://nolan-berry.biz/",
+      "clicks": 654,
+      "created_at": "2025-12-13T09:15:13.617Z",
+      "updated_at": "2025-12-13T09:15:13.617Z"
+    },
+    {
+      "tracking_id": 3,
+      "campaign_id": 39,
+      "utm_source": "Source next share site. Prevent human same finish. Approach identify us.\nSkill push chance market.",
+      "utm_medium": "Bed indicate seem. Put doctor water military country.",
+      "utm_campaign": "Experience agency already game rule piece bag.\nMean soon network really ago.",
+      "utm_term": "Tv anything sea. Share big phone upon two.",
+      "utm_content": "Indicate interview respond keep husband. In up speak water trade particularly.",
+      "destination_url": "http://www.carter.com/",
+      "short_url": "https://griffin.com/",
+      "clicks": 73,
+      "created_at": "2025-12-13T09:15:13.617Z",
+      "updated_at": "2025-12-13T09:15:13.617Z"
+    },
+    {
+      "tracking_id": 4,
+      "campaign_id": 34,
+      "utm_source": "Recently leg major Mrs begin control bit no. Fill ready have money.",
+      "utm_medium": "Start response become girl sure field around fly. Community community population total.",
+      "utm_campaign": "Believe you why tend star season service. Leave a family test bed tree. Act world tend budget.",
+      "utm_term": "Hard address you perhaps space. Without hot car want third perhaps then could.",
+      "utm_content": "Indeed between amount stuff pay. Sing according clearly cell.",
+      "destination_url": "https://black-hernandez.net/",
+      "short_url": "http://www.maynard.info/",
+      "clicks": 911,
+      "created_at": "2025-12-13T09:15:13.617Z",
+      "updated_at": "2025-12-13T09:15:13.617Z"
+    },
+    {
+      "tracking_id": 5,
+      "campaign_id": 1,
+      "utm_source": "Discussion charge case evening. Outside exactly few including voice difficult.",
+      "utm_medium": "Herself heavy conference quality media data notice. Task and today eight defense.",
+      "utm_campaign": "Center effect rich suffer power. Instead strategy say particularly.\nAs support design prove ball.",
+      "utm_term": "Impact simple decide court state sister job now. Research myself then cold break.",
+      "utm_content": "Lose again can maintain ready. International school sense fill early remain street.",
+      "destination_url": "https://www.black.org/",
+      "short_url": "http://hall.com/",
+      "clicks": 370,
+      "created_at": "2025-12-13T09:15:13.617Z",
+      "updated_at": "2025-12-13T09:15:13.617Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:40:39.078Z"
+}

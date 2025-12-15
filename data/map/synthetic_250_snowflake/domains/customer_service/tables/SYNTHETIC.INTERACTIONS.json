@@ -1,0 +1,135 @@
+{
+  "table": "INTERACTIONS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.INTERACTIONS table represents a collection of interaction records, each uniquely identified by INTERACTION_ID, capturing details such as interaction attributes and metadata such as creation time. The table appears to store descriptive information and timestamps about different interactions, but it stands alone in the database with no direct relationships to other tables. This table's primary function is to maintain detailed records of individual interactions, which may pertain to cases, surveys, or other categorized attributes as suggested by the column names and sample data.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "INTERACTION_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column uniquely identifies each interaction record within the dataset. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column likely represents a sequential identifier or label for different interaction records in the system. These labels appear to be systematically named, possibly for organizing or referencing specific interaction instances.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains descriptive text associated with individual interaction records, offering context or details specific to each interaction. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "INTERACTION_153_ATTR_0",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values do not provide sufficient context to determine the business significance of this column.",
+      "default": null
+    },
+    {
+      "name": "KNOWLEDGE_153_ATTR_1",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column appears to categorize or identify a characteristic or attribute associated with interactions, potentially serving as an identifier for a particular type of knowledge or interaction instance. Purpose is unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "INTERACTION_153_ATTR_2",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "SURVEY_153_ATTR_3",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column likely records specific timestamps related to survey interactions or events occurring in mid-December 2025, potentially indicating moments for engagements or activities tied to the survey mentioned. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CASE_153_ATTR_4",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "Purpose unclear from available data. The values suggest a series of sample identifiers or tests without additional context.",
+      "default": null
+    },
+    {
+      "name": "CREATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column captures the exact date and time when an interaction record is initially created, using the server's current time. This is essential for tracking the timeline and sequence of interactions.",
+      "default": "CURRENT_TIMESTAMP()"
+    }
+  ],
+  "primary_key": [
+    "INTERACTION_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "INTERACTION_ID": 1,
+      "NAME": "INTERACTIONS 1",
+      "DESCRIPTION": "Description for INTERACTIONS 1",
+      "INTERACTION_153_ATTR_0": "Sample INTERACTION_153_ATTR_0 1",
+      "KNOWLEDGE_153_ATTR_1": null,
+      "INTERACTION_153_ATTR_2": "Sample INTERACTION_153_ATTR_2 1",
+      "SURVEY_153_ATTR_3": "2025-12-12 00:00:00.000",
+      "CASE_153_ATTR_4": "Sample CASE_153_ATTR_4 1",
+      "CREATED_AT": "2025-12-12 17:26:31.054"
+    },
+    {
+      "INTERACTION_ID": 2,
+      "NAME": "INTERACTIONS 2",
+      "DESCRIPTION": "Description for INTERACTIONS 2",
+      "INTERACTION_153_ATTR_0": "Sample INTERACTION_153_ATTR_0 2",
+      "KNOWLEDGE_153_ATTR_1": 101,
+      "INTERACTION_153_ATTR_2": "Sample INTERACTION_153_ATTR_2 2",
+      "SURVEY_153_ATTR_3": "2025-12-13 00:00:00.000",
+      "CASE_153_ATTR_4": "Sample CASE_153_ATTR_4 2",
+      "CREATED_AT": "2025-12-12 17:26:31.054"
+    },
+    {
+      "INTERACTION_ID": 3,
+      "NAME": "INTERACTIONS 3",
+      "DESCRIPTION": "Description for INTERACTIONS 3",
+      "INTERACTION_153_ATTR_0": "Sample INTERACTION_153_ATTR_0 3",
+      "KNOWLEDGE_153_ATTR_1": 102,
+      "INTERACTION_153_ATTR_2": "Sample INTERACTION_153_ATTR_2 3",
+      "SURVEY_153_ATTR_3": "2025-12-14 00:00:00.000",
+      "CASE_153_ATTR_4": "Sample CASE_153_ATTR_4 3",
+      "CREATED_AT": "2025-12-12 17:26:31.054"
+    },
+    {
+      "INTERACTION_ID": 4,
+      "NAME": "INTERACTIONS 4",
+      "DESCRIPTION": "Description for INTERACTIONS 4",
+      "INTERACTION_153_ATTR_0": "Sample INTERACTION_153_ATTR_0 4",
+      "KNOWLEDGE_153_ATTR_1": null,
+      "INTERACTION_153_ATTR_2": "Sample INTERACTION_153_ATTR_2 4",
+      "SURVEY_153_ATTR_3": "2025-12-15 00:00:00.000",
+      "CASE_153_ATTR_4": "Sample CASE_153_ATTR_4 4",
+      "CREATED_AT": "2025-12-12 17:26:31.054"
+    },
+    {
+      "INTERACTION_ID": 5,
+      "NAME": "INTERACTIONS 5",
+      "DESCRIPTION": "Description for INTERACTIONS 5",
+      "INTERACTION_153_ATTR_0": "Sample INTERACTION_153_ATTR_0 5",
+      "KNOWLEDGE_153_ATTR_1": 104,
+      "INTERACTION_153_ATTR_2": "Sample INTERACTION_153_ATTR_2 5",
+      "SURVEY_153_ATTR_3": "2025-12-16 00:00:00.000",
+      "CASE_153_ATTR_4": "Sample CASE_153_ATTR_4 5",
+      "CREATED_AT": "2025-12-12 17:26:31.054"
+    }
+  ],
+  "generated_at": "2025-12-14T23:42:57.562Z"
+}

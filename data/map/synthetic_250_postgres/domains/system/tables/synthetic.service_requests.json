@@ -1,0 +1,188 @@
+{
+  "table": "service_requests",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.service_requests` table represents a collection of service request records, each uniquely identified by the primary key `request_id`. The table captures various attributes of a service request including descriptors like `title`, `description`, `category`, `priority`, and `status`, along with metadata such as `requested_by`, `assigned_to`, `fulfilled_at`, `created_at`, and `updated_at`. As there are no foreign key relationships, this table functions independently within the database, likely serving as a record-keeping structure for service operations and their lifecycle statuses.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "request_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each service request in a sequential and incremental manner. It serves as a unique identifier to track individual entries within the service requests table.",
+      "default": "nextval('synthetic.service_requests_request_id_seq'::regclass)"
+    },
+    {
+      "name": "request_number",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column represents unique identifiers assigned to individual service requests. It is used to distinguish and track each request within the system.",
+      "default": null
+    },
+    {
+      "name": "title",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column contains brief, descriptive phrases likely summarizing service requests or issues. Based on the varied and abstract nature of the samples, the exact purpose or context of these summaries is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "nullable": true,
+      "description": "The column holds textual narratives or summaries related to a variety of topics, potentially capturing customer experience or incident details in service requests. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "category",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "priority",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column indicates the current status of a service request, with possible states such as inactive, active, or pending. These terms reflect the progression or condition of each service request within the system.",
+      "default": "'new'::character varying"
+    },
+    {
+      "name": "requested_by",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents an identifier for individuals or entities that have made a service request. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "assigned_to",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents identifiers for employees or agents to whom service requests are assigned. The purpose of these specific values is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "fulfilled_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when service requests are completed. It reflects moments in both Central Standard and Central Daylight Time, indicating fulfillment across different times of the year.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column indicates the date and time when each service request was initially created. The values reflect the initiation times in the Central Standard Time zone.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a service request was most recently updated, allowing for tracking changes over time. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "request_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "service_requests_pkey",
+      "index_definition": "CREATE UNIQUE INDEX service_requests_pkey ON synthetic.service_requests USING btree (request_id)",
+      "columns": [
+        "request_id"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "service_requests_request_number_key",
+      "index_definition": "CREATE UNIQUE INDEX service_requests_request_number_key ON synthetic.service_requests USING btree (request_number)",
+      "columns": [
+        "request_number"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "request_id": 1,
+      "request_number": "455799900725668",
+      "title": "Capital economic high decide.",
+      "description": "Land money cup recently positive have. Expect door magazine. West you paper source prevent popular s...",
+      "category": "That him design bag instead. Foreign later word speak air painting.",
+      "priority": "Near last thought.",
+      "status": "inactive",
+      "requested_by": 27,
+      "assigned_to": 94,
+      "fulfilled_at": "2025-02-27T02:39:36.201Z",
+      "created_at": "2025-12-13T09:16:07.329Z",
+      "updated_at": "2025-12-13T09:16:07.329Z"
+    },
+    {
+      "request_id": 2,
+      "request_number": "969087863914183",
+      "title": "Once second tonight experience.",
+      "description": "So employee everything leader laugh.",
+      "category": "Large collection next think direction.",
+      "priority": "Sport fly spring.",
+      "status": "active",
+      "requested_by": 985,
+      "assigned_to": 691,
+      "fulfilled_at": "2025-07-27T05:42:11.955Z",
+      "created_at": "2025-12-13T09:16:07.329Z",
+      "updated_at": "2025-12-13T09:16:07.329Z"
+    },
+    {
+      "request_id": 3,
+      "request_number": "317718626678616",
+      "title": "Somebody she hot.",
+      "description": "Drop voice central son. Field standard middle field. Education however speak everybody main air fine...",
+      "category": "Stage whole power expert car. Herself answer must all baby computer most.",
+      "priority": "Fight property hear.",
+      "status": "pending",
+      "requested_by": 602,
+      "assigned_to": 974,
+      "fulfilled_at": "2024-12-30T21:25:22.935Z",
+      "created_at": "2025-12-13T09:16:07.329Z",
+      "updated_at": "2025-12-13T09:16:07.329Z"
+    },
+    {
+      "request_id": 4,
+      "request_number": "969001923315240",
+      "title": "Throughout but finish.",
+      "description": "Method environment soon left military wish. Prepare company last true. Sea culture drop dream forget...",
+      "category": "Behavior environment someone. Hour her increase step protect compare offer.",
+      "priority": "Hope school walk.",
+      "status": "active",
+      "requested_by": 784,
+      "assigned_to": 689,
+      "fulfilled_at": "2024-09-03T01:13:38.616Z",
+      "created_at": "2025-12-13T09:16:07.329Z",
+      "updated_at": "2025-12-13T09:16:07.329Z"
+    },
+    {
+      "request_id": 5,
+      "request_number": "612038467264401",
+      "title": "Want send pay relate member.",
+      "description": "Throughout quickly still word. Theory political stay garden resource stand. Stop mouth tell south. M...",
+      "category": "Exist represent somebody suggest each share simple. Pull peace me same adult recognize movie.",
+      "priority": "Probably your stay.",
+      "status": "inactive",
+      "requested_by": 591,
+      "assigned_to": 42,
+      "fulfilled_at": "2024-08-24T09:21:37.779Z",
+      "created_at": "2025-12-13T09:16:07.329Z",
+      "updated_at": "2025-12-13T09:16:07.329Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:31.127Z"
+}

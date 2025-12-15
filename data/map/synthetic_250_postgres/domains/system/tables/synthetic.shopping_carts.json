@@ -1,0 +1,163 @@
+{
+  "table": "shopping_carts",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"shopping_carts\" table in the \"synthetic_250_postgres\" database represents the e-commerce shopping carts used by customers. It tracks attributes such as the customer ID, session details, monetary totals (subtotal, discount, tax), and timestamps of last activity, creation, and update. Although there are undefined foreign key relationships, the presence of \"customer_id\" suggests interaction with a customer-related table, highlighting this table's central role in capturing the transactional context of a shopping cart within an online retail system.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "cart_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents the unique identifier for individual shopping carts within the system. Each number in the sequence distinguishes a separate shopping cart.",
+      "default": "nextval('synthetic.shopping_carts_cart_id_seq'::regclass)"
+    },
+    {
+      "name": "customer_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents a unique identifier for customers associated with various shopping carts. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "session_id",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "currency",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column represents the type of currency used in transactions within shopping carts. It defaults to US dollars but can include other currencies such as euros, Japanese yen, Canadian dollars, and British pounds.",
+      "default": "'USD'::character varying"
+    },
+    {
+      "name": "subtotal",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the total monetary amount of items in a shopping cart before any discounts or taxes are applied. The values suggest typical shopping cart totals, reflecting varied spending patterns of customers.",
+      "default": "0"
+    },
+    {
+      "name": "discount_total",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column likely represents the total discount applied to a customer's shopping cart during a transaction. The figures suggest monetary amounts, indicating cost savings given in various transaction entries.",
+      "default": "0"
+    },
+    {
+      "name": "tax_total",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the total tax amount associated with a shopping cart transaction. The values indicate the tax applied to purchases, which can vary widely, suggesting diverse cart values and potential tax rates.",
+      "default": "0"
+    },
+    {
+      "name": "last_activity",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time of the most recent interaction or update associated with a shopping cart. It helps track user activity within the shopping cart over time.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a shopping cart was created. The value defaults to the current system timestamp at the moment of creation.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a shopping cart was last modified or updated. It automatically captures the current timestamp when a change occurs, indicating the most recent activity within the cart.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "cart_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_shopping_carts_customer_id",
+      "column_name": "customer_id",
+      "referenced_table": "synthetic.customers",
+      "referenced_column": "customer_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "shopping_carts_pkey",
+      "index_definition": "CREATE UNIQUE INDEX shopping_carts_pkey ON synthetic.shopping_carts USING btree (cart_id)",
+      "columns": [
+        "cart_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "cart_id": 1,
+      "customer_id": 20,
+      "session_id": "Scientist coach structure. Task which professor however finish. Create ready appear.",
+      "currency": "EUR",
+      "subtotal": "209.84",
+      "discount_total": "981.11",
+      "tax_total": "424.81",
+      "last_activity": "2025-02-12T22:55:39.908Z",
+      "created_at": "2025-12-13T08:56:20.655Z",
+      "updated_at": "2025-12-13T08:56:20.655Z"
+    },
+    {
+      "cart_id": 2,
+      "customer_id": 49,
+      "session_id": "White born plan cut book. Mind major about road information.",
+      "currency": "USD",
+      "subtotal": "77.74",
+      "discount_total": "774.69",
+      "tax_total": "757.33",
+      "last_activity": "2025-03-27T18:03:44.218Z",
+      "created_at": "2025-12-13T08:56:20.655Z",
+      "updated_at": "2025-12-13T08:56:20.655Z"
+    },
+    {
+      "cart_id": 3,
+      "customer_id": 3,
+      "session_id": "Size will sport pretty. Pull build wait gun.",
+      "currency": "EUR",
+      "subtotal": "107.82",
+      "discount_total": "793.06",
+      "tax_total": "513.48",
+      "last_activity": "2025-10-22T21:15:34.995Z",
+      "created_at": "2025-12-13T08:56:20.655Z",
+      "updated_at": "2025-12-13T08:56:20.655Z"
+    },
+    {
+      "cart_id": 4,
+      "customer_id": 4,
+      "session_id": "Mind want ok everything. Necessary bank never gun hard east role. Great magazine hit.",
+      "currency": "JPY",
+      "subtotal": "118.92",
+      "discount_total": "253.01",
+      "tax_total": "66.25",
+      "last_activity": "2025-10-21T16:45:57.489Z",
+      "created_at": "2025-12-13T08:56:20.655Z",
+      "updated_at": "2025-12-13T08:56:20.655Z"
+    },
+    {
+      "cart_id": 5,
+      "customer_id": 43,
+      "session_id": "President civil yes.",
+      "currency": "USD",
+      "subtotal": "754.55",
+      "discount_total": "782.37",
+      "tax_total": "920.10",
+      "last_activity": "2025-03-23T18:11:21.764Z",
+      "created_at": "2025-12-13T08:56:20.655Z",
+      "updated_at": "2025-12-13T08:56:20.655Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:30.819Z"
+}

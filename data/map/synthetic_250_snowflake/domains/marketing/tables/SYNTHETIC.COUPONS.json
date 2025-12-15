@@ -1,0 +1,123 @@
+{
+  "table": "COUPONS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.COUPONS table represents a collection of coupon records, each uniquely identified by the COUPON_ID, which serves as the primary key. It contains information about coupon attributes such as NAME and DESCRIPTION, with some additional fields likely linked to specific transactions or reviews indicated by CHECKOUT_197_ATTR_* and REVIEW_197_ATTR_* attributes. The table seems to function as a standalone entity within the data model, without direct relationships to other tables, storing details potentially used for marketing or discount tracking.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "COUPON_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each coupon within the database, allowing each coupon entry to be distinctly differentiated.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column represents a sequential naming pattern for a series of coupon entries, indicated by the incrementing numerical suffixes. Each entry appears to label a distinct coupon instance within the dataset.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column likely stores descriptive narratives related to individual coupon entries, which appear to be sequentially numbered. The purpose of these descriptions is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "CHECKOUT_197_ATTR_0",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data. Such sample values suggest a sequential label or placeholder text with no clear business meaning.",
+      "default": null
+    },
+    {
+      "name": "REVIEW_197_ATTR_1",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "REVIEW_197_ATTR_2",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column appears to represent a categorical identifier or code related to reviews, as suggested by the sample values which are sequential numbers potentially assigned to categorize or tag specific reviews. Purpose unclear from available data.",
+      "default": "59"
+    },
+    {
+      "name": "CHECKOUT_197_ATTR_3",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column appears to represent a coded attribute linked to the checkout process, possibly indicating a specific status, category, or type of transaction. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "WISHLIST_197_ATTR_4",
+      "type": "DATE",
+      "nullable": false,
+      "description": "This column likely represents sequential dates associated with an entity or event related to \"wishlist\" activities within the context of coupons. Purpose unclear from available data.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "COUPON_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "COUPON_ID": 1,
+      "NAME": "COUPONS 1",
+      "DESCRIPTION": "Description for COUPONS 1",
+      "CHECKOUT_197_ATTR_0": "Sample CHECKOUT_197_ATTR_0 1",
+      "REVIEW_197_ATTR_1": null,
+      "REVIEW_197_ATTR_2": null,
+      "CHECKOUT_197_ATTR_3": null,
+      "WISHLIST_197_ATTR_4": "2025-12-12"
+    },
+    {
+      "COUPON_ID": 2,
+      "NAME": "COUPONS 2",
+      "DESCRIPTION": "Description for COUPONS 2",
+      "CHECKOUT_197_ATTR_0": "Sample CHECKOUT_197_ATTR_0 2",
+      "REVIEW_197_ATTR_1": 101,
+      "REVIEW_197_ATTR_2": 101,
+      "CHECKOUT_197_ATTR_3": 101,
+      "WISHLIST_197_ATTR_4": "2025-12-13"
+    },
+    {
+      "COUPON_ID": 3,
+      "NAME": "COUPONS 3",
+      "DESCRIPTION": "Description for COUPONS 3",
+      "CHECKOUT_197_ATTR_0": "Sample CHECKOUT_197_ATTR_0 3",
+      "REVIEW_197_ATTR_1": 102,
+      "REVIEW_197_ATTR_2": 102,
+      "CHECKOUT_197_ATTR_3": 102,
+      "WISHLIST_197_ATTR_4": "2025-12-14"
+    },
+    {
+      "COUPON_ID": 4,
+      "NAME": "COUPONS 4",
+      "DESCRIPTION": "Description for COUPONS 4",
+      "CHECKOUT_197_ATTR_0": "Sample CHECKOUT_197_ATTR_0 4",
+      "REVIEW_197_ATTR_1": null,
+      "REVIEW_197_ATTR_2": null,
+      "CHECKOUT_197_ATTR_3": null,
+      "WISHLIST_197_ATTR_4": "2025-12-15"
+    },
+    {
+      "COUPON_ID": 5,
+      "NAME": "COUPONS 5",
+      "DESCRIPTION": "Description for COUPONS 5",
+      "CHECKOUT_197_ATTR_0": "Sample CHECKOUT_197_ATTR_0 5",
+      "REVIEW_197_ATTR_1": 104,
+      "REVIEW_197_ATTR_2": 104,
+      "CHECKOUT_197_ATTR_3": 104,
+      "WISHLIST_197_ATTR_4": "2025-12-16"
+    }
+  ],
+  "generated_at": "2025-12-14T23:42:35.699Z"
+}

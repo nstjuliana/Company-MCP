@@ -1,0 +1,205 @@
+{
+  "table": "course_sections",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.course_sections` table represents individual sections of courses offered, detailing information such as the section number, term, and associated instructor. It likely depends on foreign keys for course, term, instructor, and potentially room relationships, although these relationships are unspecified. The table tracks each section's enrollment details, scheduling, and status, serving a crucial role in managing class offerings and logistics within the educational data model.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "section_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a uniquely assigned identifier for each course section within the table. It ensures each section can be individually referenced.",
+      "default": "nextval('synthetic.course_sections_section_id_seq'::regclass)"
+    },
+    {
+      "name": "course_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents the unique identifier for different course sections, indicating which section a course belongs to. The values suggest a variety of course offerings without specifying the exact courses.",
+      "default": null
+    },
+    {
+      "name": "section_number",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column likely represents unique identifiers for course sections. Purpose unclear from available data, as the values do not suggest a specific pattern or categorization.",
+      "default": null
+    },
+    {
+      "name": "term_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column identifies the term during which a course section is offered, represented by a unique numeric identifier. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "instructor_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column identifies the individual responsible for teaching or leading a specific course section by assigning a unique numerical identifier to each instructor. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "room_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "max_enrollment",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents the maximum number of students allowed to enroll in a particular course section, indicating the capacity limit for each course offering. The values suggest varying enrollment limits across different sections, ranging from very small to large capacities.",
+      "default": null
+    },
+    {
+      "name": "current_enrollment",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents the number of students currently enrolled in a specific course section. The values indicate varying enrollment levels, suggesting a range of class sizes.",
+      "default": "0"
+    },
+    {
+      "name": "schedule",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Indicates the current operational state of course sections, such as whether a section is currently active, pending, or inactive. Purpose unclear from available data.",
+      "default": "'open'::character varying"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a course section was created. The purpose is to track the creation timestamp of entries in the course_sections table.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column indicates the last time a record in the course_sections table was modified, recorded in a timestamp format. The exact purpose of this data is unclear from the available information.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "section_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_course_sections_course_id",
+      "column_name": "course_id",
+      "referenced_table": "synthetic.courses",
+      "referenced_column": "course_id"
+    },
+    {
+      "constraint_name": "fk_course_sections_instructor_id",
+      "column_name": "instructor_id",
+      "referenced_table": "synthetic.instructors",
+      "referenced_column": "instructor_id"
+    },
+    {
+      "constraint_name": "fk_course_sections_room_id",
+      "column_name": "room_id",
+      "referenced_table": "synthetic.classrooms",
+      "referenced_column": "room_id"
+    },
+    {
+      "constraint_name": "fk_course_sections_term_id",
+      "column_name": "term_id",
+      "referenced_table": "synthetic.academic_terms",
+      "referenced_column": "term_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "course_sections_pkey",
+      "index_definition": "CREATE UNIQUE INDEX course_sections_pkey ON synthetic.course_sections USING btree (section_id)",
+      "columns": [
+        "section_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "section_id": 1,
+      "course_id": 34,
+      "section_number": "1691957594",
+      "term_id": 24,
+      "instructor_id": 25,
+      "room_id": null,
+      "max_enrollment": 481,
+      "current_enrollment": 940,
+      "schedule": "Role economy enough off itself feeling tell. Sea chair chair argue past mission son.",
+      "status": "inactive",
+      "created_at": "2025-12-13T09:18:55.168Z",
+      "updated_at": "2025-12-13T09:18:55.168Z"
+    },
+    {
+      "section_id": 2,
+      "course_id": 3,
+      "section_number": "0315567752",
+      "term_id": 3,
+      "instructor_id": 42,
+      "room_id": null,
+      "max_enrollment": 332,
+      "current_enrollment": 106,
+      "schedule": "Crime people under personal safe feeling. Total agreement its follow lead you.",
+      "status": "pending",
+      "created_at": "2025-12-13T09:18:55.168Z",
+      "updated_at": "2025-12-13T09:18:55.168Z"
+    },
+    {
+      "section_id": 3,
+      "course_id": 34,
+      "section_number": "3600145232",
+      "term_id": 41,
+      "instructor_id": 18,
+      "room_id": null,
+      "max_enrollment": 855,
+      "current_enrollment": 760,
+      "schedule": "Seven board explain point. Enough beyond open.",
+      "status": "inactive",
+      "created_at": "2025-12-13T09:18:55.168Z",
+      "updated_at": "2025-12-13T09:18:55.168Z"
+    },
+    {
+      "section_id": 4,
+      "course_id": 38,
+      "section_number": "0572073115",
+      "term_id": 35,
+      "instructor_id": 37,
+      "room_id": null,
+      "max_enrollment": 179,
+      "current_enrollment": 386,
+      "schedule": "Huge push executive rule. Series group authority stuff product.",
+      "status": "pending",
+      "created_at": "2025-12-13T09:18:55.168Z",
+      "updated_at": "2025-12-13T09:18:55.168Z"
+    },
+    {
+      "section_id": 5,
+      "course_id": 25,
+      "section_number": "7661217744",
+      "term_id": 24,
+      "instructor_id": 38,
+      "room_id": null,
+      "max_enrollment": 670,
+      "current_enrollment": 920,
+      "schedule": "Generation help last Democrat. Throughout from why outside contain vote avoid.",
+      "status": "active",
+      "created_at": "2025-12-13T09:18:55.168Z",
+      "updated_at": "2025-12-13T09:18:55.168Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:40:50.362Z"
+}

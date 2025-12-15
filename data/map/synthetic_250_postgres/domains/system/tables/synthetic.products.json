@@ -1,0 +1,317 @@
+{
+  "table": "products",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.products\" table in the \"synthetic_250_postgres\" database represents product information within a business context, detailing attributes such as SKU, product names, descriptions, pricing, dimensions, and metadata. Each product is uniquely identified by a \"product_id,\" serves different brands and categories as indicated by the \"brand_id\" and \"category_id,\" but lacks explicit foreign key relationships according to the provided data. This table serves as a central repository for product data, potentially used for inventory management, catalog listings, and facilitating e-commerce operations.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "product_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier assigned sequentially to each product in the catalog, ensuring distinct product recognition within the system.",
+      "default": "nextval('synthetic.products_product_id_seq'::regclass)"
+    },
+    {
+      "name": "sku",
+      "type": "character varying",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "product_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column likely contains varied narrative or descriptive entries, possibly representing unique characteristics or summaries related to different products. The exact purpose and context within the business are unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "slug",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This field contains a URL-friendly representation of the product name, composed of lowercase words separated by hyphens. It facilitates search engine optimization and improves readability for product identification on the web.",
+      "default": null
+    },
+    {
+      "name": "brand_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents an identification number uniquely associated with different brands for products. The purpose of assigning these specific numerical identifiers is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "category_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column identifies the particular category to which each product belongs, with each integer representing a distinct category. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "short_description",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column contains brief textual summaries or blurbs associated with products, capturing general concepts or themes related to the product. The content is varied and does not adhere to a strict format or context.",
+      "default": null
+    },
+    {
+      "name": "long_description",
+      "type": "text",
+      "nullable": true,
+      "description": "This column contains extended descriptive text that elaborates on the synthetic products, often using abstract or metaphorical language. Purpose unclear from available data due to the lack of coherent context in sample values.",
+      "default": null
+    },
+    {
+      "name": "base_price",
+      "type": "numeric",
+      "nullable": false,
+      "description": "This column represents the monetary amount set as a standard price for products before any discounts or taxes are applied. The values indicate varied pricing levels, suggesting a diverse range of product costs.",
+      "default": null
+    },
+    {
+      "name": "sale_price",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column likely represents the selling price of different products in a currency unit, as indicated by the high values. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "cost_price",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the price at which products are purchased by the business. It reflects the base financial expenditure per unit before any additional costs or markups are applied.",
+      "default": null
+    },
+    {
+      "name": "weight_kg",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the weight of a product in kilograms. It tracks the mass of various products, with sample values indicating a range between approximately 8 and 96 kilograms.",
+      "default": null
+    },
+    {
+      "name": "dimensions_cm",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "is_active",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether a product is currently available for sale or use. A value of true suggests the product is active, whereas false indicates it is inactive.",
+      "default": "true"
+    },
+    {
+      "name": "is_featured",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether a product is prominently highlighted or given special attention, with the default status being not highlighted.",
+      "default": "false"
+    },
+    {
+      "name": "is_digital",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether a product is a digital item, with the option to be unspecified. The default assumption is that products are not digital unless stated otherwise.",
+      "default": "false"
+    },
+    {
+      "name": "tax_class",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "meta_title",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The column seems to contain brief and abstract text phrases that do not provide a clear business context.",
+      "default": null
+    },
+    {
+      "name": "meta_description",
+      "type": "text",
+      "nullable": true,
+      "description": "This column contains freeform text descriptions that offer additional information or context about the products, possibly aiming to enhance marketing or listing details. The contents appear to include descriptive or narrative text related to various aspects or features of the products.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a product record was created. It defaults to the current timestamp at the time of entry.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a product's record was last updated. The stored timestamps suggest updates frequently occur without timezone distinction.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "product_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_products_brand_id",
+      "column_name": "brand_id",
+      "referenced_table": "synthetic.brands",
+      "referenced_column": "brand_id"
+    },
+    {
+      "constraint_name": "fk_products_category_id",
+      "column_name": "category_id",
+      "referenced_table": "synthetic.product_categories",
+      "referenced_column": "category_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "products_pkey",
+      "index_definition": "CREATE UNIQUE INDEX products_pkey ON synthetic.products USING btree (product_id)",
+      "columns": [
+        "product_id"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "products_sku_key",
+      "index_definition": "CREATE UNIQUE INDEX products_sku_key ON synthetic.products USING btree (sku)",
+      "columns": [
+        "sku"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "products_slug_key",
+      "index_definition": "CREATE UNIQUE INDEX products_slug_key ON synthetic.products USING btree (slug)",
+      "columns": [
+        "slug"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "product_id": 1,
+      "sku": "Crime figure election enter. End manage find road sell model.",
+      "product_name": "Leg design federal oil those. Central property church sign along enjoy painting.\nRange charge race. ...",
+      "slug": "white-sometimes",
+      "brand_id": 6,
+      "category_id": 17,
+      "short_description": "Close sister fact together production. Happen outside stop care.",
+      "long_description": "Man become million against meet then specific. Pm production tend recent account truth gas challenge...",
+      "base_price": "32475.07",
+      "sale_price": "64892.79",
+      "cost_price": "71175.83",
+      "weight_kg": "16.483",
+      "dimensions_cm": "Treatment eat full them her safe anyone.",
+      "is_active": true,
+      "is_featured": true,
+      "is_digital": true,
+      "tax_class": "Responsibility then eye minute and project to.",
+      "meta_title": "Politics participant eye.",
+      "meta_description": "Conference brother simply game quality few agency future. Place billion interest share.",
+      "created_at": "2025-12-13T08:55:53.597Z",
+      "updated_at": "2025-12-13T08:55:53.597Z"
+    },
+    {
+      "product_id": 2,
+      "sku": "Stock seem item tonight everything side. Because receive speak heart.",
+      "product_name": "Expect spend will dark. Capital never assume series style culture.\nThreat culture store development ...",
+      "slug": "land-part-authority",
+      "brand_id": 46,
+      "category_id": 29,
+      "short_description": "Hand example last here garden eight. Director activity official crime quite.",
+      "long_description": "Hard break share girl executive structure. Another policy chair it simply official good.",
+      "base_price": "63443.83",
+      "sale_price": "8622.12",
+      "cost_price": "70757.18",
+      "weight_kg": "72.715",
+      "dimensions_cm": "Other anyone girl laugh body.",
+      "is_active": true,
+      "is_featured": false,
+      "is_digital": false,
+      "tax_class": "Share she serious town age.",
+      "meta_title": "Today forget join condition medical.",
+      "meta_description": "Best clear government start. Certainly yard partner. Trouble street organization arm staff south lat...",
+      "created_at": "2025-12-13T08:55:53.597Z",
+      "updated_at": "2025-12-13T08:55:53.597Z"
+    },
+    {
+      "product_id": 3,
+      "sku": "Certain treatment fast trip language growth. Project will poor station. Sell ago reduce.",
+      "product_name": "Hot establish project line particular. Seek movie adult wall. Base would soldier box. Type partner h...",
+      "slug": "energy-town-let",
+      "brand_id": 3,
+      "category_id": 50,
+      "short_description": "Growth west care free gas. Other huge rock. Recently question evening natural short single.",
+      "long_description": "Choice politics at few. Do mean audience become once. Second man all deal always above.",
+      "base_price": "17171.41",
+      "sale_price": "33585.79",
+      "cost_price": "87143.41",
+      "weight_kg": "86.281",
+      "dimensions_cm": "But approach look ever.",
+      "is_active": true,
+      "is_featured": true,
+      "is_digital": true,
+      "tax_class": "Capital talk this body. Win like how.",
+      "meta_title": "Process medical old product.",
+      "meta_description": "Case detail opportunity use interview management. Program let feeling hour similar several. Yes thos...",
+      "created_at": "2025-12-13T08:55:53.597Z",
+      "updated_at": "2025-12-13T08:55:53.597Z"
+    },
+    {
+      "product_id": 4,
+      "sku": "These local nearly debate. Would add middle against. Current method director study yes.",
+      "product_name": "Say military accept once sing just two. Sometimes thousand add.\nExactly three somebody box difficult...",
+      "slug": "both-author-within",
+      "brand_id": 50,
+      "category_id": 46,
+      "short_description": "Traditional notice hour get dinner would young. Box or blue military next sign worry.",
+      "long_description": "Agency water key. Theory important wait PM control. Popular eat argue whose key tend measure.",
+      "base_price": "5225.92",
+      "sale_price": "30875.41",
+      "cost_price": "73043.16",
+      "weight_kg": "96.101",
+      "dimensions_cm": "Response cover protect ball carry half same.",
+      "is_active": false,
+      "is_featured": true,
+      "is_digital": true,
+      "tax_class": "Administration prepare painting travel.",
+      "meta_title": "Impact wish risk theory.",
+      "meta_description": "Trip likely begin more building bank. Instead threat speak according.",
+      "created_at": "2025-12-13T08:55:53.597Z",
+      "updated_at": "2025-12-13T08:55:53.597Z"
+    },
+    {
+      "product_id": 5,
+      "sku": "Character give work though especially box. Amount mean soldier huge industry language each buy.",
+      "product_name": "Artist possible evening to. Live suggest figure. Up rise describe yeah.\nSister develop concern likel...",
+      "slug": "over-capital-tree",
+      "brand_id": 9,
+      "category_id": 13,
+      "short_description": "Bill represent Democrat easy spend then matter management.",
+      "long_description": "Tonight mission ball son middle answer detail. Letter it actually song.",
+      "base_price": "452.94",
+      "sale_price": "76563.04",
+      "cost_price": "1319.56",
+      "weight_kg": "49.813",
+      "dimensions_cm": "Range red history travel. Social wait crime vote.",
+      "is_active": false,
+      "is_featured": true,
+      "is_digital": false,
+      "tax_class": "Spring family various box it.",
+      "meta_title": "Score marriage table identify candidate.",
+      "meta_description": "Build as weight become few continue. Station start successful.",
+      "created_at": "2025-12-13T08:55:53.597Z",
+      "updated_at": "2025-12-13T08:55:53.597Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:24.563Z"
+}

@@ -1,0 +1,157 @@
+{
+  "table": "employee_benefits",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.employee_benefits` table represents the enrollment of employees in various benefit plans, identified by unique `enrollment_id`s, capturing details like the `employee_id`, `plan_id`, and `enrollment_date`. It tracks each employee's chosen coverage level and number of dependents, with fields indicating whether an enrollment is active and timestamps for record creation and updates. This table serves as a junction point within the database, linking employees to benefit plans via foreign key relationships, although specific references are undefined.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "enrollment_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each enrollment record in the employee benefits table, ensuring that every enrollment instance is distinctly tracked.",
+      "default": "nextval('synthetic.employee_benefits_enrollment_id_seq'::regclass)"
+    },
+    {
+      "name": "employee_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column likely represents a unique identifier for employees within the organization, as inferred from the range and uniqueness of sample values provided.",
+      "default": null
+    },
+    {
+      "name": "plan_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column identifies distinct employee benefits plans through assigned integer codes. Each value corresponds to a specific benefits plan available to employees.",
+      "default": null
+    },
+    {
+      "name": "enrollment_date",
+      "type": "date",
+      "nullable": false,
+      "description": "This column records the specific date on which employees enroll in the company's benefit programs. The enrollment dates are non-nullable, indicating that every employee must have an enrollment date documented.",
+      "default": null
+    },
+    {
+      "name": "coverage_level",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "dependents_count",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents the number of dependents associated with an employee's benefits, indicating how many individuals are reliant on an employee's benefits plan. The high values in the sample suggest that the counted dependents may include extended family members or groups larger than immediate family.",
+      "default": "0"
+    },
+    {
+      "name": "is_active",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether an employee's benefits are currently active. The default status is active unless specified otherwise.",
+      "default": "true"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a record in the employee benefits table was created. It captures the timestamp of record creation, defaulting to the current system time but may have nullable values.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an employee's benefits record was last modified. If not specifically updated, it defaults to the current timestamp, indicating recent records have not been manually altered.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "enrollment_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_employee_benefits_employee_id",
+      "column_name": "employee_id",
+      "referenced_table": "synthetic.employees",
+      "referenced_column": "employee_id"
+    },
+    {
+      "constraint_name": "fk_employee_benefits_plan_id",
+      "column_name": "plan_id",
+      "referenced_table": "synthetic.benefits_plans",
+      "referenced_column": "plan_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "employee_benefits_pkey",
+      "index_definition": "CREATE UNIQUE INDEX employee_benefits_pkey ON synthetic.employee_benefits USING btree (enrollment_id)",
+      "columns": [
+        "enrollment_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "enrollment_id": 1,
+      "employee_id": 2,
+      "plan_id": 98,
+      "enrollment_date": "2024-07-02T05:00:00.000Z",
+      "coverage_level": "Director find minute discussion.",
+      "dependents_count": 74,
+      "is_active": false,
+      "created_at": "2025-12-13T09:19:46.302Z",
+      "updated_at": "2025-12-13T09:19:46.302Z"
+    },
+    {
+      "enrollment_id": 2,
+      "employee_id": 31,
+      "plan_id": 1,
+      "enrollment_date": "2025-09-05T05:00:00.000Z",
+      "coverage_level": "Explain like institution collection.",
+      "dependents_count": 46,
+      "is_active": false,
+      "created_at": "2025-12-13T09:19:46.302Z",
+      "updated_at": "2025-12-13T09:19:46.302Z"
+    },
+    {
+      "enrollment_id": 3,
+      "employee_id": 49,
+      "plan_id": 50,
+      "enrollment_date": "2024-01-30T06:00:00.000Z",
+      "coverage_level": "Especially situation move single.",
+      "dependents_count": 54,
+      "is_active": true,
+      "created_at": "2025-12-13T09:19:46.302Z",
+      "updated_at": "2025-12-13T09:19:46.302Z"
+    },
+    {
+      "enrollment_id": 4,
+      "employee_id": 32,
+      "plan_id": 29,
+      "enrollment_date": "2025-06-24T05:00:00.000Z",
+      "coverage_level": "Spend may thus hour cold light suffer.",
+      "dependents_count": 35,
+      "is_active": false,
+      "created_at": "2025-12-13T09:19:46.302Z",
+      "updated_at": "2025-12-13T09:19:46.302Z"
+    },
+    {
+      "enrollment_id": 5,
+      "employee_id": 32,
+      "plan_id": 4,
+      "enrollment_date": "2024-04-18T05:00:00.000Z",
+      "coverage_level": "Require class paper amount.",
+      "dependents_count": 50,
+      "is_active": false,
+      "created_at": "2025-12-13T09:19:46.302Z",
+      "updated_at": "2025-12-13T09:19:46.302Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:41:04.128Z"
+}

@@ -1,0 +1,201 @@
+{
+  "table": "vendor_payments",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.vendor_payments` table represents a system for tracking payments made to vendors, with each entry uniquely identified by the `payment_id` as the primary key. The table stores information such as the payment number, vendor ID, payment date, method, total amount, currency, and associated bank account, indicating its function in recording transactional data related to vendor payments. Although it currently lacks defined foreign key relationships to other tables, it likely interfaces with a vendor or bank account table, given the presence of `vendor_id` and `bank_account_id` fields.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "payment_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each vendor payment transaction in the sequence they occur. Each value represents a distinct payment entry.",
+      "default": "nextval('synthetic.vendor_payments_payment_id_seq'::regclass)"
+    },
+    {
+      "name": "payment_number",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column uniquely identifies individual payment transactions related to vendor operations, acting as a distinctive transaction reference number. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "vendor_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents unique identifiers for vendors involved in payment transactions. Each number corresponds to a different vendor in the context of the payments system.",
+      "default": null
+    },
+    {
+      "name": "payment_date",
+      "type": "date",
+      "nullable": false,
+      "description": "This column represents the specific dates on which vendor payments were scheduled or occurred. The dates are related to transactions processed, typically involving business payments to vendors.",
+      "default": null
+    },
+    {
+      "name": "payment_method",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "total_amount",
+      "type": "numeric",
+      "nullable": false,
+      "description": "This column represents the monetary total of payments made to vendors, with values showing varied payment amounts that could be associated with different transactions or invoices. Each entry indicates a specific amount paid, with the values reflecting a range from hundreds to thousands, suggesting payments of varying scale to supplier entities.",
+      "default": null
+    },
+    {
+      "name": "currency",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column represents the currency type used for vendor payments, with examples including British Pounds (GBP), United States Dollars (USD), and Euros (EUR). The default currency for entries is set to USD.",
+      "default": "'USD'::character varying"
+    },
+    {
+      "name": "bank_account_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents the identification number assigned to different bank accounts involved in processing vendor payments. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "reference_number",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column likely captures unique identifiers associated with individual vendor payment transactions. Each value is a distinct number potentially used for tracking or referencing payments within the business process.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Indicates the current state of a vendor payment, reflecting stages such as active, pending, or inactive. The majority of payments appear to be in the ongoing or active stage.",
+      "default": "'completed'::character varying"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a vendor payment record was initially created, capturing the moment of data entry in the system. It defaults to the current timestamp at the time of record creation.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Records the date and time when a vendor payment entry was last modified. This timestamp defaults to the current time when no other value is provided.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "payment_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_vendor_payments_bank_account_id",
+      "column_name": "bank_account_id",
+      "referenced_table": "synthetic.bank_accounts",
+      "referenced_column": "bank_account_id"
+    },
+    {
+      "constraint_name": "fk_vendor_payments_vendor_id",
+      "column_name": "vendor_id",
+      "referenced_table": "synthetic.vendors",
+      "referenced_column": "vendor_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "vendor_payments_payment_number_key",
+      "index_definition": "CREATE UNIQUE INDEX vendor_payments_payment_number_key ON synthetic.vendor_payments USING btree (payment_number)",
+      "columns": [
+        "payment_number"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "vendor_payments_pkey",
+      "index_definition": "CREATE UNIQUE INDEX vendor_payments_pkey ON synthetic.vendor_payments USING btree (payment_id)",
+      "columns": [
+        "payment_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "payment_id": 1,
+      "payment_number": "104332181960013",
+      "vendor_id": 82,
+      "payment_date": "2024-05-30T05:00:00.000Z",
+      "payment_method": "Recently future choice whatever.",
+      "total_amount": "1122.20",
+      "currency": "GBP",
+      "bank_account_id": 35,
+      "reference_number": "781618495931034",
+      "status": "active",
+      "created_at": "2025-12-13T09:17:40.583Z",
+      "updated_at": "2025-12-13T09:17:40.583Z"
+    },
+    {
+      "payment_id": 2,
+      "payment_number": "131647525534192",
+      "vendor_id": 29,
+      "payment_date": "2025-01-05T06:00:00.000Z",
+      "payment_method": "Clear here writer policy news.",
+      "total_amount": "1403.98",
+      "currency": "USD",
+      "bank_account_id": 87,
+      "reference_number": "395376724238849",
+      "status": "pending",
+      "created_at": "2025-12-13T09:17:40.583Z",
+      "updated_at": "2025-12-13T09:17:40.583Z"
+    },
+    {
+      "payment_id": 3,
+      "payment_number": "696532871012269",
+      "vendor_id": 70,
+      "payment_date": "2024-01-27T06:00:00.000Z",
+      "payment_method": "Other life edge network wall quite.",
+      "total_amount": "878.52",
+      "currency": "EUR",
+      "bank_account_id": 5,
+      "reference_number": "146270482814893",
+      "status": "active",
+      "created_at": "2025-12-13T09:17:40.583Z",
+      "updated_at": "2025-12-13T09:17:40.583Z"
+    },
+    {
+      "payment_id": 4,
+      "payment_number": "252880957015430",
+      "vendor_id": 12,
+      "payment_date": "2024-06-05T05:00:00.000Z",
+      "payment_method": "Water beat magazine attorney set she campaign.",
+      "total_amount": "2194.19",
+      "currency": "GBP",
+      "bank_account_id": 78,
+      "reference_number": "346578713315098",
+      "status": "active",
+      "created_at": "2025-12-13T09:17:40.583Z",
+      "updated_at": "2025-12-13T09:17:40.583Z"
+    },
+    {
+      "payment_id": 5,
+      "payment_number": "393010310518347",
+      "vendor_id": 72,
+      "payment_date": "2024-05-16T05:00:00.000Z",
+      "payment_method": "Rich think office drug.",
+      "total_amount": "1996.39",
+      "currency": "GBP",
+      "bank_account_id": 90,
+      "reference_number": "106513338726247",
+      "status": "pending",
+      "created_at": "2025-12-13T09:17:40.583Z",
+      "updated_at": "2025-12-13T09:17:40.583Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:45:10.625Z"
+}

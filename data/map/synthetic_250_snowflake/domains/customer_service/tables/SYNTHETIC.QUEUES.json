@@ -1,0 +1,159 @@
+{
+  "table": "QUEUES",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.QUEUES table represents a collection of queue entities, each uniquely identified by the QUEUE_ID primary key, and contains attributes such as NAME, DESCRIPTION, and STATUS. It tracks additional domain-specific attributes related to tickets, interactions, knowledge, cases, and escalations, suggesting its role in managing or organizing process flows or task allocations within a system. The table operates independently within the data model, as it neither references nor is referenced by any other tables.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "QUEUE_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This represents a sequential and unique identifier for each entry within a queuing system, ensuring distinct recognition between different queue entities. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column represents distinct identifiers for different queue entities, suggesting a sequential or categorizing system within the application. The purpose is unclear from available data beyond signifying separate queue records.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains textual descriptions for entries in the QUEUES table, potentially serving as identifiers or summaries. Each value appears to follow a uniform format, indicating its use for descriptive consistency within queue records.",
+      "default": null
+    },
+    {
+      "name": "TICKET_160_ATTR_0",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "INTERACTION_160_ATTR_1",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column appears to represent a categorical identifier associated with interactions, potentially indicating different types or categories of interactions within a queue system. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "TICKET_160_ATTR_2",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values are generic and do not provide insight into the specific business context or use of this attribute.",
+      "default": null
+    },
+    {
+      "name": "KNOWLEDGE_160_ATTR_3",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents a sequential numerical identifier or code, potentially used to categorize or order items in a specific queue-related context. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CASE_160_ATTR_4",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column likely represents some form of categorization or identifier related to queues, given the sequential and incremental nature of the sample values. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "ESCALATION_160_ATTR_5",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "UPDATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column records the date and time when changes or updates were last made to each entry in the table. It helps track modifications without accounting for time zones.",
+      "default": null
+    },
+    {
+      "name": "STATUS",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column likely indicates the current operational condition or availability of entities within a queue system. Based on the sample values, \"ACTIVE\" suggests entities are operational or available, but further conditions are not displayed.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "QUEUE_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "QUEUE_ID": 1,
+      "NAME": "QUEUES 1",
+      "DESCRIPTION": "Description for QUEUES 1",
+      "TICKET_160_ATTR_0": "Sample TICKET_160_ATTR_0 1",
+      "INTERACTION_160_ATTR_1": null,
+      "TICKET_160_ATTR_2": "Sample TICKET_160_ATTR_2 1",
+      "KNOWLEDGE_160_ATTR_3": 100,
+      "CASE_160_ATTR_4": null,
+      "ESCALATION_160_ATTR_5": true,
+      "UPDATED_AT": "2026-01-11 00:00:00.000",
+      "STATUS": "ACTIVE"
+    },
+    {
+      "QUEUE_ID": 2,
+      "NAME": "QUEUES 2",
+      "DESCRIPTION": "Description for QUEUES 2",
+      "TICKET_160_ATTR_0": "Sample TICKET_160_ATTR_0 2",
+      "INTERACTION_160_ATTR_1": 101,
+      "TICKET_160_ATTR_2": "Sample TICKET_160_ATTR_2 2",
+      "KNOWLEDGE_160_ATTR_3": 101,
+      "CASE_160_ATTR_4": 101,
+      "ESCALATION_160_ATTR_5": false,
+      "UPDATED_AT": "2026-01-12 00:00:00.000",
+      "STATUS": "ACTIVE"
+    },
+    {
+      "QUEUE_ID": 3,
+      "NAME": "QUEUES 3",
+      "DESCRIPTION": "Description for QUEUES 3",
+      "TICKET_160_ATTR_0": "Sample TICKET_160_ATTR_0 3",
+      "INTERACTION_160_ATTR_1": 102,
+      "TICKET_160_ATTR_2": "Sample TICKET_160_ATTR_2 3",
+      "KNOWLEDGE_160_ATTR_3": 102,
+      "CASE_160_ATTR_4": 102,
+      "ESCALATION_160_ATTR_5": true,
+      "UPDATED_AT": "2026-01-13 00:00:00.000",
+      "STATUS": "ACTIVE"
+    },
+    {
+      "QUEUE_ID": 4,
+      "NAME": "QUEUES 4",
+      "DESCRIPTION": "Description for QUEUES 4",
+      "TICKET_160_ATTR_0": "Sample TICKET_160_ATTR_0 4",
+      "INTERACTION_160_ATTR_1": null,
+      "TICKET_160_ATTR_2": "Sample TICKET_160_ATTR_2 4",
+      "KNOWLEDGE_160_ATTR_3": 103,
+      "CASE_160_ATTR_4": null,
+      "ESCALATION_160_ATTR_5": false,
+      "UPDATED_AT": "2026-01-14 00:00:00.000",
+      "STATUS": "ACTIVE"
+    },
+    {
+      "QUEUE_ID": 5,
+      "NAME": "QUEUES 5",
+      "DESCRIPTION": "Description for QUEUES 5",
+      "TICKET_160_ATTR_0": "Sample TICKET_160_ATTR_0 5",
+      "INTERACTION_160_ATTR_1": 104,
+      "TICKET_160_ATTR_2": "Sample TICKET_160_ATTR_2 5",
+      "KNOWLEDGE_160_ATTR_3": 104,
+      "CASE_160_ATTR_4": 104,
+      "ESCALATION_160_ATTR_5": true,
+      "UPDATED_AT": "2026-01-15 00:00:00.000",
+      "STATUS": "ACTIVE"
+    }
+  ],
+  "generated_at": "2025-12-14T23:42:55.162Z"
+}

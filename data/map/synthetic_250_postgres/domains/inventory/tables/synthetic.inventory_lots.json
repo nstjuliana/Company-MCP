@@ -1,0 +1,102 @@
+{
+  "table": "inventory_lots",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.inventory_lots` table in the `synthetic_250_postgres` database represents inventory lot details, uniquely identified by the primary key `lot_id`. Despite lacking explicit column names or sample data, it is designed to store aggregated details about inventory lots, likely contributing to the inventory management domain. An undefined foreign key hints at a potential linkage to another table, which may represent broader inventory or warehouse information, although this relationship remains unspecified.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "lot_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This unique numeric identifier is assigned to each inventory batch or lot to track and manage stock within the inventory system.",
+      "default": "nextval('synthetic.inventory_lots_lot_id_seq'::regclass)"
+    },
+    {
+      "name": "inventory_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "lot_number",
+      "type": "character varying",
+      "nullable": false,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "quantity",
+      "type": "integer",
+      "nullable": false,
+      "description": "Represents the number of units available for a specific inventory lot in the system. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "manufacture_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column indicates the calendar date on which a specific inventory item was produced. The purpose of this information is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "expiry_date",
+      "type": "date",
+      "nullable": true,
+      "description": "Represents the date when the inventory item is no longer considered usable or effective. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "received_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column likely records the date when inventory lots are received, contributing to tracking inventory movement and stock management. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "cost_per_unit",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column likely represents the monetary expense associated with each individual unit of inventory. Purpose unclear from available data due to lack of sample values.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when each inventory lot entry was created. It captures the initial creation timestamp, likely serving as a record for tracking inventory lot additions over time.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "Records the date and time when an inventory lot's information was last updated.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "lot_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_inventory_lots_inventory_id",
+      "column_name": "inventory_id",
+      "referenced_table": "synthetic.inventory_items",
+      "referenced_column": "inventory_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "inventory_lots_pkey",
+      "index_definition": "CREATE UNIQUE INDEX inventory_lots_pkey ON synthetic.inventory_lots USING btree (lot_id)",
+      "columns": [
+        "lot_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:42:23.737Z"
+}

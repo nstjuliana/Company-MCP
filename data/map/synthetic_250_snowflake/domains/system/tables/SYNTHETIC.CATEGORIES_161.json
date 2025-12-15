@@ -1,0 +1,111 @@
+{
+  "table": "CATEGORIES_161",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.CATEGORIES_161 table represents a business entity related to category data, primarily identified by the CATEGORIE_ID, with additional descriptive properties such as NAME and DESCRIPTION to provide context. Although this table does not have direct relationships with other tables, it may play a role in categorizing information within the database, as suggested by attributes like TICKET_181_ATTR_1 and KNOWLEDGE_181_ATTR_2. Its primary function appears to be storing category identifiers and attributes to facilitate categorization and organization of other data entities.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "CATEGORIE_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column likely represents a unique identifier for each category within the dataset. Each value corresponds to a distinct category to distinguish it from others.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column provides a detailed textual description for each entry within the CATEGORIES_161 table, likely serving to distinguish or elaborate on specific categories. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CASE_181_ATTR_0",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column appears to represent category identifiers, which are numeric codes assigned to different categories or classifications within the data. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "TICKET_181_ATTR_1",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "The column appears to contain descriptive identifiers or labels used for distinguishing different ticket attributes within the dataset. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "KNOWLEDGE_181_ATTR_2",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "This column likely indicates a binary characteristic or feature related to a category, where true or false signifies its presence or absence. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CASE_181_ATTR_3",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "CATEGORIE_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "CATEGORIE_ID": 1,
+      "NAME": "CATEGORIES_161 1",
+      "DESCRIPTION": "Description for CATEGORIES_161 1",
+      "CASE_181_ATTR_0": null,
+      "TICKET_181_ATTR_1": "Sample TICKET_181_ATTR_1 1",
+      "KNOWLEDGE_181_ATTR_2": true,
+      "CASE_181_ATTR_3": true
+    },
+    {
+      "CATEGORIE_ID": 2,
+      "NAME": "CATEGORIES_161 2",
+      "DESCRIPTION": "Description for CATEGORIES_161 2",
+      "CASE_181_ATTR_0": 101,
+      "TICKET_181_ATTR_1": "Sample TICKET_181_ATTR_1 2",
+      "KNOWLEDGE_181_ATTR_2": false,
+      "CASE_181_ATTR_3": false
+    },
+    {
+      "CATEGORIE_ID": 3,
+      "NAME": "CATEGORIES_161 3",
+      "DESCRIPTION": "Description for CATEGORIES_161 3",
+      "CASE_181_ATTR_0": 102,
+      "TICKET_181_ATTR_1": "Sample TICKET_181_ATTR_1 3",
+      "KNOWLEDGE_181_ATTR_2": true,
+      "CASE_181_ATTR_3": true
+    },
+    {
+      "CATEGORIE_ID": 4,
+      "NAME": "CATEGORIES_161 4",
+      "DESCRIPTION": "Description for CATEGORIES_161 4",
+      "CASE_181_ATTR_0": null,
+      "TICKET_181_ATTR_1": "Sample TICKET_181_ATTR_1 4",
+      "KNOWLEDGE_181_ATTR_2": false,
+      "CASE_181_ATTR_3": false
+    },
+    {
+      "CATEGORIE_ID": 5,
+      "NAME": "CATEGORIES_161 5",
+      "DESCRIPTION": "Description for CATEGORIES_161 5",
+      "CASE_181_ATTR_0": 104,
+      "TICKET_181_ATTR_1": "Sample TICKET_181_ATTR_1 5",
+      "KNOWLEDGE_181_ATTR_2": true,
+      "CASE_181_ATTR_3": true
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:38.202Z"
+}

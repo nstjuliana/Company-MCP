@@ -1,0 +1,135 @@
+{
+  "table": "CASES",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The SYNTHETIC.CASES table represents a business entity capturing synthetic case-related data, including identifiers, descriptions, and various attributes indicative of case properties and associated activities. It includes key data points such as case identifiers, timestamps, and related attributes, though without explicit relationships to other tables within the database, suggesting it functions as an isolated entity for tracking standalone cases or activities. The structure implies a role focused on documenting case-specific details, potentially for evaluation or monitoring purposes within a synthetic dataset environment.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "CASE_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each individual record or case in the dataset, ensuring distinctness and traceability for every entry.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column likely represents identifiers or labels for distinct cases within the dataset. Each entry appears to be a sequentially numbered designation for a case.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column provides brief, generic textual descriptions associated with individual cases, likely serving as basic identifiers or summaries. Given the repetitive and numbered nature of the sample values, it may be used for prototyping or placeholder information in a test environment.",
+      "default": null
+    },
+    {
+      "name": "CASE_152_ATTR_0",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column likely represents a sequential or incremental identifier associated with individual cases. Each number uniquely distinguishes a specific case within the dataset.",
+      "default": null
+    },
+    {
+      "name": "TICKET_152_ATTR_1",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column likely records the date and time associated with specific events or actions related to cases, captured in the Central Standard Time zone. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "SURVEY_152_ATTR_2",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column likely represents coded responses to a specific survey question, with each number corresponding to a distinct option or answer. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CASE_152_ATTR_3",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column likely represents a sequential identifier or code assigned to specific cases in the dataset. Each value uniquely distinguishes a case in a continuous, ascending order.",
+      "default": null
+    },
+    {
+      "name": "KNOWLEDGE_152_ATTR_4",
+      "type": "DATE",
+      "nullable": true,
+      "description": "This column records specific dates related to individual cases within the dataset, possibly representing significant events or deadlines. The purpose is unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "SURVEY_152_ATTR_5",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The column contains text entries with a numerical indication, but their business context or meaning cannot be determined solely from these examples.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "CASE_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "CASE_ID": 1,
+      "NAME": "CASES 1",
+      "DESCRIPTION": "Description for CASES 1",
+      "CASE_152_ATTR_0": 100,
+      "TICKET_152_ATTR_1": "2025-12-12 00:00:00.000",
+      "SURVEY_152_ATTR_2": null,
+      "CASE_152_ATTR_3": 100,
+      "KNOWLEDGE_152_ATTR_4": "2025-12-12",
+      "SURVEY_152_ATTR_5": "Sample SURVEY_152_ATTR_5 1"
+    },
+    {
+      "CASE_ID": 2,
+      "NAME": "CASES 2",
+      "DESCRIPTION": "Description for CASES 2",
+      "CASE_152_ATTR_0": 101,
+      "TICKET_152_ATTR_1": "2025-12-13 00:00:00.000",
+      "SURVEY_152_ATTR_2": 101,
+      "CASE_152_ATTR_3": 101,
+      "KNOWLEDGE_152_ATTR_4": "2025-12-13",
+      "SURVEY_152_ATTR_5": "Sample SURVEY_152_ATTR_5 2"
+    },
+    {
+      "CASE_ID": 3,
+      "NAME": "CASES 3",
+      "DESCRIPTION": "Description for CASES 3",
+      "CASE_152_ATTR_0": 102,
+      "TICKET_152_ATTR_1": "2025-12-14 00:00:00.000",
+      "SURVEY_152_ATTR_2": 102,
+      "CASE_152_ATTR_3": 102,
+      "KNOWLEDGE_152_ATTR_4": "2025-12-14",
+      "SURVEY_152_ATTR_5": "Sample SURVEY_152_ATTR_5 3"
+    },
+    {
+      "CASE_ID": 4,
+      "NAME": "CASES 4",
+      "DESCRIPTION": "Description for CASES 4",
+      "CASE_152_ATTR_0": 103,
+      "TICKET_152_ATTR_1": "2025-12-15 00:00:00.000",
+      "SURVEY_152_ATTR_2": null,
+      "CASE_152_ATTR_3": 103,
+      "KNOWLEDGE_152_ATTR_4": "2025-12-15",
+      "SURVEY_152_ATTR_5": "Sample SURVEY_152_ATTR_5 4"
+    },
+    {
+      "CASE_ID": 5,
+      "NAME": "CASES 5",
+      "DESCRIPTION": "Description for CASES 5",
+      "CASE_152_ATTR_0": 104,
+      "TICKET_152_ATTR_1": "2025-12-16 00:00:00.000",
+      "SURVEY_152_ATTR_2": 104,
+      "CASE_152_ATTR_3": 104,
+      "KNOWLEDGE_152_ATTR_4": "2025-12-16",
+      "SURVEY_152_ATTR_5": "Sample SURVEY_152_ATTR_5 5"
+    }
+  ],
+  "generated_at": "2025-12-14T23:42:55.128Z"
+}

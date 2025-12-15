@@ -1,0 +1,102 @@
+{
+  "table": "network_devices",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.network_devices` table represents a collection of network device entities within the database, identified uniquely by the primary key `device_id`. The absence of sample data, column names, and specific foreign key relationships limits a detailed understanding of its attributes and interactions with other tables. Its presence as a standalone entity suggests it records fundamental properties of network devices, potentially serving as a key reference point for network-related data within the synthetic_250_postgres database.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "device_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier assigned automatically to each entry within the network devices table, ensuring each device is distinctly recognized within the system.",
+      "default": "nextval('synthetic.network_devices_device_id_seq'::regclass)"
+    },
+    {
+      "name": "asset_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "device_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column represents the assigned name for each network device, which is used for identification and management purposes within a system or organization. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "device_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "ip_address",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "mac_address",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "location",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This field indicates the operational condition of network devices, such as being 'active' or potentially other statuses. Purpose unclear from available data.",
+      "default": "'active'::character varying"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column indicates the date and time when a record in the network devices table was initially created, capturing the moment a network device entry was added to the system. The value can be updated to current time if not specified during record creation, though its specific business purpose is unclear from the available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This field records the most recent modification date and time of a network device’s information but does not include the time zone. If not specified during an update, it defaults to the current date and time of the database server.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "device_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_network_devices_asset_id",
+      "column_name": "asset_id",
+      "referenced_table": "synthetic.it_assets",
+      "referenced_column": "asset_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "network_devices_pkey",
+      "index_definition": "CREATE UNIQUE INDEX network_devices_pkey ON synthetic.network_devices USING btree (device_id)",
+      "columns": [
+        "device_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:43:36.230Z"
+}

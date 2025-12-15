@@ -1,0 +1,135 @@
+{
+  "table": "ESCALATIONS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The \"SYNTHETIC.ESCALATIONS\" table represents an entity related to the tracking and management of escalation cases, possibly within a customer service or support context, as indicated by column names like \"NAME,\" \"DESCRIPTION,\" and \"CREATED_AT\". The primary key \"ESCALATION_ID\" uniquely identifies each escalation record. This table appears to function independently in the data model without direct foreign key relationships, focusing on capturing attributes such as interaction details and associated case knowledge with timestamps.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "ESCALATION_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each escalation record, serving as a primary key to differentiate each entry in the database.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This field appears to denote a sequential or categorized label pertaining to specific escalation events or records within the system. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column provides a brief textual explanation or context related to individual escalation instances within the system. Each entry appears to be a sequential, generic description that distinguishes one escalation record from another.",
+      "default": null
+    },
+    {
+      "name": "CASE_156_ATTR_0",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "This column likely represents the date and time when an event or action related to an escalation case occurred. Since the default value is the current timestamp, it may track the creation or update time of the record.",
+      "default": "CURRENT_TIMESTAMP()"
+    },
+    {
+      "name": "ESCALATION_156_ATTR_1",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "This column likely represents an internal code or identifier related to specific escalation entries, possibly indicating types, categories, or statuses. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "KNOWLEDGE_156_ATTR_2",
+      "type": "DATE",
+      "nullable": false,
+      "description": "This column records specific dates related to escalation events within the system. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "INTERACTION_156_ATTR_3",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "TICKET_156_ATTR_4",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "CREATED_AT",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": false,
+      "description": "This column records the precise date and time when each escalation entry was created or initiated. The timestamp is generated automatically, ensuring that each record reflects the exact moment it was logged.",
+      "default": "CURRENT_TIMESTAMP()"
+    }
+  ],
+  "primary_key": [
+    "ESCALATION_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "ESCALATION_ID": 1,
+      "NAME": "ESCALATIONS 1",
+      "DESCRIPTION": "Description for ESCALATIONS 1",
+      "CASE_156_ATTR_0": "2025-12-12 17:26:17.581",
+      "ESCALATION_156_ATTR_1": null,
+      "KNOWLEDGE_156_ATTR_2": "2025-12-12",
+      "INTERACTION_156_ATTR_3": "Sample INTERACTION_156_ATTR_3 1",
+      "TICKET_156_ATTR_4": true,
+      "CREATED_AT": "2025-12-12 17:26:17.581"
+    },
+    {
+      "ESCALATION_ID": 2,
+      "NAME": "ESCALATIONS 2",
+      "DESCRIPTION": "Description for ESCALATIONS 2",
+      "CASE_156_ATTR_0": "2025-12-12 17:26:17.581",
+      "ESCALATION_156_ATTR_1": 101,
+      "KNOWLEDGE_156_ATTR_2": "2025-12-13",
+      "INTERACTION_156_ATTR_3": "Sample INTERACTION_156_ATTR_3 2",
+      "TICKET_156_ATTR_4": false,
+      "CREATED_AT": "2025-12-12 17:26:17.581"
+    },
+    {
+      "ESCALATION_ID": 3,
+      "NAME": "ESCALATIONS 3",
+      "DESCRIPTION": "Description for ESCALATIONS 3",
+      "CASE_156_ATTR_0": "2025-12-12 17:26:17.581",
+      "ESCALATION_156_ATTR_1": 102,
+      "KNOWLEDGE_156_ATTR_2": "2025-12-14",
+      "INTERACTION_156_ATTR_3": "Sample INTERACTION_156_ATTR_3 3",
+      "TICKET_156_ATTR_4": true,
+      "CREATED_AT": "2025-12-12 17:26:17.581"
+    },
+    {
+      "ESCALATION_ID": 4,
+      "NAME": "ESCALATIONS 4",
+      "DESCRIPTION": "Description for ESCALATIONS 4",
+      "CASE_156_ATTR_0": "2025-12-12 17:26:17.581",
+      "ESCALATION_156_ATTR_1": null,
+      "KNOWLEDGE_156_ATTR_2": "2025-12-15",
+      "INTERACTION_156_ATTR_3": "Sample INTERACTION_156_ATTR_3 4",
+      "TICKET_156_ATTR_4": false,
+      "CREATED_AT": "2025-12-12 17:26:17.581"
+    },
+    {
+      "ESCALATION_ID": 5,
+      "NAME": "ESCALATIONS 5",
+      "DESCRIPTION": "Description for ESCALATIONS 5",
+      "CASE_156_ATTR_0": "2025-12-12 17:26:17.581",
+      "ESCALATION_156_ATTR_1": 104,
+      "KNOWLEDGE_156_ATTR_2": "2025-12-16",
+      "INTERACTION_156_ATTR_3": "Sample INTERACTION_156_ATTR_3 5",
+      "TICKET_156_ATTR_4": true,
+      "CREATED_AT": "2025-12-12 17:26:17.581"
+    }
+  ],
+  "generated_at": "2025-12-14T23:42:56.046Z"
+}

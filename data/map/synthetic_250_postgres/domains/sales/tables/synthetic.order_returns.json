@@ -1,0 +1,124 @@
+{
+  "table": "order_returns",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.order_returns` table is designed to record returned orders, identified by the primary key `return_id`. It has a foreign key relationship, indicating it might reference another table, though the specifics are not defined. As the table currently holds no data and column names are unavailable, its precise data model role is indeterminate, but it likely serves to track order returns within a larger order management system.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "return_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each record of a return transaction within the order returns system. It ensures that every return entry can be distinctly recognized and traced.",
+      "default": "nextval('synthetic.order_returns_return_id_seq'::regclass)"
+    },
+    {
+      "name": "order_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column uniquely identifies each return order within the order returns system. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "return_number",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "requested_date",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "The column indicates the date and time when a return was requested within the order returns process. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "reason",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column indicates the current stage in the process of returning an order, initially defaulting to a preliminary stage often termed as \"requested.\" The progression through various stages may involve statuses reflecting approval, rejection, or completion as part of the order return workflow.",
+      "default": "'requested'::character varying"
+    },
+    {
+      "name": "refund_amount",
+      "type": "numeric",
+      "nullable": true,
+      "description": "The column represents the monetary amount refunded to customers for returned orders. Purpose unclear from available data due to lack of sample values.",
+      "default": null
+    },
+    {
+      "name": "refund_method",
+      "type": "character varying",
+      "nullable": true,
+      "description": "The column likely indicates the method used for processing refunds related to product returns. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "processed_date",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "The column likely indicates the date and time when a return order was processed. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "notes",
+      "type": "text",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an order return is created in the system, capturing real-time processing information for transaction tracking. Purpose unclear from available data due to lack of sample values.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "The column represents the date and time when information about an order return was last modified. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "return_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_order_returns_order_id",
+      "column_name": "order_id",
+      "referenced_table": "synthetic.orders",
+      "referenced_column": "order_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "order_returns_pkey",
+      "index_definition": "CREATE UNIQUE INDEX order_returns_pkey ON synthetic.order_returns USING btree (return_id)",
+      "columns": [
+        "return_id"
+      ],
+      "is_unique": true
+    },
+    {
+      "index_name": "order_returns_return_number_key",
+      "index_definition": "CREATE UNIQUE INDEX order_returns_return_number_key ON synthetic.order_returns USING btree (return_number)",
+      "columns": [
+        "return_number"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [],
+  "generated_at": "2025-12-14T23:41:56.429Z"
+}

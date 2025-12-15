@@ -1,0 +1,265 @@
+{
+  "table": "pm_tasks",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.pm_tasks\" table represents tasks to be managed within a project management schema, capturing details like the task name, description, start, due, and completion dates, estimated and actual hours, priority, and status, potentially for project monitoring and tracking purposes. It holds a primary key \"task_id\" to uniquely identify each task and includes foreign keys such as \"project_id\", \"phase_id\", and \"milestone_id\", suggesting its linkage to overarching project structures and phases, although specific relationship details are not defined. This table's role likely involves tracking task progress and details within projects, without direct reference from other tables.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "task_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Represents a unique identifier for each task within the project management system to ensure distinct task records.",
+      "default": "nextval('synthetic.pm_tasks_task_id_seq'::regclass)"
+    },
+    {
+      "name": "project_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column likely identifies and associates tasks with specific projects within a project management system, where each number represents a unique project.",
+      "default": null
+    },
+    {
+      "name": "phase_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column represents the identifier for different phases associated with tasks in project management. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "milestone_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely associates each task with a specific milestone within a project, using numeric identifiers to link tasks to their corresponding project milestones. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "parent_task_id",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents the identifier of a task that serves as the parent or preceding task to the current one, suggesting a task hierarchy or sequence within a project management context. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "task_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column stores descriptions or titles of tasks that are likely related to projects or activities, featuring a blend of abstract and action-oriented statements. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "nullable": true,
+      "description": "This column contains textual entries that likely describe tasks or activities in detail, often involving elements related to decision-making, scenarios, or conditions. However, the exact purpose behind these descriptions is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "assigned_to",
+      "type": "integer",
+      "nullable": true,
+      "description": "This column likely represents identifiers for employees, team members, or users to whom tasks are assigned in a project management context. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "start_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column indicates the scheduled commencement date for tasks in project management, likely used to plan and track task timelines. Dates reflect various times of the year, suggesting the tasks can occur across different seasons.",
+      "default": null
+    },
+    {
+      "name": "due_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column represents the scheduled completion or deadline date for tasks within a project management context. It indicates when a task is expected to be completed, allowing for planning and tracking within the specified timeframes.",
+      "default": null
+    },
+    {
+      "name": "completed_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column indicates the date on which a task was completed. It may remain empty if the task is not yet finished.",
+      "default": null
+    },
+    {
+      "name": "estimated_hours",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the estimated number of hours required to complete specific project management tasks. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "actual_hours",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the number of hours actually spent on various project management tasks, as opposed to planned or estimated hours. The values are measured in decimal format to capture partial hours accurately.",
+      "default": "0"
+    },
+    {
+      "name": "priority",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column indicates the current state of a task, reflecting whether it is ongoing, deferred, or concluded, with possible values including active, pending, inactive, and completed. Tasks may also be noted as cancelled if they are terminated before completion.",
+      "default": "'todo'::character varying"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column logs the date and time when a task record is initially created. It captures the precise moment of task entry, with default settings recording the current timestamp unless otherwise specified.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time a task's details were last modified. It captures the most recent updates, ensuring the task's information is current as of the latest edit.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "task_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_pm_tasks_milestone_id",
+      "column_name": "milestone_id",
+      "referenced_table": "synthetic.milestones",
+      "referenced_column": "milestone_id"
+    },
+    {
+      "constraint_name": "fk_pm_tasks_parent_task_id",
+      "column_name": "parent_task_id",
+      "referenced_table": "synthetic.pm_tasks",
+      "referenced_column": "task_id"
+    },
+    {
+      "constraint_name": "fk_pm_tasks_phase_id",
+      "column_name": "phase_id",
+      "referenced_table": "synthetic.project_phases",
+      "referenced_column": "phase_id"
+    },
+    {
+      "constraint_name": "fk_pm_tasks_project_id",
+      "column_name": "project_id",
+      "referenced_table": "synthetic.pm_projects",
+      "referenced_column": "project_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "pm_tasks_pkey",
+      "index_definition": "CREATE UNIQUE INDEX pm_tasks_pkey ON synthetic.pm_tasks USING btree (task_id)",
+      "columns": [
+        "task_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "task_id": 1,
+      "project_id": 29,
+      "phase_id": 21,
+      "milestone_id": 3,
+      "parent_task_id": null,
+      "task_name": "Today pressure score network. School buy media or check.\nWide effect together minute two. Human reme...",
+      "description": "Realize model he interest their age image fine. Shake decade behind find. Generation determine autho...",
+      "assigned_to": 264,
+      "start_date": "2025-03-02T06:00:00.000Z",
+      "due_date": "2024-07-03T05:00:00.000Z",
+      "completed_date": "2025-11-18T06:00:00.000Z",
+      "estimated_hours": "959.80",
+      "actual_hours": "265.75",
+      "priority": "Field democratic.",
+      "status": "inactive",
+      "created_at": "2025-12-13T09:00:02.407Z",
+      "updated_at": "2025-12-13T09:00:02.407Z"
+    },
+    {
+      "task_id": 2,
+      "project_id": 45,
+      "phase_id": 42,
+      "milestone_id": 7,
+      "parent_task_id": 1,
+      "task_name": "Box free accept blue no feel. Forget through free know across onto control. Democrat increase old ag...",
+      "description": "Create three claim mean wall movie traditional. Mind seek on foot short to. Street perform look ago ...",
+      "assigned_to": 1428,
+      "start_date": "2025-12-05T06:00:00.000Z",
+      "due_date": "2025-06-22T05:00:00.000Z",
+      "completed_date": "2024-03-13T05:00:00.000Z",
+      "estimated_hours": "35.19",
+      "actual_hours": "353.86",
+      "priority": "Mission person.",
+      "status": "completed",
+      "created_at": "2025-12-13T09:00:02.407Z",
+      "updated_at": "2025-12-13T09:00:02.407Z"
+    },
+    {
+      "task_id": 3,
+      "project_id": 25,
+      "phase_id": 40,
+      "milestone_id": 34,
+      "parent_task_id": 1,
+      "task_name": "Line camera yourself different because meet meet.\nVoice adult political table or resource.\nThreat re...",
+      "description": "Who tell politics matter size. Road choose present beautiful.",
+      "assigned_to": 9695,
+      "start_date": "2024-04-03T05:00:00.000Z",
+      "due_date": "2025-06-05T05:00:00.000Z",
+      "completed_date": "2025-10-25T05:00:00.000Z",
+      "estimated_hours": "523.72",
+      "actual_hours": "561.49",
+      "priority": "Per indicate safe.",
+      "status": "cancelled",
+      "created_at": "2025-12-13T09:00:02.407Z",
+      "updated_at": "2025-12-13T09:00:02.407Z"
+    },
+    {
+      "task_id": 4,
+      "project_id": 47,
+      "phase_id": 9,
+      "milestone_id": 49,
+      "parent_task_id": 2,
+      "task_name": "First suffer none those perhaps. Call relationship rule house. Herself reduce newspaper at actually ...",
+      "description": "Bank change eat or.",
+      "assigned_to": 111,
+      "start_date": "2025-09-24T05:00:00.000Z",
+      "due_date": "2024-04-20T05:00:00.000Z",
+      "completed_date": "2024-11-18T06:00:00.000Z",
+      "estimated_hours": "271.68",
+      "actual_hours": "129.78",
+      "priority": "Feeling begin.",
+      "status": "cancelled",
+      "created_at": "2025-12-13T09:00:02.407Z",
+      "updated_at": "2025-12-13T09:00:02.407Z"
+    },
+    {
+      "task_id": 5,
+      "project_id": 34,
+      "phase_id": 36,
+      "milestone_id": 50,
+      "parent_task_id": 3,
+      "task_name": "Policy between particularly store answer.\nEmployee treat term painting structure policy he. Author c...",
+      "description": "Key little ground there bring leg.",
+      "assigned_to": 6590,
+      "start_date": "2025-07-20T05:00:00.000Z",
+      "due_date": "2025-05-17T05:00:00.000Z",
+      "completed_date": "2025-03-30T05:00:00.000Z",
+      "estimated_hours": "162.79",
+      "actual_hours": "136.85",
+      "priority": "Four discover.",
+      "status": "pending",
+      "created_at": "2025-12-13T09:00:02.407Z",
+      "updated_at": "2025-12-13T09:00:02.407Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:42:10.756Z"
+}

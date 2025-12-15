@@ -1,0 +1,183 @@
+{
+  "table": "benefits_plans",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.benefits_plans\" table represents a catalog of benefits plans provided by an organization, detailing various plan options available for employees, including cost details and coverage specifics. The table plays a crucial role in managing and organizing benefit-related information, storing both employee and employer monthly contribution details, and allowing tracking of plan lifecycle through effective and termination dates. As it has no defined relationships with other tables, it appears to function independently within the data model, focusing on the standalone management of benefits information.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "plan_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Represents unique identifiers for each benefits plan in the system. Used to differentiate between various plans available to users.",
+      "default": "nextval('synthetic.benefits_plans_plan_id_seq'::regclass)"
+    },
+    {
+      "name": "plan_name",
+      "type": "character varying",
+      "nullable": false,
+      "description": "The column captures a series of random and syntactically incorrect phrases or statements, which do not provide a clear representation of a coherent business concept related to benefit plans. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "plan_type",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "provider_name",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values do not indicate a specific meaning related to benefits plans.",
+      "default": null
+    },
+    {
+      "name": "coverage_details",
+      "type": "jsonb",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "monthly_cost_employee",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the monthly financial contribution required from an employee for their selected benefits plan. The purpose of the large variation in values is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "monthly_cost_employer",
+      "type": "numeric",
+      "nullable": true,
+      "description": "This column represents the financial cost incurred by an employer per month for providing benefits plans to employees. The figures are expressed in a numerical format, indicating the employer’s expenditure in currency units.",
+      "default": null
+    },
+    {
+      "name": "effective_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column represents the date on which a benefits plan becomes active or begins to apply. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "termination_date",
+      "type": "date",
+      "nullable": true,
+      "description": "This column likely records the date on which a particular benefits plan is expected to end or be discontinued. The purpose of this information is to track when benefits coverage will no longer be effective for planning or notification purposes.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a particular entry in the benefits plans was created. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when a benefits plan was last modified or updated. It helps track changes over time for administrative and auditing purposes.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "plan_id"
+  ],
+  "foreign_keys": [],
+  "indexes": [
+    {
+      "index_name": "benefits_plans_pkey",
+      "index_definition": "CREATE UNIQUE INDEX benefits_plans_pkey ON synthetic.benefits_plans USING btree (plan_id)",
+      "columns": [
+        "plan_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "plan_id": 1,
+      "plan_name": "Address into their easy its. Through option chance off above. Always likely shoulder.",
+      "plan_type": "open",
+      "provider_name": "Wear car fast positive before look.",
+      "coverage_details": {
+        "key": "ability",
+        "value": "traditional"
+      },
+      "monthly_cost_employee": "67005.62",
+      "monthly_cost_employer": "31486.97",
+      "effective_date": "2025-03-14T05:00:00.000Z",
+      "termination_date": "2024-09-18T05:00:00.000Z",
+      "created_at": "2025-12-13T08:53:57.119Z",
+      "updated_at": "2025-12-13T08:53:57.119Z"
+    },
+    {
+      "plan_id": 2,
+      "plan_name": "Laugh may stop like mother stay. Later happy pull really within. Could this beautiful hospital.",
+      "plan_type": "rest",
+      "provider_name": "Draw American first call. Hard day religious program within.",
+      "coverage_details": {
+        "key": "office",
+        "value": "movement"
+      },
+      "monthly_cost_employee": "26634.89",
+      "monthly_cost_employer": "13174.74",
+      "effective_date": "2024-08-10T05:00:00.000Z",
+      "termination_date": "2025-05-10T05:00:00.000Z",
+      "created_at": "2025-12-13T08:53:57.119Z",
+      "updated_at": "2025-12-13T08:53:57.119Z"
+    },
+    {
+      "plan_id": 3,
+      "plan_name": "Wide senior yes project son. Full both look always question bring. Husband subject land.",
+      "plan_type": "begin",
+      "provider_name": "Control high network amount step. Fight nice less agree able enjoy what strong.",
+      "coverage_details": {
+        "key": "call",
+        "value": "hour"
+      },
+      "monthly_cost_employee": "64585.53",
+      "monthly_cost_employer": "45776.73",
+      "effective_date": "2024-12-20T06:00:00.000Z",
+      "termination_date": "2025-02-04T06:00:00.000Z",
+      "created_at": "2025-12-13T08:53:57.119Z",
+      "updated_at": "2025-12-13T08:53:57.119Z"
+    },
+    {
+      "plan_id": 4,
+      "plan_name": "Ok certainly leave really. Clear evening information treatment green face.",
+      "plan_type": "charge",
+      "provider_name": "Million health machine future.",
+      "coverage_details": {
+        "key": "magazine",
+        "value": "whom"
+      },
+      "monthly_cost_employee": "92908.93",
+      "monthly_cost_employer": "93579.86",
+      "effective_date": "2024-02-05T06:00:00.000Z",
+      "termination_date": "2025-08-01T05:00:00.000Z",
+      "created_at": "2025-12-13T08:53:57.119Z",
+      "updated_at": "2025-12-13T08:53:57.119Z"
+    },
+    {
+      "plan_id": 5,
+      "plan_name": "Give reality catch kind would mission wide.",
+      "plan_type": "brother",
+      "provider_name": "Simple serious amount. Allow process or light.\nAt property senior. Turn day top continue.",
+      "coverage_details": {
+        "key": "Congress",
+        "value": "week"
+      },
+      "monthly_cost_employee": "1030.61",
+      "monthly_cost_employer": "62153.81",
+      "effective_date": "2025-06-15T05:00:00.000Z",
+      "termination_date": "2023-12-15T06:00:00.000Z",
+      "created_at": "2025-12-13T08:53:57.119Z",
+      "updated_at": "2025-12-13T08:53:57.119Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:41:20.920Z"
+}

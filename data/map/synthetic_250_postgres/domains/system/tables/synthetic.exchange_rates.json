@@ -1,0 +1,145 @@
+{
+  "table": "exchange_rates",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The `synthetic.exchange_rates` table represents a collection of historical currency exchange rates between various currency pairs, identified by `rate_id` as the primary key. Each entry records the rate at which one currency (`from_currency`) was exchanged for another (`to_currency`) on a specific date (`rate_date`), along with the source of the exchange information. While the table lacks explicit foreign key relationships, its role in the data model appears to be storing exchange rate histories that could support financial analytic operations or currency conversion calculations.",
+  "row_count": 100,
+  "columns": [
+    {
+      "name": "rate_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier for each record in the exchange rates table, incrementing sequentially.",
+      "default": "nextval('synthetic.exchange_rates_rate_id_seq'::regclass)"
+    },
+    {
+      "name": "from_currency",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column represents a code for different currencies involved in exchange rate transactions. It specifies the originating currency code from which an exchange rate is being calculated.",
+      "default": null
+    },
+    {
+      "name": "to_currency",
+      "type": "character varying",
+      "nullable": false,
+      "description": "This column represents the target currency code used in exchange rates, indicating the currency to which values are converted. Purpose unclear from available data as the codes are not standard ISO currency codes.",
+      "default": null
+    },
+    {
+      "name": "rate_date",
+      "type": "date",
+      "nullable": false,
+      "description": "This column represents the date on which a particular exchange rate is applicable. The values indicate specific days throughout the year, including adjustments for daylight saving time.",
+      "default": null
+    },
+    {
+      "name": "exchange_rate",
+      "type": "numeric",
+      "nullable": false,
+      "description": "This column represents the conversion rates between two currencies within a synthetic or simulated environment. The values reflect how much of one currency is needed to obtain a unit of another currency at a given point in time.",
+      "default": null
+    },
+    {
+      "name": "source",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column captures the date and time when an exchange rate record was initially created, reflecting the standard time zone where the data originates. Purpose unclear from available data.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when the exchange rate information was last updated. Purpose unclear from available data beyond indicating update timing.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "rate_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_exchange_rates_from_currency",
+      "column_name": "from_currency",
+      "referenced_table": "synthetic.currencies",
+      "referenced_column": "currency_code"
+    },
+    {
+      "constraint_name": "fk_exchange_rates_to_currency",
+      "column_name": "to_currency",
+      "referenced_table": "synthetic.currencies",
+      "referenced_column": "currency_code"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "exchange_rates_pkey",
+      "index_definition": "CREATE UNIQUE INDEX exchange_rates_pkey ON synthetic.exchange_rates USING btree (rate_id)",
+      "columns": [
+        "rate_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "rate_id": 1,
+      "from_currency": "QRC",
+      "to_currency": "JWZ",
+      "rate_date": "2024-12-16T06:00:00.000Z",
+      "exchange_rate": "63.81910000",
+      "source": "With away environment show water paper control.",
+      "created_at": "2025-12-13T08:55:04.524Z",
+      "updated_at": "2025-12-13T08:55:04.524Z"
+    },
+    {
+      "rate_id": 2,
+      "from_currency": "AKR",
+      "to_currency": "RIF",
+      "rate_date": "2024-10-19T05:00:00.000Z",
+      "exchange_rate": "84.37690000",
+      "source": "Feeling food method interest hotel standard.",
+      "created_at": "2025-12-13T08:55:04.524Z",
+      "updated_at": "2025-12-13T08:55:04.524Z"
+    },
+    {
+      "rate_id": 3,
+      "from_currency": "YJT",
+      "to_currency": "QOM",
+      "rate_date": "2025-01-08T06:00:00.000Z",
+      "exchange_rate": "47.09440000",
+      "source": "Machine project trade.",
+      "created_at": "2025-12-13T08:55:04.524Z",
+      "updated_at": "2025-12-13T08:55:04.524Z"
+    },
+    {
+      "rate_id": 4,
+      "from_currency": "XJU",
+      "to_currency": "PTO",
+      "rate_date": "2025-06-03T05:00:00.000Z",
+      "exchange_rate": "9.11370000",
+      "source": "Among most for begin technology seem.",
+      "created_at": "2025-12-13T08:55:04.524Z",
+      "updated_at": "2025-12-13T08:55:04.524Z"
+    },
+    {
+      "rate_id": 5,
+      "from_currency": "GCJ",
+      "to_currency": "QHK",
+      "rate_date": "2025-11-25T06:00:00.000Z",
+      "exchange_rate": "18.48810000",
+      "source": "Mr while art phone bit send because.",
+      "created_at": "2025-12-13T08:55:04.524Z",
+      "updated_at": "2025-12-13T08:55:04.524Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:39:05.227Z"
+}

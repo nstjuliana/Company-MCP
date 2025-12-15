@@ -1,0 +1,163 @@
+{
+  "table": "expense_items",
+  "schema": "synthetic",
+  "database": "synthetic_250_postgres",
+  "description": "The \"synthetic.expense_items\" table represents individual expense entries within an expense management system, identified by a primary key, \"item_id.\" Each record documents an expense’s details such as the date, category, description, amount, billable status, and associated receipt URL, and links to a report through \"report_id,\" indicating its relationship to a broader expense report. The absence of foreign keys or relationships referenced by other tables suggests it functions independently, primarily storing and organizing expense data.",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "item_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "Represents a unique identifier for each expense item in the system, assigned sequentially to ensure distinctness for record tracking.",
+      "default": "nextval('synthetic.expense_items_item_id_seq'::regclass)"
+    },
+    {
+      "name": "report_id",
+      "type": "integer",
+      "nullable": false,
+      "description": "This column represents a unique identifier linking each expense item to a specific expense report. It indicates the association of expense records to their corresponding summarized reports for tracking purposes.",
+      "default": null
+    },
+    {
+      "name": "expense_date",
+      "type": "date",
+      "nullable": false,
+      "description": "Represents the date on which an expense was recorded or occurred. This data is essential for tracking financial transactions over time.",
+      "default": null
+    },
+    {
+      "name": "category",
+      "type": "character varying",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values appear to be abstract or random phrases, making it challenging to determine the business context or relevance of the data.",
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column contains narrative details or explanations related to individual expense items, often phrased in complete sentences. The content appears to be varied and context-specific, possibly describing the nature or reason for the expenses.",
+      "default": null
+    },
+    {
+      "name": "amount",
+      "type": "numeric",
+      "nullable": false,
+      "description": "This column likely represents the monetary value of individual expense items within a financial dataset, given the numeric sample values which suggest a range of amounts. The exact purpose or context of these expenses, however, is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "receipt_url",
+      "type": "character varying",
+      "nullable": true,
+      "description": "This column stores URLs linking to digital copies of receipts associated with expense items. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "is_billable",
+      "type": "boolean",
+      "nullable": true,
+      "description": "Indicates whether an expense item can be billed to a client. Purpose unclear from available data.",
+      "default": "false"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when each expense item was created or logged, defaulting to the current timestamp. It allows null entries, indicating that the creation time might not always be recorded for all entries.",
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "description": "This column records the date and time when an entry in the expense_items table was last updated. The exact purpose of the updates is unclear from the available data.",
+      "default": "CURRENT_TIMESTAMP"
+    }
+  ],
+  "primary_key": [
+    "item_id"
+  ],
+  "foreign_keys": [
+    {
+      "constraint_name": "fk_expense_items_report_id",
+      "column_name": "report_id",
+      "referenced_table": "synthetic.expense_reports",
+      "referenced_column": "report_id"
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "expense_items_pkey",
+      "index_definition": "CREATE UNIQUE INDEX expense_items_pkey ON synthetic.expense_items USING btree (item_id)",
+      "columns": [
+        "item_id"
+      ],
+      "is_unique": true
+    }
+  ],
+  "sample_data": [
+    {
+      "item_id": 1,
+      "report_id": 50,
+      "expense_date": "2025-07-12T05:00:00.000Z",
+      "category": "Walk major hair new piece positive pay later.",
+      "description": "Him want bar strong. Language to four summer energy.",
+      "amount": "8120.77",
+      "receipt_url": "http://jordan.com/",
+      "is_billable": true,
+      "created_at": "2025-12-13T09:20:46.660Z",
+      "updated_at": "2025-12-13T09:20:46.660Z"
+    },
+    {
+      "item_id": 2,
+      "report_id": 48,
+      "expense_date": "2025-04-23T05:00:00.000Z",
+      "category": "Science century total increase other rock hard.",
+      "description": "Newspaper effect media stock career owner specific. Know order us save fine.",
+      "amount": "5883.36",
+      "receipt_url": "http://butler.com/",
+      "is_billable": false,
+      "created_at": "2025-12-13T09:20:46.660Z",
+      "updated_at": "2025-12-13T09:20:46.660Z"
+    },
+    {
+      "item_id": 3,
+      "report_id": 46,
+      "expense_date": "2024-07-26T05:00:00.000Z",
+      "category": "Suddenly throw about color really.",
+      "description": "Stage involve check because. Eight but reach general successful offer goal.",
+      "amount": "6106.52",
+      "receipt_url": "http://cline.com/",
+      "is_billable": false,
+      "created_at": "2025-12-13T09:20:46.660Z",
+      "updated_at": "2025-12-13T09:20:46.660Z"
+    },
+    {
+      "item_id": 4,
+      "report_id": 11,
+      "expense_date": "2024-09-05T05:00:00.000Z",
+      "category": "Likely character could fill.",
+      "description": "Image citizen easy choice. By language return keep its pass.",
+      "amount": "6165.35",
+      "receipt_url": "http://medina-griffin.info/",
+      "is_billable": true,
+      "created_at": "2025-12-13T09:20:46.660Z",
+      "updated_at": "2025-12-13T09:20:46.660Z"
+    },
+    {
+      "item_id": 5,
+      "report_id": 14,
+      "expense_date": "2025-06-14T05:00:00.000Z",
+      "category": "Church term road this important end spring.",
+      "description": "Position decide cost course however top. Them low others game few. Never move country big five.",
+      "amount": "8056.35",
+      "receipt_url": "http://www.sanders.net/",
+      "is_billable": false,
+      "created_at": "2025-12-13T09:20:46.660Z",
+      "updated_at": "2025-12-13T09:20:46.660Z"
+    }
+  ],
+  "generated_at": "2025-12-14T23:40:12.953Z"
+}

@@ -1,0 +1,135 @@
+{
+  "table": "CART_ITEMS",
+  "schema": "SYNTHETIC",
+  "database": "synthetic_250_snowflake",
+  "description": "The `SYNTHETIC.CART_ITEMS` table represents individual items within a shopping cart, identifiable by the primary key `CART_ITEM_ID`. This table is isolated with no external relationships, indicating its role as a standalone entity in the data model. The columns encapsulate item-specific attributes such as name, description, ratings, reviews, and shipping information, as seen in the sample row provided.",
+  "row_count": 10,
+  "columns": [
+    {
+      "name": "CART_ITEM_ID",
+      "type": "NUMBER",
+      "nullable": false,
+      "description": "This column represents a unique identifier assigned to each item within a customer's shopping cart, ensuring each item can be distinctly referenced and managed.",
+      "default": null
+    },
+    {
+      "name": "NAME",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column represents the unique identifiers assigned to individual items within a shopping cart, denoted by sequential numeric labels. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "nullable": true,
+      "description": "This column contains descriptive information or identifiers related to items within a shopping cart. Each entry provides a unique label or summary for individual cart items.",
+      "default": null
+    },
+    {
+      "name": "RATING_188_ATTR_0",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "This column appears to represent a rating metric or score, potentially evaluating an aspect of items in the cart, with values ranging from 1 to 10. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "REVIEW_188_ATTR_1",
+      "type": "DATE",
+      "nullable": true,
+      "description": "This column contains dates that may represent an event or milestone related to review activities occurring in December 2025. Purpose unclear from available data.",
+      "default": null
+    },
+    {
+      "name": "REVIEW_188_ATTR_2",
+      "type": "NUMBER",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The sample values suggest a categorical identifier or reference code, but no specific business meaning can be determined.",
+      "default": null
+    },
+    {
+      "name": "SHIPPING_188_ATTR_3",
+      "type": "BOOLEAN",
+      "nullable": true,
+      "description": "This column indicates whether a specific condition or attribute related to shipping for items in the cart is met. The purpose of the specific attribute is unclear from the available data.",
+      "default": null
+    },
+    {
+      "name": "CART_188_ATTR_4",
+      "type": "TEXT",
+      "nullable": false,
+      "description": "Purpose unclear from available data. The sample values suggest a sequential or enumerative pattern, but do not provide specific business context.",
+      "default": null
+    },
+    {
+      "name": "RATING_188_ATTR_5",
+      "type": "TIMESTAMP_NTZ",
+      "nullable": true,
+      "description": "Purpose unclear from available data. The column contains timestamp values, but the specific business context or event these timestamps represent is not evident.",
+      "default": null
+    }
+  ],
+  "primary_key": [
+    "CART_ITEM_ID"
+  ],
+  "foreign_keys": [],
+  "indexes": [],
+  "sample_data": [
+    {
+      "CART_ITEM_ID": 1,
+      "NAME": "CART_ITEMS 1",
+      "DESCRIPTION": "Description for CART_ITEMS 1",
+      "RATING_188_ATTR_0": "Sample RATING_188_ATTR_0 1",
+      "REVIEW_188_ATTR_1": "2025-12-12",
+      "REVIEW_188_ATTR_2": null,
+      "SHIPPING_188_ATTR_3": true,
+      "CART_188_ATTR_4": "Sample CART_188_ATTR_4 1",
+      "RATING_188_ATTR_5": "2025-12-12 00:00:00.000"
+    },
+    {
+      "CART_ITEM_ID": 2,
+      "NAME": "CART_ITEMS 2",
+      "DESCRIPTION": "Description for CART_ITEMS 2",
+      "RATING_188_ATTR_0": "Sample RATING_188_ATTR_0 2",
+      "REVIEW_188_ATTR_1": "2025-12-13",
+      "REVIEW_188_ATTR_2": 101,
+      "SHIPPING_188_ATTR_3": false,
+      "CART_188_ATTR_4": "Sample CART_188_ATTR_4 2",
+      "RATING_188_ATTR_5": "2025-12-13 00:00:00.000"
+    },
+    {
+      "CART_ITEM_ID": 3,
+      "NAME": "CART_ITEMS 3",
+      "DESCRIPTION": "Description for CART_ITEMS 3",
+      "RATING_188_ATTR_0": "Sample RATING_188_ATTR_0 3",
+      "REVIEW_188_ATTR_1": "2025-12-14",
+      "REVIEW_188_ATTR_2": 102,
+      "SHIPPING_188_ATTR_3": true,
+      "CART_188_ATTR_4": "Sample CART_188_ATTR_4 3",
+      "RATING_188_ATTR_5": "2025-12-14 00:00:00.000"
+    },
+    {
+      "CART_ITEM_ID": 4,
+      "NAME": "CART_ITEMS 4",
+      "DESCRIPTION": "Description for CART_ITEMS 4",
+      "RATING_188_ATTR_0": "Sample RATING_188_ATTR_0 4",
+      "REVIEW_188_ATTR_1": "2025-12-15",
+      "REVIEW_188_ATTR_2": null,
+      "SHIPPING_188_ATTR_3": false,
+      "CART_188_ATTR_4": "Sample CART_188_ATTR_4 4",
+      "RATING_188_ATTR_5": "2025-12-15 00:00:00.000"
+    },
+    {
+      "CART_ITEM_ID": 5,
+      "NAME": "CART_ITEMS 5",
+      "DESCRIPTION": "Description for CART_ITEMS 5",
+      "RATING_188_ATTR_0": "Sample RATING_188_ATTR_0 5",
+      "REVIEW_188_ATTR_1": "2025-12-16",
+      "REVIEW_188_ATTR_2": 104,
+      "SHIPPING_188_ATTR_3": true,
+      "CART_188_ATTR_4": "Sample CART_188_ATTR_4 5",
+      "RATING_188_ATTR_5": "2025-12-16 00:00:00.000"
+    }
+  ],
+  "generated_at": "2025-12-14T23:44:01.688Z"
+}
