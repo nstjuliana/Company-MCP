@@ -2,8 +2,8 @@
 
 ## What Works
 
-### Markdown File Download Utilities
-✅ **Download Scripts**:
+### SFTP File Download Utilities
+✅ **Markdown Download Scripts**:
 - `download_markdown_from_branches.py`: Downloads markdown files from all git branches via SFTP
   - Automatically checks out each branch
   - Connects to SFTP server (localhost:2222 or sftp-server:22)
@@ -12,6 +12,17 @@
   - Handles git stash/restore for uncommitted changes
 - `download_markdown.py`: Downloads markdown files from current SFTP state
 - `get_markdown_files.sh`: Helper script to start SFTP server and download files
+
+✅ **Synthetic File Download Scripts**:
+- `download_synthetic_files.py`: Downloads specific synthetic files from SFTP
+  - Targets: `synthetic_250_postgres` and `synthetic_250_snowflake`
+  - Recursively searches multiple base paths (`/data`, `/home/datauser/data`, `.`)
+  - Handles both files and directories
+  - Downloads to `sftp-markdown-files/` preserving structure
+- `explore_sftp.py`: SFTP exploration and discovery utility
+  - Recursively explores SFTP directory structure
+  - Highlights files/directories matching search criteria
+  - Useful for finding specific files before downloading
 
 ✅ **Downloaded Files**:
 - Markdown files successfully downloaded to `sftp-markdown-files/` directory
@@ -143,6 +154,7 @@
 3. **Schema Updates**: Manual process, no automation
 4. **Error Handling**: Some edge cases may not be handled gracefully
 5. **Markdown Format**: Downloaded files are in markdown format, may need conversion to JSON for indexing
+6. **Synthetic Files Purpose**: Purpose and format of `synthetic_250_postgres` and `synthetic_250_snowflake` files unclear
 
 ### Data Status
 - **Indexed Content**: 41 tables, 428 documents (per README)
@@ -161,6 +173,7 @@
    - Determine if markdown files need conversion to JSON
    - Or update indexing script to parse markdown directly
    - Process downloaded files from `sftp-markdown-files/` directory
+   - Process synthetic files if they contain schema information
 
 2. **Add Basic Tests**:
    - Test MCP tool execution

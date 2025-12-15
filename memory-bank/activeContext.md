@@ -4,7 +4,17 @@
 **Status**: Markdown file download utilities implemented
 
 ## Recent Changes
-- **Markdown Download Scripts**: New utilities for downloading markdown files from SFTP
+- **SFTP Utility Scripts**: Additional utilities for SFTP file management
+  - `download_synthetic_files.py`: Downloads specific synthetic files from SFTP
+    - Targets: `synthetic_250_postgres` and `synthetic_250_snowflake`
+    - Recursively searches SFTP filesystem
+    - Handles both files and directories
+    - Downloads to `sftp-markdown-files/` directory
+  - `explore_sftp.py`: Comprehensive SFTP exploration script
+    - Recursively explores SFTP directory structure
+    - Highlights files/directories containing "synthetic" or "250"
+    - Useful for discovering file locations
+- **Markdown Download Scripts**: Utilities for downloading markdown files from SFTP
   - `download_markdown_from_branches.py`: Downloads markdown files from all git branches via SFTP
     - Automatically checks out each branch
     - Connects to SFTP server
@@ -107,6 +117,8 @@
 2. **Schema Updates**: What's the workflow for updating schemas? Manual file placement + re-index?
 3. **Vector Embeddings**: Are embeddings generated during indexing or on-demand?
 4. **Health Checks**: Are health check endpoints implemented for all services?
+5. **Synthetic Files**: What are the `synthetic_250_postgres` and `synthetic_250_snowflake` files? Are they test data or additional schema documentation?
+6. **File Tracking**: Should `sftp-markdown-files/` be added to `.gitignore` or tracked in version control?
 
 ## Current Blockers
 None identified at this time.

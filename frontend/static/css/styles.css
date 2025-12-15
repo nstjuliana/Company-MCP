@@ -1057,7 +1057,7 @@ button {
 
 .wiki-container {
     display: grid;
-    grid-template-columns: 320px 1fr;
+    grid-template-columns: 380px 1fr;
     height: calc(100vh - 64px);
     overflow: hidden;
 }
@@ -1543,7 +1543,7 @@ button {
 /* Responsive Wiki */
 @media (max-width: 1024px) {
     .wiki-container {
-        grid-template-columns: 280px 1fr;
+        grid-template-columns: 340px 1fr;
     }
 }
 

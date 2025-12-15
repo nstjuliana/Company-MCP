@@ -104,7 +104,7 @@
 - **Access**: `sftp -P 2222 datauser@localhost`
 - **Mount**: `./data` → `/home/datauser/data`
 
-### Markdown Download Utilities
+### SFTP File Download Utilities
 - **Pattern**: Git branch navigation + SFTP file retrieval
 - **Implementation**: 
   - `download_markdown_from_branches.py`: Iterates through all git branches, checks out each, connects to SFTP, downloads `.md` files
@@ -112,6 +112,18 @@
   - `get_markdown_files.sh`: Orchestrates SFTP server startup and download
 - **Output**: Files saved to `sftp-markdown-files/{branch}/` preserving directory structure
 - **Benefit**: Automated collection of schema documentation from multiple branches
+
+### Synthetic File Download Pattern
+- **Pattern**: Targeted file discovery + SFTP retrieval
+- **Implementation**:
+  - `download_synthetic_files.py`: Searches multiple base paths, finds target files/directories, downloads recursively
+  - `explore_sftp.py`: Recursively explores SFTP structure to discover file locations
+- **Features**:
+  - Multiple base path support (`/data`, `/home/datauser/data`, `.`)
+  - Case-insensitive partial matching
+  - Directory and file handling
+  - Detailed listing when targets not found
+- **Benefit**: Flexible file discovery and download for specific file sets
 
 ## Design Patterns
 

@@ -30,6 +30,13 @@
 - **subprocess**: Git branch management
 - **pathlib**: File path handling
 
+**SFTP Utility Scripts**:
+- `download_markdown_from_branches.py`: Git branch iteration + SFTP markdown download
+- `download_markdown.py`: Single-branch SFTP markdown download
+- `download_synthetic_files.py`: Targeted synthetic file download from SFTP
+- `explore_sftp.py`: SFTP filesystem exploration and discovery
+- `get_markdown_files.sh`: Shell script orchestrating SFTP server startup and download
+
 ## Development Setup
 
 ### Prerequisites

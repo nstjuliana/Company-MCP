@@ -1080,7 +1080,7 @@ def extract_search_query(message: str) -> Optional[str]:
 # ─────────────────────────────────────────────────────────────────────────────
 
 # Wiki markdown files base path - reading from local folder for now
-WIKI_BASE_PATH = BASE_DIR.parent / "sftp-markdown-files" / "chatbot_UI" / "map"
+WIKI_BASE_PATH = BASE_DIR.parent / "sftp-markdown-files"
 
 
 def get_wiki_structure() -> Dict[str, Any]:
