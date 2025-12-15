@@ -611,8 +611,40 @@ function addLoadingIndicator() {
 }
 
 function parseContent(content) {
-    // Simple markdown-ish parsing
-    let html = content
+    // Extract and parse tables first (before HTML escaping)
+    const tables = [];
+    const tableRegex = /\|(.+)\|\n\|[-:| ]+\|\n((?:\|.+\|\n?)+)/g;
+    
+    // Replace tables with placeholders
+    let processed = content.replace(tableRegex, (match, headerRow, bodyRows) => {
+        const headers = headerRow.split('|').map(h => h.trim()).filter(h => h);
+        const rows = bodyRows.trim().split('\n').map(row => 
+            row.split('|').map(cell => cell.trim()).filter(cell => cell)
+        );
+        
+        let table = '<div class="chat-table-wrapper"><table class="chat-table"><thead><tr>';
+        headers.forEach(h => {
+            table += `<th>${escapeHtml(h)}</th>`;
+        });
+        table += '</tr></thead><tbody>';
+        
+        rows.forEach(row => {
+            table += '<tr>';
+            row.forEach((cell, idx) => {
+                // Format numbers with commas for readability
+                const formattedCell = formatTableCell(cell, idx);
+                table += `<td>${formattedCell}</td>`;
+            });
+            table += '</tr>';
+        });
+        
+        table += '</tbody></table></div>';
+        tables.push(table);
+        return `__TABLE_PLACEHOLDER_${tables.length - 1}__`;
+    });
+    
+    // Now do normal markdown parsing with HTML escaping
+    let html = processed
         // Escape HTML
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
@@ -632,6 +664,11 @@ function parseContent(content) {
         .replace(/\n\n/g, '</p><p>')
         .replace(/\n/g, '<br>');
     
+    // Restore tables
+    tables.forEach((table, idx) => {
+        html = html.replace(`__TABLE_PLACEHOLDER_${idx}__`, table);
+    });
+    
     // Wrap in paragraphs
     if (!html.startsWith('<')) {
         html = '<p>' + html + '</p>';
@@ -641,6 +678,23 @@ function parseContent(content) {
     html = html.replace(/(<li>.*?<\/li>)+/gs, '<ul>$&</ul>');
     
     return html;
+}
+
+function formatTableCell(cell, columnIndex) {
+    // Check if it looks like a number (with optional commas and decimals)
+    const numMatch = cell.match(/^-?[\d,]+\.?\d*$/);
+    if (numMatch) {
+        // Parse the number and format it nicely
+        const num = parseFloat(cell.replace(/,/g, ''));
+        if (!isNaN(num)) {
+            // Format with commas and 2 decimal places for currency-like values
+            if (cell.includes('.')) {
+                return `<span class="table-number">${num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>`;
+            }
+            return `<span class="table-number">${num.toLocaleString('en-US')}</span>`;
+        }
+    }
+    return escapeHtml(cell);
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
