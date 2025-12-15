@@ -187,25 +187,45 @@ async function sendMessage(textOrEvent = null) {
         let toolsUsed = [];
         let thinkingSteps = [];
         
+        let chunkCount = 0;
+        let currentEventType = null;
+        
         while (true) {
             const { done, value } = await reader.read();
-            if (done) break;
+            if (done) {
+                console.log(`[SSE] Stream ended after ${chunkCount} chunks`);
+                break;
+            }
             
-            buffer += decoder.decode(value, { stream: true });
+            chunkCount++;
+            const chunk = decoder.decode(value, { stream: true });
+            console.log(`[SSE] Chunk ${chunkCount} received (${chunk.length} bytes)`);
+            buffer += chunk;
             
-            // Process complete SSE events
-            const lines = buffer.split('\n');
-            buffer = lines.pop() || ''; // Keep incomplete line in buffer
+            // Process complete SSE events (split by double newline)
+            // SSE events are separated by \n\n
+            const events = buffer.split('\n\n');
+            buffer = events.pop() || ''; // Keep incomplete event in buffer
             
-            let eventType = null;
-            for (const line of lines) {
-                if (line.startsWith('event: ')) {
-                    eventType = line.slice(7).trim();
-                    console.log(`[SSE] Event type: ${eventType}`);
-                } else if (line.startsWith('data: ') && eventType) {
+            for (const eventBlock of events) {
+                if (!eventBlock.trim()) continue;
+                
+                const lines = eventBlock.split('\n');
+                let eventType = null;
+                let eventData = null;
+                
+                for (const line of lines) {
+                    if (line.startsWith('event: ')) {
+                        eventType = line.slice(7).trim();
+                    } else if (line.startsWith('data: ')) {
+                        eventData = line.slice(6);
+                    }
+                }
+                
+                if (eventType && eventData) {
                     try {
-                        const data = JSON.parse(line.slice(6));
-                        console.log(`[SSE] Received ${eventType}:`, data);
+                        const data = JSON.parse(eventData);
+                        console.log(`[SSE] Received ${eventType}:`, eventType === 'tool_result' ? '(tool result data)' : data);
                         handleStreamEvent(eventType, data, streamingContainer, {
                             thinkingSteps,
                             toolsUsed,
@@ -242,9 +262,10 @@ async function sendMessage(textOrEvent = null) {
                             fullContent = `Error: ${data.message}`;
                         }
                     } catch (e) {
-                        console.error('Error parsing SSE data:', e, line);
+                        console.error(`[SSE] Error parsing ${eventType} data:`, e, eventData?.substring(0, 100));
                     }
-                    eventType = null;
+                } else if (eventType) {
+                    console.warn(`[SSE] Event ${eventType} has no data`);
                 }
             }
         }
