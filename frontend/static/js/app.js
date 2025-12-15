@@ -14,7 +14,12 @@ const state = {
     currentPath: '/data',
     isLoading: false,
     mcpServers: {},
-    openaiConfigured: false
+    openaiConfigured: false,
+    // Wiki state
+    wikiStructure: null,
+    wikiExpandedNodes: new Set(),
+    wikiSelectedTable: null,
+    wikiSearchQuery: ''
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -45,6 +50,8 @@ function navigateTo(page) {
         checkSystemStatus();
     } else if (page === 'chat') {
         checkChatStatus();
+    } else if (page === 'wiki') {
+        loadWikiStructure();
     }
 }
 
@@ -408,6 +415,9 @@ async function loadFilePreview(path) {
         
         if (ext === 'json') {
             previewContent.innerHTML = `<pre class="preview-code preview-json">${syntaxHighlightJson(data.content)}</pre>`;
+        } else if (ext === 'md' || ext === 'markdown') {
+            // Render markdown with basic formatting
+            previewContent.innerHTML = `<div class="preview-markdown">${renderMarkdown(data.content)}</div>`;
         } else {
             previewContent.innerHTML = `<pre class="preview-code">${escapeHtml(data.content)}</pre>`;
         }
@@ -435,6 +445,516 @@ function syntaxHighlightJson(json) {
         .replace(/: (true|false|null)([,\n])/g, ': <span class="number">$1</span>$2');
 }
 
+async function findAllMarkdownFiles() {
+    const filesList = document.getElementById('filesList');
+    const findBtn = document.getElementById('findMarkdownBtn');
+    
+    // Disable button and show loading
+    findBtn.disabled = true;
+    findBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;min-width:16px;min-height:16px;flex-shrink:0;margin-right:8px;"><path d="M21 21l-6-6m2-5a7 7 0 1 1-14 0 7 7 0 0 1 14 0z"/></svg> Searching...';
+    filesList.innerHTML = '<div class="loading">Searching for markdown files...</div>';
+    
+    try {
+        const response = await fetch('/api/files/markdown');
+        
+        if (!response.ok) {
+            throw new Error('Failed to find markdown files');
+        }
+        
+        const data = await response.json();
+        
+        // Update breadcrumb to show we're in search results
+        const breadcrumb = document.getElementById('pathBreadcrumb');
+        breadcrumb.innerHTML = `<span class="breadcrumb-item" data-path="/data" style="color: var(--accent-400);">Markdown Files (${data.count})</span>`;
+        
+        // Clear breadcrumb click handlers since we're in search mode
+        breadcrumb.querySelectorAll('.breadcrumb-item').forEach(item => {
+            item.addEventListener('click', () => {
+                loadFiles('/data');
+                findBtn.disabled = false;
+                findBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;min-width:16px;min-height:16px;flex-shrink:0;margin-right:8px;"><path d="M21 21l-6-6m2-5a7 7 0 1 1-14 0 7 7 0 0 1 14 0z"/></svg> Find All Markdown Files';
+            });
+        });
+        
+        // Render markdown files list
+        filesList.innerHTML = '';
+        
+        if (data.files.length === 0) {
+            filesList.innerHTML = '<div class="loading">No markdown files found</div>';
+        } else {
+            data.files.forEach(file => {
+                const fileEl = createMarkdownFileItem(file);
+                filesList.appendChild(fileEl);
+            });
+        }
+        
+    } catch (error) {
+        filesList.innerHTML = `<div class="loading">Error: ${error.message}</div>`;
+    } finally {
+        findBtn.disabled = false;
+        findBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;min-width:16px;min-height:16px;flex-shrink:0;margin-right:8px;"><path d="M21 21l-6-6m2-5a7 7 0 1 1-14 0 7 7 0 0 1 14 0z"/></svg> Find All Markdown Files';
+    }
+}
+
+function createMarkdownFileItem(file) {
+    const el = document.createElement('div');
+    el.className = 'file-item';
+    
+    const icon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="file-icon">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+    </svg>`;
+    
+    const size = formatSize(file.size);
+    const pathParts = file.relative_path.split('/');
+    const displayPath = pathParts.length > 1 ? pathParts.slice(0, -1).join('/') + '/' : '';
+    
+    el.innerHTML = `
+        ${icon}
+        <div class="file-info">
+            <span class="file-name">${escapeHtml(file.name)}</span>
+            <span class="file-path">${escapeHtml(displayPath)}</span>
+        </div>
+        <span class="file-size">${size}</span>
+    `;
+    
+    el.addEventListener('click', () => {
+        loadFilePreview(file.path);
+        // Mark as active
+        document.querySelectorAll('.file-item').forEach(f => f.classList.remove('active'));
+        el.classList.add('active');
+    });
+    
+    return el;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Wiki
+// ═══════════════════════════════════════════════════════════════════════════
+
+async function loadWikiStructure() {
+    const wikiTree = document.getElementById('wikiTree');
+    if (!wikiTree) return;
+    
+    // Only load if not already loaded
+    if (state.wikiStructure) {
+        renderWikiTree();
+        return;
+    }
+    
+    wikiTree.innerHTML = '<div class="loading">Loading databases...</div>';
+    
+    try {
+        const response = await fetch('/api/wiki/structure');
+        const data = await response.json();
+        state.wikiStructure = data;
+        renderWikiTree();
+    } catch (error) {
+        wikiTree.innerHTML = `<div class="loading">Error loading wiki: ${error.message}</div>`;
+    }
+}
+
+function renderWikiTree() {
+    const wikiTree = document.getElementById('wikiTree');
+    if (!wikiTree || !state.wikiStructure) return;
+    
+    const databases = state.wikiStructure.databases || [];
+    
+    if (databases.length === 0) {
+        wikiTree.innerHTML = '<div class="loading">No databases found</div>';
+        return;
+    }
+    
+    wikiTree.innerHTML = databases.map(db => renderDatabaseNode(db)).join('');
+    
+    // Add event listeners
+    wikiTree.querySelectorAll('.wiki-node-header').forEach(header => {
+        header.addEventListener('click', handleWikiNodeClick);
+    });
+}
+
+function renderDatabaseNode(db) {
+    const isExpanded = state.wikiExpandedNodes.has(`db:${db.name}`);
+    const domainCount = db.domains?.length || 0;
+    
+    return `
+        <div class="wiki-node database ${isExpanded ? 'expanded' : ''}" data-type="database" data-name="${escapeHtml(db.name)}">
+            <div class="wiki-node-header">
+                <span class="wiki-node-toggle">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="m9 18 6-6-6-6"/>
+                    </svg>
+                </span>
+                <svg viewBox="0 0 24 24" fill="currentColor" class="wiki-node-icon database">
+                    <ellipse cx="12" cy="5" rx="9" ry="3"/>
+                    <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+                    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+                </svg>
+                <span class="wiki-node-name">${escapeHtml(db.name)}</span>
+                <span class="wiki-node-count">${domainCount} domain${domainCount !== 1 ? 's' : ''}</span>
+            </div>
+            <div class="wiki-node-children">
+                ${(db.domains || []).map(domain => renderDomainNode(db.name, domain)).join('')}
+            </div>
+        </div>
+    `;
+}
+
+function renderDomainNode(dbName, domain) {
+    const nodeId = `domain:${dbName}/${domain.name}`;
+    const isExpanded = state.wikiExpandedNodes.has(nodeId);
+    const tableCount = domain.tables?.length || 0;
+    
+    return `
+        <div class="wiki-node domain ${isExpanded ? 'expanded' : ''}" data-type="domain" data-db="${escapeHtml(dbName)}" data-name="${escapeHtml(domain.name)}">
+            <div class="wiki-node-header">
+                <span class="wiki-node-toggle">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="m9 18 6-6-6-6"/>
+                    </svg>
+                </span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="wiki-node-icon domain">
+                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                </svg>
+                <span class="wiki-node-name">${escapeHtml(domain.name)}</span>
+                <span class="wiki-node-count">${tableCount} table${tableCount !== 1 ? 's' : ''}</span>
+            </div>
+            <div class="wiki-node-children">
+                ${(domain.tables || []).map(table => renderTableNode(dbName, domain.name, table)).join('')}
+            </div>
+        </div>
+    `;
+}
+
+function renderTableNode(dbName, domainName, table) {
+    const isSelected = state.wikiSelectedTable === table.path;
+    
+    return `
+        <div class="wiki-node table" data-type="table" data-path="${escapeHtml(table.path)}">
+            <div class="wiki-node-header ${isSelected ? 'active' : ''}">
+                <span class="wiki-node-toggle">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="m9 18 6-6-6-6"/>
+                    </svg>
+                </span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="wiki-node-icon table">
+                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                    <path d="M3 9h18M9 21V9"/>
+                </svg>
+                <span class="wiki-node-name">${escapeHtml(table.name)}</span>
+            </div>
+        </div>
+    `;
+}
+
+function handleWikiNodeClick(event) {
+    const header = event.currentTarget;
+    const node = header.closest('.wiki-node');
+    const type = node.dataset.type;
+    
+    if (type === 'database') {
+        const dbName = node.dataset.name;
+        const nodeId = `db:${dbName}`;
+        toggleWikiNode(nodeId, node);
+    } else if (type === 'domain') {
+        const dbName = node.dataset.db;
+        const domainName = node.dataset.name;
+        const nodeId = `domain:${dbName}/${domainName}`;
+        toggleWikiNode(nodeId, node);
+    } else if (type === 'table') {
+        const path = node.dataset.path;
+        loadWikiTable(path);
+        
+        // Update selected state
+        document.querySelectorAll('.wiki-node.table .wiki-node-header').forEach(h => {
+            h.classList.remove('active');
+        });
+        header.classList.add('active');
+        state.wikiSelectedTable = path;
+    }
+}
+
+function toggleWikiNode(nodeId, nodeElement) {
+    if (state.wikiExpandedNodes.has(nodeId)) {
+        state.wikiExpandedNodes.delete(nodeId);
+        nodeElement.classList.remove('expanded');
+    } else {
+        state.wikiExpandedNodes.add(nodeId);
+        nodeElement.classList.add('expanded');
+    }
+}
+
+async function loadWikiTable(path) {
+    const wikiDoc = document.getElementById('wikiDoc');
+    const wikiBreadcrumb = document.getElementById('wikiBreadcrumb');
+    
+    if (!wikiDoc) return;
+    
+    wikiDoc.innerHTML = '<div class="loading">Loading documentation...</div>';
+    
+    try {
+        const response = await fetch(`/api/wiki/table?path=${encodeURIComponent(path)}`);
+        
+        if (!response.ok) {
+            throw new Error('Failed to load table documentation');
+        }
+        
+        const data = await response.json();
+        
+        // Update breadcrumb
+        if (wikiBreadcrumb) {
+            wikiBreadcrumb.innerHTML = `
+                <span class="breadcrumb-item" onclick="clearWikiSelection()">Wiki</span>
+                <span class="breadcrumb-separator">/</span>
+                <span class="breadcrumb-item" onclick="expandWikiToDatabase('${escapeHtml(data.database)}')">${escapeHtml(data.database)}</span>
+                <span class="breadcrumb-separator">/</span>
+                <span class="breadcrumb-item" onclick="expandWikiToDomain('${escapeHtml(data.database)}', '${escapeHtml(data.domain)}')">${escapeHtml(data.domain)}</span>
+                <span class="breadcrumb-separator">/</span>
+                <span class="breadcrumb-item current">${escapeHtml(data.name)}</span>
+            `;
+        }
+        
+        // Render markdown content
+        const htmlContent = renderWikiMarkdown(data.content);
+        wikiDoc.innerHTML = `<div class="wiki-doc-content">${htmlContent}</div>`;
+        
+    } catch (error) {
+        wikiDoc.innerHTML = `<div class="wiki-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 8v4M12 16h.01"/>
+            </svg>
+            <h3>Error Loading Documentation</h3>
+            <p>${error.message}</p>
+        </div>`;
+    }
+}
+
+function renderWikiMarkdown(content) {
+    // Enhanced markdown rendering for wiki pages
+    let html = escapeHtml(content)
+        // Headers
+        .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+        .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+        .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+        // Bold
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/__(.+?)__/g, '<strong>$1</strong>')
+        // Code blocks
+        .replace(/```(\w*)\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>')
+        // Inline code
+        .replace(/`([^`]+)`/g, '<code>$1</code>')
+        // Links
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+    
+    // Handle tables
+    html = renderMarkdownTables(html);
+    
+    // Lists
+    html = html
+        .replace(/^- (.+)$/gm, '<li>$1</li>')
+        .replace(/^\d+\. (.+)$/gm, '<li>$1</li>');
+    
+    // Line breaks
+    html = html
+        .replace(/\n\n/g, '</p><p>')
+        .replace(/\n/g, '<br>');
+    
+    // Wrap in paragraphs if needed
+    if (!html.startsWith('<')) {
+        html = '<p>' + html + '</p>';
+    }
+    
+    // Fix list items (wrap in ul)
+    html = html.replace(/(<li>.*?<\/li>)+/gs, '<ul>$&</ul>');
+    
+    return html;
+}
+
+function renderMarkdownTables(html) {
+    // Match markdown tables
+    const tableRegex = /\|(.+)\|\n\|[-:| ]+\|\n((?:\|.+\|\n?)+)/g;
+    
+    return html.replace(tableRegex, (match, headerRow, bodyRows) => {
+        const headers = headerRow.split('|').map(h => h.trim()).filter(h => h);
+        const rows = bodyRows.trim().split('\n').map(row => 
+            row.split('|').map(cell => cell.trim()).filter(cell => cell)
+        );
+        
+        let table = '<table><thead><tr>';
+        headers.forEach(h => {
+            table += `<th>${h}</th>`;
+        });
+        table += '</tr></thead><tbody>';
+        
+        rows.forEach(row => {
+            table += '<tr>';
+            row.forEach(cell => {
+                table += `<td>${cell}</td>`;
+            });
+            table += '</tr>';
+        });
+        
+        table += '</tbody></table>';
+        return table;
+    });
+}
+
+function clearWikiSelection() {
+    state.wikiSelectedTable = null;
+    document.querySelectorAll('.wiki-node.table .wiki-node-header').forEach(h => {
+        h.classList.remove('active');
+    });
+    
+    const wikiDoc = document.getElementById('wikiDoc');
+    const wikiBreadcrumb = document.getElementById('wikiBreadcrumb');
+    
+    if (wikiBreadcrumb) {
+        wikiBreadcrumb.innerHTML = '<span class="breadcrumb-item">Select a table to view documentation</span>';
+    }
+    
+    if (wikiDoc) {
+        wikiDoc.innerHTML = `
+            <div class="wiki-placeholder">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                    <path d="M8 7h8M8 11h8M8 15h5"/>
+                </svg>
+                <h3>Database Documentation Wiki</h3>
+                <p>Browse databases, domains, and tables in the sidebar to view their documentation.</p>
+            </div>
+        `;
+    }
+}
+
+function expandWikiToDatabase(dbName) {
+    const nodeId = `db:${dbName}`;
+    state.wikiExpandedNodes.add(nodeId);
+    renderWikiTree();
+}
+
+function expandWikiToDomain(dbName, domainName) {
+    state.wikiExpandedNodes.add(`db:${dbName}`);
+    state.wikiExpandedNodes.add(`domain:${dbName}/${domainName}`);
+    renderWikiTree();
+}
+
+// Wiki Search
+const wikiSearchInput = document.getElementById('wikiSearch');
+const wikiSearchClear = document.getElementById('wikiSearchClear');
+let wikiSearchTimeout = null;
+
+if (wikiSearchInput) {
+    wikiSearchInput.addEventListener('input', (e) => {
+        const query = e.target.value.trim();
+        
+        // Show/hide clear button
+        if (wikiSearchClear) {
+            wikiSearchClear.style.display = query ? 'flex' : 'none';
+        }
+        
+        // Debounce search
+        clearTimeout(wikiSearchTimeout);
+        wikiSearchTimeout = setTimeout(() => {
+            if (query.length >= 2) {
+                searchWiki(query);
+            } else if (query.length === 0) {
+                showWikiTree();
+            }
+        }, 300);
+    });
+}
+
+if (wikiSearchClear) {
+    wikiSearchClear.addEventListener('click', () => {
+        if (wikiSearchInput) {
+            wikiSearchInput.value = '';
+            wikiSearchClear.style.display = 'none';
+            showWikiTree();
+        }
+    });
+}
+
+async function searchWiki(query) {
+    const wikiTree = document.getElementById('wikiTree');
+    const wikiSearchResults = document.getElementById('wikiSearchResults');
+    
+    if (!wikiSearchResults) return;
+    
+    // Hide tree, show results
+    if (wikiTree) wikiTree.style.display = 'none';
+    wikiSearchResults.style.display = 'block';
+    wikiSearchResults.innerHTML = '<div class="loading">Searching...</div>';
+    
+    try {
+        const response = await fetch(`/api/wiki/search?q=${encodeURIComponent(query)}`);
+        const data = await response.json();
+        
+        const results = data.results || [];
+        
+        if (results.length === 0) {
+            wikiSearchResults.innerHTML = `
+                <div class="wiki-search-no-results">
+                    <p>No tables found matching "${escapeHtml(query)}"</p>
+                </div>
+            `;
+            return;
+        }
+        
+        wikiSearchResults.innerHTML = results.map(result => `
+            <div class="wiki-search-result" onclick="selectWikiSearchResult('${escapeHtml(result.path)}')">
+                <div class="wiki-search-result-name">${escapeHtml(result.name)}</div>
+                <div class="wiki-search-result-path">${escapeHtml(result.database)} / ${escapeHtml(result.domain)}</div>
+                ${result.snippet ? `<div class="wiki-search-result-snippet">${escapeHtml(result.snippet)}</div>` : ''}
+            </div>
+        `).join('');
+        
+    } catch (error) {
+        wikiSearchResults.innerHTML = `<div class="wiki-search-no-results">Error: ${error.message}</div>`;
+    }
+}
+
+function showWikiTree() {
+    const wikiTree = document.getElementById('wikiTree');
+    const wikiSearchResults = document.getElementById('wikiSearchResults');
+    
+    if (wikiTree) wikiTree.style.display = 'block';
+    if (wikiSearchResults) wikiSearchResults.style.display = 'none';
+}
+
+function selectWikiSearchResult(path) {
+    // Clear search
+    if (wikiSearchInput) {
+        wikiSearchInput.value = '';
+    }
+    if (wikiSearchClear) {
+        wikiSearchClear.style.display = 'none';
+    }
+    showWikiTree();
+    
+    // Extract database and domain from path to expand tree
+    const parts = path.split('/');
+    if (parts.length >= 4) {
+        const dbName = parts[0];
+        const domainName = parts[2]; // skip "domains" folder
+        expandWikiToDomain(dbName, domainName);
+    }
+    
+    // Load the table
+    loadWikiTable(path);
+    state.wikiSelectedTable = path;
+    
+    // Update selection in tree after re-render
+    setTimeout(() => {
+        document.querySelectorAll('.wiki-node.table').forEach(node => {
+            if (node.dataset.path === path) {
+                node.querySelector('.wiki-node-header').classList.add('active');
+            }
+        });
+    }, 100);
+}
+
 // ═══════════════════════════════════════════════════════════════════════════
 // Utilities
 // ═══════════════════════════════════════════════════════════════════════════
@@ -454,6 +974,40 @@ function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+}
+
+function renderMarkdown(content) {
+    // Basic markdown rendering
+    let html = escapeHtml(content)
+        // Headers
+        .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+        .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+        .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+        // Bold
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/__(.+?)__/g, '<strong>$1</strong>')
+        // Code blocks
+        .replace(/```(\w*)\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>')
+        // Inline code
+        .replace(/`([^`]+)`/g, '<code>$1</code>')
+        // Links
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>')
+        // Lists
+        .replace(/^- (.+)$/gm, '<li>$1</li>')
+        .replace(/^\d+\. (.+)$/gm, '<li>$1</li>')
+        // Line breaks
+        .replace(/\n\n/g, '</p><p>')
+        .replace(/\n/g, '<br>');
+    
+    // Wrap in paragraphs
+    if (!html.startsWith('<')) {
+        html = '<p>' + html + '</p>';
+    }
+    
+    // Fix list items (wrap in ul)
+    html = html.replace(/(<li>.*?<\/li>)+/gs, '<ul>$&</ul>');
+    
+    return html;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
