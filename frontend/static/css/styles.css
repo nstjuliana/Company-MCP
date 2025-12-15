@@ -495,9 +495,10 @@ button {
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .chat-container {
+    width: 100%;
     max-width: 100%;
     margin: 0;
-    padding: var(--space-md) var(--space-xl);
+    padding: 0;
     display: flex;
     flex-direction: column;
     height: calc(100vh - 64px);
@@ -532,8 +533,13 @@ button {
     display: flex;
     flex-direction: column;
     gap: var(--space-lg);
+    width: 100%;
+}
+
+.chat-messages > * {
     max-width: 1200px;
-    margin: 0 auto;
+    margin-left: auto;
+    margin-right: auto;
     width: 100%;
 }
 

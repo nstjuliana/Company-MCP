@@ -510,8 +510,11 @@ async def call_mcp_tool_on_server(server_url: str, tool_name: str, arguments: Di
     """Call a specific tool on an MCP server using session-based protocol."""
     try:
         # Normalize URL to use internal Docker URLs when possible
+        original_url = server_url
         server_url = normalize_mcp_url(server_url)
         mcp_endpoint = get_mcp_endpoint(server_url)
+        
+        print(f"[MCP Call] Tool: {tool_name}, Original URL: {original_url}, Normalized: {server_url}, Endpoint: {mcp_endpoint}")
         
         headers = {
             "Content-Type": "application/json",
@@ -530,17 +533,21 @@ async def call_mcp_tool_on_server(server_url: str, tool_name: str, arguments: Di
             }
         }
         
+        print(f"[MCP Call] Initializing session at {mcp_endpoint}...")
         init_response = await http_client.post(
             mcp_endpoint,
             json=init_payload,
             headers=headers
         )
+        print(f"[MCP Call] Init response status: {init_response.status_code}")
         
         session_id = init_response.headers.get("mcp-session-id")
         if not session_id:
+            print(f"[MCP Call] ERROR: No session ID returned. Headers: {dict(init_response.headers)}")
             return {"error": "Failed to establish MCP session"}
         
         # Step 2: Call tool with session
+        print(f"[MCP Call] Got session: {session_id[:16]}...")
         tool_payload = {
             "jsonrpc": "2.0",
             "id": 2,
@@ -553,23 +560,29 @@ async def call_mcp_tool_on_server(server_url: str, tool_name: str, arguments: Di
         
         headers["mcp-session-id"] = session_id
         
+        print(f"[MCP Call] Calling tool {tool_name}...")
         response = await http_client.post(
             mcp_endpoint,
             json=tool_payload,
             headers=headers
         )
+        print(f"[MCP Call] Tool response status: {response.status_code}")
         
         # Parse SSE response
         content = response.text
+        print(f"[MCP Call] Response content length: {len(content)}, preview: {content[:200]}...")
         result = parse_sse_response(content)
+        print(f"[MCP Call] Parsed result keys: {list(result.keys()) if isinstance(result, dict) else type(result)}")
         
         if "error" in result:
+            print(f"[MCP Call] ERROR in result: {result['error']}")
             return {"error": result["error"]}
         
         return result.get("result", result)
         
     except Exception as e:
         import traceback
+        print(f"[MCP Call] EXCEPTION: {e}")
         traceback.print_exc()
         return {"error": str(e)}
 
@@ -633,7 +646,9 @@ Remember: Call the tools, don't just describe what you would do!"""
 async def stream_sse_event(event_type: str, data: Any) -> str:
     """Format a Server-Sent Event."""
     json_data = json.dumps(data, default=str)
-    return f"event: {event_type}\ndata: {json_data}\n\n"
+    event_str = f"event: {event_type}\ndata: {json_data}\n\n"
+    print(f"[SSE] Sending event: {event_type} (data length: {len(json_data)})")
+    return event_str
 
 
 @app.post("/api/chat/stream")
@@ -753,6 +768,7 @@ async def chat_stream(request: ChatRequest):
                             arguments = {}
                         
                         # Send tool_start event
+                        print(f"[Stream] Starting tool call: {server_id}/{tool_name}")
                         yield await stream_sse_event("tool_start", {
                             "server": server_id,
                             "tool": tool_name,
@@ -760,15 +776,25 @@ async def chat_stream(request: ChatRequest):
                         })
                         
                         # Execute the tool
-                        tool_result = await call_mcp_tool_on_server(server_url, tool_name, arguments)
+                        print(f"[Stream] Executing tool on server: {server_url}")
+                        try:
+                            tool_result = await call_mcp_tool_on_server(server_url, tool_name, arguments)
+                            print(f"[Stream] Tool result received: {str(tool_result)[:200]}...")
+                        except Exception as tool_error:
+                            print(f"[Stream] Tool execution error: {tool_error}")
+                            import traceback
+                            traceback.print_exc()
+                            tool_result = {"error": str(tool_error)}
                         
                         # Send tool_result event
+                        print(f"[Stream] Sending tool_result event")
                         yield await stream_sse_event("tool_result", {
                             "server": server_id,
                             "tool": tool_name,
                             "arguments": arguments,
                             "result": tool_result
                         })
+                        print(f"[Stream] tool_result event sent successfully")
                         
                         tools_used.append({
                             "server": server_id,

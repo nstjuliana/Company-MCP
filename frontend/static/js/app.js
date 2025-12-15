@@ -201,9 +201,11 @@ async function sendMessage(textOrEvent = null) {
             for (const line of lines) {
                 if (line.startsWith('event: ')) {
                     eventType = line.slice(7).trim();
+                    console.log(`[SSE] Event type: ${eventType}`);
                 } else if (line.startsWith('data: ') && eventType) {
                     try {
                         const data = JSON.parse(line.slice(6));
+                        console.log(`[SSE] Received ${eventType}:`, data);
                         handleStreamEvent(eventType, data, streamingContainer, {
                             thinkingSteps,
                             toolsUsed,
