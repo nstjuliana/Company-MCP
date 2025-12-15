@@ -1,9 +1,22 @@
 # Active Context
 
 ## Current Work Focus
-**Status**: Wiki page implementation complete
+**Status**: Markdown file download utilities implemented
 
 ## Recent Changes
+- **Markdown Download Scripts**: New utilities for downloading markdown files from SFTP
+  - `download_markdown_from_branches.py`: Downloads markdown files from all git branches via SFTP
+    - Automatically checks out each branch
+    - Connects to SFTP server
+    - Recursively finds and downloads all `.md` files
+    - Preserves directory structure
+    - Restores original branch after completion
+  - `download_markdown.py`: Downloads markdown files from SFTP (single branch/current state)
+  - `get_markdown_files.sh`: Helper script to start SFTP server and download files
+- **Downloaded Files**: Markdown files downloaded to `sftp-markdown-files/` directory
+  - Contains files from `chatbot_UI` branch
+  - Structure: `chatbot_UI/map/{database}/domains/{domain}/tables/*.md`
+  - Includes postgres_production and snowflake_production schemas
 - **Wiki Page Added**: New Wiki page for browsing database documentation
   - Hierarchical navigation: Databases → Domains → Tables
   - Search functionality for quick table lookup
@@ -49,16 +62,23 @@
 1. **Indexing Script**: `setup_db.py` referenced in README but not in repository
    - Need to create or document existing indexing process
    - Should handle FTS5 index creation and vector embedding generation
+   - Should process markdown files from `sftp-markdown-files/` or convert them to JSON format
 
-2. **Testing**: 
+2. **Markdown to JSON Conversion**: 
+   - May need to convert downloaded markdown files to JSON format for indexing
+   - Or update indexing script to handle markdown files directly
+
+3. **Testing**: 
    - Verify multi-instance isolation works correctly
    - Test search functionality (FTS5 and vector)
    - Validate web UI functionality
+   - Test markdown download scripts
 
-3. **Documentation**:
+4. **Documentation**:
    - Complete API documentation
    - Deployment guide
    - Indexing guide
+   - Markdown download workflow documentation
 
 ## Active Decisions and Considerations
 

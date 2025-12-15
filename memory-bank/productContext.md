@@ -52,3 +52,4 @@ This MCP server solves this by providing a centralized, searchable index of data
 - **Multi-Instance**: Support for dabstep, synth, and other MCP instances
 - **Web UI**: FastAPI frontend with GPT-4o integration
 - **File Browser**: SFTP access to data directory
+- **Markdown Download Utilities**: Scripts to download schema documentation from all git branches via SFTP

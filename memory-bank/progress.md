@@ -2,6 +2,22 @@
 
 ## What Works
 
+### Markdown File Download Utilities
+✅ **Download Scripts**:
+- `download_markdown_from_branches.py`: Downloads markdown files from all git branches via SFTP
+  - Automatically checks out each branch
+  - Connects to SFTP server (localhost:2222 or sftp-server:22)
+  - Recursively searches for `.md` files
+  - Preserves directory structure in `sftp-markdown-files/{branch}/`
+  - Handles git stash/restore for uncommitted changes
+- `download_markdown.py`: Downloads markdown files from current SFTP state
+- `get_markdown_files.sh`: Helper script to start SFTP server and download files
+
+✅ **Downloaded Files**:
+- Markdown files successfully downloaded to `sftp-markdown-files/` directory
+- Files from `chatbot_UI` branch containing database schema documentation
+- Structure matches expected format: `{branch}/map/{database}/domains/{domain}/tables/*.md`
+
 ### Core MCP Server Functionality
 ✅ **14 MCP Tools Implemented**:
 - Discovery: `list_databases`, `list_domains`, `list_tables`
@@ -78,6 +94,11 @@
 - Should create SQLite database with FTS5 index
 - Should generate vector embeddings (if OpenAI key provided)
 - Should handle incremental updates
+- Should process markdown files from `sftp-markdown-files/` or convert them to JSON format
+
+❌ **Markdown to JSON Converter**:
+- May need utility to convert downloaded markdown files to JSON format
+- Or update indexing script to parse markdown files directly
 
 ### Testing
 ❌ **Automated Tests**:
@@ -121,6 +142,7 @@
 2. **No Tests**: No automated test suite
 3. **Schema Updates**: Manual process, no automation
 4. **Error Handling**: Some edge cases may not be handled gracefully
+5. **Markdown Format**: Downloaded files are in markdown format, may need conversion to JSON for indexing
 
 ### Data Status
 - **Indexed Content**: 41 tables, 428 documents (per README)
@@ -133,6 +155,12 @@
    - Implement or document `setup_db.py`
    - Ensure it handles FTS5 and vector indexing
    - Add validation for schema file format
+   - Handle markdown files from `sftp-markdown-files/` or convert to JSON
+
+2. **Markdown Processing**:
+   - Determine if markdown files need conversion to JSON
+   - Or update indexing script to parse markdown directly
+   - Process downloaded files from `sftp-markdown-files/` directory
 
 2. **Add Basic Tests**:
    - Test MCP tool execution

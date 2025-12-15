@@ -25,6 +25,11 @@
 - **Nginx**: Reverse proxy and load balancing
 - **SFTP Server**: File access (atmoz/sftp:alpine)
 
+### Utilities
+- **paramiko**: SFTP client for file downloads
+- **subprocess**: Git branch management
+- **pathlib**: File path handling
+
 ## Development Setup
 
 ### Prerequisites
@@ -113,6 +118,8 @@ openai>=1.0.0
 python-dotenv>=1.0.0
 paramiko>=3.4.0
 ```
+
+**Note**: Markdown download scripts use standard library modules (subprocess, pathlib) and paramiko for SFTP access. No additional dependencies required.
 
 ### Frontend Dependencies (`frontend/requirements.txt`)
 ```

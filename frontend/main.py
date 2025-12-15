@@ -1265,6 +1265,9 @@ async def list_files(path: str = "/data"):
             files = []
             for item in sftp.listdir_attr(path):
                 is_dir = item.st_mode is not None and (item.st_mode & 0o40000)
+                # Skip markdown files (only filter files, not directories)
+                if not is_dir and item.filename.endswith('.md'):
+                    continue
                 files.append({
                     "name": item.filename,
                     "path": f"{path}/{item.filename}".replace("//", "/"),
