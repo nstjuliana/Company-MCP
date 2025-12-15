@@ -58,11 +58,11 @@ services:
       dockerfile: Dockerfile
     container_name: mcp-postgres
     environment:
-      - POSTGRES_HOST=${SUPABASE_SYNTHETIC_HOST:-aws-0-us-west-2.pooler.supabase.com}
-      - POSTGRES_PORT=${SUPABASE_SYNTHETIC_PORT:-5432}
-      - POSTGRES_USER=${SUPABASE_SYNTHETIC_USER:-postgres.glfnbtbpoqkyiucdtctf}
-      - POSTGRES_PASSWORD=${SUPABASE_SYNTHETIC_PASSWORD:-compnacymcptest250}
-      - POSTGRES_DATABASE=${SUPABASE_SYNTHETIC_DATABASE:-postgres}
+      - POSTGRES_HOST=${SUPABASE_SYNTHETIC_HOST}
+      - POSTGRES_PORT=${SUPABASE_SYNTHETIC_PORT}
+      - POSTGRES_USER=${SUPABASE_SYNTHETIC_USER}
+      - POSTGRES_PASSWORD=${SUPABASE_SYNTHETIC_PASSWORD}
+      - POSTGRES_DATABASE=${SUPABASE_SYNTHETIC_DATABASE}
       - MCP_PORT=8000
     restart: unless-stopped
     networks:
