@@ -76,32 +76,16 @@ services:
     container_name: mcp-frontend
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY:-}
-      - SFTP_HOST=sftp-server
-      - SFTP_PORT=22
-      - SFTP_USER=${SFTP_USER:-datauser}
-      - SFTP_PASSWORD=${SFTP_PASSWORD:-changeme}
+      - SFTP_HOST=129.158.231.129
+      - SFTP_PORT=4100
+      - SFTP_USER=gauntlet
+      - SFTP_PASSWORD=justsubmit
       - MCP_SERVER_URL=http://mcp-dabstep:8000
     volumes:
       - ./data:/app/data:ro
       - ./frontend/mcp_servers.json:/app/mcp_servers.json
     depends_on:
-      - sftp-server
       - mcp-dabstep
-    restart: unless-stopped
-    networks:
-      - mcp-network
-
-  # SFTP Server for file management
-  # Connect via: sftp -P 2222 datauser@localhost
-  sftp-server:
-    image: atmoz/sftp:alpine
-    container_name: sftp-server
-    ports:
-      - "${SFTP_PORT:-2222}:22"
-    volumes:
-      - ./data:/home/${SFTP_USER:-datauser}/data
-      - sftp-keys:/etc/ssh/keys
-    command: "${SFTP_USER:-datauser}:${SFTP_PASSWORD:-changeme}:1001:1001:data"
     restart: unless-stopped
     networks:
       - mcp-network
@@ -109,7 +93,3 @@ services:
 networks:
   mcp-network:
     driver: bridge
-
-volumes:
-  sftp-keys:
-    name: company-mcp-sftp-keys
