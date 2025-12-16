@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Company MCP | Database Context Server</title>
-    <link rel="stylesheet" href="/static/css/styles.css?v=17">
+    <link rel="stylesheet" href="/static/css/styles.css?v=18">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -467,6 +467,183 @@
                 </div>
             </div>
         </section>
+
+        <!-- Secret Admin Page (access via /admin URL only) -->
+        <section class="page" id="page-admin">
+            <div class="admin-container">
+                <div class="admin-header">
+                    <div class="admin-badge">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                        Admin Panel
+                    </div>
+                    <h2>Chat Cache Manager</h2>
+                    <p>Control cached demo mode for presentations and demos. Create pre-recorded responses that play back without API calls.</p>
+                </div>
+
+                <div class="admin-content">
+                    <!-- Playback Mode Card (Demo) -->
+                    <div class="admin-card status-card">
+                        <div class="card-header">
+                            <h3>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                                    <polygon points="5 3 19 12 5 21 5 3"/>
+                                </svg>
+                                Playback Mode (Demo)
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-description">Enable to replay cached responses instead of calling the API. Perfect for demos.</p>
+                            <div class="cache-status-grid">
+                                <div class="status-row">
+                                    <span class="status-label">Demo Mode</span>
+                                    <div class="status-toggle">
+                                        <label class="toggle large">
+                                            <input type="checkbox" id="cacheEnabled" onchange="toggleCacheMode(this.checked)">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                        <span class="toggle-label" id="cacheModeLabel">Disabled</span>
+                                    </div>
+                                </div>
+                                <div class="status-row">
+                                    <span class="status-label">Cache to Play</span>
+                                    <select id="activeCacheSelect" class="cache-select" onchange="setActiveCache(this.value)">
+                                        <option value="">-- Select Cache --</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recording Mode Card -->
+                    <div class="admin-card recording-card">
+                        <div class="card-header">
+                            <h3>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <circle cx="12" cy="12" r="3" fill="currentColor"/>
+                                </svg>
+                                Recording Mode
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-description">Record live chat responses including all tool calls and results. Works independently of demo mode.</p>
+                            <div class="cache-status-grid">
+                                <div class="status-row">
+                                    <span class="status-label">Record to Cache</span>
+                                    <select id="recordingCacheSelect" class="cache-select" onchange="setRecordingCache(this.value)">
+                                        <option value="">-- Select Cache --</option>
+                                    </select>
+                                </div>
+                                <div class="status-row">
+                                    <span class="status-label">Status</span>
+                                    <div class="status-toggle">
+                                        <span class="recording-indicator" id="recordingIndicator">
+                                            <span class="recording-dot"></span>
+                                            <span id="recordingLabel">Not Recording</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Create New Cache Card -->
+                    <div class="admin-card create-card">
+                        <div class="card-header">
+                            <h3>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <path d="M12 8v8M8 12h8"/>
+                                </svg>
+                                Create New Cache
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="createCacheForm" onsubmit="createCache(event)">
+                                <div class="form-group">
+                                    <label for="cacheTitleInput">Cache Title</label>
+                                    <input type="text" id="cacheTitleInput" placeholder="e.g., Sales Demo, Investor Pitch" required>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                                            <path d="M12 5v14M5 12h14"/>
+                                        </svg>
+                                        Create Cache
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Cached Chats List -->
+                    <div class="admin-card caches-card">
+                        <div class="card-header">
+                            <h3>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                                    <rect x="2" y="3" width="20" height="14" rx="2"/>
+                                    <path d="M8 21h8M12 17v4"/>
+                                </svg>
+                                Saved Caches
+                            </h3>
+                            <button class="btn btn-small" onclick="refreshCacheList()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                                    <path d="M23 4v6h-6"/>
+                                    <path d="M1 20v-6h6"/>
+                                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+                                </svg>
+                                Refresh
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div id="cachesList" class="caches-list">
+                                <div class="loading">Loading caches...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Add Manual Response Card -->
+                    <div class="admin-card add-response-card">
+                        <div class="card-header">
+                            <h3>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                                </svg>
+                                Add Cached Response
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="addResponseForm" onsubmit="addCachedResponse(event)">
+                                <div class="form-group">
+                                    <label for="responseCache">Target Cache</label>
+                                    <select id="responseCache" class="cache-select" required>
+                                        <option value="">-- Select Cache --</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="userMessageInput">User Message (trigger)</label>
+                                    <textarea id="userMessageInput" placeholder="What tables do you have?" rows="2" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="assistantResponseInput">Assistant Response</label>
+                                    <textarea id="assistantResponseInput" placeholder="Here are the available tables..." rows="6" required></textarea>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                                            <path d="M12 5v14M5 12h14"/>
+                                        </svg>
+                                        Add Response
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <!-- Server Details Modal -->
@@ -487,7 +664,7 @@
         </div>
     </div>
 
-    <script src="/static/js/app.js?v=22"></script>
+    <script src="/static/js/app.js?v=23"></script>
 </body>
 </html>
 

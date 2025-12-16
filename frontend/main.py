@@ -50,6 +50,14 @@ openai_client: Optional[AsyncOpenAI] = None
 # In-memory MCP server registry
 mcp_servers: Dict[str, Dict[str, Any]] = {}
 
+# Chat caching system
+CHAT_CACHE_PATH = BASE_DIR / "chat_cache.json"
+chat_cache: Dict[str, Any] = {
+    "enabled": False,  # Is cached mode enabled?
+    "cached_chats": {},  # Dict of cached conversations: { chat_id: { title, messages: [{role, content}], responses: [{message, response}] } }
+    "active_cache_id": None,  # Currently active cached chat for demo mode
+}
+
 # Known internal MCP server mappings (external path -> internal URL)
 INTERNAL_MCP_SERVERS = {
     "/mcp/dabstep": "http://mcp-dabstep:8000",
@@ -104,6 +112,29 @@ def save_mcp_servers():
         json.dump(mcp_servers, f, indent=2)
 
 
+def load_chat_cache():
+    """Load chat cache from file."""
+    global chat_cache
+    if CHAT_CACHE_PATH.exists():
+        try:
+            with open(CHAT_CACHE_PATH, "r") as f:
+                loaded = json.load(f)
+                if isinstance(loaded, dict):
+                    chat_cache = {
+                        "enabled": loaded.get("enabled", False),
+                        "cached_chats": loaded.get("cached_chats", {}),
+                        "active_cache_id": loaded.get("active_cache_id"),
+                    }
+        except Exception as e:
+            print(f"[load_chat_cache] Error loading cache: {e}")
+
+
+def save_chat_cache():
+    """Save chat cache to file."""
+    with open(CHAT_CACHE_PATH, "w") as f:
+        json.dump(chat_cache, f, indent=2)
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Manage HTTP client lifecycle."""
@@ -112,6 +143,7 @@ async def lifespan(app: FastAPI):
     if OPENAI_API_KEY:
         openai_client = AsyncOpenAI(api_key=OPENAI_API_KEY)
     load_mcp_servers()
+    load_chat_cache()
     yield
     await http_client.aclose()
 
@@ -198,6 +230,12 @@ async def files_page(request: Request):
 @app.get("/settings", response_class=HTMLResponse)
 async def settings_page(request: Request):
     """Render the settings page."""
+    return templates.TemplateResponse("index.html", {"request": request})
+
+
+@app.get("/admin", response_class=HTMLResponse)
+async def admin_page(request: Request):
+    """Render the secret admin page (no UI button, access via URL only)."""
     return templates.TemplateResponse("index.html", {"request": request})
 
 
@@ -403,6 +441,156 @@ async def get_mcp_server_tools(server_id: str):
     server = mcp_servers[server_id]
     tools = await fetch_tools_from_server(server_id, server['url'])
     return {"server_id": server_id, "tools": tools}
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# API Routes - Chat Caching (Admin)
+# ─────────────────────────────────────────────────────────────────────────────
+
+class CachedChatCreate(BaseModel):
+    title: str
+    messages: List[ChatMessage] = []
+
+
+class CachedResponseAdd(BaseModel):
+    user_message: str
+    assistant_response: str
+    tools_used: List[Dict[str, Any]] = []
+    events: List[Dict[str, Any]] = []  # Full SSE event stream for replay
+
+
+@app.get("/api/admin/cache/status")
+async def get_cache_status():
+    """Get current cache status."""
+    return {
+        "enabled": chat_cache["enabled"],
+        "active_cache_id": chat_cache["active_cache_id"],
+        "recording_to": chat_cache.get("recording_to"),  # Separate from demo mode
+        "cached_chats_count": len(chat_cache["cached_chats"]),
+        "cached_chats": [
+            {
+                "id": chat_id,
+                "title": chat_data.get("title", "Untitled"),
+                "response_count": len(chat_data.get("responses", [])),
+                "created_at": chat_data.get("created_at"),
+            }
+            for chat_id, chat_data in chat_cache["cached_chats"].items()
+        ]
+    }
+
+
+@app.post("/api/admin/cache/enable")
+async def enable_cache_mode(enabled: bool = True, cache_id: Optional[str] = None):
+    """Enable or disable cached chat mode."""
+    chat_cache["enabled"] = enabled
+    if cache_id:
+        if cache_id not in chat_cache["cached_chats"]:
+            raise HTTPException(status_code=404, detail=f"Cache '{cache_id}' not found")
+        chat_cache["active_cache_id"] = cache_id
+    elif not enabled:
+        chat_cache["active_cache_id"] = None
+    save_chat_cache()
+    return {"status": "ok", "enabled": chat_cache["enabled"], "active_cache_id": chat_cache["active_cache_id"]}
+
+
+@app.post("/api/admin/cache/create")
+async def create_cached_chat(data: CachedChatCreate):
+    """Create a new cached chat for demo."""
+    cache_id = f"cache_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{len(chat_cache['cached_chats'])}"
+    chat_cache["cached_chats"][cache_id] = {
+        "title": data.title,
+        "messages": [{"role": m.role, "content": m.content} for m in data.messages],
+        "responses": [],  # List of {user_message, assistant_response, tools_used}
+        "created_at": datetime.now().isoformat(),
+    }
+    save_chat_cache()
+    return {"status": "created", "cache_id": cache_id}
+
+
+@app.post("/api/admin/cache/{cache_id}/add-response")
+async def add_cached_response(cache_id: str, data: CachedResponseAdd):
+    """Add a cached response to a chat."""
+    if cache_id not in chat_cache["cached_chats"]:
+        raise HTTPException(status_code=404, detail=f"Cache '{cache_id}' not found")
+    
+    chat_cache["cached_chats"][cache_id]["responses"].append({
+        "user_message": data.user_message,
+        "assistant_response": data.assistant_response,
+        "tools_used": data.tools_used,
+        "events": data.events,  # Full SSE event stream for replay
+    })
+    save_chat_cache()
+    return {"status": "added", "response_count": len(chat_cache["cached_chats"][cache_id]["responses"])}
+
+
+@app.get("/api/admin/cache/{cache_id}")
+async def get_cached_chat(cache_id: str):
+    """Get a specific cached chat."""
+    if cache_id not in chat_cache["cached_chats"]:
+        raise HTTPException(status_code=404, detail=f"Cache '{cache_id}' not found")
+    return {"cache_id": cache_id, **chat_cache["cached_chats"][cache_id]}
+
+
+@app.delete("/api/admin/cache/{cache_id}")
+async def delete_cached_chat(cache_id: str):
+    """Delete a cached chat."""
+    if cache_id not in chat_cache["cached_chats"]:
+        raise HTTPException(status_code=404, detail=f"Cache '{cache_id}' not found")
+    
+    del chat_cache["cached_chats"][cache_id]
+    if chat_cache["active_cache_id"] == cache_id:
+        chat_cache["active_cache_id"] = None
+        chat_cache["enabled"] = False
+    save_chat_cache()
+    return {"status": "deleted"}
+
+
+@app.post("/api/admin/cache/{cache_id}/record")
+async def start_recording_chat(cache_id: str):
+    """Set a cache to record mode - future chat responses will be saved to it."""
+    if cache_id not in chat_cache["cached_chats"]:
+        raise HTTPException(status_code=404, detail=f"Cache '{cache_id}' not found")
+    
+    chat_cache["recording_to"] = cache_id
+    save_chat_cache()
+    return {"status": "recording", "cache_id": cache_id}
+
+
+@app.post("/api/admin/cache/stop-recording")
+async def stop_recording_chat():
+    """Stop recording chat responses."""
+    chat_cache["recording_to"] = None
+    save_chat_cache()
+    return {"status": "stopped"}
+
+
+def find_cached_response(user_message: str) -> Optional[Dict[str, Any]]:
+    """Find a cached response for a user message when cache mode is enabled."""
+    if not chat_cache["enabled"] or not chat_cache["active_cache_id"]:
+        return None
+    
+    active_cache = chat_cache["cached_chats"].get(chat_cache["active_cache_id"])
+    if not active_cache:
+        return None
+    
+    # Find exact or fuzzy match
+    user_msg_lower = user_message.lower().strip()
+    for cached in active_cache.get("responses", []):
+        cached_msg_lower = cached["user_message"].lower().strip()
+        # Exact match
+        if cached_msg_lower == user_msg_lower:
+            return cached
+        # Fuzzy match - check if messages are similar enough
+        if len(cached_msg_lower) > 10 and len(user_msg_lower) > 10:
+            # Simple similarity: check if one contains most of the other
+            words_cached = set(cached_msg_lower.split())
+            words_user = set(user_msg_lower.split())
+            overlap = len(words_cached & words_user)
+            max_len = max(len(words_cached), len(words_user))
+            if max_len > 0 and overlap / max_len > 0.8:
+                return cached
+    
+    return None
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -700,8 +888,48 @@ async def chat_stream(request: ChatRequest):
     """
     Stream chat responses using Server-Sent Events.
     Events: thinking, tool_start, tool_result, content_delta, content_done, error
+    
+    In cached mode, returns pre-recorded responses instead of calling OpenAI.
+    When recording, captures ALL events for full replay.
     """
     async def generate():
+        # Check for cached response first (only if demo mode enabled)
+        cached_response = find_cached_response(request.message)
+        if cached_response:
+            # Check if we have full event stream to replay
+            cached_events = cached_response.get("events", [])
+            if cached_events:
+                # Replay all cached events with realistic timing
+                for event in cached_events:
+                    event_type = event.get("type")
+                    event_data = event.get("data", {})
+                    delay = event.get("delay", 0.01)  # Stored delay between events
+                    
+                    yield await stream_sse_event(event_type, event_data)
+                    await asyncio.sleep(delay)
+                return
+            else:
+                # Fallback: just stream the text response (legacy cached data)
+                full_content = cached_response["assistant_response"]
+                tools_used = cached_response.get("tools_used", [])
+                
+                yield await stream_sse_event("thinking", {
+                    "content": "📦 Using cached demo response..."
+                })
+                
+                chunk_size = 20
+                for i in range(0, len(full_content), chunk_size):
+                    chunk = full_content[i:i + chunk_size]
+                    yield await stream_sse_event("content_delta", {"content": chunk})
+                    await asyncio.sleep(0.02)
+                
+                yield await stream_sse_event("content_done", {
+                    "full_content": full_content,
+                    "tools_used": tools_used,
+                    "cached": True
+                })
+                return
+        
         if not openai_client:
             yield await stream_sse_event("error", {
                 "message": "OpenAI API key not configured. Please set OPENAI_API_KEY environment variable."
@@ -709,6 +937,26 @@ async def chat_stream(request: ChatRequest):
             return
         
         try:
+            # Track all events for recording
+            recorded_events = []
+            last_event_time = asyncio.get_event_loop().time()
+            
+            async def emit_event(event_type: str, data: Any):
+                """Emit an event and record it if recording is enabled."""
+                nonlocal last_event_time
+                current_time = asyncio.get_event_loop().time()
+                delay = min(current_time - last_event_time, 2.0)  # Cap delay at 2 seconds
+                last_event_time = current_time
+                
+                # Record the event
+                recorded_events.append({
+                    "type": event_type,
+                    "data": data,
+                    "delay": delay
+                })
+                
+                return await stream_sse_event(event_type, data)
+            
             # Fetch all available MCP tools
             mcp_tools = await get_all_mcp_tools()
             openai_tools = convert_mcp_tools_to_openai_format(mcp_tools)
@@ -750,6 +998,7 @@ async def chat_stream(request: ChatRequest):
             tools_used = []
             max_tool_calls = 10
             tool_call_count = 0
+            full_content = ""
             
             while tool_call_count < max_tool_calls:
                 # Call GPT-4o (non-streaming for tool calls phase)
@@ -769,7 +1018,7 @@ async def chat_stream(request: ChatRequest):
                 if assistant_message.tool_calls:
                     # Send thinking event if there's content
                     if assistant_message.content:
-                        yield await stream_sse_event("thinking", {
+                        yield await emit_event("thinking", {
                             "content": assistant_message.content
                         })
                     
@@ -813,7 +1062,7 @@ async def chat_stream(request: ChatRequest):
                         
                         # Send tool_start event
                         print(f"[Stream] Starting tool call: {server_id}/{tool_name}")
-                        yield await stream_sse_event("tool_start", {
+                        yield await emit_event("tool_start", {
                             "server": server_id,
                             "tool": tool_name,
                             "arguments": arguments
@@ -832,7 +1081,7 @@ async def chat_stream(request: ChatRequest):
                         
                         # Send tool_result event
                         print(f"[Stream] Sending tool_result event")
-                        yield await stream_sse_event("tool_result", {
+                        yield await emit_event("tool_result", {
                             "server": server_id,
                             "tool": tool_name,
                             "arguments": arguments,
@@ -863,20 +1112,32 @@ async def chat_stream(request: ChatRequest):
                         stream=True
                     )
                     
-                    full_content = ""
                     async for chunk in final_stream:
                         if chunk.choices and chunk.choices[0].delta.content:
                             content = chunk.choices[0].delta.content
                             full_content += content
-                            yield await stream_sse_event("content_delta", {
+                            yield await emit_event("content_delta", {
                                 "content": content
                             })
                     
                     # Send completion event
-                    yield await stream_sse_event("content_done", {
+                    yield await emit_event("content_done", {
                         "full_content": full_content,
                         "tools_used": tools_used
                     })
+                    
+                    # Record FULL response with ALL events if recording mode is enabled
+                    recording_to = chat_cache.get("recording_to")
+                    if recording_to and recording_to in chat_cache["cached_chats"]:
+                        chat_cache["cached_chats"][recording_to]["responses"].append({
+                            "user_message": request.message,
+                            "assistant_response": full_content,
+                            "tools_used": tools_used,
+                            "events": recorded_events,  # Full event stream for replay!
+                        })
+                        save_chat_cache()
+                        print(f"[Recording] Saved {len(recorded_events)} events to cache '{recording_to}'")
+                    
                     return
             
             # Max tool calls reached, stream final response
@@ -886,19 +1147,30 @@ async def chat_stream(request: ChatRequest):
                 stream=True
             )
             
-            full_content = ""
             async for chunk in final_stream:
                 if chunk.choices and chunk.choices[0].delta.content:
                     content = chunk.choices[0].delta.content
                     full_content += content
-                    yield await stream_sse_event("content_delta", {
+                    yield await emit_event("content_delta", {
                         "content": content
                     })
             
-            yield await stream_sse_event("content_done", {
+            yield await emit_event("content_done", {
                 "full_content": full_content,
                 "tools_used": tools_used
             })
+            
+            # Record FULL response with ALL events if recording mode is enabled
+            recording_to = chat_cache.get("recording_to")
+            if recording_to and recording_to in chat_cache["cached_chats"]:
+                chat_cache["cached_chats"][recording_to]["responses"].append({
+                    "user_message": request.message,
+                    "assistant_response": full_content,
+                    "tools_used": tools_used,
+                    "events": recorded_events,
+                })
+                save_chat_cache()
+                print(f"[Recording] Saved {len(recorded_events)} events to cache '{recording_to}'")
             
         except Exception as e:
             import traceback

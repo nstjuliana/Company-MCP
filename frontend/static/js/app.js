@@ -36,6 +36,7 @@ const router = {
         '/wiki': 'wiki',
         '/files': 'files',
         '/settings': 'settings',
+        '/admin': 'admin',
     },
     
     /**
@@ -153,6 +154,8 @@ function navigateTo(page, sessionId = null, updateUrl = true) {
         }
     } else if (page === 'wiki') {
         loadWikiStructure();
+    } else if (page === 'admin') {
+        loadAdminPage();
     }
 }
 
@@ -2100,6 +2103,366 @@ function showWelcomeMessage() {
 // ═══════════════════════════════════════════════════════════════════════════
 // Initialization
 // ═══════════════════════════════════════════════════════════════════════════
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Admin Page - Chat Cache Management
+// ═══════════════════════════════════════════════════════════════════════════
+
+// Admin state
+const adminState = {
+    cacheStatus: null,
+    caches: [],
+    recording: false,
+    recordingTo: null,
+};
+
+async function loadAdminPage() {
+    await refreshCacheStatus();
+    await refreshCacheList();
+}
+
+async function refreshCacheStatus() {
+    try {
+        const response = await fetch('/api/admin/cache/status');
+        const data = await response.json();
+        adminState.cacheStatus = data;
+        adminState.caches = data.cached_chats || [];
+        adminState.recording = !!data.recording_to;
+        adminState.recordingTo = data.recording_to;
+        
+        // Update Playback UI
+        const enabledToggle = document.getElementById('cacheEnabled');
+        const modeLabel = document.getElementById('cacheModeLabel');
+        const activeSelect = document.getElementById('activeCacheSelect');
+        const responseCacheSelect = document.getElementById('responseCache');
+        
+        if (enabledToggle) {
+            enabledToggle.checked = data.enabled;
+        }
+        if (modeLabel) {
+            modeLabel.textContent = data.enabled ? 'Enabled' : 'Disabled';
+            modeLabel.className = data.enabled ? 'toggle-label enabled' : 'toggle-label';
+        }
+        
+        // Populate playback cache select
+        if (activeSelect) {
+            activeSelect.innerHTML = '<option value="">-- Select Cache --</option>';
+            for (const cache of adminState.caches) {
+                activeSelect.innerHTML += `<option value="${cache.id}" ${cache.id === data.active_cache_id ? 'selected' : ''}>${escapeHtml(cache.title)} (${cache.response_count} responses)</option>`;
+            }
+        }
+        
+        // Populate recording cache select
+        const recordingSelect = document.getElementById('recordingCacheSelect');
+        if (recordingSelect) {
+            recordingSelect.innerHTML = '<option value="">-- Not Recording --</option>';
+            for (const cache of adminState.caches) {
+                recordingSelect.innerHTML += `<option value="${cache.id}" ${cache.id === data.recording_to ? 'selected' : ''}>${escapeHtml(cache.title)} (${cache.response_count} responses)</option>`;
+            }
+        }
+        
+        // Update recording indicator
+        const recordingIndicator = document.getElementById('recordingIndicator');
+        const recordingLabel = document.getElementById('recordingLabel');
+        
+        if (data.recording_to) {
+            const recordingCache = adminState.caches.find(c => c.id === data.recording_to);
+            if (recordingIndicator) recordingIndicator.classList.add('active');
+            if (recordingLabel) recordingLabel.textContent = `Recording to: ${recordingCache?.title || data.recording_to}`;
+        } else {
+            if (recordingIndicator) recordingIndicator.classList.remove('active');
+            if (recordingLabel) recordingLabel.textContent = 'Not Recording';
+        }
+        
+        // Legacy response cache select
+        if (responseCacheSelect) {
+            responseCacheSelect.innerHTML = '<option value="">-- Select Cache --</option>';
+            for (const cache of adminState.caches) {
+                responseCacheSelect.innerHTML += `<option value="${cache.id}">${escapeHtml(cache.title)}</option>`;
+            }
+        }
+        
+    } catch (error) {
+        console.error('Error loading cache status:', error);
+    }
+}
+
+async function toggleCacheMode(enabled) {
+    try {
+        const activeSelect = document.getElementById('activeCacheSelect');
+        const cacheId = activeSelect?.value || null;
+        
+        const response = await fetch(`/api/admin/cache/enable?enabled=${enabled}${cacheId ? `&cache_id=${cacheId}` : ''}`, {
+            method: 'POST',
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to toggle cache mode');
+        }
+        
+        await refreshCacheStatus();
+    } catch (error) {
+        alert(`Error: ${error.message}`);
+        await refreshCacheStatus();
+    }
+}
+
+async function setActiveCache(cacheId) {
+    if (!cacheId) return;
+    
+    try {
+        const enabledToggle = document.getElementById('cacheEnabled');
+        const enabled = enabledToggle?.checked || false;
+        
+        if (enabled) {
+            const response = await fetch(`/api/admin/cache/enable?enabled=true&cache_id=${cacheId}`, {
+                method: 'POST',
+            });
+            
+            if (!response.ok) {
+                throw new Error('Failed to set active cache');
+            }
+        }
+        
+        await refreshCacheStatus();
+    } catch (error) {
+        alert(`Error: ${error.message}`);
+    }
+}
+
+async function refreshCacheList() {
+    const cachesList = document.getElementById('cachesList');
+    if (!cachesList) return;
+    
+    try {
+        const response = await fetch('/api/admin/cache/status');
+        const data = await response.json();
+        adminState.caches = data.cached_chats || [];
+        
+        if (adminState.caches.length === 0) {
+            cachesList.innerHTML = '<div class="empty-message">No cached chats yet. Create one to get started.</div>';
+            return;
+        }
+        
+        cachesList.innerHTML = adminState.caches.map(cache => `
+            <div class="cache-item ${data.active_cache_id === cache.id ? 'active' : ''}" data-cache-id="${cache.id}">
+                <div class="cache-info">
+                    <div class="cache-header">
+                        <span class="cache-title">${escapeHtml(cache.title)}</span>
+                        ${data.active_cache_id === cache.id ? '<span class="cache-badge active">Active</span>' : ''}
+                    </div>
+                    <div class="cache-meta">
+                        <span class="cache-responses">${cache.response_count} responses</span>
+                        <span class="cache-date">${cache.created_at ? new Date(cache.created_at).toLocaleDateString() : ''}</span>
+                    </div>
+                </div>
+                <div class="cache-actions">
+                    <button class="btn-icon" onclick="viewCacheDetails('${cache.id}')" title="View Details">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                    </button>
+                    <button class="btn-icon" onclick="startRecordingTo('${cache.id}')" title="Record to this cache">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                            <circle cx="12" cy="12" r="10"/>
+                            <circle cx="12" cy="12" r="3" fill="currentColor"/>
+                        </svg>
+                    </button>
+                    <button class="btn-icon btn-danger" onclick="deleteCache('${cache.id}')" title="Delete">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                            <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        `).join('');
+        
+    } catch (error) {
+        cachesList.innerHTML = `<div class="error-message">Error loading caches: ${error.message}</div>`;
+    }
+}
+
+async function createCache(event) {
+    event.preventDefault();
+    
+    const titleInput = document.getElementById('cacheTitleInput');
+    const title = titleInput?.value.trim();
+    
+    if (!title) {
+        alert('Please enter a cache title');
+        return;
+    }
+    
+    try {
+        const response = await fetch('/api/admin/cache/create', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title, messages: [] }),
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to create cache');
+        }
+        
+        const data = await response.json();
+        titleInput.value = '';
+        
+        await refreshCacheStatus();
+        await refreshCacheList();
+        
+        alert(`Cache "${title}" created successfully!`);
+    } catch (error) {
+        alert(`Error: ${error.message}`);
+    }
+}
+
+async function addCachedResponse(event) {
+    event.preventDefault();
+    
+    const cacheSelect = document.getElementById('responseCache');
+    const userMsgInput = document.getElementById('userMessageInput');
+    const assistantInput = document.getElementById('assistantResponseInput');
+    
+    const cacheId = cacheSelect?.value;
+    const userMessage = userMsgInput?.value.trim();
+    const assistantResponse = assistantInput?.value.trim();
+    
+    if (!cacheId || !userMessage || !assistantResponse) {
+        alert('Please fill all fields');
+        return;
+    }
+    
+    try {
+        const response = await fetch(`/api/admin/cache/${cacheId}/add-response`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                user_message: userMessage,
+                assistant_response: assistantResponse,
+                tools_used: [],
+            }),
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to add response');
+        }
+        
+        userMsgInput.value = '';
+        assistantInput.value = '';
+        
+        await refreshCacheList();
+        
+        alert('Response added successfully!');
+    } catch (error) {
+        alert(`Error: ${error.message}`);
+    }
+}
+
+async function deleteCache(cacheId) {
+    const cache = adminState.caches.find(c => c.id === cacheId);
+    if (!confirm(`Delete cache "${cache?.title || cacheId}"? This cannot be undone.`)) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`/api/admin/cache/${cacheId}`, {
+            method: 'DELETE',
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to delete cache');
+        }
+        
+        await refreshCacheStatus();
+        await refreshCacheList();
+    } catch (error) {
+        alert(`Error: ${error.message}`);
+    }
+}
+
+async function viewCacheDetails(cacheId) {
+    try {
+        const response = await fetch(`/api/admin/cache/${cacheId}`);
+        const data = await response.json();
+        
+        // Show in a modal or alert
+        const responsesInfo = data.responses.map((r, i) => 
+            `${i + 1}. User: "${r.user_message.substring(0, 50)}..." → Response: ${r.assistant_response.length} chars`
+        ).join('\n');
+        
+        alert(`Cache: ${data.title}\n\nResponses (${data.responses.length}):\n${responsesInfo || 'No responses yet'}`);
+    } catch (error) {
+        alert(`Error: ${error.message}`);
+    }
+}
+
+async function setRecordingCache(cacheId) {
+    // Set or clear the recording cache
+    try {
+        if (cacheId) {
+            const response = await fetch(`/api/admin/cache/${cacheId}/record`, { method: 'POST' });
+            if (!response.ok) {
+                throw new Error('Failed to start recording');
+            }
+            const cache = adminState.caches.find(c => c.id === cacheId);
+            console.log(`[Admin] Started recording to: ${cache?.title || cacheId}`);
+        } else {
+            await fetch('/api/admin/cache/stop-recording', { method: 'POST' });
+            console.log('[Admin] Stopped recording');
+        }
+        await refreshCacheStatus();
+    } catch (error) {
+        alert(`Error: ${error.message}`);
+        await refreshCacheStatus();
+    }
+}
+
+async function toggleRecording() {
+    // Legacy function - use the dropdown instead
+    const recordingSelect = document.getElementById('recordingCacheSelect');
+    if (adminState.recording) {
+        // Stop recording
+        if (recordingSelect) recordingSelect.value = '';
+        await setRecordingCache(null);
+    } else {
+        // Can't start without selecting a cache
+        alert('Please select a cache from the dropdown to start recording');
+    }
+}
+
+async function startRecordingTo(cacheId) {
+    try {
+        const response = await fetch(`/api/admin/cache/${cacheId}/record`, { method: 'POST' });
+        
+        if (!response.ok) {
+            throw new Error('Failed to start recording');
+        }
+        
+        adminState.recording = true;
+        adminState.recordingTo = cacheId;
+        
+        const recordingIndicator = document.getElementById('recordingIndicator');
+        const recordBtn = document.getElementById('recordBtn');
+        const recordingLabel = document.getElementById('recordingLabel');
+        
+        const cache = adminState.caches.find(c => c.id === cacheId);
+        
+        if (recordingIndicator) recordingIndicator.classList.add('active');
+        if (recordingLabel) recordingLabel.textContent = `Recording to: ${cache?.title || cacheId}`;
+        if (recordBtn) recordBtn.innerHTML = `
+            <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+                <rect x="6" y="6" width="12" height="12"/>
+            </svg>
+            Stop
+        `;
+        
+        alert(`Recording mode started. Chat responses will be saved to "${cache?.title || cacheId}"`);
+    } catch (error) {
+        alert(`Error: ${error.message}`);
+    }
+}
+
 
 document.addEventListener('DOMContentLoaded', () => {
     // Load chat sessions from storage

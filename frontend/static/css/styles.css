@@ -3056,5 +3056,327 @@ button {
     overflow: hidden;
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   Admin Page - Secret Demo Mode Control
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.admin-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--space-xl);
+}
+
+.admin-header {
+    margin-bottom: var(--space-xl);
+    text-align: center;
+}
+
+.admin-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-xs) var(--space-md);
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(239, 68, 68, 0.05));
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 100px;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--error);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--space-md);
+}
+
+.admin-badge svg {
+    width: 16px !important;
+    height: 16px !important;
+    min-width: 16px !important;
+    min-height: 16px !important;
+}
+
+.admin-header h2 {
+    font-size: 1.75rem;
+    margin-bottom: var(--space-sm);
+    color: var(--text-primary);
+}
+
+.admin-header p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.admin-content {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-lg);
+}
+
+.admin-card {
+    background: var(--bg-surface);
+    border: var(--border-subtle);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.admin-card.status-card {
+    grid-column: 1;
+}
+
+.admin-card.recording-card {
+    grid-column: 2;
+}
+
+.admin-card.create-card {
+    grid-column: 1 / -1;  /* Full width */
+}
+
+.admin-card.caches-card {
+    grid-column: 1 / -1;  /* Full width */
+}
+
+.admin-card.add-response-card {
+    grid-column: 1 / -1;  /* Full width */
+}
+
+.card-description {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: var(--space-md);
+    line-height: 1.5;
+}
+
+/* Cache Status Grid */
+.cache-status-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.status-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-sm) 0;
+    border-bottom: var(--border-subtle);
+}
+
+.status-row:last-child {
+    border-bottom: none;
+}
+
+.status-row .status-label {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.status-toggle {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.toggle-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.toggle-label.enabled {
+    color: var(--success);
+}
+
+/* Large toggle for admin */
+.toggle.large {
+    width: 52px;
+    height: 28px;
+}
+
+.toggle.large .toggle-slider::before {
+    height: 20px;
+    width: 20px;
+    left: 4px;
+    bottom: 4px;
+}
+
+.toggle.large input:checked + .toggle-slider::before {
+    transform: translateX(24px);
+}
+
+/* Cache Select */
+.cache-select {
+    background: var(--bg-deep);
+    border: var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: var(--space-xs) var(--space-md);
+    font-family: inherit;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    min-width: 200px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.cache-select:focus {
+    outline: none;
+    border-color: var(--accent-500);
+}
+
+.cache-select option {
+    background: var(--bg-surface);
+    color: var(--text-primary);
+}
+
+/* Recording Indicator */
+.recording-indicator {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.recording-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--text-dim);
+}
+
+.recording-indicator.active .recording-dot {
+    background: var(--error);
+    animation: recordPulse 1s infinite;
+}
+
+.recording-indicator.active {
+    color: var(--error);
+}
+
+@keyframes recordPulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5); }
+    50% { opacity: 0.8; box-shadow: 0 0 0 4px rgba(239, 68, 68, 0); }
+}
+
+.btn-record {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    padding: var(--space-xs) var(--space-sm);
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: var(--radius-md);
+    color: var(--error);
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.btn-record:hover {
+    background: rgba(239, 68, 68, 0.2);
+}
+
+.btn-record svg {
+    width: 12px !important;
+    height: 12px !important;
+    min-width: 12px !important;
+    min-height: 12px !important;
+}
+
+/* Caches List */
+.caches-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.cache-item {
+    background: var(--bg-deep);
+    border: var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    transition: all var(--transition-fast);
+}
+
+.cache-item:hover {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.cache-item.active {
+    border-color: var(--accent-500);
+    background: rgba(245, 158, 11, 0.05);
+}
+
+.cache-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.cache-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-xs);
+}
+
+.cache-title {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.cache-badge {
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 100px;
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--accent-400);
+}
+
+.cache-badge.active {
+    background: rgba(34, 197, 94, 0.15);
+    color: var(--success);
+}
+
+.cache-meta {
+    display: flex;
+    gap: var(--space-md);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.cache-actions {
+    display: flex;
+    gap: var(--space-xs);
+}
+
+/* Admin Forms */
+.admin-card .form-group textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+/* Responsive Admin */
+@media (max-width: 1024px) {
+    .admin-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .admin-card.status-card,
+    .admin-card.create-card,
+    .admin-card.caches-card,
+    .admin-card.add-response-card {
+        grid-column: 1;
+    }
+}
+
 
 
