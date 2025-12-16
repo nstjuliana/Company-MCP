@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Company MCP | Database Context Server</title>
-    <link rel="stylesheet" href="/static/css/styles.css?v=18">
+    <link rel="stylesheet" href="/static/css/styles.css?v=22">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -22,7 +22,15 @@
             </div>
             <span class="brand-text">Company<span class="accent">MCP</span></span>
         </div>
-        <div class="nav-links">
+        
+        <!-- Hamburger Menu Button (Mobile) -->
+        <button class="nav-hamburger" id="navHamburger" onclick="toggleMobileNav()" aria-label="Toggle navigation menu">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+        
+        <div class="nav-links" id="navLinks">
             <a href="/" class="nav-link active" data-page="home">Home</a>
             <a href="/chat" class="nav-link" data-page="chat">Chat</a>
             <a href="/wiki" class="nav-link" data-page="wiki">Wiki</a>
@@ -156,7 +164,15 @@
         <!-- Wiki Page -->
         <section class="page" id="page-wiki">
             <div class="wiki-container">
-                <div class="wiki-sidebar">
+                <div class="wiki-sidebar" id="wikiSidebar">
+                    <div class="wiki-sidebar-header-mobile">
+                        <span>Browse Tables</span>
+                        <button class="wiki-sidebar-close" onclick="toggleWikiSidebar()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                                <path d="M18 6L6 18M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
                     <div class="wiki-search">
                         <div class="wiki-search-wrapper">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="search-icon">
@@ -177,6 +193,20 @@
                     <div class="wiki-search-results" id="wikiSearchResults" style="display: none;"></div>
                 </div>
                 <div class="wiki-content">
+                    <!-- Mobile collapsible bar -->
+                    <div class="wiki-breadcrumb-mobile" id="wikiBreadcrumbMobile" onclick="toggleWikiSidebar()">
+                        <div class="wiki-breadcrumb-mobile-content">
+                            <svg class="wiki-breadcrumb-mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                <path d="M3 9h18M9 21V9"/>
+                            </svg>
+                            <span class="wiki-breadcrumb-mobile-text" id="wikiBreadcrumbMobileText">Tap to browse tables</span>
+                        </div>
+                        <svg class="wiki-breadcrumb-mobile-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="m6 9 6 6 6-6"/>
+                        </svg>
+                    </div>
+                    <!-- Desktop breadcrumb -->
                     <div class="wiki-breadcrumb" id="wikiBreadcrumb">
                         <span class="breadcrumb-item">Select a table to view documentation</span>
                     </div>
@@ -238,17 +268,17 @@
                 <!-- Chat session controls bar -->
                 <div class="chat-session-bar">
                     <div class="chat-session-controls">
-                        <button class="btn btn-small btn-new-chat" onclick="createNewChatSession()" title="Start a new chat session">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                        <button class="chat-control-btn chat-control-new" onclick="createNewChatSession()" title="Start a new chat session">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M12 5v14M5 12h14"/>
                             </svg>
-                            New Chat
+                            <span class="chat-control-label">New Chat</span>
                         </button>
-                        <button class="btn btn-small btn-sessions" onclick="toggleSessionsList()" title="View chat history">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                        <button class="chat-control-btn chat-control-history" onclick="toggleSessionsList()" title="View chat history">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
                             </svg>
-                            History
+                            <span class="chat-control-label">History</span>
                         </button>
                     </div>
                 </div>
@@ -686,7 +716,7 @@
         </div>
     </div>
 
-    <script src="/static/js/app.js?v=25"></script>
+    <script src="/static/js/app.js?v=29"></script>
 </body>
 </html>
 

@@ -164,6 +164,10 @@ document.querySelectorAll('.nav-link').forEach(link => {
     link.addEventListener('click', (e) => {
         e.preventDefault();
         const page = link.dataset.page;
+        
+        // Close mobile nav when a link is clicked
+        closeMobileNav();
+        
         // For chat, create new session; for others, just navigate
         if (page === 'chat') {
             navigateTo(page, null);
@@ -172,6 +176,77 @@ document.querySelectorAll('.nav-link').forEach(link => {
         }
     });
 });
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Mobile Navigation
+// ═══════════════════════════════════════════════════════════════════════════
+
+function toggleMobileNav() {
+    const hamburger = document.getElementById('navHamburger');
+    const navLinks = document.getElementById('navLinks');
+    
+    if (hamburger && navLinks) {
+        hamburger.classList.toggle('active');
+        navLinks.classList.toggle('mobile-open');
+    }
+}
+
+function closeMobileNav() {
+    const hamburger = document.getElementById('navHamburger');
+    const navLinks = document.getElementById('navLinks');
+    
+    if (hamburger && navLinks) {
+        hamburger.classList.remove('active');
+        navLinks.classList.remove('mobile-open');
+    }
+}
+
+// Close mobile nav when clicking outside
+document.addEventListener('click', (e) => {
+    const hamburger = document.getElementById('navHamburger');
+    const navLinks = document.getElementById('navLinks');
+    
+    if (hamburger && navLinks && navLinks.classList.contains('mobile-open')) {
+        if (!hamburger.contains(e.target) && !navLinks.contains(e.target)) {
+            closeMobileNav();
+        }
+    }
+});
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Wiki Sidebar Toggle (Mobile)
+// ═══════════════════════════════════════════════════════════════════════════
+
+function toggleWikiSidebar() {
+    const sidebar = document.getElementById('wikiSidebar');
+    const mobileBar = document.getElementById('wikiBreadcrumbMobile');
+    
+    if (sidebar) {
+        sidebar.classList.toggle('mobile-open');
+        if (mobileBar) {
+            mobileBar.classList.toggle('open');
+        }
+    }
+}
+
+function closeWikiSidebar() {
+    const sidebar = document.getElementById('wikiSidebar');
+    const mobileBar = document.getElementById('wikiBreadcrumbMobile');
+    
+    if (sidebar) {
+        sidebar.classList.remove('mobile-open');
+        if (mobileBar) {
+            mobileBar.classList.remove('open');
+        }
+    }
+}
+
+function updateWikiMobileBreadcrumb(text) {
+    const mobileText = document.getElementById('wikiBreadcrumbMobileText');
+    if (mobileText) {
+        mobileText.textContent = text || 'Tap to browse tables';
+    }
+}
 
 // ═══════════════════════════════════════════════════════════════════════════
 // MCP Connection & Health
@@ -410,6 +485,8 @@ function clearChatUI() {
                 </div>
             </div>
         `;
+        // Show suggestions when chat is cleared
+        showChatSuggestions();
     }
 }
 
@@ -423,11 +500,13 @@ function renderChatHistory() {
     if (state.chatHistory.length === 0) {
         // Use clearChatUI which properly restores the welcome message
         clearChatUI();
+        showChatSuggestions();
         return;
     }
     
     // Clear and render messages (no welcome message needed)
     chatMessages.innerHTML = '';
+    hideChatSuggestions();
     
     // Render each message
     for (const msg of state.chatHistory) {
@@ -1519,6 +1598,9 @@ async function loadWikiTable(path) {
     
     wikiDoc.innerHTML = '<div class="loading">Loading documentation...</div>';
     
+    // Close wiki sidebar on mobile when table is selected
+    closeWikiSidebar();
+    
     try {
         const response = await fetch(`/api/wiki/table?path=${encodeURIComponent(path)}`);
         
@@ -1528,7 +1610,10 @@ async function loadWikiTable(path) {
         
         const data = await response.json();
         
-        // Update breadcrumb
+        // Update mobile breadcrumb text
+        updateWikiMobileBreadcrumb(`${data.database} / ${data.domain} / ${data.name}`);
+        
+        // Update desktop breadcrumb
         if (wikiBreadcrumb) {
             wikiBreadcrumb.innerHTML = `
                 <span class="breadcrumb-item" onclick="clearWikiSelection()">Wiki</span>
@@ -1636,8 +1721,11 @@ function clearWikiSelection() {
     const wikiDoc = document.getElementById('wikiDoc');
     const wikiBreadcrumb = document.getElementById('wikiBreadcrumb');
     
+    // Reset mobile breadcrumb text
+    updateWikiMobileBreadcrumb('Tap to browse tables');
+    
     if (wikiBreadcrumb) {
-        wikiBreadcrumb.innerHTML = '<span class="breadcrumb-item">Select a table to view documentation</span>';
+        wikiBreadcrumb.innerHTML = `<span class="breadcrumb-item">Select a table to view documentation</span>`;
     }
     
     if (wikiDoc) {
@@ -2091,12 +2179,29 @@ function hideWelcomeMessage() {
     if (welcomeEl && !welcomeEl.classList.contains('hidden')) {
         welcomeEl.classList.add('hidden');
     }
+    // Also hide suggestions when chat has started
+    hideChatSuggestions();
 }
 
 function showWelcomeMessage() {
     const welcomeEl = document.getElementById('chatWelcome');
     if (welcomeEl && state.chatHistory.length === 0) {
         welcomeEl.classList.remove('hidden');
+        showChatSuggestions();
+    }
+}
+
+function hideChatSuggestions() {
+    const suggestions = document.querySelector('.chat-suggestions');
+    if (suggestions) {
+        suggestions.style.display = 'none';
+    }
+}
+
+function showChatSuggestions() {
+    const suggestions = document.querySelector('.chat-suggestions');
+    if (suggestions && state.chatHistory.length === 0) {
+        suggestions.style.display = 'flex';
     }
 }
 
