@@ -171,6 +171,36 @@ async def home(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 
+@app.get("/chat", response_class=HTMLResponse)
+async def chat_page(request: Request):
+    """Render the chat page."""
+    return templates.TemplateResponse("index.html", {"request": request})
+
+
+@app.get("/chat/{session_id}", response_class=HTMLResponse)
+async def chat_session_page(request: Request, session_id: str):
+    """Render a specific chat session page."""
+    return templates.TemplateResponse("index.html", {"request": request})
+
+
+@app.get("/wiki", response_class=HTMLResponse)
+async def wiki_page(request: Request):
+    """Render the wiki page."""
+    return templates.TemplateResponse("index.html", {"request": request})
+
+
+@app.get("/files", response_class=HTMLResponse)
+async def files_page(request: Request):
+    """Render the files page."""
+    return templates.TemplateResponse("index.html", {"request": request})
+
+
+@app.get("/settings", response_class=HTMLResponse)
+async def settings_page(request: Request):
+    """Render the settings page."""
+    return templates.TemplateResponse("index.html", {"request": request})
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # API Routes - MCP Server Management
 # ─────────────────────────────────────────────────────────────────────────────

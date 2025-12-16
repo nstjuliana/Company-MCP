@@ -19,14 +19,103 @@ const state = {
     wikiStructure: null,
     wikiExpandedNodes: new Set(),
     wikiSelectedTable: null,
-    wikiSearchQuery: ''
+    wikiSearchQuery: '',
+    // Chat session state
+    currentSessionId: null,
+    chatSessions: {},  // { sessionId: { id, title, history, createdAt } }
+};
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Router - URL-based Navigation
+// ═══════════════════════════════════════════════════════════════════════════
+
+const router = {
+    routes: {
+        '/': 'home',
+        '/chat': 'chat',
+        '/wiki': 'wiki',
+        '/files': 'files',
+        '/settings': 'settings',
+    },
+    
+    /**
+     * Parse current URL and return page and params
+     */
+    parseUrl() {
+        const path = window.location.pathname;
+        
+        // Check for chat session: /chat/:sessionId
+        const chatSessionMatch = path.match(/^\/chat\/([a-zA-Z0-9_-]+)$/);
+        if (chatSessionMatch) {
+            return { page: 'chat', sessionId: chatSessionMatch[1] };
+        }
+        
+        // Check standard routes
+        const page = this.routes[path];
+        if (page) {
+            return { page, sessionId: null };
+        }
+        
+        // Default to home
+        return { page: 'home', sessionId: null };
+    },
+    
+    /**
+     * Build URL for a given page and optional session ID
+     */
+    buildUrl(page, sessionId = null) {
+        if (page === 'chat' && sessionId) {
+            return `/chat/${sessionId}`;
+        }
+        if (page === 'home') {
+            return '/';
+        }
+        return `/${page}`;
+    },
+    
+    /**
+     * Navigate to a URL and update browser history
+     */
+    push(page, sessionId = null, replace = false) {
+        const url = this.buildUrl(page, sessionId);
+        if (replace) {
+            window.history.replaceState({ page, sessionId }, '', url);
+        } else {
+            window.history.pushState({ page, sessionId }, '', url);
+        }
+    },
+    
+    /**
+     * Initialize router and handle initial URL
+     */
+    init() {
+        // Handle browser back/forward buttons
+        window.addEventListener('popstate', (event) => {
+            if (event.state) {
+                navigateTo(event.state.page, event.state.sessionId, false);
+            } else {
+                const { page, sessionId } = this.parseUrl();
+                navigateTo(page, sessionId, false);
+            }
+        });
+        
+        // Handle initial URL on page load
+        const { page, sessionId } = this.parseUrl();
+        navigateTo(page, sessionId, true);
+    }
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
 // Navigation
 // ═══════════════════════════════════════════════════════════════════════════
 
-function navigateTo(page) {
+/**
+ * Navigate to a page with optional session ID
+ * @param {string} page - Page name (home, chat, wiki, files, settings)
+ * @param {string|null} sessionId - Optional chat session ID
+ * @param {boolean} updateUrl - Whether to update browser URL (default: true)
+ */
+function navigateTo(page, sessionId = null, updateUrl = true) {
     // Update state
     state.currentPage = page;
     
@@ -40,6 +129,11 @@ function navigateTo(page) {
         p.classList.toggle('active', p.id === `page-${page}`);
     });
     
+    // Update URL if needed
+    if (updateUrl) {
+        router.push(page, sessionId);
+    }
+    
     // Load page-specific content
     if (page === 'files') {
         loadFiles(state.currentPath);
@@ -50,6 +144,13 @@ function navigateTo(page) {
         checkSystemStatus();
     } else if (page === 'chat') {
         checkChatStatus();
+        // Handle chat session
+        if (sessionId) {
+            loadChatSession(sessionId);
+        } else {
+            // Check if we should create a new session or show existing
+            showChatSessionSelector();
+        }
     } else if (page === 'wiki') {
         loadWikiStructure();
     }
@@ -59,7 +160,13 @@ function navigateTo(page) {
 document.querySelectorAll('.nav-link').forEach(link => {
     link.addEventListener('click', (e) => {
         e.preventDefault();
-        navigateTo(link.dataset.page);
+        const page = link.dataset.page;
+        // For chat, create new session; for others, just navigate
+        if (page === 'chat') {
+            navigateTo(page, null);
+        } else {
+            navigateTo(page);
+        }
     });
 });
 
@@ -116,6 +223,293 @@ async function loadStats() {
         }
     } catch (error) {
         console.log('Could not load stats:', error);
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Chat Session Management
+// ═══════════════════════════════════════════════════════════════════════════
+
+/**
+ * Generate a unique session ID
+ */
+function generateSessionId() {
+    return 'chat_' + Date.now().toString(36) + '_' + Math.random().toString(36).substr(2, 9);
+}
+
+/**
+ * Load chat sessions from localStorage
+ */
+function loadChatSessionsFromStorage() {
+    try {
+        const stored = localStorage.getItem('chatSessions');
+        if (stored) {
+            state.chatSessions = JSON.parse(stored);
+        }
+    } catch (e) {
+        console.error('Error loading chat sessions:', e);
+        state.chatSessions = {};
+    }
+}
+
+/**
+ * Save chat sessions to localStorage
+ */
+function saveChatSessionsToStorage() {
+    try {
+        localStorage.setItem('chatSessions', JSON.stringify(state.chatSessions));
+    } catch (e) {
+        console.error('Error saving chat sessions:', e);
+    }
+}
+
+/**
+ * Create a new chat session
+ */
+function createNewChatSession() {
+    const sessionId = generateSessionId();
+    const session = {
+        id: sessionId,
+        title: 'New Chat',
+        history: [],
+        createdAt: new Date().toISOString()
+    };
+    
+    state.chatSessions[sessionId] = session;
+    state.currentSessionId = sessionId;
+    state.chatHistory = [];
+    
+    saveChatSessionsToStorage();
+    
+    // Navigate to the new session URL
+    router.push('chat', sessionId);
+    
+    // Clear chat UI
+    clearChatUI();
+    showWelcomeMessage();
+    
+    return sessionId;
+}
+
+/**
+ * Load a specific chat session
+ */
+function loadChatSession(sessionId) {
+    const session = state.chatSessions[sessionId];
+    
+    if (!session) {
+        // Session doesn't exist, create a new one with this ID or redirect
+        console.log(`Session ${sessionId} not found, creating new session`);
+        const newSession = {
+            id: sessionId,
+            title: 'New Chat',
+            history: [],
+            createdAt: new Date().toISOString()
+        };
+        state.chatSessions[sessionId] = newSession;
+        saveChatSessionsToStorage();
+    }
+    
+    state.currentSessionId = sessionId;
+    state.chatHistory = state.chatSessions[sessionId]?.history || [];
+    
+    // Render chat history
+    renderChatHistory();
+}
+
+/**
+ * Save current chat to session
+ */
+function saveCurrentChatSession() {
+    if (!state.currentSessionId) return;
+    
+    const session = state.chatSessions[state.currentSessionId];
+    if (session) {
+        session.history = state.chatHistory;
+        
+        // Update title from first user message if it's still "New Chat"
+        if (session.title === 'New Chat' && state.chatHistory.length > 0) {
+            const firstUserMsg = state.chatHistory.find(m => m.role === 'user');
+            if (firstUserMsg) {
+                session.title = firstUserMsg.content.slice(0, 50) + (firstUserMsg.content.length > 50 ? '...' : '');
+            }
+        }
+        
+        saveChatSessionsToStorage();
+    }
+}
+
+/**
+ * Show chat session selector or create new session
+ */
+function showChatSessionSelector() {
+    loadChatSessionsFromStorage();
+    
+    const sessions = Object.values(state.chatSessions).sort((a, b) => 
+        new Date(b.createdAt) - new Date(a.createdAt)
+    );
+    
+    if (sessions.length === 0) {
+        // No sessions, create a new one
+        createNewChatSession();
+    } else {
+        // Show existing chat or continue with current session
+        if (state.currentSessionId && state.chatSessions[state.currentSessionId]) {
+            loadChatSession(state.currentSessionId);
+        } else {
+            // Load most recent session
+            createNewChatSession();
+        }
+    }
+}
+
+/**
+ * Clear chat UI
+ */
+function clearChatUI() {
+    const chatMessages = document.getElementById('chatMessages');
+    if (chatMessages) {
+        chatMessages.innerHTML = '';
+    }
+}
+
+/**
+ * Render chat history from loaded session
+ */
+function renderChatHistory() {
+    const chatMessages = document.getElementById('chatMessages');
+    if (!chatMessages) return;
+    
+    chatMessages.innerHTML = '';
+    
+    if (state.chatHistory.length === 0) {
+        showWelcomeMessage();
+        return;
+    }
+    
+    hideWelcomeMessage();
+    
+    // Render each message
+    for (const msg of state.chatHistory) {
+        addMessage(msg.role, msg.content);
+    }
+}
+
+/**
+ * Delete a chat session
+ */
+function deleteChatSession(sessionId) {
+    delete state.chatSessions[sessionId];
+    saveChatSessionsToStorage();
+    
+    // If deleting current session, create new one
+    if (state.currentSessionId === sessionId) {
+        createNewChatSession();
+    }
+}
+
+/**
+ * Get all chat sessions sorted by date
+ */
+function getAllChatSessions() {
+    return Object.values(state.chatSessions).sort((a, b) => 
+        new Date(b.createdAt) - new Date(a.createdAt)
+    );
+}
+
+/**
+ * Toggle sessions sidebar visibility
+ */
+function toggleSessionsList() {
+    const sidebar = document.getElementById('chatSessionsSidebar');
+    if (!sidebar) return;
+    
+    const isVisible = sidebar.classList.contains('visible');
+    
+    if (isVisible) {
+        sidebar.classList.remove('visible');
+    } else {
+        sidebar.classList.add('visible');
+        renderSessionsList();
+    }
+}
+
+/**
+ * Render the sessions list in the sidebar
+ */
+function renderSessionsList() {
+    const sessionsList = document.getElementById('sessionsList');
+    if (!sessionsList) return;
+    
+    const sessions = getAllChatSessions();
+    
+    if (sessions.length === 0) {
+        sessionsList.innerHTML = '<div class="sessions-empty">No chat history yet</div>';
+        return;
+    }
+    
+    sessionsList.innerHTML = sessions.map(session => {
+        const isActive = session.id === state.currentSessionId;
+        const date = new Date(session.createdAt);
+        const dateStr = formatSessionDate(date);
+        
+        return `
+            <div class="session-item ${isActive ? 'active' : ''}" onclick="switchToSession('${session.id}')">
+                <div class="session-info">
+                    <div class="session-title">${escapeHtml(session.title)}</div>
+                    <div class="session-date">${dateStr}</div>
+                </div>
+                <button class="session-delete" onclick="event.stopPropagation(); confirmDeleteSession('${session.id}')" title="Delete">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                        <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                    </svg>
+                </button>
+            </div>
+        `;
+    }).join('');
+}
+
+/**
+ * Format session date for display
+ */
+function formatSessionDate(date) {
+    const now = new Date();
+    const diff = now - date;
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    
+    if (days === 0) {
+        return 'Today';
+    } else if (days === 1) {
+        return 'Yesterday';
+    } else if (days < 7) {
+        return `${days} days ago`;
+    } else {
+        return date.toLocaleDateString();
+    }
+}
+
+/**
+ * Switch to a different chat session
+ */
+function switchToSession(sessionId) {
+    // Close sidebar
+    const sidebar = document.getElementById('chatSessionsSidebar');
+    if (sidebar) sidebar.classList.remove('visible');
+    
+    // Navigate to the session
+    navigateTo('chat', sessionId);
+}
+
+/**
+ * Confirm and delete a session
+ */
+function confirmDeleteSession(sessionId) {
+    const session = state.chatSessions[sessionId];
+    if (!session) return;
+    
+    if (confirm(`Delete "${session.title}"? This cannot be undone.`)) {
+        deleteChatSession(sessionId);
+        renderSessionsList();
     }
 }
 
@@ -279,6 +673,9 @@ async function sendMessage(textOrEvent = null) {
         // Store in history
         state.chatHistory.push({ role: 'user', content: message });
         state.chatHistory.push({ role: 'assistant', content: fullContent });
+        
+        // Save to session storage
+        saveCurrentChatSession();
         
     } catch (error) {
         console.error('Streaming error:', error);
@@ -1636,27 +2033,12 @@ async function checkSystemStatus() {
 }
 
 async function checkChatStatus() {
-    const statusDot = document.getElementById('chatStatusDot');
-    const statusText = document.getElementById('chatStatusText');
-    
-    if (!statusDot || !statusText) return;
-    
     try {
         const response = await fetch('/api/chat/status');
         const data = await response.json();
-        
-        if (data.openai_configured) {
-            statusDot.className = 'status-dot connected';
-            statusText.textContent = `GPT-4o Ready • ${data.enabled_servers} MCP server${data.enabled_servers !== 1 ? 's' : ''} connected`;
-            state.openaiConfigured = true;
-        } else {
-            statusDot.className = 'status-dot disconnected';
-            statusText.textContent = 'OpenAI API not configured';
-            state.openaiConfigured = false;
-        }
+        state.openaiConfigured = data.openai_configured || false;
     } catch (error) {
-        statusDot.className = 'status-dot disconnected';
-        statusText.textContent = 'Error checking status';
+        state.openaiConfigured = false;
     }
 }
 
@@ -1764,15 +2146,15 @@ function addSystemNotification(message) {
 // ═══════════════════════════════════════════════════════════════════════════
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Load chat sessions from storage
+    loadChatSessionsFromStorage();
+    
+    // Initialize router (handles initial URL navigation)
+    router.init();
+    
     // Check MCP health
     checkMcpHealth();
     setInterval(checkMcpHealth, 30000); // Check every 30 seconds
-    
-    // Load initial stats
-    loadStats();
-    
-    // Check chat status
-    checkChatStatus();
     
     // Setup MCP power button
     const mcpPowerBtn = document.getElementById('mcpPowerBtn');
