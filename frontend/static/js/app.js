@@ -284,9 +284,8 @@ function createNewChatSession() {
     // Navigate to the new session URL
     router.push('chat', sessionId);
     
-    // Clear chat UI
+    // Clear chat UI (this also shows welcome message)
     clearChatUI();
-    showWelcomeMessage();
     
     return sessionId;
 }
@@ -364,12 +363,50 @@ function showChatSessionSelector() {
 }
 
 /**
- * Clear chat UI
+ * Clear chat UI and restore welcome message
  */
 function clearChatUI() {
     const chatMessages = document.getElementById('chatMessages');
     if (chatMessages) {
-        chatMessages.innerHTML = '';
+        // Re-insert the welcome message HTML
+        chatMessages.innerHTML = `
+            <div class="chat-welcome" id="chatWelcome">
+                <div class="chat-welcome-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="2" y="3" width="20" height="14" rx="2"/>
+                        <path d="M8 21h8M12 17v4"/>
+                        <path d="M7 8h2M7 11h4"/>
+                    </svg>
+                </div>
+                <h2 class="chat-welcome-title">Welcome to <span class="accent">CompanyMCP</span> Chat</h2>
+                <p class="chat-welcome-text">
+                    I'm your AI assistant with access to your database schemas and documentation. 
+                    Ask me about tables, relationships, data models, or get help writing queries.
+                </p>
+                <div class="chat-welcome-features">
+                    <div class="welcome-feature">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"/>
+                            <path d="m21 21-4.35-4.35"/>
+                        </svg>
+                        <span>Search schemas</span>
+                    </div>
+                    <div class="welcome-feature">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                        </svg>
+                        <span>Explore relationships</span>
+                    </div>
+                    <div class="welcome-feature">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2"/>
+                            <path d="M3 9h18M9 21V9"/>
+                        </svg>
+                        <span>Generate SQL</span>
+                    </div>
+                </div>
+            </div>
+        `;
     }
 }
 
@@ -380,14 +417,14 @@ function renderChatHistory() {
     const chatMessages = document.getElementById('chatMessages');
     if (!chatMessages) return;
     
-    chatMessages.innerHTML = '';
-    
     if (state.chatHistory.length === 0) {
-        showWelcomeMessage();
+        // Use clearChatUI which properly restores the welcome message
+        clearChatUI();
         return;
     }
     
-    hideWelcomeMessage();
+    // Clear and render messages (no welcome message needed)
+    chatMessages.innerHTML = '';
     
     // Render each message
     for (const msg of state.chatHistory) {
