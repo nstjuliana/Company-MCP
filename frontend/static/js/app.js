@@ -2061,87 +2061,6 @@ function showWelcomeMessage() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// MCP Power Toggle
-// ═══════════════════════════════════════════════════════════════════════════
-
-let mcpEnabled = true;
-
-async function toggleAllMcpServers() {
-    const powerBtn = document.getElementById('mcpPowerBtn');
-    if (!powerBtn) return;
-    
-    mcpEnabled = !mcpEnabled;
-    
-    // Update button appearance
-    powerBtn.classList.toggle('disabled', !mcpEnabled);
-    powerBtn.title = mcpEnabled ? 'Disable all MCP servers' : 'Enable all MCP servers';
-    
-    // Toggle all servers
-    try {
-        const response = await fetch('/api/mcp/servers');
-        const data = await response.json();
-        const servers = Object.keys(data.servers || {});
-        const serverCount = servers.length;
-        
-        for (const serverId of servers) {
-            await fetch(`/api/mcp/servers/${serverId}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ enabled: mcpEnabled })
-            });
-        }
-        
-        // Update status indicator
-        const indicator = document.getElementById('mcpStatus');
-        const text = document.getElementById('mcpStatusText');
-        
-        if (mcpEnabled) {
-            indicator.className = 'status-indicator connected';
-            text.textContent = 'MCP Connected';
-        } else {
-            indicator.className = 'status-indicator disconnected';
-            text.textContent = 'MCP Disabled';
-        }
-        
-        // Add notification message in chat if on chat page
-        if (state.currentPage === 'chat') {
-            addSystemNotification(
-                mcpEnabled 
-                    ? `✓ ${serverCount} MCP server${serverCount !== 1 ? 's' : ''} enabled. The assistant now has access to database tools.`
-                    : `⚠ All MCP servers disabled. The assistant will respond without database access until re-enabled.`
-            );
-        }
-        
-        // Refresh server list if on settings page
-        if (state.currentPage === 'settings') {
-            loadMcpServers();
-        }
-        
-    } catch (error) {
-        console.error('Error toggling MCP servers:', error);
-    }
-}
-
-function addSystemNotification(message) {
-    const chatMessages = document.getElementById('chatMessages');
-    if (!chatMessages) return;
-    
-    // Hide welcome message if visible
-    hideWelcomeMessage();
-    
-    const notificationEl = document.createElement('div');
-    notificationEl.className = 'system-notification';
-    notificationEl.innerHTML = `
-        <div class="notification-content">
-            <span class="notification-text">${escapeHtml(message)}</span>
-        </div>
-    `;
-    
-    chatMessages.appendChild(notificationEl);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-}
-
-// ═══════════════════════════════════════════════════════════════════════════
 // Initialization
 // ═══════════════════════════════════════════════════════════════════════════
 
@@ -2155,12 +2074,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Check MCP health
     checkMcpHealth();
     setInterval(checkMcpHealth, 30000); // Check every 30 seconds
-    
-    // Setup MCP power button
-    const mcpPowerBtn = document.getElementById('mcpPowerBtn');
-    if (mcpPowerBtn) {
-        mcpPowerBtn.addEventListener('click', toggleAllMcpServers);
-    }
     
     // Initialize form handler for add server
     const addServerForm = document.getElementById('addServerForm');

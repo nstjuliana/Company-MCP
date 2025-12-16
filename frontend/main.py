@@ -636,22 +636,12 @@ def build_system_prompt(server_list: str, tool_names: List[str]) -> str:
     if not server_list or not tool_names:
         return """You are a helpful AI assistant for CompanyMCP, a database context server.
 
-IMPORTANT: No MCP servers are currently enabled. You do NOT have access to any database tools right now.
-
-You cannot:
-- Search or query databases
-- Look up table schemas
-- Execute SQL queries
-- Access any real-time database information
-
-Please let the user know that MCP servers are disabled. They can re-enable them using the power button (⏻) in the top-right corner of the interface.
-
-You can still help with:
+You can help with:
 - General questions about databases and SQL
-- Explaining concepts
+- Explaining database concepts
 - Answering questions based on conversation history
 
-Be honest about your current limitations and guide users to re-enable MCPs if they need database access."""
+If asked about specific database content or schemas, let the user know you'd need database tools to provide accurate information."""
     
     tool_list = ", ".join(tool_names[:20])
     if len(tool_names) > 20:

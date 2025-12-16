@@ -198,40 +198,6 @@ button {
     background: var(--error);
 }
 
-/* MCP Power Button */
-.mcp-power-btn {
-    width: 28px;
-    height: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--bg-hover);
-    border: var(--border-subtle);
-    border-radius: var(--radius-md);
-    color: var(--success);
-    cursor: pointer;
-    margin-left: var(--space-sm);
-    transition: all var(--transition-fast);
-}
-
-.mcp-power-btn:hover {
-    background: var(--bg-elevated);
-    transform: scale(1.05);
-}
-
-.mcp-power-btn svg {
-    width: 16px;
-    height: 16px;
-}
-
-.mcp-power-btn.disabled {
-    color: var(--error);
-}
-
-.mcp-power-btn.disabled:hover {
-    background: rgba(239, 68, 68, 0.1);
-}
-
 /* ═══════════════════════════════════════════════════════════════════════════
    Main Content
    ═══════════════════════════════════════════════════════════════════════════ */
