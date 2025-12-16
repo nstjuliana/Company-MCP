@@ -198,6 +198,40 @@ button {
     background: var(--error);
 }
 
+/* MCP Power Button */
+.mcp-power-btn {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-hover);
+    border: var(--border-subtle);
+    border-radius: var(--radius-md);
+    color: var(--success);
+    cursor: pointer;
+    margin-left: var(--space-sm);
+    transition: all var(--transition-fast);
+}
+
+.mcp-power-btn:hover {
+    background: var(--bg-elevated);
+    transform: scale(1.05);
+}
+
+.mcp-power-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+.mcp-power-btn.disabled {
+    color: var(--error);
+}
+
+.mcp-power-btn.disabled:hover {
+    background: rgba(239, 68, 68, 0.1);
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════
    Main Content
    ═══════════════════════════════════════════════════════════════════════════ */
@@ -651,6 +685,131 @@ button {
     font-size: 0.75rem;
     color: var(--text-muted);
     margin-top: var(--space-sm);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Chat Welcome Message
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.chat-welcome {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 520px;
+    width: 90%;
+    background: var(--bg-surface);
+    border: var(--border-subtle);
+    border-radius: var(--radius-xl);
+    padding: var(--space-2xl);
+    text-align: center;
+    box-shadow: var(--shadow-lg), var(--shadow-glow);
+    animation: welcomeFadeIn 0.5s ease-out;
+}
+
+@keyframes welcomeFadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -45%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.chat-welcome-icon {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto var(--space-lg);
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(245, 158, 11, 0.05));
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chat-welcome-icon svg {
+    width: 36px;
+    height: 36px;
+    color: var(--accent-400);
+}
+
+.chat-welcome-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: var(--space-md);
+    letter-spacing: -0.02em;
+}
+
+.chat-welcome-title .accent {
+    color: var(--accent-400);
+}
+
+.chat-welcome-text {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: var(--space-xl);
+}
+
+.chat-welcome-features {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-lg);
+    flex-wrap: wrap;
+}
+
+.welcome-feature {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    padding: var(--space-xs) var(--space-sm);
+    background: var(--bg-elevated);
+    border-radius: var(--radius-md);
+    border: var(--border-subtle);
+}
+
+.welcome-feature svg {
+    width: 14px;
+    height: 14px;
+    color: var(--accent-400);
+}
+
+.chat-welcome.hidden {
+    display: none;
+}
+
+/* Make chat-messages relative for absolute positioning of welcome */
+.chat-messages {
+    position: relative;
+}
+
+/* System Notification */
+.system-notification {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-sm) var(--space-md);
+    animation: slideIn var(--transition-base);
+}
+
+.notification-content {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+    background: var(--bg-elevated);
+    border: var(--border-subtle);
+    border-radius: 100px;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.notification-text {
+    white-space: nowrap;
 }
 
 /* Thinking Steps */
