@@ -2189,10 +2189,8 @@ async function refreshCacheStatus() {
 
 async function toggleCacheMode(enabled) {
     try {
-        const activeSelect = document.getElementById('activeCacheSelect');
-        const cacheId = activeSelect?.value || null;
-        
-        const response = await fetch(`/api/admin/cache/enable?enabled=${enabled}${cacheId ? `&cache_id=${cacheId}` : ''}`, {
+        // No need to select a cache - all caches are searched for matching prompts
+        const response = await fetch(`/api/admin/cache/enable?enabled=${enabled}`, {
             method: 'POST',
         });
         
@@ -2245,14 +2243,19 @@ async function refreshCacheList() {
         }
         
         cachesList.innerHTML = adminState.caches.map(cache => `
-            <div class="cache-item ${data.active_cache_id === cache.id ? 'active' : ''}" data-cache-id="${cache.id}">
+            <div class="cache-item" data-cache-id="${cache.id}">
                 <div class="cache-info">
                     <div class="cache-header">
                         <span class="cache-title">${escapeHtml(cache.title)}</span>
-                        ${data.active_cache_id === cache.id ? '<span class="cache-badge active">Active</span>' : ''}
                     </div>
                     <div class="cache-meta">
                         <span class="cache-responses">${cache.response_count} responses</span>
+                        <span class="cache-plays" title="Total plays">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12">
+                                <polygon points="5 3 19 12 5 21 5 3"/>
+                            </svg>
+                            ${cache.total_plays || 0} plays
+                        </span>
                         <span class="cache-date">${cache.created_at ? new Date(cache.created_at).toLocaleDateString() : ''}</span>
                     </div>
                 </div>
@@ -2261,6 +2264,13 @@ async function refreshCacheList() {
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
                             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
                             <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                    </button>
+                    <button class="btn-icon" onclick="exportCache('${cache.id}')" title="Export cache">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="7 10 12 15 17 10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
                         </svg>
                     </button>
                     <button class="btn-icon" onclick="startRecordingTo('${cache.id}')" title="Record to this cache">
@@ -2386,15 +2396,125 @@ async function viewCacheDetails(cacheId) {
         const response = await fetch(`/api/admin/cache/${cacheId}`);
         const data = await response.json();
         
-        // Show in a modal or alert
-        const responsesInfo = data.responses.map((r, i) => 
-            `${i + 1}. User: "${r.user_message.substring(0, 50)}..." → Response: ${r.assistant_response.length} chars`
-        ).join('\n');
+        // Show in modal
+        const modal = document.getElementById('cacheModal');
+        const title = document.getElementById('cacheModalTitle');
+        const body = document.getElementById('cacheModalBody');
         
-        alert(`Cache: ${data.title}\n\nResponses (${data.responses.length}):\n${responsesInfo || 'No responses yet'}`);
+        if (!modal || !title || !body) {
+            console.error('Cache modal elements not found');
+            return;
+        }
+        
+        title.textContent = data.title || 'Cache Details';
+        
+        if (!data.responses || data.responses.length === 0) {
+            body.innerHTML = '<div class="empty-message">No cached responses yet.</div>';
+        } else {
+            const totalPlays = data.responses.reduce((sum, r) => sum + (r.play_count || 0), 0);
+            body.innerHTML = `
+                <div class="cache-detail-header">
+                    <span class="cache-stat"><strong>${data.responses.length}</strong> responses</span>
+                    <span class="cache-stat"><strong>${totalPlays}</strong> total plays</span>
+                </div>
+                <div class="cache-responses-list">
+                    ${data.responses.map((r, i) => `
+                        <div class="cache-response-card">
+                            <div class="cache-response-header">
+                                <span class="response-number">#${i + 1}</span>
+                                <span class="play-count-badge" title="Times played">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                                        <polygon points="5 3 19 12 5 21 5 3"/>
+                                    </svg>
+                                    ${r.play_count || 0}
+                                </span>
+                            </div>
+                            <div class="cache-response-section">
+                                <label>Trigger Prompt:</label>
+                                <div class="cache-prompt">${escapeHtml(r.user_message)}</div>
+                            </div>
+                            <div class="cache-response-section">
+                                <label>Tool Calls (${(r.tools_used || []).length}):</label>
+                                <div class="cache-tools">
+                                    ${(r.tools_used || []).length === 0 ? '<em>No tool calls</em>' : 
+                                        (r.tools_used || []).map(t => `
+                                            <div class="tool-badge">
+                                                <span class="tool-server">${t.server || 'unknown'}</span>
+                                                <span class="tool-name">${t.tool}</span>
+                                            </div>
+                                        `).join('')
+                                    }
+                                </div>
+                            </div>
+                            <div class="cache-response-section">
+                                <label>Response:</label>
+                                <div class="cache-response-text">${escapeHtml(r.assistant_response).substring(0, 500)}${r.assistant_response.length > 500 ? '...' : ''}</div>
+                            </div>
+                            ${r.last_played ? `<div class="cache-response-footer">Last played: ${new Date(r.last_played).toLocaleString()}</div>` : ''}
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+        
+        modal.classList.add('active');
     } catch (error) {
-        alert(`Error: ${error.message}`);
+        alert(`Error loading cache details: ${error.message}`);
     }
+}
+
+function closeCacheModal() {
+    const modal = document.getElementById('cacheModal');
+    if (modal) {
+        modal.classList.remove('active');
+    }
+}
+
+async function exportCache(cacheId) {
+    try {
+        // Trigger download via the export endpoint
+        window.location.href = `/api/admin/cache/${cacheId}/export`;
+    } catch (error) {
+        alert(`Error exporting cache: ${error.message}`);
+    }
+}
+
+async function importCache(file) {
+    try {
+        const text = await file.text();
+        const cacheData = JSON.parse(text);
+        
+        const response = await fetch('/api/admin/cache/import', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ cache_data: cacheData })
+        });
+        
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.detail || 'Import failed');
+        }
+        
+        const result = await response.json();
+        alert(`Successfully imported "${result.title}" with ${result.response_count} responses!`);
+        await refreshCacheList();
+        await refreshCacheStatus();
+    } catch (error) {
+        alert(`Error importing cache: ${error.message}`);
+    }
+}
+
+function triggerImportDialog() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.onchange = async (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            await importCache(file);
+        }
+    };
+    input.click();
 }
 
 async function setRecordingCache(cacheId) {

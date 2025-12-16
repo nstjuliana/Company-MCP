@@ -15,7 +15,7 @@ from collections import defaultdict
 from datetime import datetime
 
 import httpx
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
@@ -462,20 +462,24 @@ class CachedResponseAdd(BaseModel):
 @app.get("/api/admin/cache/status")
 async def get_cache_status():
     """Get current cache status."""
+    # Calculate total play count for each cache
+    cached_chats_list = []
+    for chat_id, chat_data in chat_cache["cached_chats"].items():
+        total_plays = sum(r.get("play_count", 0) for r in chat_data.get("responses", []))
+        cached_chats_list.append({
+            "id": chat_id,
+            "title": chat_data.get("title", "Untitled"),
+            "response_count": len(chat_data.get("responses", [])),
+            "total_plays": total_plays,
+            "created_at": chat_data.get("created_at"),
+        })
+    
     return {
         "enabled": chat_cache["enabled"],
         "active_cache_id": chat_cache["active_cache_id"],
-        "recording_to": chat_cache.get("recording_to"),  # Separate from demo mode
+        "recording_to": chat_cache.get("recording_to"),
         "cached_chats_count": len(chat_cache["cached_chats"]),
-        "cached_chats": [
-            {
-                "id": chat_id,
-                "title": chat_data.get("title", "Untitled"),
-                "response_count": len(chat_data.get("responses", [])),
-                "created_at": chat_data.get("created_at"),
-            }
-            for chat_id, chat_data in chat_cache["cached_chats"].items()
-        ]
+        "cached_chats": cached_chats_list
     }
 
 
@@ -564,30 +568,123 @@ async def stop_recording_chat():
     return {"status": "stopped"}
 
 
+@app.get("/api/admin/cache/{cache_id}/export")
+async def export_cache(cache_id: str):
+    """Export a cache as a downloadable JSON file."""
+    if cache_id not in chat_cache["cached_chats"]:
+        raise HTTPException(status_code=404, detail=f"Cache '{cache_id}' not found")
+    
+    cache_data = chat_cache["cached_chats"][cache_id]
+    export_data = {
+        "version": "1.0",
+        "exported_at": datetime.now().isoformat(),
+        "cache": {
+            "title": cache_data.get("title", "Untitled"),
+            "created_at": cache_data.get("created_at"),
+            "responses": cache_data.get("responses", [])
+        }
+    }
+    
+    # Return as downloadable JSON
+    filename = f"cache_{cache_data.get('title', cache_id).replace(' ', '_').lower()}_{datetime.now().strftime('%Y%m%d')}.json"
+    return Response(
+        content=json.dumps(export_data, indent=2, default=str),
+        media_type="application/json",
+        headers={"Content-Disposition": f"attachment; filename={filename}"}
+    )
+
+
+class CacheImport(BaseModel):
+    title: Optional[str] = None
+    cache_data: Dict[str, Any]
+
+
+@app.post("/api/admin/cache/import")
+async def import_cache(data: CacheImport):
+    """Import a cache from exported JSON data."""
+    try:
+        cache_data = data.cache_data
+        
+        # Validate the import data structure
+        if "cache" not in cache_data and "responses" not in cache_data:
+            raise HTTPException(status_code=400, detail="Invalid cache format. Expected 'cache' or 'responses' field.")
+        
+        # Handle both wrapped format (from export) and direct format
+        if "cache" in cache_data:
+            imported = cache_data["cache"]
+        else:
+            imported = cache_data
+        
+        # Generate a new cache ID
+        cache_id = f"cache_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{len(chat_cache['cached_chats'])}"
+        
+        # Use provided title or extract from import
+        title = data.title or imported.get("title", f"Imported Cache {len(chat_cache['cached_chats']) + 1}")
+        
+        # Create the new cache
+        chat_cache["cached_chats"][cache_id] = {
+            "title": title,
+            "created_at": datetime.now().isoformat(),
+            "imported_at": datetime.now().isoformat(),
+            "original_created_at": imported.get("created_at"),
+            "responses": imported.get("responses", [])
+        }
+        
+        # Reset play counts on import (optional - start fresh)
+        for response in chat_cache["cached_chats"][cache_id]["responses"]:
+            response["play_count"] = 0
+            response.pop("last_played", None)
+        
+        save_chat_cache()
+        
+        return {
+            "status": "imported",
+            "cache_id": cache_id,
+            "title": title,
+            "response_count": len(chat_cache["cached_chats"][cache_id]["responses"])
+        }
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Import failed: {str(e)}")
+
+
 def find_cached_response(user_message: str) -> Optional[Dict[str, Any]]:
-    """Find a cached response for a user message when cache mode is enabled."""
-    if not chat_cache["enabled"] or not chat_cache["active_cache_id"]:
+    """Find a cached response for a user message when cache mode is enabled.
+    
+    Searches ALL caches for a matching prompt - no need to select a specific cache.
+    Also tracks play count for each matched response.
+    """
+    if not chat_cache["enabled"]:
         return None
     
-    active_cache = chat_cache["cached_chats"].get(chat_cache["active_cache_id"])
-    if not active_cache:
-        return None
-    
-    # Find exact or fuzzy match
     user_msg_lower = user_message.lower().strip()
-    for cached in active_cache.get("responses", []):
-        cached_msg_lower = cached["user_message"].lower().strip()
-        # Exact match
-        if cached_msg_lower == user_msg_lower:
-            return cached
-        # Fuzzy match - check if messages are similar enough
-        if len(cached_msg_lower) > 10 and len(user_msg_lower) > 10:
-            # Simple similarity: check if one contains most of the other
-            words_cached = set(cached_msg_lower.split())
-            words_user = set(user_msg_lower.split())
-            overlap = len(words_cached & words_user)
-            max_len = max(len(words_cached), len(words_user))
-            if max_len > 0 and overlap / max_len > 0.8:
+    
+    # Search ALL caches for a match
+    for cache_id, cache_data in chat_cache["cached_chats"].items():
+        for idx, cached in enumerate(cache_data.get("responses", [])):
+            cached_msg_lower = cached["user_message"].lower().strip()
+            
+            matched = False
+            # Exact match
+            if cached_msg_lower == user_msg_lower:
+                matched = True
+            # Fuzzy match - check if messages are similar enough
+            elif len(cached_msg_lower) > 10 and len(user_msg_lower) > 10:
+                words_cached = set(cached_msg_lower.split())
+                words_user = set(user_msg_lower.split())
+                overlap = len(words_cached & words_user)
+                max_len = max(len(words_cached), len(words_user))
+                if max_len > 0 and overlap / max_len > 0.8:
+                    matched = True
+            
+            if matched:
+                # Increment play count
+                if "play_count" not in cached:
+                    cached["play_count"] = 0
+                cached["play_count"] += 1
+                cached["last_played"] = datetime.now().isoformat()
+                cached["_source_cache_id"] = cache_id  # Track which cache it came from
+                save_chat_cache()
+                print(f"[Cache] Matched prompt in cache '{cache_id}', play #{cached['play_count']}")
                 return cached
     
     return None

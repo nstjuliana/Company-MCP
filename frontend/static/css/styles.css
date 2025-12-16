@@ -1979,6 +1979,11 @@ button {
     color: var(--accent-400);
 }
 
+.header-actions {
+    display: flex;
+    gap: var(--space-sm);
+}
+
 /* Ensure all SVGs in settings cards are properly sized */
 .settings-card svg,
 .settings-container svg,
@@ -2400,6 +2405,155 @@ button {
 .modal-body {
     padding: var(--space-lg);
     overflow-y: auto;
+}
+
+/* Large Modal Variant */
+.modal-content.modal-large {
+    max-width: 800px;
+    max-height: 85vh;
+}
+
+/* Cache Detail Modal Styles */
+.cache-detail-header {
+    display: flex;
+    gap: var(--space-lg);
+    padding-bottom: var(--space-md);
+    border-bottom: var(--border-subtle);
+    margin-bottom: var(--space-md);
+}
+
+.cache-stat {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.cache-stat strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.cache-responses-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.cache-response-card {
+    background: var(--bg-elevated);
+    border: var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+}
+
+.cache-response-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-sm);
+}
+
+.response-number {
+    font-weight: 600;
+    color: var(--accent-primary);
+}
+
+.play-count-badge {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    background: var(--bg-surface);
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+}
+
+.play-count-badge svg {
+    color: var(--accent-secondary);
+}
+
+.cache-response-section {
+    margin-bottom: var(--space-sm);
+}
+
+.cache-response-section label {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.cache-prompt {
+    font-family: var(--font-mono);
+    background: var(--bg-surface);
+    padding: var(--space-sm);
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    color: var(--accent-primary);
+    border-left: 3px solid var(--accent-primary);
+}
+
+.cache-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+}
+
+.cache-tools em {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.tool-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.8rem;
+    background: var(--bg-surface);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+}
+
+.tool-badge .tool-server {
+    background: var(--accent-secondary);
+    color: var(--bg-primary);
+    padding: 2px 6px;
+    font-weight: 500;
+}
+
+.tool-badge .tool-name {
+    padding: 2px 6px;
+    color: var(--text-secondary);
+}
+
+.cache-response-text {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    max-height: 150px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+}
+
+.cache-response-footer {
+    margin-top: var(--space-sm);
+    padding-top: var(--space-sm);
+    border-top: 1px solid var(--border-color);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* Cache list play count */
+.cache-plays {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--text-muted);
+}
+
+.cache-plays svg {
+    color: var(--accent-secondary);
 }
 
 /* Tools List in Modal */

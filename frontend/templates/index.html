@@ -494,7 +494,7 @@
                             </h3>
                         </div>
                         <div class="card-body">
-                            <p class="card-description">Enable to replay cached responses instead of calling the API. Perfect for demos.</p>
+                            <p class="card-description">Enable to replay cached responses. Any prompt matching a cached response will auto-play.</p>
                             <div class="cache-status-grid">
                                 <div class="status-row">
                                     <span class="status-label">Demo Mode</span>
@@ -505,12 +505,6 @@
                                         </label>
                                         <span class="toggle-label" id="cacheModeLabel">Disabled</span>
                                     </div>
-                                </div>
-                                <div class="status-row">
-                                    <span class="status-label">Cache to Play</span>
-                                    <select id="activeCacheSelect" class="cache-select" onchange="setActiveCache(this.value)">
-                                        <option value="">-- Select Cache --</option>
-                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -588,14 +582,24 @@
                                 </svg>
                                 Saved Caches
                             </h3>
-                            <button class="btn btn-small" onclick="refreshCacheList()">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
-                                    <path d="M23 4v6h-6"/>
-                                    <path d="M1 20v-6h6"/>
-                                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
-                                </svg>
-                                Refresh
-                            </button>
+                            <div class="header-actions">
+                                <button class="btn btn-small" onclick="triggerImportDialog()" title="Import cache from file">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                        <polyline points="17 8 12 3 7 8"/>
+                                        <line x1="12" y1="3" x2="12" y2="15"/>
+                                    </svg>
+                                    Import
+                                </button>
+                                <button class="btn btn-small" onclick="refreshCacheList()">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                                        <path d="M23 4v6h-6"/>
+                                        <path d="M1 20v-6h6"/>
+                                        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+                                    </svg>
+                                    Refresh
+                                </button>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div id="cachesList" class="caches-list">
@@ -664,7 +668,25 @@
         </div>
     </div>
 
-    <script src="/static/js/app.js?v=23"></script>
+    <!-- Cache Details Modal -->
+    <div class="modal" id="cacheModal">
+        <div class="modal-backdrop" onclick="closeCacheModal()"></div>
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3 id="cacheModalTitle">Cache Details</h3>
+                <button class="modal-close" onclick="closeCacheModal()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:20px;height:20px;min-width:20px;min-height:20px;flex-shrink:0;">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body" id="cacheModalBody">
+                <div class="loading">Loading...</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js?v=25"></script>
 </body>
 </html>
 
