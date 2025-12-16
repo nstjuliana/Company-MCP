@@ -899,17 +899,29 @@ async def chat_stream(request: ChatRequest):
             # Check if we have full event stream to replay
             cached_events = cached_response.get("events", [])
             if cached_events:
-                # Replay all cached events with realistic timing
+                # Replay cached events with realistic timing for agent process,
+                # but show final response instantly (no streaming simulation)
                 for event in cached_events:
                     event_type = event.get("type")
                     event_data = event.get("data", {})
-                    delay = event.get("delay", 0.01)  # Stored delay between events
+                    delay = event.get("delay", 0.01)
                     
+                    # Skip content_delta events - we'll show content_done instantly
+                    if event_type == "content_delta":
+                        continue
+                    
+                    # For content_done, send it instantly with all content
+                    if event_type == "content_done":
+                        yield await stream_sse_event(event_type, event_data)
+                        # No delay after final event
+                        continue
+                    
+                    # For thinking, tool_start, tool_result - keep realistic timing
                     yield await stream_sse_event(event_type, event_data)
                     await asyncio.sleep(delay)
                 return
             else:
-                # Fallback: just stream the text response (legacy cached data)
+                # Fallback: just show the text response instantly (legacy cached data)
                 full_content = cached_response["assistant_response"]
                 tools_used = cached_response.get("tools_used", [])
                 
@@ -917,12 +929,7 @@ async def chat_stream(request: ChatRequest):
                     "content": "📦 Using cached demo response..."
                 })
                 
-                chunk_size = 20
-                for i in range(0, len(full_content), chunk_size):
-                    chunk = full_content[i:i + chunk_size]
-                    yield await stream_sse_event("content_delta", {"content": chunk})
-                    await asyncio.sleep(0.02)
-                
+                # Send full content instantly
                 yield await stream_sse_event("content_done", {
                     "full_content": full_content,
                     "tools_used": tools_used,
