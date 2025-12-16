@@ -25,6 +25,7 @@ __pycache__/
 Thumbs.db
 
 /tests
+/data
 
 memory-bank/
 planning/

@@ -365,18 +365,26 @@ function handleStreamEvent(eventType, data, container, state) {
 }
 
 function addStreamingStep(stepsEl, type, data) {
-    // Ensure steps container is visible
-    if (!stepsEl.querySelector('.streaming-steps-header')) {
-        const header = document.createElement('div');
-        header.className = 'streaming-steps-header';
-        header.innerHTML = `
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
-                <circle cx="12" cy="12" r="10"/>
-                <path d="M12 6v6l4 2"/>
-            </svg>
-            <span>Agent Process</span>
+    // Ensure steps container is visible with collapsible details element
+    if (!stepsEl.querySelector('.streaming-steps-details')) {
+        const details = document.createElement('details');
+        details.className = 'streaming-steps-details';
+        details.open = true; // Keep open during streaming
+        details.innerHTML = `
+            <summary class="streaming-steps-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 6v6l4 2"/>
+                </svg>
+                <span>Agent Process</span>
+                <span class="streaming-steps-status">Processing...</span>
+                <svg class="streaming-steps-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                    <path d="m6 9 6 6 6-6"/>
+                </svg>
+            </summary>
+            <div class="streaming-steps-body"></div>
         `;
-        stepsEl.appendChild(header);
+        stepsEl.appendChild(details);
     }
     
     const stepEl = document.createElement('div');
@@ -412,13 +420,20 @@ function addStreamingStep(stepsEl, type, data) {
         `;
     }
     
-    stepsEl.appendChild(stepEl);
+    // Append to the body inside the details element
+    const stepsBody = stepsEl.querySelector('.streaming-steps-body');
+    if (stepsBody) {
+        stepsBody.appendChild(stepEl);
+    } else {
+        stepsEl.appendChild(stepEl);
+    }
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
 function updateToolWithResult(stepsEl, data) {
-    // Find the matching tool step
-    const steps = stepsEl.querySelectorAll('.streaming-step.step-tool_start');
+    // Find the matching tool step (look in the body container)
+    const stepsBody = stepsEl.querySelector('.streaming-steps-body') || stepsEl;
+    const steps = stepsBody.querySelectorAll('.streaming-step.step-tool_start');
     let targetStep = null;
     
     for (const step of steps) {
@@ -452,7 +467,7 @@ function updateToolWithResult(stepsEl, data) {
                 </details>
             </div>
         `;
-        stepsEl.appendChild(stepEl);
+        stepsBody.appendChild(stepEl);
     } else {
         // Update existing step
         targetStep.classList.remove('step-tool_start');
@@ -482,6 +497,20 @@ function updateToolWithResult(stepsEl, data) {
 
 function finalizeStreamingContainer(container, fullContent, toolsUsed) {
     container.classList.remove('streaming');
+    
+    // Collapse the agent process details and update status
+    const stepsDetails = container.querySelector('.streaming-steps-details');
+    if (stepsDetails) {
+        stepsDetails.open = false; // Collapse the details
+        
+        // Update status text
+        const statusEl = stepsDetails.querySelector('.streaming-steps-status');
+        if (statusEl) {
+            const stepCount = stepsDetails.querySelectorAll('.streaming-step').length;
+            statusEl.textContent = `${stepCount} step${stepCount !== 1 ? 's' : ''} completed`;
+            statusEl.classList.add('completed');
+        }
+    }
     
     const responseEl = container.querySelector('.streaming-response');
     
