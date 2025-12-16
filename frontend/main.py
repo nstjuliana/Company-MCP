@@ -1586,7 +1586,7 @@ def extract_search_query(message: str) -> Optional[str]:
 
 # Wiki databases to include (filter)
 WIKI_ALLOWED_DATABASES = ["synthetic_250_postgres", "synthetic_250_snowflake"]
-WIKI_SFTP_BASE_PATH = "/data/synth/map"
+WIKI_SFTP_BASE_PATH = "/data/wiki"
 
 
 def get_wiki_structure_sftp() -> Dict[str, Any]:

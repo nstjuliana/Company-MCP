@@ -2,13 +2,13 @@
   "postgres-mcp": {
     "name": "Postgres Probe",
     "url": "http://localhost/mcp/postgres",
-    "enabled": false,
+    "enabled": true,
     "description": "Run read only queries against the Postgres Synth Database"
   },
   "synth-mcp": {
     "name": "Synth",
     "url": "https://company-mcp.com/mcp/synth",
-    "enabled": false,
+    "enabled": true,
     "description": ""
   }
 }
