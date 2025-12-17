@@ -58,8 +58,12 @@ chat_cache: Dict[str, Any] = {
     "active_cache_id": None,  # Currently active cached chat for demo mode
 }
 
-# Email subscription storage (mounted from ./data for persistence)
-EMAIL_SUBSCRIPTIONS_PATH = Path("/app/email_subscriptions.json")
+# Persistent app data directory (mounted from ./data/app_data)
+# Falls back to local directory if Docker mount doesn't exist
+APP_DATA_DIR = Path("/app/app_data") if Path("/app/app_data").exists() or Path("/app").exists() else BASE_DIR / "app_data"
+
+# Email subscription storage
+EMAIL_SUBSCRIPTIONS_PATH = APP_DATA_DIR / "email_subscriptions.json"
 email_subscriptions: List[Dict[str, Any]] = []
 
 # App settings
@@ -154,8 +158,13 @@ def load_email_subscriptions():
 
 def save_email_subscriptions():
     """Save email subscriptions to file."""
-    with open(EMAIL_SUBSCRIPTIONS_PATH, "w") as f:
-        json.dump(email_subscriptions, f, indent=2, default=str)
+    try:
+        # Ensure directory exists
+        EMAIL_SUBSCRIPTIONS_PATH.parent.mkdir(parents=True, exist_ok=True)
+        with open(EMAIL_SUBSCRIPTIONS_PATH, "w") as f:
+            json.dump(email_subscriptions, f, indent=2, default=str)
+    except Exception as e:
+        print(f"[save_email_subscriptions] Error saving subscriptions: {e}")
 
 
 def load_app_settings():
@@ -2441,8 +2450,8 @@ async def list_files(path: str = "/data"):
                 # Skip markdown files (only filter files, not directories)
                 if not is_dir and item.filename.endswith('.md'):
                     continue
-                # Skip email subscriptions file (sensitive data)
-                if item.filename == 'email_subscriptions.json':
+                # Skip app_data directory (contains sensitive data like email subscriptions)
+                if item.filename == 'app_data':
                     continue
                 files.append({
                     "name": item.filename,
