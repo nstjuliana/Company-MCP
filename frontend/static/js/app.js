@@ -1936,6 +1936,9 @@ async function loadMcpServers() {
     serversList.innerHTML = '<div class="loading">Loading servers...</div>';
     
     try {
+        // Check readonly mode first
+        await checkAndApplySettingsReadonly();
+        
         const response = await fetch('/api/mcp/servers');
         const data = await response.json();
         state.mcpServers = data.servers || {};
@@ -1994,6 +1997,12 @@ function renderServersList() {
             <div class="server-status" id="status-${id}"></div>
         </div>
     `).join('');
+    
+    // Apply readonly mode to all server items if enabled
+    if (settingsReadonlyMode) {
+        const serverItems = serversList.querySelectorAll('.server-item');
+        serverItems.forEach(item => applyServerItemReadonly(item));
+    }
 }
 
 async function checkServerHealth(serverId) {
@@ -2224,6 +2233,7 @@ const adminState = {
 async function loadAdminPage() {
     await refreshCacheStatus();
     await refreshCacheList();
+    await loadSettingsReadonlyStatus();
 }
 
 async function refreshCacheStatus() {
@@ -2689,6 +2699,133 @@ async function startRecordingTo(cacheId) {
 }
 
 
+// ═══════════════════════════════════════════════════════════════════════════
+// Settings Page Lock (Admin)
+// ═══════════════════════════════════════════════════════════════════════════
+
+let settingsReadonlyMode = false;
+
+async function loadSettingsReadonlyStatus() {
+    try {
+        const response = await fetch('/api/admin/settings');
+        const data = await response.json();
+        settingsReadonlyMode = data.settings_readonly || false;
+        
+        // Update admin toggle if on admin page
+        const toggle = document.getElementById('settingsReadonly');
+        const label = document.getElementById('settingsReadonlyLabel');
+        if (toggle) {
+            toggle.checked = settingsReadonlyMode;
+        }
+        if (label) {
+            label.textContent = settingsReadonlyMode ? 'Locked' : 'Unlocked';
+            label.className = settingsReadonlyMode ? 'toggle-label enabled' : 'toggle-label';
+        }
+        
+        return settingsReadonlyMode;
+    } catch (error) {
+        console.error('Error loading settings readonly status:', error);
+        return false;
+    }
+}
+
+async function toggleSettingsReadonly(enabled) {
+    try {
+        const response = await fetch(`/api/admin/settings/readonly?enabled=${enabled}`, {
+            method: 'POST',
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to toggle settings readonly mode');
+        }
+        
+        settingsReadonlyMode = enabled;
+        
+        // Update label
+        const label = document.getElementById('settingsReadonlyLabel');
+        if (label) {
+            label.textContent = enabled ? 'Locked' : 'Unlocked';
+            label.className = enabled ? 'toggle-label enabled' : 'toggle-label';
+        }
+    } catch (error) {
+        alert(`Error: ${error.message}`);
+        // Revert toggle
+        const toggle = document.getElementById('settingsReadonly');
+        if (toggle) toggle.checked = !enabled;
+    }
+}
+
+async function checkAndApplySettingsReadonly() {
+    try {
+        const response = await fetch('/api/settings/readonly');
+        const data = await response.json();
+        settingsReadonlyMode = data.readonly || false;
+        
+        if (settingsReadonlyMode) {
+            applySettingsReadonlyMode();
+        }
+    } catch (error) {
+        console.error('Error checking settings readonly mode:', error);
+    }
+}
+
+function applySettingsReadonlyMode() {
+    // Disable Add Server button
+    const addServerBtn = document.querySelector('#addServerForm button[type="submit"]');
+    if (addServerBtn) {
+        addServerBtn.disabled = true;
+        addServerBtn.title = 'Settings are locked by administrator';
+        addServerBtn.style.opacity = '0.5';
+        addServerBtn.style.cursor = 'not-allowed';
+    }
+    
+    // Disable all form inputs in add server form
+    const addServerForm = document.getElementById('addServerForm');
+    if (addServerForm) {
+        const inputs = addServerForm.querySelectorAll('input, textarea');
+        inputs.forEach(input => {
+            input.disabled = true;
+        });
+    }
+    
+    // Add a notice banner
+    const settingsHeader = document.querySelector('.settings-header');
+    if (settingsHeader && !document.getElementById('readonlyBanner')) {
+        const banner = document.createElement('div');
+        banner.id = 'readonlyBanner';
+        banner.className = 'readonly-banner';
+        banner.innerHTML = `
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            <span>Settings are locked in read-only mode</span>
+        `;
+        settingsHeader.appendChild(banner);
+    }
+}
+
+function applyServerItemReadonly(serverItem) {
+    if (!settingsReadonlyMode) return;
+    
+    // Disable toggle switches (keep them in enabled position)
+    const toggleInput = serverItem.querySelector('.toggle input');
+    if (toggleInput) {
+        toggleInput.checked = true; // Force enabled
+        toggleInput.disabled = true;
+    }
+    
+    // Disable delete button
+    const deleteBtn = serverItem.querySelector('.btn-danger');
+    if (deleteBtn) {
+        deleteBtn.disabled = true;
+        deleteBtn.style.opacity = '0.3';
+        deleteBtn.style.cursor = 'not-allowed';
+        deleteBtn.onclick = null;
+    }
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
     // Load chat sessions from storage
     loadChatSessionsFromStorage();
@@ -2741,6 +2878,81 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Email Capture
+// ═══════════════════════════════════════════════════════════════════════════
+
+async function submitEmailCapture(event) {
+    event.preventDefault();
+    
+    const emailInput = document.getElementById('emailCaptureInput');
+    const submitBtn = document.getElementById('emailSubmitBtn');
+    const statusEl = document.getElementById('emailCaptureStatus');
+    
+    const email = emailInput.value.trim();
+    
+    if (!email) {
+        showEmailStatus('Please enter your email address', 'error');
+        return;
+    }
+    
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        showEmailStatus('Please enter a valid email address', 'error');
+        return;
+    }
+    
+    // Show loading state
+    submitBtn.classList.add('loading');
+    submitBtn.disabled = true;
+    statusEl.textContent = '';
+    statusEl.className = 'email-capture-status';
+    
+    try {
+        const response = await fetch('/api/email/subscribe', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+            showEmailStatus(data.message || 'Successfully subscribed!', 'success');
+            emailInput.value = '';
+        } else {
+            showEmailStatus(data.detail || 'Something went wrong. Please try again.', 'error');
+        }
+    } catch (error) {
+        console.error('Email capture error:', error);
+        showEmailStatus('Network error. Please try again later.', 'error');
+    } finally {
+        submitBtn.classList.remove('loading');
+        submitBtn.disabled = false;
+    }
+}
+
+function showEmailStatus(message, type) {
+    const statusEl = document.getElementById('emailCaptureStatus');
+    if (statusEl) {
+        statusEl.textContent = message;
+        statusEl.className = `email-capture-status ${type}`;
+        
+        // Clear success message after 5 seconds
+        if (type === 'success') {
+            setTimeout(() => {
+                statusEl.textContent = '';
+                statusEl.className = 'email-capture-status';
+            }, 5000);
+        }
+    }
+}
+
 
 
 

@@ -84,6 +84,7 @@ services:
     volumes:
       - ./data:/app/data:ro
       - ./frontend/mcp_servers.json:/app/mcp_servers.json
+      - ./data/email_subscriptions.json:/app/email_subscriptions.json
     depends_on:
       - sftp-server
       - mcp-dabstep

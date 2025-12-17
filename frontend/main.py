@@ -58,6 +58,16 @@ chat_cache: Dict[str, Any] = {
     "active_cache_id": None,  # Currently active cached chat for demo mode
 }
 
+# Email subscription storage (mounted from ./data for persistence)
+EMAIL_SUBSCRIPTIONS_PATH = Path("/app/email_subscriptions.json")
+email_subscriptions: List[Dict[str, Any]] = []
+
+# App settings
+APP_SETTINGS_PATH = BASE_DIR / "app_settings.json"
+app_settings: Dict[str, Any] = {
+    "settings_readonly": False,  # Lock settings page to read-only mode
+}
+
 # Known internal MCP server mappings (external path -> internal URL)
 INTERNAL_MCP_SERVERS = {
     "/mcp/dabstep": "http://mcp-dabstep:8000",
@@ -129,6 +139,44 @@ def load_chat_cache():
             print(f"[load_chat_cache] Error loading cache: {e}")
 
 
+def load_email_subscriptions():
+    """Load email subscriptions from file."""
+    global email_subscriptions
+    if EMAIL_SUBSCRIPTIONS_PATH.exists():
+        try:
+            with open(EMAIL_SUBSCRIPTIONS_PATH, "r") as f:
+                loaded = json.load(f)
+                if isinstance(loaded, list):
+                    email_subscriptions = loaded
+        except Exception as e:
+            print(f"[load_email_subscriptions] Error loading subscriptions: {e}")
+
+
+def save_email_subscriptions():
+    """Save email subscriptions to file."""
+    with open(EMAIL_SUBSCRIPTIONS_PATH, "w") as f:
+        json.dump(email_subscriptions, f, indent=2, default=str)
+
+
+def load_app_settings():
+    """Load app settings from file."""
+    global app_settings
+    if APP_SETTINGS_PATH.exists():
+        try:
+            with open(APP_SETTINGS_PATH, "r") as f:
+                loaded = json.load(f)
+                if isinstance(loaded, dict):
+                    app_settings.update(loaded)
+        except Exception as e:
+            print(f"[load_app_settings] Error loading settings: {e}")
+
+
+def save_app_settings():
+    """Save app settings to file."""
+    with open(APP_SETTINGS_PATH, "w") as f:
+        json.dump(app_settings, f, indent=2)
+
+
 def save_chat_cache():
     """Save chat cache to file."""
     with open(CHAT_CACHE_PATH, "w") as f:
@@ -144,6 +192,8 @@ async def lifespan(app: FastAPI):
         openai_client = AsyncOpenAI(api_key=OPENAI_API_KEY)
     load_mcp_servers()
     load_chat_cache()
+    load_email_subscriptions()
+    load_app_settings()
     yield
     await http_client.aclose()
 
@@ -193,6 +243,10 @@ class MCPServerUpdate(BaseModel):
     description: Optional[str] = None
 
 
+class EmailSubscription(BaseModel):
+    email: str
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Page Routes
 # ─────────────────────────────────────────────────────────────────────────────
@@ -237,6 +291,48 @@ async def settings_page(request: Request):
 async def admin_page(request: Request):
     """Render the secret admin page (no UI button, access via URL only)."""
     return templates.TemplateResponse("index.html", {"request": request})
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# API Routes - Email Subscription
+# ─────────────────────────────────────────────────────────────────────────────
+
+@app.post("/api/email/subscribe")
+async def subscribe_email(subscription: EmailSubscription):
+    """Subscribe an email address to receive updates."""
+    import re
+    
+    email = subscription.email.strip().lower()
+    
+    # Validate email format
+    email_regex = r'^[^\s@]+@[^\s@]+\.[^\s@]+$'
+    if not re.match(email_regex, email):
+        raise HTTPException(status_code=400, detail="Invalid email format")
+    
+    # Check for duplicate
+    existing_emails = [sub.get("email", "").lower() for sub in email_subscriptions]
+    if email in existing_emails:
+        return {"status": "exists", "message": "We already have your email. We'll be in touch soon!"}
+    
+    # Add new subscription
+    email_subscriptions.append({
+        "email": email,
+        "subscribed_at": datetime.now().isoformat(),
+        "source": "website"
+    })
+    
+    save_email_subscriptions()
+    
+    return {"status": "subscribed", "message": "Thanks! We'll be in touch shortly."}
+
+
+@app.get("/api/email/subscribers")
+async def list_email_subscribers():
+    """List all email subscribers (admin endpoint)."""
+    return {
+        "count": len(email_subscriptions),
+        "subscribers": email_subscriptions
+    }
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -457,6 +553,28 @@ class CachedResponseAdd(BaseModel):
     assistant_response: str
     tools_used: List[Dict[str, Any]] = []
     events: List[Dict[str, Any]] = []  # Full SSE event stream for replay
+
+
+@app.get("/api/admin/settings")
+async def get_admin_settings():
+    """Get admin settings including settings page read-only mode."""
+    return {
+        "settings_readonly": app_settings.get("settings_readonly", False)
+    }
+
+
+@app.post("/api/admin/settings/readonly")
+async def set_settings_readonly(enabled: bool = True):
+    """Enable or disable read-only mode for the settings page."""
+    app_settings["settings_readonly"] = enabled
+    save_app_settings()
+    return {"status": "ok", "settings_readonly": enabled}
+
+
+@app.get("/api/settings/readonly")
+async def check_settings_readonly():
+    """Check if settings page is in read-only mode (public endpoint for settings page)."""
+    return {"readonly": app_settings.get("settings_readonly", False)}
 
 
 @app.get("/api/admin/cache/status")
@@ -2322,6 +2440,9 @@ async def list_files(path: str = "/data"):
                 is_dir = item.st_mode is not None and (item.st_mode & 0o40000)
                 # Skip markdown files (only filter files, not directories)
                 if not is_dir and item.filename.endswith('.md'):
+                    continue
+                # Skip email subscriptions file (sensitive data)
+                if item.filename == 'email_subscriptions.json':
                     continue
                 files.append({
                     "name": item.filename,

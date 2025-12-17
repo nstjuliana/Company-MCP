@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Company MCP | Database Context Server</title>
-    <link rel="stylesheet" href="/static/css/styles.css?v=22">
+    <link rel="stylesheet" href="/static/css/styles.css?v=30">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -58,6 +58,25 @@
                         Company MCP indexes your database schemas and provides intelligent search, 
                         relationship discovery, and AI-powered context for your development workflow.
                     </p>
+                    <form class="email-capture-form" id="emailCaptureForm" onsubmit="submitEmailCapture(event)">
+                        <div class="email-input-group">
+                            <input 
+                                type="email" 
+                                id="emailCaptureInput" 
+                                placeholder="your@email.com" 
+                                required
+                                autocomplete="off"
+                            >
+                            <button type="submit" class="email-submit-btn" id="emailSubmitBtn">
+                                <span class="btn-text">Get in touch</span>
+                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="email-capture-status" id="emailCaptureStatus"></div>
+                    </form>
+
                     <div class="hero-actions">
                         <button class="btn btn-primary" onclick="navigateTo('chat')">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -103,6 +122,8 @@
                 </div>
             </div>
 
+            <!-- Email Capture Section Removed (Moved to Hero) -->
+
             <div class="features">
                 <div class="feature-card">
                     <div class="feature-icon">
@@ -147,15 +168,15 @@
 
             <div class="stats-section">
                 <div class="stat">
-                    <span class="stat-value" id="stat-tables">--</span>
+                    <span class="stat-value" id="stat-tables">340</span>
                     <span class="stat-label">Indexed Tables</span>
                 </div>
                 <div class="stat">
-                    <span class="stat-value" id="stat-databases">--</span>
+                    <span class="stat-value" id="stat-databases">2</span>
                     <span class="stat-label">Databases</span>
                 </div>
                 <div class="stat">
-                    <span class="stat-value" id="stat-tools">14</span>
+                    <span class="stat-value" id="stat-tools">29</span>
                     <span class="stat-label">MCP Tools</span>
                 </div>
             </div>
@@ -573,6 +594,34 @@
                         </div>
                     </div>
 
+                    <!-- Settings Lock Card -->
+                    <div class="admin-card settings-lock-card">
+                        <div class="card-header">
+                            <h3>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                                </svg>
+                                Settings Page Lock
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-description">Lock the Settings page to read-only mode. Prevents adding, removing, or disabling MCP servers.</p>
+                            <div class="cache-status-grid">
+                                <div class="status-row">
+                                    <span class="status-label">Lock Settings</span>
+                                    <div class="status-toggle">
+                                        <label class="toggle large">
+                                            <input type="checkbox" id="settingsReadonly" onchange="toggleSettingsReadonly(this.checked)">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                        <span class="toggle-label" id="settingsReadonlyLabel">Unlocked</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Create New Cache Card -->
                     <div class="admin-card create-card">
                         <div class="card-header">
@@ -716,7 +765,7 @@
         </div>
     </div>
 
-    <script src="/static/js/app.js?v=29"></script>
+    <script src="/static/js/app.js?v=30"></script>
 </body>
 </html>
 
